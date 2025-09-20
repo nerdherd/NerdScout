@@ -1,3 +1,9 @@
+:root{
+    --nerd-herd-navy: #081535ff
+}
+
+/* Poppins is licensed under the SIL Open Font License */
+/* A copy of the license can be found at /static/fonts/Poppins/OFL.txt */
 @font-face {
     font-family: "Poppins";
     src: url("/static/fonts/Poppins/Poppins-Black.ttf");
