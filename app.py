@@ -128,7 +128,7 @@ def scoreRobotInMatch(
 
 # converts database results to JSON
 # the default functions get stuck on ObjectID objects
-def resultsToJSON(data):
+def parseResults(data):
     return json.loads(json_util.dumps(data))
 
 
@@ -147,7 +147,7 @@ def testMatchAddition():
 @app.route("/getMatchTest")
 def testMatchGetting():
     matchResultCursor = getMatchByNumber(9999)
-    results = resultsToJSON(matchResultCursor)
+    results = parseResults(matchResultCursor)
     matchResultCursor.close()
     return results
 
