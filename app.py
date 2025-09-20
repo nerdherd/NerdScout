@@ -80,10 +80,12 @@ def addScheduledMatch(
         }
     )
 
-
+# This always outputs an array, in case there are multiple matches with the same number
 def getMatchByNumber(matchNumber: int):
     results = matches.find({"matchNumber": matchNumber})
-    return results
+    parsedResults = parseResults(results)
+    results.close()
+    return parsedResults
 
 
 def scoreRobotInMatch(
@@ -126,6 +128,69 @@ def scoreRobotInMatch(
     )
 
 
+def calculateScore(
+    autoLeave: bool,
+    autoReef: List[int],
+    teleReef: List[int],
+    autoProcessor: int,
+    teleProcessor: int,
+    autoNet: int,
+    teleNet: int,
+    endPos: int,
+    minorFouls: int,
+    majorFouls: int,
+):
+    score = 0
+
+    score += 3 if autoLeave else 0
+
+    score += 3 * autoReef[0]
+    score += 4 * autoReef[1]
+    score += 6 * autoReef[2]
+    score += 7 * autoReef[3]
+
+    score += 2 * teleReef[0]
+    score += 3 * teleReef[1]
+    score += 4 * teleReef[2]
+    score += 5 * teleReef[3]
+
+    score += 6 * autoProcessor
+    score += 6 * teleProcessor
+
+    score += 4 * autoNet
+    score += 4 * teleNet
+
+    score += (
+        2
+        if endPos == EndPosition.PARK.value
+        else (
+            6
+            if endPos == EndPosition.SHALLOW.value
+            else 12 if endPos == EndPosition.DEEP.value else 0
+        )
+    )
+
+    score -= 2 * minorFouls
+    score -= 6 * majorFouls
+
+    return score
+
+def calculateScoreFromData(matchData:dict, team: Station):
+    results = matchData["results"][team.value]
+    score = calculateScore(
+        results["autoLeave"],
+        results["autoReef"],
+        results["teleReef"],
+        results["autoProcessor"],
+        results["teleProcessor"],
+        results["autoNet"],
+        results["teleNet"],
+        results["endPos"],
+        results["minorFouls"],
+        results["majorFouls"]
+    )
+    return score
+
 # converts database results to JSON
 # the default functions get stuck on ObjectID objects
 def parseResults(data):
@@ -146,9 +211,7 @@ def testMatchAddition():
 
 @app.route("/getMatchTest")
 def testMatchGetting():
-    matchResultCursor = getMatchByNumber(9999)
-    results = parseResults(matchResultCursor)
-    matchResultCursor.close()
+    results = getMatchByNumber(9999)
     return results
 
 
@@ -165,9 +228,14 @@ def testRobotScorring():
         1,
         0,
         3,
-        EndPosition.SHALLOW,
+        EndPosition.DEEP,
         1,
         0,
         "They did good :3",
     )
     return "ok"
+
+@app.route("/calculateScoreTest")
+def testScoreCalc():
+    return str(calculateScoreFromData(getMatchByNumber(9999)[0],Station.RED1))
+
