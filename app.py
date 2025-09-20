@@ -6,6 +6,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import json
 from bson import json_util, ObjectId
 from pymongo import MongoClient
+from enum import Enum
+from typing import List
 
 
 root = os.path.dirname(__file__)
@@ -13,6 +15,24 @@ app = Flask(__name__)
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
+
+class Station(Enum):
+    RED1 = "red1"
+    RED2 = "red2"
+    RED3 = "red3"
+    BLUE1 = "blue1"
+    BLUE2 = "blue2"
+    BLUE3 = "blue3"
+class StartingPosition(Enum):
+    TOP = 1
+    MIDDLE = 2
+    BOTTOM = 3
+
+class EndPosition(Enum):
+    NONE = 0
+    PARK = 1
+    SHALLOW = 2
+    DEEP = 3
 
 if __name__ == "__main__":
     app.run()
@@ -54,6 +74,27 @@ def getMatchByNumber(matchNumber: int):
     )
     return results
 
+def scoreRobotInMatch(matchNumber: int, station: Station, startPos: StartingPosition, autoLeave: bool, autoReef: List[int], teleReef: List[int], autoProcessor: int, teleProcessor: int, autoNet: int, teleNet: int, endPos: EndPosition, minorFouls: int, majorFouls: int, comment: str):
+    matches.update_many({"matchNumber": matchNumber},
+        {"$set":{
+                    "results."+station.value: {
+                        "startPos": startPos.value,
+                        "autoLeave": autoLeave,
+                        "autoReef": autoReef,
+                        "teleReef": teleReef,
+                        "autoProcessor": autoProcessor,
+                        "teleProcessor": teleProcessor,
+                        "autoNet": autoNet,
+                        "teleNet": teleNet,
+                        "endPos": endPos.value,
+                        "minorFouls": minorFouls,
+                        "majorFouls": majorFouls,
+                        "comment": comment
+                    }
+                }
+            }
+    )
+
 
 # converts database results to JSON
 # the default functions get stuck on ObjectID objects
@@ -74,5 +115,13 @@ def testMatchAddition():
 
 @app.route("/getMatchTest")
 def testMatchGetting():
-    return resultsToJSON(getMatchByNumber(9999))
+    matchResultCursor = getMatchByNumber(9999)
+    results = resultsToJSON(matchResultCursor)
+    matchResultCursor.close()
+    return results
+
+@app.route("/scoreRobotTest")
+def testRobotScorring():
+    scoreRobotInMatch(9999,Station.RED1,StartingPosition.BOTTOM,False,[0,0,0,4],[2,4,3,1],0,1,0,3,EndPosition.SHALLOW,1,0,"They did good :3")
+    return "ok"
     
