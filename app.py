@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, session, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
 import certifi
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -205,11 +205,7 @@ def calculateScoreFromData(matchData: dict, team: Station, edit: int = -1):
 
 
 def isLoggedIn():
-    try:
-        if session["username"]:
-            return True
-    except:
-        return False
+    return "username" in session
 
 
 # converts database results to JSON
@@ -348,6 +344,16 @@ def newUserPage():
             message = "User already exists."
     return render_template("newUser.html", message=message)
 
+@app.route('/logout')
+def logout():
+    del session["username"]
+    return "logged out"
+
+@app.before_request
+def before_request():
+    # check login status
+    if request.endpoint != 'login' and request.endpoint != 'newUserPage' and request.endpoint != 'static' and not isLoggedIn():
+        return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)
