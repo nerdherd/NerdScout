@@ -1,5 +1,5 @@
 /.venv
-/secrets
+/secrets/*
 /__pycache__
 
 !/secrets/README.md

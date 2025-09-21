@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request, session
 from werkzeug.middleware.proxy_fix import ProxyFix
 import certifi
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -14,6 +14,10 @@ root = os.path.dirname(__file__)
 app = Flask(__name__)
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+
+app.config.from_mapping(
+    SECRET_KEY=open(os.path.join(root, "secrets/secretKey"), "r").read()
+)
 
 
 class Station(Enum):
@@ -48,6 +52,7 @@ client = MongoClient(
 )
 database = client.nerdScout
 matches = database.matches
+accounts = database.accounts
 
 
 def addScheduledMatch(
@@ -99,6 +104,7 @@ def scoreRobotInMatch(
     minorFouls: int,
     majorFouls: int,
     comment: str,
+    scout: str,
 ):
     matches.update_many(
         {"matchNumber": matchNumber},
@@ -118,6 +124,7 @@ def scoreRobotInMatch(
                     "minorFouls": minorFouls,
                     "majorFouls": majorFouls,
                     "comment": comment,
+                    "scout": scout,
                 }
             }
         },
@@ -243,12 +250,42 @@ def testRobotScorring():
         1,
         0,
         "They did good :3",
+        "tonnieboy300",
     )
     return "ok"
 
 @app.route("/calculateScoreTest")
 def testScoreCalc():
     return str(calculateScoreFromData(getMatchByNumber(9999)[0],Station.RED1))
+
+
+def newUser(username: str, passwordHash: str):
+    if getUser(username):
+        return False
+    accounts.insert_one({
+        "username": username,
+        "passwordHash": passwordHash,
+        "approved": False,
+    })
+    return True
+
+def getUser(username: str):
+    user = accounts.find_one({"username": username})
+    return user
+
+
+def login():
+    username = request.form["username"]
+    password = request.form["password"]
+
+    doc = getUser(username)
+    try:
+        if not doc["approved"]: # type: ignore
+            return False
+        return check_password_hash(doc["password"], password) # type: ignore
+    except TypeError:
+        # if no users are found with a username, doc = None.
+        return False
 
 
 if __name__ == "__main__":
