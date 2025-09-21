@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 from werkzeug.middleware.proxy_fix import ProxyFix
 import certifi
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -36,10 +36,6 @@ class EndPosition(Enum):
     PARK = 1
     SHALLOW = 2
     DEEP = 3
-
-
-if __name__ == "__main__":
-    app.run()
 
 # Initalize MongoDB Connection
 client = MongoClient(
@@ -200,7 +196,7 @@ def parseResults(data):
 # Front-end Handlers
 @app.route("/")
 def index():
-    return "<p>It works!</p>"
+    return render_template("index.html")
 
 
 @app.route("/addMatchTest")
@@ -239,3 +235,6 @@ def testRobotScorring():
 def testScoreCalc():
     return str(calculateScoreFromData(getMatchByNumber(9999)[0],Station.RED1))
 
+
+if __name__ == "__main__":
+    app.run(debug=True)
