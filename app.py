@@ -243,7 +243,7 @@ def renderMatch():
         }
 
         if currentTeam["hasData"]:
-            currentTeam["results"] = results["results"][team][-1]
+            currentTeam["results"] = results["results"][team]
 
         teams.append(currentTeam)
     return render_template("match.html", teams=teams)
@@ -267,6 +267,23 @@ def testRobotScorring():
         0,
         "They did good :3",
         "tonnieboy300",
+    )
+    scoreRobotInMatch(
+        9999,
+        Station.RED1,
+        StartingPosition.BOTTOM,
+        False,
+        [0, 0, 0, 4],
+        [2, 4, 3, 1],
+        0,
+        1,
+        0,
+        3,
+        EndPosition.DEEP,
+        1,
+        0,
+        "They did terrible >:(",
+        "magician357",
     )
     return "ok"
 

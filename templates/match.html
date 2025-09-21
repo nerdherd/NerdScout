@@ -10,21 +10,25 @@
 <div>
     <p>Team Number {{ team['teamNumber'] }}</p>
     {% if team["hasData"] %}
-    <ul>
-        <li>Start Position: {{ team["results"]["startPos"] }}</li>
-        <li>Left During Auto: {{ team["results"]["autoLeave"] }}</li>
-        <li>Scored Reef During Auto: {{ team["results"]["autoReef"] }}</li>
-        <li>Scored Reef During Tele: {{ team["results"]["teleReef"] }}</li>
-        <li>Scored Processor During Auto: {{ team["results"]["autoProcessor"] }}</li>
-        <li>Scored Processor During Tele: {{ team["results"]["teleProcessor"] }}</li>
-        <li>Scored Net During Auto: {{ team["results"]["autoNet"] }}</li>
-        <li>Scored Net During Tele: {{ team["results"]["teleNet"] }}</li>
-        <li>End Position: {{ team["results"]["endPos"] }}</li>
-        <li>Minor Fouls: {{ team["results"]["minorFouls"] }}</li>
-        <li>Major Fouls: {{ team["results"]["majorFouls"] }}</li>
-        <li>Comment: {{ team["results"]["comment"] }}</li>
-        <li>Source: {{ team["results"]["scout"] }}</li>
-    </ul>
+    {% for result in team['results'] %}
+    <div>
+        <p>Scored by: {{result['scout']}}</p>
+        <ul>
+            <li>Start Position: {{ result["startPos"] }}</li>
+            <li>Left During Auto: {{ result["autoLeave"] }}</li>
+            <li>Scored Reef During Auto: {{ result["autoReef"] }}</li>
+            <li>Scored Reef During Tele: {{ result["teleReef"] }}</li>
+            <li>Scored Processor During Auto: {{ result["autoProcessor"] }}</li>
+            <li>Scored Processor During Tele: {{ result["teleProcessor"] }}</li>
+            <li>Scored Net During Auto: {{ result["autoNet"] }}</li>
+            <li>Scored Net During Tele: {{ result["teleNet"] }}</li>
+            <li>End Position: {{ result["endPos"] }}</li>
+            <li>Minor Fouls: {{ result["minorFouls"] }}</li>
+            <li>Major Fouls: {{ result["majorFouls"] }}</li>
+            <li>Comment: {{ result["comment"] }}</li>
+        </ul>
+    </div>
+    {% endfor %}
     {% else %}
     <p>No data</p>
     {% endif %}
