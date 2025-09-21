@@ -107,7 +107,7 @@ def scoreRobotInMatch(
     minorFouls: int,
     majorFouls: int,
     comment: str,
-    scout: str,
+    scouts: List[str],
 ):
     matches.update_many(
         {"matchNumber": matchNumber},
@@ -127,12 +127,12 @@ def scoreRobotInMatch(
                     "minorFouls": minorFouls,
                     "majorFouls": majorFouls,
                     "comment": comment,
-                    "scout": scout,
+                    "scouts": scouts,
                 }
             }
         },
     )
-    app.logger.info(f"Robot {startPos.value} scored for match {matchNumber} by {scout}.")
+    app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scouts[len(scouts)-1]}.")
 
 
 def calculateScore(
@@ -258,7 +258,7 @@ def testRobotScorring():
         1,
         0,
         "They did good :3",
-        "tonnieboy300",
+        ["tonnieboy300", "magician357"],
     )
     return "ok"
 
