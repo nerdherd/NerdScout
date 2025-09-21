@@ -30,7 +30,10 @@ class Station(Enum):
     BLUE1 = "blue1"
     BLUE2 = "blue2"
     BLUE3 = "blue3"
+
+
 STATION_LIST = [station.value for station in Station]
+
 
 class StartingPosition(Enum):
     TOP = 1
@@ -366,38 +369,65 @@ def newUserPage():
             message = "User already exists."
     return render_template("newUser.html", message=message)
 
+
 @app.route("/submitScore", methods=["GET", "POST"])
 def submitScorePage():
     currentMatch = request.args.get("match")
     currentRobot = request.args.get("robot")
-    if (not currentMatch):
+    if not currentMatch:
         abort(400)
-    if (not currentRobot):
+    if not currentRobot:
         abort(400)
     if request.method == "POST":
         submission = request.json
         try:
-            scoreRobotInMatch(int(currentMatch), Station(currentRobot),StartingPosition(submission["startPos"]), submission["autoLeave"], submission["autoReef"], submission["teleReef"], submission["autoProcessor"], submission["teleProcessor"], submission["autoNet"], submission["teleNet"], EndPosition(submission["endPos"]), submission["minorFouls"], submission["majorFouls"], submission["comment"], submission["scout"])
+            scoreRobotInMatch(
+                int(currentMatch),
+                Station(currentRobot),
+                StartingPosition(submission["startPos"]),
+                submission["autoLeave"],
+                submission["autoReef"],
+                submission["teleReef"],
+                submission["autoProcessor"],
+                submission["teleProcessor"],
+                submission["autoNet"],
+                submission["teleNet"],
+                EndPosition(submission["endPos"]),
+                submission["minorFouls"],
+                submission["majorFouls"],
+                submission["comment"],
+                submission["scout"],
+            )
         except:
             abort(400)
     return str(currentMatch)
 
-@app.route('/logout')
+
+@app.route("/logout")
 def logout():
     del session["username"]
     return "logged out"
 
-freeEndpoints = frozenset(["login","newUserPage","static","index"]) # endpoints that shouldn't require signing in
+
+freeEndpoints = frozenset(
+    ["login", "newUserPage", "static", "index"]
+)  # endpoints that shouldn't require signing in
+
+
 @app.before_request
 def before_request():
     # check login status
     if request.endpoint not in freeEndpoints and not isLoggedIn():
-        return redirect(f"{url_for('login')}?next={urllib.parse.quote(request.path, safe='')}")
-    
+        return redirect(
+            f"{url_for('login')}?next={urllib.parse.quote(request.path, safe='')}"
+        )
+
+
 @app.errorhandler(HTTPException)
 def pageNotFound(e):
     response = e.get_response()
-    return render_template("error.html",code=e.code,name=e.name), e.code
+    return render_template("error.html", code=e.code, name=e.name), e.code
+
 
 if __name__ == "__main__":
     app.run(debug=True)
