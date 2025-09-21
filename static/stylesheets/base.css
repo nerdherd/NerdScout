@@ -1,5 +1,14 @@
 :root{
-    --nerd-herd-navy: #081535ff
+    --nerd-herd-navy: #081535ff;
+
+    /* please define all colors here so they can be consistent */
+
+    /* general */
+    --text-color: black;
+    --background-color: white;
+
+    --footer-background: var(--nerd-herd-navy);
+    --footer-text-color: white;
 }
 
 /* Poppins is licensed under the SIL Open Font License */
