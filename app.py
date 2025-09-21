@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 from flask import Flask, redirect, render_template, request, session, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
 import certifi
@@ -336,14 +337,16 @@ def checkPassword(username: str, password: str):
 @app.route("/login", methods=["GET", "POST"])
 def login():
     error = None
+    location = request.args.get("next")
     if isLoggedIn():
-        return redirect("/", 302)
+        return redirect(f"/{location if location else ""}", 302)
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
         if checkPassword(username, password):
             session["username"] = username
-            return redirect("/", 302)
+            location = request.args.get("next")
+            return redirect(location if location else "/", 302)
         else:
             error = "Couldn't log in."
     return render_template("login.html", error=error)
@@ -371,7 +374,7 @@ freeEndpoints = frozenset(["login","newUserPage","static","index"]) # endpoints 
 def before_request():
     # check login status
     if request.endpoint not in freeEndpoints and not isLoggedIn():
-        return redirect(url_for('login'))
+        return redirect(f"{url_for('login')}?next={urllib.parse.quote(request.path, safe="")}")
 
 if __name__ == "__main__":
     app.run(debug=True)
