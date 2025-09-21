@@ -30,7 +30,7 @@ class Station(Enum):
     BLUE1 = "blue1"
     BLUE2 = "blue2"
     BLUE3 = "blue3"
-
+STATION_LIST = [station.value for station in Station]
 
 class StartingPosition(Enum):
     TOP = 1
@@ -364,7 +364,23 @@ def newUserPage():
             message = "New unapproved user created!"
         else:
             message = "User already exists."
-    return render_template("auth/newUser.html", message=message)
+    return render_template("newUser.html", message=message)
+
+@app.route("/submitScore", methods=["GET", "POST"])
+def submitScorePage():
+    currentMatch = request.args.get("match")
+    currentRobot = request.args.get("robot")
+    if (not currentMatch):
+        abort(400)
+    if (not currentRobot):
+        abort(400)
+    if request.method == "POST":
+        submission = request.json
+        try:
+            scoreRobotInMatch(int(currentMatch), Station(currentRobot),StartingPosition(submission["startPos"]), submission["autoLeave"], submission["autoReef"], submission["teleReef"], submission["autoProcessor"], submission["teleProcessor"], submission["autoNet"], submission["teleNet"], EndPosition(submission["endPos"]), submission["minorFouls"], submission["majorFouls"], submission["comment"], submission["scout"])
+        except:
+            abort(400)
+    return str(currentMatch)
 
 @app.route('/logout')
 def logout():
