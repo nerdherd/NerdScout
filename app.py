@@ -366,10 +366,11 @@ def logout():
     del session["username"]
     return "logged out"
 
+freeEndpoints = frozenset(["login","newUserPage","static","index"]) # endpoints that shouldn't require signing in
 @app.before_request
 def before_request():
     # check login status
-    if request.endpoint != 'login' and request.endpoint != 'newUserPage' and request.endpoint != 'static' and not isLoggedIn():
+    if request.endpoint not in freeEndpoints and not isLoggedIn():
         return redirect(url_for('login'))
 
 if __name__ == "__main__":
