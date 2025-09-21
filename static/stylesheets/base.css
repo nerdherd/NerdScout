@@ -7,6 +7,7 @@
     --text-color: black;
     --background-color: white;
 
+    /* footer */
     --footer-background: var(--nerd-herd-navy);
     --footer-text-color: white;
 }
