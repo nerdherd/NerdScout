@@ -3,7 +3,7 @@
     font-family: "Poppins", sans-serif;
 }
 
-p, h1 {
+p, h1, input, label {
     color: var(--text-color)
 }
 

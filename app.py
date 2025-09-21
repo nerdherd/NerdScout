@@ -351,7 +351,7 @@ def login():
             return redirect(location if location else "/", 302)
         else:
             error = "Couldn't log in."
-    return render_template("login.html", error=error)
+    return render_template("auth/login.html", error=error)
 
 
 @app.route("/newUser", methods=["GET", "POST"])
@@ -364,7 +364,7 @@ def newUserPage():
             message = "New unapproved user created!"
         else:
             message = "User already exists."
-    return render_template("newUser.html", message=message)
+    return render_template("auth/newUser.html", message=message)
 
 @app.route('/logout')
 def logout():

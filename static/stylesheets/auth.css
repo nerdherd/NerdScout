@@ -1,0 +1,23 @@
+.center-form {
+    position: absolute;
+    left:50%;
+    top:40%;
+    transform: translate(-50%,-50%);
+}
+
+.center-form form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.center-form form div .text-input {
+    width:100%;
+}
+
+.center-form form div .submit-input {
+    position: absolute;
+    left:50%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+}
