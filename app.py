@@ -1,7 +1,9 @@
+from http.client import HTTPException
 import os
 import urllib.parse
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, abort, redirect, render_template, request, session, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
+from werkzeug.exceptions import HTTPException
 import certifi
 from werkzeug.security import check_password_hash, generate_password_hash
 import json
@@ -339,7 +341,7 @@ def login():
     error = None
     location = request.args.get("next")
     if isLoggedIn():
-        return redirect(f"/{location if location else ""}", 302)
+        return redirect(location if location else "/", 302)
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -375,6 +377,11 @@ def before_request():
     # check login status
     if request.endpoint not in freeEndpoints and not isLoggedIn():
         return redirect(f"{url_for('login')}?next={urllib.parse.quote(request.path, safe="")}")
+    
+@app.errorhandler(HTTPException)
+def pageNotFound(e):
+    response = e.get_response()
+    return render_template("error.html",code=e.code,name=e.name), e.code
 
 if __name__ == "__main__":
     app.run(debug=True)
