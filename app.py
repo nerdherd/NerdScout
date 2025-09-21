@@ -41,6 +41,7 @@ class EndPosition(Enum):
     SHALLOW = 2
     DEEP = 3
 
+
 # Initalize MongoDB Connection
 client = MongoClient(
     open(os.path.join(root, "secrets/mongoDB"), "r").read(),
@@ -80,6 +81,7 @@ def addScheduledMatch(
             "results": {"scored": False},
         }
     )
+
 
 # This always outputs an array, in case there are multiple matches with the same number
 def getMatchByNumber(matchNumber: int):
@@ -178,7 +180,8 @@ def calculateScore(
 
     return score
 
-def calculateScoreFromData(matchData:dict, team: Station):
+
+def calculateScoreFromData(matchData: dict, team: Station):
     results = matchData["results"][team.value]
     score = calculateScore(
         results["autoLeave"],
@@ -190,9 +193,10 @@ def calculateScoreFromData(matchData:dict, team: Station):
         results["teleNet"],
         results["endPos"],
         results["minorFouls"],
-        results["majorFouls"]
+        results["majorFouls"],
     )
     return score
+
 
 # converts database results to JSON
 # the default functions get stuck on ObjectID objects
@@ -216,6 +220,7 @@ def testMatchAddition():
 def testMatchGetting():
     return getMatchByNumber(9999)
 
+
 @app.route("/match")
 def renderMatch():
     # TODO: make this take in data from URL
@@ -223,15 +228,16 @@ def renderMatch():
     results = getMatchByNumber(9999)[0]
     for team in results["teams"].keys():
         currentTeam = {
-            "teamNumber":results["teams"][team],
-            "hasData":(team in results["results"])
+            "teamNumber": results["teams"][team],
+            "hasData": (team in results["results"]),
         }
 
         if currentTeam["hasData"]:
             currentTeam["results"] = results["results"][team]
 
         teams.append(currentTeam)
-    return render_template("match.html",teams=teams)
+    return render_template("match.html", teams=teams)
+
 
 @app.route("/scoreRobotTest")
 def testRobotScorring():
@@ -254,20 +260,24 @@ def testRobotScorring():
     )
     return "ok"
 
+
 @app.route("/calculateScoreTest")
 def testScoreCalc():
-    return str(calculateScoreFromData(getMatchByNumber(9999)[0],Station.RED1))
+    return str(calculateScoreFromData(getMatchByNumber(9999)[0], Station.RED1))
 
 
 def newUser(username: str, passwordHash: str):
     if getUser(username):
         return False
-    accounts.insert_one({
-        "username": username,
-        "passwordHash": passwordHash,
-        "approved": False,
-    })
+    accounts.insert_one(
+        {
+            "username": username,
+            "passwordHash": passwordHash,
+            "approved": False,
+        }
+    )
     return True
+
 
 def getUser(username: str):
     user = accounts.find_one({"username": username})
@@ -280,9 +290,9 @@ def login():
 
     doc = getUser(username)
     try:
-        if not doc["approved"]: # type: ignore
+        if not doc["approved"]:  # type: ignore
             return False
-        return check_password_hash(doc["password"], password) # type: ignore
+        return check_password_hash(doc["password"], password)  # type: ignore
     except TypeError:
         # if no users are found with a username, doc = None.
         return False
