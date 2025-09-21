@@ -81,6 +81,7 @@ def addScheduledMatch(
             "results": {"scored": False},
         }
     )
+    app.logger.info(f"New match scheduled: Match {matchNumber}, {matchDesc} between red alliance {red1}, {red2}, {red3} and blue alliance {blue1}, {blue2}, {blue3}.")
 
 
 # This always outputs an array, in case there are multiple matches with the same number
@@ -131,6 +132,7 @@ def scoreRobotInMatch(
             }
         },
     )
+    app.logger.info(f"Robot {startPos.value} scored for match {matchNumber} by {scout}.")
 
 
 def calculateScore(
@@ -268,6 +270,7 @@ def testScoreCalc():
 
 def newUser(username: str, passwordHash: str):
     if getUser(username):
+        app.logger.warning(f"Failed to create user {username} by {request.remote_addr}: User already exists.")
         return False
     accounts.insert_one(
         {
@@ -276,6 +279,7 @@ def newUser(username: str, passwordHash: str):
             "approved": False,
         }
     )
+    app.logger.info(f"New user created: {username} by {request.remote_addr}.")
     return True
 
 
@@ -288,10 +292,13 @@ def checkPassword(username:str, password:str):
     doc = getUser(username)
     try:
         if not doc["approved"]:  # type: ignore
+            app.logger.warning(f"Unsuccessful login by {username} at {request.remote_addr}: Account not approved.")
             return False
+        app.logger.info(f"Successful login by {username} at {request.remote_addr}.")
         return check_password_hash(doc["passwordHash"], password)  # type: ignore
     except TypeError:
         # if no users are found with a username, doc = None.
+        app.logger.warning(f"Unsuccessful login by {username} at {request.remote_addr}: Incorrect password or account not found.")
         return False
 
 @app.route("/login", methods=["GET", "POST"])
@@ -311,8 +318,10 @@ def login():
 def newUserPage():
     message = None
     if request.method == "POST":
-        newUser(request.form["username"],generate_password_hash(request.form["password"]))
-        message = "New unapproved user created!"
+        if newUser(request.form["username"],generate_password_hash(request.form["password"])):
+            message = "New unapproved user created!"
+        else:
+            message = "User already exists."
     return render_template("newUser.html",message=message)
 
 if __name__ == "__main__":
