@@ -289,7 +289,7 @@ def checkPassword(username:str, password:str):
     try:
         if not doc["approved"]:  # type: ignore
             return False
-        return check_password_hash(doc["password"], password)  # type: ignore
+        return check_password_hash(doc["passwordHash"], password)  # type: ignore
     except TypeError:
         # if no users are found with a username, doc = None.
         return False
@@ -306,6 +306,14 @@ def login():
         else:
             error = "Couldn't log in."
     return render_template("login.html",error=error)
+
+@app.route("/newUser", methods=["GET","POST"])
+def newUserPage():
+    message = None
+    if request.method == "POST":
+        newUser(request.form["username"],generate_password_hash(request.form["password"]))
+        message = "New unapproved user created!"
+    return render_template("newUser.html",message=message)
 
 if __name__ == "__main__":
     app.run(debug=True)

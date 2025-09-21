@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}New User{% endblock %}
+
+{% block content %}
+<h1>Create an account</h1>
+<form method="post">
+    <div>
+        <label for="username">Username: </label>
+        <input 
+            type="text"
+            name="username"
+            value="{{request.form['username']}}"
+            required
+        />
+    </div>
+    <div>
+        <label for="password">Password: </label>
+        <input 
+            type="password"
+            name="password"
+            required
+        />
+    </div>
+    <div>
+        <input
+            type="submit"
+            value="Submit"
+        />
+    </div>
+</form>
+{% if message %}
+<p>{{message}}</p>
+{% endif %}
+
+{% endblock %}
