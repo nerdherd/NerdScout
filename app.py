@@ -199,6 +199,12 @@ def calculateScoreFromData(matchData: dict, team: Station, edit:int = -1):
     )
     return score
 
+def isLoggedIn():
+    try:
+        if session["username"]:
+            return True
+    except:
+        return False
 
 # converts database results to JSON
 # the default functions get stuck on ObjectID objects
@@ -304,11 +310,13 @@ def checkPassword(username:str, password:str):
 @app.route("/login", methods=["GET", "POST"])
 def login():
     error = None
+    if isLoggedIn():
+        return redirect("/", 302)
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
         if checkPassword(username,password):
-            session[username] = username
+            session["username"] = username
             return redirect("/", 302)
         else:
             error = "Couldn't log in."
