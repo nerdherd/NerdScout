@@ -117,7 +117,7 @@ def scoreRobotInMatch(
     comment: str,
     scout: str,
 ):
-    matches.update_many(
+    result = matches.update_many(
         {"matchNumber": matchNumber},
         {
             "$push": {
@@ -140,9 +140,15 @@ def scoreRobotInMatch(
             }
         },
     )
+    if result.matched_count == 0:
+        app.logger.info(
+            f"Failed to score robot {startPos.value} for match {matchNumber} by {scout}: Match does not exist."
+        )
+        return False
     app.logger.info(
         f"Robot {startPos.value} scored for match {matchNumber} by {scout}."
     )
+    return True
 
 
 def calculateScore(
@@ -381,26 +387,27 @@ def submitScorePage():
     if request.method == "POST":
         submission = request.json
         try:
-            scoreRobotInMatch(
+            if not scoreRobotInMatch(
                 int(currentMatch),
-                Station(currentRobot),
-                StartingPosition(submission["startPos"]),
-                submission["autoLeave"],
-                submission["autoReef"],
-                submission["teleReef"],
-                submission["autoProcessor"],
-                submission["teleProcessor"],
-                submission["autoNet"],
-                submission["teleNet"],
-                EndPosition(submission["endPos"]),
-                submission["minorFouls"],
-                submission["majorFouls"],
-                submission["comment"],
-                submission["scout"],
-            )
+                Station(currentRobot), # str
+                StartingPosition(submission["startPos"]), # int between 1-3
+                submission["autoLeave"], # bool
+                submission["autoReef"], # array of four ints
+                submission["teleReef"], # array of four ints
+                submission["autoProcessor"], # int
+                submission["teleProcessor"], #int
+                submission["autoNet"], # int
+                submission["teleNet"], # int
+                EndPosition(submission["endPos"]), #int between 0-3
+                submission["minorFouls"], # int
+                submission["majorFouls"], # int
+                submission["comment"], # str
+                submission["scout"], # str
+            ):
+                abort(400)
         except:
             abort(400)
-    return str(currentMatch)
+    return render_template("submit.html")
 
 
 @app.route("/logout")
