@@ -81,7 +81,9 @@ def addScheduledMatch(
             "results": {"scored": False},
         }
     )
-    app.logger.info(f"New match scheduled: Match {matchNumber}, {matchDesc} between red alliance {red1}, {red2}, {red3} and blue alliance {blue1}, {blue2}, {blue3}.")
+    app.logger.info(
+        f"New match scheduled: Match {matchNumber}, {matchDesc} between red alliance {red1}, {red2}, {red3} and blue alliance {blue1}, {blue2}, {blue3}."
+    )
 
 
 # This always outputs an array, in case there are multiple matches with the same number
@@ -132,7 +134,9 @@ def scoreRobotInMatch(
             }
         },
     )
-    app.logger.info(f"Robot {startPos.value} scored for match {matchNumber} by {scout}.")
+    app.logger.info(
+        f"Robot {startPos.value} scored for match {matchNumber} by {scout}."
+    )
 
 
 def calculateScore(
@@ -183,7 +187,7 @@ def calculateScore(
     return score
 
 
-def calculateScoreFromData(matchData: dict, team: Station, edit:int = -1):
+def calculateScoreFromData(matchData: dict, team: Station, edit: int = -1):
     results = matchData["results"][team.value][edit]
     score = calculateScore(
         results["autoLeave"],
@@ -199,12 +203,14 @@ def calculateScoreFromData(matchData: dict, team: Station, edit:int = -1):
     )
     return score
 
+
 def isLoggedIn():
     try:
         if session["username"]:
             return True
     except:
         return False
+
 
 # converts database results to JSON
 # the default functions get stuck on ObjectID objects
@@ -276,7 +282,9 @@ def testScoreCalc():
 
 def newUser(username: str, passwordHash: str):
     if getUser(username):
-        app.logger.warning(f"Failed to create user {username} by {request.remote_addr}: User already exists.")
+        app.logger.warning(
+            f"Failed to create user {username} by {request.remote_addr}: User already exists."
+        )
         return False
     accounts.insert_one(
         {
@@ -294,18 +302,23 @@ def getUser(username: str):
     return user
 
 
-def checkPassword(username:str, password:str):
+def checkPassword(username: str, password: str):
     doc = getUser(username)
     try:
         if not doc["approved"]:  # type: ignore
-            app.logger.warning(f"Unsuccessful login by {username} at {request.remote_addr}: Account not approved.")
+            app.logger.warning(
+                f"Unsuccessful login by {username} at {request.remote_addr}: Account not approved."
+            )
             return False
         app.logger.info(f"Successful login by {username} at {request.remote_addr}.")
         return check_password_hash(doc["passwordHash"], password)  # type: ignore
     except TypeError:
         # if no users are found with a username, doc = None.
-        app.logger.warning(f"Unsuccessful login by {username} at {request.remote_addr}: Incorrect password or account not found.")
+        app.logger.warning(
+            f"Unsuccessful login by {username} at {request.remote_addr}: Incorrect password or account not found."
+        )
         return False
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -315,22 +328,26 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        if checkPassword(username,password):
+        if checkPassword(username, password):
             session["username"] = username
             return redirect("/", 302)
         else:
             error = "Couldn't log in."
-    return render_template("login.html",error=error)
+    return render_template("login.html", error=error)
 
-@app.route("/newUser", methods=["GET","POST"])
+
+@app.route("/newUser", methods=["GET", "POST"])
 def newUserPage():
     message = None
     if request.method == "POST":
-        if newUser(request.form["username"],generate_password_hash(request.form["password"])):
+        if newUser(
+            request.form["username"], generate_password_hash(request.form["password"])
+        ):
             message = "New unapproved user created!"
         else:
             message = "User already exists."
-    return render_template("newUser.html",message=message)
+    return render_template("newUser.html", message=message)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
