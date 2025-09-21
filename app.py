@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, session
+from flask import Flask, redirect, render_template, request, session
 from werkzeug.middleware.proxy_fix import ProxyFix
 import certifi
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -284,10 +284,7 @@ def getUser(username: str):
     return user
 
 
-def login():
-    username = request.form["username"]
-    password = request.form["password"]
-
+def checkPassword(username:str, password:str):
     doc = getUser(username)
     try:
         if not doc["approved"]:  # type: ignore
@@ -297,6 +294,18 @@ def login():
         # if no users are found with a username, doc = None.
         return False
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    error = None
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        if checkPassword(username,password):
+            session[username] = username
+            return redirect("/", 302)
+        else:
+            error = "Couldn't log in."
+    return render_template("login.html",error=error)
 
 if __name__ == "__main__":
     app.run(debug=True)
