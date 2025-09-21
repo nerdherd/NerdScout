@@ -112,7 +112,7 @@ def scoreRobotInMatch(
     matches.update_many(
         {"matchNumber": matchNumber},
         {
-            "$set": {
+            "$push": {
                 "results."
                 + station.value: {
                     "startPos": startPos.value,
@@ -183,8 +183,8 @@ def calculateScore(
     return score
 
 
-def calculateScoreFromData(matchData: dict, team: Station):
-    results = matchData["results"][team.value]
+def calculateScoreFromData(matchData: dict, team: Station, edit:int = -1):
+    results = matchData["results"][team.value][edit]
     score = calculateScore(
         results["autoLeave"],
         results["autoReef"],
@@ -235,7 +235,7 @@ def renderMatch():
         }
 
         if currentTeam["hasData"]:
-            currentTeam["results"] = results["results"][team]
+            currentTeam["results"] = results["results"][team][-1]
 
         teams.append(currentTeam)
     return render_template("match.html", teams=teams)
