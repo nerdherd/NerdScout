@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Match Viewer{% endblock %}
+
+{% block content %}
+<h1>Display match</h1>
+<p>This is the temporary display match page</p>
+
+{% for team in teams %}
+<div>
+    <p>Team Number {{ team['teamNumber'] }}</p>
+    {% if team["hasData"] %}
+    <ul>
+        <li>Start Position: {{ team["results"]["startPos"] }}</li>
+        <li>Left During Auto: {{ team["results"]["autoLeave"] }}</li>
+        <li>Scored Reef During Auto: {{ team["results"]["autoReef"] }}</li>
+        <li>Scored Reef During Tele: {{ team["results"]["teleReef"] }}</li>
+        <li>Scored Processor During Auto: {{ team["results"]["autoProcessor"] }}</li>
+        <li>Scored Processor During Tele: {{ team["results"]["teleProcessor"] }}</li>
+        <li>Scored Net During Auto: {{ team["results"]["autoNet"] }}</li>
+        <li>Scored Net During Tele: {{ team["results"]["teleNet"] }}</li>
+        <li>End Position: {{ team["results"]["endPos"] }}</li>
+        <li>Minor Fouls: {{ team["results"]["minorFouls"] }}</li>
+        <li>Major Fouls: {{ team["results"]["majorFouls"] }}</li>
+        <li>Comment: {{ team["results"]["comment"] }}</li>
+    </ul>
+    {% else %}
+    <p>No data</p>
+    {% endif %}
+    <br>
+</div>
+{% endfor %}
+
+<p>NerdScout</p>
+{% endblock %}

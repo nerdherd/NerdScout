@@ -207,9 +207,24 @@ def testMatchAddition():
 
 @app.route("/getMatchTest")
 def testMatchGetting():
-    results = getMatchByNumber(9999)
-    return results
+    return getMatchByNumber(9999)
 
+@app.route("/match")
+def renderMatch():
+    # TODO: make this take in data from URL
+    teams = []
+    results = getMatchByNumber(9999)[0]
+    for team in results["teams"].keys():
+        currentTeam = {
+            "teamNumber":results["teams"][team],
+            "hasData":(team in results["results"])
+        }
+
+        if currentTeam["hasData"]:
+            currentTeam["results"] = results["results"][team]
+
+        teams.append(currentTeam)
+    return render_template("match.html",teams=teams)
 
 @app.route("/scoreRobotTest")
 def testRobotScorring():
