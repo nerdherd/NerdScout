@@ -376,7 +376,7 @@ freeEndpoints = frozenset(["login","newUserPage","static","index"]) # endpoints 
 def before_request():
     # check login status
     if request.endpoint not in freeEndpoints and not isLoggedIn():
-        return redirect(f"{url_for('login')}?next={urllib.parse.quote(request.path, safe="")}")
+        return redirect(f"{url_for('login')}?next={urllib.parse.quote(request.path, safe='')}")
     
 @app.errorhandler(HTTPException)
 def pageNotFound(e):
