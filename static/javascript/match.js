@@ -4,11 +4,70 @@ var blue_table = document.querySelector(".blue-table");
 for (var i=1;i<4;i++){
     // red
     create_dropdown(red_table.querySelector(".team-"+i));
+    
+    // blue
+    create_dropdown(blue_table.querySelector(".team-"+i));
 }
 
 function create_dropdown(element){
     const results_div = element.querySelector(".results-div");
     if (results_div){
-        console.log(results_div.children);
+        if (results_div.querySelectorAll(".match-data").length > 1){
+            const dropdown_button = document.createElement("div");
+            dropdown_button.id = "dropdown-"+Math.random();
+            const display_button = document.createElement("button");
+            display_button.innerText = "Viewing revision";
+            display_button.classList.add("dropdown-button");
+            display_button.onclick = () => expand_dropdown(dropdown_button.id);
+            dropdown_button.appendChild(display_button);
+
+            const content_div = document.createElement("div");
+            content_div.classList.add("dropdown-content-div")
+
+            let revision = 0;
+            for (const element of results_div.querySelectorAll(".match-data")){
+                revision++;
+                let new_option = document.createElement("a");
+                new_option.href = "javascript:void(null);";
+                new_option.dataset.revision = revision
+                new_option.innerText = "Revision "+new_option.dataset.revision;
+                new_option.classList.add("dropdown-element");
+                new_option.onclick = () => set_visible(results_div,new_option.dataset.revision);
+                content_div.appendChild(new_option);
+            }
+
+            dropdown_button.appendChild(content_div);
+
+            results_div.insertBefore(dropdown_button, results_div.firstChild);
+
+            display_button.innerText+=" "+revision;
+
+            set_visible(results_div,revision);
+        }
     }
 }
+
+function expand_dropdown(id){
+    const dropdown = document.getElementById(id);
+
+    // for (const element of dropdown.querySelectorAll(".dropdown-content-div a")){
+    //     element.classList.toggle("show");
+    // }
+    dropdown.querySelector(".dropdown-content-div").classList.toggle("show");
+}
+
+function set_visible(results_div,revision){
+    for (const result of results_div.querySelectorAll(".match-data")){
+        result.classList.add("hidden");
+    }
+    results_div.querySelector(".revision-"+revision).classList.remove("hidden");
+    results_div.querySelector(".dropdown-button").innerText = "Viewing revision "+revision;
+}
+
+window.onclick = function(event) {
+    if (!event.target.matches('.dropdown-button')) {
+        for (const element of document.querySelectorAll(".dropdown-content-div")){
+            element.classList.remove("show");
+        }
+    }
+} 

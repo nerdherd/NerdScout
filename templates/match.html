@@ -18,7 +18,6 @@
 <div class="team-{{ loop.index }}">
     <p>Team Number {{ team['teamNumber'] }}</p>
     {% if team["hasData"] %}
-    <button>Currently viewing revision 0</button>
     <div class="results-div">
     {% for result in team['results'] %}
     <div class="match-data revision-{{ loop.index }}">
