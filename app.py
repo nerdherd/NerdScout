@@ -47,6 +47,20 @@ class EndPosition(Enum):
     SHALLOW = 2
     DEEP = 3
 
+class CompLevel(Enum):
+    QM = "qm"
+    QUALIFYING = "qm"
+
+    EF = "ef"
+
+    QF = "qf"
+
+    SF = "sf"
+    PLAYOFF = "sf"
+
+    F = "f"
+    FINAL = "f"
+
 
 # Initalize MongoDB Connection
 client = MongoClient(
@@ -61,10 +75,14 @@ database = client.nerdScout
 matches = database.matches
 accounts = database.accounts
 
+TBA_KEY = open(os.path.join(root, "secrets/theBlueAlliance"), "r").read()
+
 
 def addScheduledMatch(
     matchNumber: int,
-    matchDesc: str,
+    setNumber: int,
+    compLevel: CompLevel,
+    matchKey: str,
     red1: int,
     red2: int,
     red3: int,
@@ -75,7 +93,9 @@ def addScheduledMatch(
     matches.insert_one(
         {
             "matchNumber": matchNumber,
-            "matchDesc": matchDesc,
+            "setNumber": setNumber,
+            "compLevel": compLevel.value,
+            "matchKey": matchKey,
             "teams": {
                 "red1": red1,
                 "red2": red2,
@@ -88,13 +108,30 @@ def addScheduledMatch(
         }
     )
     app.logger.info(
-        f"New match scheduled: Match {matchNumber}, {matchDesc} between red alliance {red1}, {red2}, {red3} and blue alliance {blue1}, {blue2}, {blue3}."
+        f"New match scheduled: Match {compLevel}{matchNumber} between red alliance {red1}, {red2}, {red3} and blue alliance {blue1}, {blue2}, {blue3}."
     )
 
+def addMatchFromTBA(match: dict):
+    try:
+        addScheduledMatch(
+            match["match_number"],
+            match["set_number"],
+            match["comp_level"],
+            match["key"],
+            int(match["red"]["team_keys"][0][2:]),
+            int(match["red"]["team_keys"][1][2:]),
+            int(match["red"]["team_keys"][2][2:]),
+            int(match["blue"]["team_keys"][0][2:]),
+            int(match["blue"]["team_keys"][1][2:]),
+            int(match["blue"]["team_keys"][2][2:]),
+        )
+    except:
+        app.logger.error("Unable to load match from The Blue Alliance. Aborting.")
+        abort(500)
 
 # This always outputs an array, in case there are multiple matches with the same number
-def getMatchByNumber(matchNumber: int):
-    results = matches.find({"matchNumber": matchNumber})
+def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
+    results = matches.find({"compLevel": compLevel.value, "matchNumber": matchNumber, "setNumber": setNumber,})
     parsedResults = parseResults(results)
     results.close()
     return parsedResults
@@ -102,6 +139,8 @@ def getMatchByNumber(matchNumber: int):
 
 def scoreRobotInMatch(
     matchNumber: int,
+    setNumber: int,
+    compLevel: CompLevel,
     station: Station,
     startPos: StartingPosition,
     autoLeave: bool,
@@ -118,7 +157,7 @@ def scoreRobotInMatch(
     scout: str,
 ):
     result = matches.update_many(
-        {"matchNumber": matchNumber},
+        {"matchNumber": matchNumber,"setNumber": setNumber, "compLevel": compLevel.value},
         {
             "$push": {
                 "results."
@@ -146,7 +185,7 @@ def scoreRobotInMatch(
         )
         return False
     app.logger.info(
-        f"Robot {startPos.value} scored for match {matchNumber} by {scout}."
+        f"Robot {station.value} scored for match {matchNumber} by {scout}."
     )
     return True
 
@@ -234,20 +273,20 @@ def index():
 
 @app.route("/addMatchTest")
 def testMatchAddition():
-    addScheduledMatch(9999, "Test Match", 9991, 9992, 9993, 9994, 9995, 9996)
+    addScheduledMatch(9999,1,CompLevel.QUALIFYING, "2025caav_qm9999", 9991, 9992, 9993, 9994, 9995, 9996)
     return "ok"
 
 
 @app.route("/getMatchTest")
 def testMatchGetting():
-    return getMatchByNumber(9999)
+    return getMatch(CompLevel.QUALIFYING,9999,1)
 
 
 @app.route("/match")
 def renderMatch():
     # TODO: make this take in data from URL
     teams = []
-    results = getMatchByNumber(9999)[0]
+    results = getMatch(CompLevel.QUALIFYING,9999,1)[0]
     for team in results["teams"].keys():
         currentTeam = {
             "teamNumber": results["teams"][team],
@@ -265,6 +304,8 @@ def renderMatch():
 def testRobotScorring():
     scoreRobotInMatch(
         9999,
+        1,
+        CompLevel.QUALIFYING,
         Station.RED1,
         StartingPosition.BOTTOM,
         False,
@@ -282,6 +323,8 @@ def testRobotScorring():
     )
     scoreRobotInMatch(
         9999,
+        1,
+        CompLevel.QUALIFYING,
         Station.RED1,
         StartingPosition.BOTTOM,
         False,
@@ -302,7 +345,7 @@ def testRobotScorring():
 
 @app.route("/calculateScoreTest")
 def testScoreCalc():
-    return str(calculateScoreFromData(getMatchByNumber(9999)[0], Station.RED1))
+    return str(calculateScoreFromData(getMatch(CompLevel.QUALIFYING,9999,1)[0], Station.RED1))
 
 
 def newUser(username: str, passwordHash: str):
@@ -378,31 +421,33 @@ def newUserPage():
 
 @app.route("/submitScore", methods=["GET", "POST"])
 def submitScorePage():
-    currentMatch = request.args.get("match")
+    matchNumber = request.args.get("matchNum")
+    compLevel = request.args.get("compLevel")
+    setNumber = request.args.get("setNum")
     currentRobot = request.args.get("robot")
-    if not currentMatch:
-        abort(400)
-    if not currentRobot:
+    if (not matchNumber) or (not compLevel) or (not setNumber) or (not currentRobot):
         abort(400)
     if request.method == "POST":
         submission = request.json
         try:
             if not scoreRobotInMatch(
-                int(currentMatch),
+                int(matchNumber),
+                int(setNumber),
+                CompLevel(compLevel),
                 Station(currentRobot), # str
-                StartingPosition(submission["startPos"]), # int between 1-3
-                submission["autoLeave"], # bool
-                submission["autoReef"], # array of four ints
-                submission["teleReef"], # array of four ints
-                submission["autoProcessor"], # int
-                submission["teleProcessor"], #int
-                submission["autoNet"], # int
-                submission["teleNet"], # int
-                EndPosition(submission["endPos"]), #int between 0-3
-                submission["minorFouls"], # int
-                submission["majorFouls"], # int
-                submission["comment"], # str
-                submission["scout"], # str
+                StartingPosition(submission["startPos"]), # int between 1-3 # type: ignore
+                submission["autoLeave"], # bool # type: ignore
+                submission["autoReef"], # array of four ints # type: ignore
+                submission["teleReef"], # array of four ints # type: ignore
+                submission["autoProcessor"], # int # type: ignore
+                submission["teleProcessor"], #int # type: ignore
+                submission["autoNet"], # int # type: ignore
+                submission["teleNet"], # int # type: ignore
+                EndPosition(submission["endPos"]), #int between 0-3 # type: ignore
+                submission["minorFouls"], # int # type: ignore
+                submission["majorFouls"], # int # type: ignore
+                submission["comment"], # str # type: ignore
+                submission["scout"], # str # type: ignore
             ):
                 abort(400)
         except:
