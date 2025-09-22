@@ -289,6 +289,12 @@ def testMatchAddition():
 def testMatchGetting():
     return getMatch(CompLevel.QUALIFYING,9999,1)
 
+# TODO: add all text descriptions for all match types
+compLevelText = {
+    "qm":"Qualifying",
+    "sf":"Playoff",
+    "f":"Final"
+}
 
 @app.route("/match")
 def renderMatch():
@@ -296,6 +302,11 @@ def renderMatch():
     redTeams=[]
     blueTeams=[]
     results = getMatch(CompLevel.QUALIFYING,9999,1)[0]
+    matchData = {
+        "matchNumber":results["matchNumber"],
+        "setNumber":results["setNumber"],
+        "compLevel":compLevelText[results["compLevel"]],
+    }
     for team in results["teams"].keys():
         currentTeam = {
             "teamNumber": results["teams"][team],
@@ -311,7 +322,7 @@ def renderMatch():
             blueTeams.append(currentTeam)
         else:
             print("something is wrong in the database")
-    return render_template("match.html", teams=[redTeams,blueTeams])
+    return render_template("match.html", teams=[redTeams,blueTeams], matchData=matchData)
 
 
 @app.route("/scoreRobotTest")
