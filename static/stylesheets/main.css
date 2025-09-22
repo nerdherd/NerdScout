@@ -22,6 +22,11 @@ footer {
     justify-content: center;
     align-items: center;
     column-gap: 10px;
+    height:var(--footer-height);
+}
+
+.footer-spacer{
+    height:var(--footer-height);
 }
 
 footer *{
