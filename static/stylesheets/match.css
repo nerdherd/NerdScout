@@ -15,13 +15,13 @@
 
 .red-table, .blue-table{
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    width: 90%;
+    width: max(90%,500px);
 }
 
 .red-table > div, .blue-table > div {
-    width:30%;
+    width:100%;
     border:1px dotted black;
 }
 
