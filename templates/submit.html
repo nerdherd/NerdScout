@@ -3,7 +3,7 @@
 {% block head %}
 <script>
     function submitData(){
-        data = '{"startPos":2,"autoLeave":true,"autoReef":[0,0,1,1],"teleReef":[2,3,0,1],"autoProcessor":1,"teleProcessor":0,"autoNet":0,"teleNet":2,"endPos":3,"minorFouls":1,"majorFouls":2,"comment":"they did ok :)","scout":"tonnieboy300"}';
+        data = '{"matchNum":9999,"compLevel":"qm","setNum":1,"robot":"blue3","startPos":2,"autoLeave":true,"autoReef":[0,0,1,1],"teleReef":[2,3,0,1],"autoProcessor":1,"teleProcessor":0,"autoNet":0,"teleNet":2,"endPos":3,"minorFouls":1,"majorFouls":2,"comment":"they did ok :)","scout":"tonnieboy300"}';
         fetch(window.location.href, {
         method: "POST",
         body: data,

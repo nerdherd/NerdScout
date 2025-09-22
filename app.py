@@ -439,14 +439,15 @@ def newUserPage():
 
 @app.route("/submitScore", methods=["GET", "POST"])
 def submitScorePage():
-    matchNumber = request.args.get("matchNum")
-    compLevel = request.args.get("compLevel")
-    setNumber = request.args.get("setNum")
-    currentRobot = request.args.get("robot")
-    if (not matchNumber) or (not compLevel) or (not setNumber) or (not currentRobot):
-        abort(400)
     if request.method == "POST":
         submission = request.json
+        try:
+            matchNumber = submission["matchNum"]
+            compLevel = submission["compLevel"]
+            setNumber = submission["setNum"]
+            currentRobot = submission["robot"]
+        except:
+            abort(400)
         try:
             if not scoreRobotInMatch(
                 int(matchNumber),
