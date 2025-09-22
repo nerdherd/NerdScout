@@ -285,7 +285,8 @@ def testMatchGetting():
 @app.route("/match")
 def renderMatch():
     # TODO: make this take in data from URL
-    teams = []
+    redTeams=[]
+    blueTeams=[]
     results = getMatch(CompLevel.QUALIFYING,9999,1)[0]
     for team in results["teams"].keys():
         currentTeam = {
@@ -296,8 +297,13 @@ def renderMatch():
         if currentTeam["hasData"]:
             currentTeam["results"] = results["results"][team]
 
-        teams.append(currentTeam)
-    return render_template("match.html", teams=teams)
+        if "red" in team:
+            redTeams.append(currentTeam)
+        elif "blue" in team:
+            blueTeams.append(currentTeam)
+        else:
+            print("something is wrong in the database")
+    return render_template("match.html", teams=[redTeams,blueTeams])
 
 
 @app.route("/scoreRobotTest")

@@ -1,0 +1,34 @@
+.center-horizontal {
+    width: 100%;
+    padding: 0;
+    display:flex;
+    justify-content: center;
+}
+
+.red-table {
+    border: 2px solid red;
+}
+
+.blue-table {
+    border: 2px solid blue;
+}
+
+.red-table, .blue-table{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+}
+
+.red-table > div, .blue-table > div {
+    width:30%;
+    border:1px dotted black;
+}
+
+.spacer {
+    height: 100px;
+}
+
+.match-data{
+    border:1px dotted black;
+}

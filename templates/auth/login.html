@@ -3,6 +3,9 @@
 {% block title %}Login{% endblock %}
 
 {% block form %}
+{% if error %}
+<p>{{error}}</p>
+{% endif %}
 <h1>Login to Nerd Scout</h1>
 <form method="post">
     <div>
@@ -32,8 +35,5 @@
         />
     </div>
 </form>
-{% if error %}
-<p>{{error}}</p>
-{% endif %}
 
 {% endblock %}

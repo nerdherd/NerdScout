@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block head %}{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/match.css') }}">{% endblock %}
 
 {% block title %}Match Viewer{% endblock %}
 
@@ -8,12 +8,15 @@
 <h1>Display match</h1>
 <p>This is the temporary display match page</p>
 
-{% for team in teams %}
+{% for teamSection in teams %}
+<div class="center-horizontal">
+<div class="{% if loop.index == 1 %}red{% else %}blue{% endif %}-table">
+{% for team in teamSection %}
 <div>
     <p>Team Number {{ team['teamNumber'] }}</p>
     {% if team["hasData"] %}
     {% for result in team['results'] %}
-    <div>
+    <div class="match-data">
         <p>Scored by: {{result['scout']}}</p>
         <ul>
             <li>Start Position: {{ result["startPos"] }}</li>
@@ -36,6 +39,10 @@
     {% endif %}
     <br>
 </div>
+{% endfor %}
+</div>
+</div>
+{% if loop.index == 1 %}<div class="spacer"></div>{% endif %}
 {% endfor %}
 
 <p>NerdScout</p>

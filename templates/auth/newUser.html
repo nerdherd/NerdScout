@@ -3,6 +3,11 @@
 {% block title %}New User{% endblock %}
 
 {% block form %}
+
+{% if message %}
+<p>{{message}}</p>
+{% endif %}
+
 <h1>Create an account</h1>
 <form method="post">
     <div>
@@ -32,8 +37,5 @@
         />
     </div>
 </form>
-{% if message %}
-<p>{{message}}</p>
-{% endif %}
 
 {% endblock %}
