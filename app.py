@@ -2,6 +2,7 @@ from http.client import HTTPException
 import os
 import urllib.parse
 from flask import Flask, abort, redirect, render_template, request, session, url_for
+import requests
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
 import certifi
@@ -116,18 +117,25 @@ def addMatchFromTBA(match: dict):
         addScheduledMatch(
             match["match_number"],
             match["set_number"],
-            match["comp_level"],
+            CompLevel(match["comp_level"]),
             match["key"],
-            int(match["red"]["team_keys"][0][2:]),
-            int(match["red"]["team_keys"][1][2:]),
-            int(match["red"]["team_keys"][2][2:]),
-            int(match["blue"]["team_keys"][0][2:]),
-            int(match["blue"]["team_keys"][1][2:]),
-            int(match["blue"]["team_keys"][2][2:]),
+            int(match["alliances"]["red"]["team_keys"][0][3:]),
+            int(match["alliances"]["red"]["team_keys"][1][3:]),
+            int(match["alliances"]["red"]["team_keys"][2][3:]),
+            int(match["alliances"]["blue"]["team_keys"][0][3:]),
+            int(match["alliances"]["blue"]["team_keys"][1][3:]),
+            int(match["alliances"]["blue"]["team_keys"][2][3:]),
         )
-    except:
-        app.logger.error("Unable to load match from The Blue Alliance. Aborting.")
+    except Exception as e:
+        app.logger.error(f"Unable to load match from The Blue Alliance. Aborting. Error {e}")
         abort(500)
+
+def addScheduleFromTBA(event: str):
+    data = requests.get(f"https://www.thebluealliance.com/api/v3/event/{event}/matches/simple",headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent":"Nerd Scout"})
+    data = json.loads(data.text)
+    for match in data:
+        addMatchFromTBA(match)
+    return "ok"
 
 # This always outputs an array, in case there are multiple matches with the same number
 def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
@@ -352,6 +360,10 @@ def testRobotScorring():
 @app.route("/calculateScoreTest")
 def testScoreCalc():
     return str(calculateScoreFromData(getMatch(CompLevel.QUALIFYING,9999,1)[0], Station.RED1))
+
+@app.route("/testDataGetting")
+def testDataGetting():
+    return addScheduleFromTBA("2025caav")
 
 
 def newUser(username: str, passwordHash: str):
