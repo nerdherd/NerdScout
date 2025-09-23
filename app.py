@@ -1,6 +1,7 @@
 from array import array
 from http.client import HTTPException
 import os
+import re
 import urllib.parse
 from flask import Flask, abort, redirect, render_template, request, session, url_for
 import requests
@@ -304,10 +305,15 @@ compLevelText = {
 
 @app.route("/match")
 def renderMatch():
-    # TODO: make this take in data from URL
+    try:
+        matchNumber = int(request.args.get("matchNum")) # type: ignore
+        compLevel = CompLevel(request.args.get("compLevel")) # type: ignore
+        setNumber = int(request.args.get("setNum")) # type: ignore
+        results = getMatch(compLevel,matchNumber,setNumber)
+    except:
+        abort(400)
     redTeams=[]
     blueTeams=[]
-    results = getMatch(CompLevel.QUALIFYING,9999,1)[0]
     matchData = {
         "matchNumber":results["matchNumber"],
         "setNumber":results["setNumber"],
