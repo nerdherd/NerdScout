@@ -50,6 +50,7 @@ class EndPosition(Enum):
     SHALLOW = 2
     DEEP = 3
 
+
 class CompLevel(Enum):
     QM = "qm"
     QUALIFYING = "qm"
@@ -115,6 +116,7 @@ def addScheduledMatch(
         f"New match scheduled: Match {compLevel}{matchNumber} between red alliance {red1}, {red2}, {red3} and blue alliance {blue1}, {blue2}, {blue3}."
     )
 
+
 def addMatchFromTBA(match: dict):
     try:
         addScheduledMatch(
@@ -130,12 +132,18 @@ def addMatchFromTBA(match: dict):
             int(match["alliances"]["blue"]["team_keys"][2][3:]),
         )
     except Exception as e:
-        app.logger.error(f"Unable to load match from The Blue Alliance. Aborting. Error: {e}")
+        app.logger.error(
+            f"Unable to load match from The Blue Alliance. Aborting. Error: {e}"
+        )
         abort(500)
+
 
 def addScheduleFromTBA(event: str):
     try:
-        data = requests.get(f"https://www.thebluealliance.com/api/v3/event/{event}/matches/simple",headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent":"Nerd Scout"})
+        data = requests.get(
+            f"https://www.thebluealliance.com/api/v3/event/{event}/matches/simple",
+            headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent": "Nerd Scout"},
+        )
         data = json.loads(data.text)
     except:
         app.logger.error(f"Failed to load match data for {event} from TBA.")
@@ -144,7 +152,8 @@ def addScheduleFromTBA(event: str):
         addMatchFromTBA(match)
     return "ok"
 
-def addTeam(number: int, longName:str, shortName:str, comment:str=""):
+
+def addTeam(number: int, longName: str, shortName: str, comment: str = ""):
     teams.insert_one(
         {
             "number": number,
@@ -154,15 +163,23 @@ def addTeam(number: int, longName:str, shortName:str, comment:str=""):
         }
     )
 
+
 def addTeamsFromTBA(event: str):
     try:
-        data = requests.get(f"https://www.thebluealliance.com/api/v3/event/{event}/teams/simple",headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent":"Nerd Scout"})
+        data = requests.get(
+            f"https://www.thebluealliance.com/api/v3/event/{event}/teams/simple",
+            headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent": "Nerd Scout"},
+        )
         data = json.loads(data.text)
         if "Error" in data:
-            app.logger.error(f"Failed to load team data for {event} from The Blue Alliance. API error: {data["Error"]}")
+            app.logger.error(
+                f"Failed to load team data for {event} from The Blue Alliance. API error: {data["Error"]}"
+            )
             abort(500)
     except:
-        app.logger.error(f"Failed to load team data for {event} from The Blue Alliance. Network error.")
+        app.logger.error(
+            f"Failed to load team data for {event} from The Blue Alliance. Network error."
+        )
         abort(500)
     for team in data:
         try:
@@ -172,12 +189,21 @@ def addTeamsFromTBA(event: str):
                 team["nickname"],
             )
         except Exception as e:
-            app.logger.error(f"Failed to load team data for {event} from The Blue Alliance. {e}")
+            app.logger.error(
+                f"Failed to load team data for {event} from The Blue Alliance. {e}"
+            )
             abort(500)
+
 
 # This always outputs an array, in case there are multiple matches with the same number
 def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
-    results = matches.find({"compLevel": compLevel.value, "matchNumber": matchNumber, "setNumber": setNumber,})
+    results = matches.find(
+        {
+            "compLevel": compLevel.value,
+            "matchNumber": matchNumber,
+            "setNumber": setNumber,
+        }
+    )
     parsedResults = parseResults(results)
     results.close()
     return parsedResults
@@ -203,7 +229,11 @@ def scoreRobotInMatch(
     scout: str,
 ):
     result = matches.update_many(
-        {"matchNumber": matchNumber,"setNumber": setNumber, "compLevel": compLevel.value},
+        {
+            "matchNumber": matchNumber,
+            "setNumber": setNumber,
+            "compLevel": compLevel.value,
+        },
         {
             "$push": {
                 "results."
@@ -230,9 +260,7 @@ def scoreRobotInMatch(
             f"Failed to score robot {startPos.value} for match {matchNumber} by {scout}: Match does not exist."
         )
         return False
-    app.logger.info(
-        f"Robot {station.value} scored for match {matchNumber} by {scout}."
-    )
+    app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")
     return True
 
 
@@ -304,11 +332,14 @@ def calculateScoreFromData(matchData: dict, team: Station, edit: int = -1):
 def isLoggedIn():
     return "username" in session
 
-def isAdmin(username:str):
+
+def isAdmin(username: str):
     return parseResults(accounts.find_one({"username": username}))["admin"]
+
 
 def getAllUsers():
     return parseResults(accounts.find({}))
+
 
 # converts database results to JSON
 # the default functions get stuck on ObjectID objects
@@ -324,36 +355,45 @@ def index():
 
 @app.route("/addMatchTest")
 def testMatchAddition():
-    addScheduledMatch(9999,1,CompLevel.QUALIFYING, "2025caav_qm9999", 9991, 9992, 9993, 9994, 9995, 9996)
+    addScheduledMatch(
+        9999,
+        1,
+        CompLevel.QUALIFYING,
+        "2025caav_qm9999",
+        9991,
+        9992,
+        9993,
+        9994,
+        9995,
+        9996,
+    )
     return "ok"
 
 
 @app.route("/getMatchTest")
 def testMatchGetting():
-    return getMatch(CompLevel.QUALIFYING,9999,1)
+    return getMatch(CompLevel.QUALIFYING, 9999, 1)
+
 
 # TODO: add all text descriptions for all match types
-compLevelText = {
-    "qm":"Qualifying",
-    "sf":"Playoff",
-    "f":"Final"
-}
+compLevelText = {"qm": "Qualifying", "sf": "Playoff", "f": "Final"}
+
 
 @app.route("/match")
 def renderMatch():
     try:
-        matchNumber = int(request.args.get("matchNum")) # type: ignore
-        compLevel = CompLevel(request.args.get("compLevel")) # type: ignore
-        setNumber = int(request.args.get("setNum")) # type: ignore
-        results = getMatch(compLevel,matchNumber,setNumber)
+        matchNumber = int(request.args.get("matchNum"))  # type: ignore
+        compLevel = CompLevel(request.args.get("compLevel"))  # type: ignore
+        setNumber = int(request.args.get("setNum"))  # type: ignore
+        results = getMatch(compLevel, matchNumber, setNumber)
     except:
         abort(400)
-    redTeams=[]
-    blueTeams=[]
+    redTeams = []
+    blueTeams = []
     matchData = {
-        "matchNumber":results["matchNumber"],
-        "setNumber":results["setNumber"],
-        "compLevel":compLevelText[results["compLevel"]],
+        "matchNumber": results["matchNumber"],
+        "setNumber": results["setNumber"],
+        "compLevel": compLevelText[results["compLevel"]],
     }
     for team in results["teams"].keys():
         currentTeam = {
@@ -369,8 +409,12 @@ def renderMatch():
         elif "blue" in team:
             blueTeams.append(currentTeam)
         else:
-            app.logger.error(f"Team {results["teams"][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance.")
-    return render_template("match.html", teams=[redTeams,blueTeams], matchData=matchData)
+            app.logger.error(
+                f"Team {results["teams"][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance."
+            )
+    return render_template(
+        "match.html", teams=[redTeams, blueTeams], matchData=matchData
+    )
 
 
 @app.route("/scoreRobotTest")
@@ -418,11 +462,15 @@ def testRobotScorring():
 
 @app.route("/calculateScoreTest")
 def testScoreCalc():
-    return str(calculateScoreFromData(getMatch(CompLevel.QUALIFYING,9999,1)[0], Station.RED1))
+    return str(
+        calculateScoreFromData(getMatch(CompLevel.QUALIFYING, 9999, 1)[0], Station.RED1)
+    )
+
 
 @app.route("/testDataGetting")
 def testDataGetting():
     return addScheduleFromTBA("2025caav")
+
 
 @app.route("/testTeamGetting")
 def testTeamGetting():
@@ -431,6 +479,7 @@ def testTeamGetting():
         abort(400)
     addTeamsFromTBA(event)
     return "ok"
+
 
 def newUser(username: str, passwordHash: str):
     if getUser(username):
@@ -467,7 +516,9 @@ def checkPassword(username: str, password: str):
         if result:
             app.logger.info(f"Successful login by {username} at {request.remote_addr}.")
         else:
-            app.logger.warning(f"Unsuccessful login by {username} at {request.remote_addr}: Incorrect Password.")
+            app.logger.warning(
+                f"Unsuccessful login by {username} at {request.remote_addr}: Incorrect Password."
+            )
         return result
     except TypeError:
         # if no users are found with a username, doc = None.
@@ -513,10 +564,10 @@ def submitScorePage():
     if request.method == "POST":
         submission = request.json
         try:
-            matchNumber = submission["matchNum"] # type: ignore
-            compLevel = submission["compLevel"] # type: ignore
-            setNumber = submission["setNum"] # type: ignore
-            currentRobot = submission["robot"] # type: ignore
+            matchNumber = submission["matchNum"]  # type: ignore
+            compLevel = submission["compLevel"]  # type: ignore
+            setNumber = submission["setNum"]  # type: ignore
+            currentRobot = submission["robot"]  # type: ignore
         except:
             abort(400)
         try:
@@ -524,20 +575,22 @@ def submitScorePage():
                 int(matchNumber),
                 int(setNumber),
                 CompLevel(compLevel),
-                Station(currentRobot), # str
-                StartingPosition(submission["startPos"]), # int between 1-3 # type: ignore
-                submission["autoLeave"], # bool # type: ignore
-                submission["autoReef"], # array of four ints # type: ignore
-                submission["teleReef"], # array of four ints # type: ignore
-                submission["autoProcessor"], # int # type: ignore
-                submission["teleProcessor"], #int # type: ignore
-                submission["autoNet"], # int # type: ignore
-                submission["teleNet"], # int # type: ignore
-                EndPosition(submission["endPos"]), #int between 0-3 # type: ignore
-                submission["minorFouls"], # int # type: ignore
-                submission["majorFouls"], # int # type: ignore
-                submission["comment"], # str # type: ignore
-                submission["scout"], # str # type: ignore
+                Station(currentRobot),  # str
+                StartingPosition(
+                    submission["startPos"] # int between 1-3 # type: ignore
+                ),  
+                submission["autoLeave"],  # bool # type: ignore
+                submission["autoReef"],  # array of four ints # type: ignore
+                submission["teleReef"],  # array of four ints # type: ignore
+                submission["autoProcessor"],  # int # type: ignore
+                submission["teleProcessor"],  # int # type: ignore
+                submission["autoNet"],  # int # type: ignore
+                submission["teleNet"],  # int # type: ignore
+                EndPosition(submission["endPos"]),  # int between 0-3 # type: ignore
+                submission["minorFouls"],  # int # type: ignore
+                submission["majorFouls"],  # int # type: ignore
+                submission["comment"],  # str # type: ignore
+                submission["scout"],  # str # type: ignore
             ):
                 abort(400)
         except:
@@ -550,33 +603,47 @@ def logout():
     del session["username"]
     return "logged out"
 
+
 @app.route("/manageUsers", methods=["GET", "POST"])
 def userManagementPage():
     if not isAdmin(session["username"]):
-        app.logger.warning(f"User {session["username"]} attempted to access user management page.")
+        app.logger.warning(
+            f"User {session["username"]} attempted to access user management page."
+        )
         abort(401)
     if request.method == "POST":
         try:
             data = request.json
-            user:str = data["username"] # type: ignore
-            decision:bool = data["approved"] # type: ignore
+            user: str = data["username"]  # type: ignore
+            decision: bool = data["approved"]  # type: ignore
         except:
-            app.logger.warning(f"User {session["username"]} ({request.remote_addr}) failed to manage a user: Malformed Request.")
+            app.logger.warning(
+                f"User {session["username"]} ({request.remote_addr}) failed to manage a user: Malformed Request."
+            )
             abort(400)
         if isAdmin(user):
-            app.logger.warning(f"User {session["username"]} ({request.remote_addr}) failed to {"approve" if decision else "unapprove"} {user}: User Is An Admin")
-            abort (401)
+            app.logger.warning(
+                f"User {session["username"]} ({request.remote_addr}) failed to {"approve" if decision else "unapprove"} {user}: User Is An Admin"
+            )
+            abort(401)
         result = accounts.update_one(
             {"username": user},
-            {"$set": {
-                "approved": decision,
-            }}
+            {
+                "$set": {
+                    "approved": decision,
+                }
+            },
         )
         if result.matched_count == 0:
-            app.logger.warning(f"User {session["username"]} ({request.remote_addr}) failed to {"approve" if decision else "unapprove"} {user}: User Does Not Exist")
+            app.logger.warning(
+                f"User {session["username"]} ({request.remote_addr}) failed to {"approve" if decision else "unapprove"} {user}: User Does Not Exist"
+            )
             abort(400)
-        app.logger.info(f"User {session["username"]} ({request.remote_addr}) {"approved" if decision else "unapproved"} {user}.")
+        app.logger.info(
+            f"User {session["username"]} ({request.remote_addr}) {"approved" if decision else "unapproved"} {user}."
+        )
     return render_template("accountManagement.html", users=getAllUsers())
+
 
 freeEndpoints = frozenset(
     ["login", "newUserPage", "static", "index"]
