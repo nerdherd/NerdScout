@@ -39,8 +39,7 @@
 
         button = document.getElementById("button_"+username);
         button.innerHTML = approved ? "Unapprove User" : "Approve User";
-        button.onclick = function() {sendApprovalRequest(username,!approved)};
-        //button.onclick = "sendApprovalRequest('" + username + "'," + toString(!approved) + ")";
+        button.setAttribute("onclick","sendApprovalRequest('" + username + "'," + (!approved).toString() + ")");
     };
 </script>
 
