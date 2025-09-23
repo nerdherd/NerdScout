@@ -333,7 +333,7 @@ def renderMatch():
         elif "blue" in team:
             blueTeams.append(currentTeam)
         else:
-            print("something is wrong in the database")
+            app.logger.error(f"Team {results["teams"][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance.")
     return render_template("match.html", teams=[redTeams,blueTeams], matchData=matchData)
 
 
