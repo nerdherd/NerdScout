@@ -1,3 +1,4 @@
+from array import array
 from http.client import HTTPException
 import os
 import urllib.parse
@@ -266,6 +267,11 @@ def calculateScoreFromData(matchData: dict, team: Station, edit: int = -1):
 def isLoggedIn():
     return "username" in session
 
+def isAdmin(username:str):
+    return parseResults(accounts.find_one({"username": username}))["admin"]
+
+def getAllUsers():
+    return parseResults(accounts.find({}))
 
 # converts database results to JSON
 # the default functions get stuck on ObjectID objects
@@ -388,6 +394,7 @@ def newUser(username: str, passwordHash: str):
             "username": username,
             "passwordHash": passwordHash,
             "approved": False,
+            "admin": False,
         }
     )
     app.logger.info(f"New user created: {username} by {request.remote_addr}.")
@@ -407,12 +414,16 @@ def checkPassword(username: str, password: str):
                 f"Unsuccessful login by {username} at {request.remote_addr}: Account not approved."
             )
             return False
-        app.logger.info(f"Successful login by {username} at {request.remote_addr}.")
-        return check_password_hash(doc["passwordHash"], password)  # type: ignore
+        result = check_password_hash(doc["passwordHash"], password)  # type: ignore
+        if result:
+            app.logger.info(f"Successful login by {username} at {request.remote_addr}.")
+        else:
+            app.logger.warning(f"Unsuccessful login by {username} at {request.remote_addr}: Incorrect Password.")
+        return result
     except TypeError:
         # if no users are found with a username, doc = None.
         app.logger.warning(
-            f"Unsuccessful login by {username} at {request.remote_addr}: Incorrect password or account not found."
+            f"Unsuccessful login by {username} at {request.remote_addr}: Account not found."
         )
         return False
 
@@ -453,10 +464,10 @@ def submitScorePage():
     if request.method == "POST":
         submission = request.json
         try:
-            matchNumber = submission["matchNum"]
-            compLevel = submission["compLevel"]
-            setNumber = submission["setNum"]
-            currentRobot = submission["robot"]
+            matchNumber = submission["matchNum"] # type: ignore
+            compLevel = submission["compLevel"] # type: ignore
+            setNumber = submission["setNum"] # type: ignore
+            currentRobot = submission["robot"] # type: ignore
         except:
             abort(400)
         try:
@@ -490,6 +501,33 @@ def logout():
     del session["username"]
     return "logged out"
 
+@app.route("/manageUsers", methods=["GET", "POST"])
+def userManagementPage():
+    if not isAdmin(session["username"]):
+        app.logger.warning(f"User {session["username"]} attempted to access user management page.")
+        abort(401)
+    if request.method == "POST":
+        try:
+            data = request.json
+            user:str = data["username"] # type: ignore
+            decision:bool = data["approved"] # type: ignore
+        except:
+            app.logger.warning(f"User {session["username"]} ({request.remote_addr}) failed to manage a user: Malformed Request.")
+            abort(400)
+        if isAdmin(user):
+            app.logger.warning(f"User {session["username"]} ({request.remote_addr}) failed to {"approve" if decision else "unapprove"} {user}: User Is An Admin")
+            abort (401)
+        result = accounts.update_one(
+            {"username": user},
+            {"$set": {
+                "approved": decision,
+            }}
+        )
+        if result.matched_count == 0:
+            app.logger.warning(f"User {session["username"]} ({request.remote_addr}) failed to {"approve" if decision else "unapprove"} {user}: User Does Not Exist")
+            abort(400)
+        app.logger.info(f"User {session["username"]} ({request.remote_addr}) {"approved" if decision else "unapproved"} {user}.")
+    return render_template("accountManagement.html", users=getAllUsers())
 
 freeEndpoints = frozenset(
     ["login", "newUserPage", "static", "index"]
