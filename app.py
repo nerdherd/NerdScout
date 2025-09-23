@@ -208,8 +208,14 @@ def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
     results.close()
     return parsedResults
 
-def getAllMatches():
-    return parseResults(matches.find({}))
+def getAllMatches(compLevelToText=False):
+    results = parseResults(matches.find({}))
+    if compLevelToText:
+        for i in range(len(results)):
+            results[i]['compLevelText'] = results[i]['compLevel']
+            if results[i]['compLevelText'] in compLevelText:
+                results[i]['compLevelText']=compLevelText[results[i]['compLevelText']]
+    return results
 
 
 def scoreRobotInMatch(
@@ -390,7 +396,7 @@ def renderMatch():
         setNumber = int(request.args.get("setNum"))  # type: ignore
         results = getMatch(compLevel, matchNumber, setNumber)[-1]
     except TypeError as err:
-        return render_template("matchSelect.html",matches=getAllMatches())
+        return render_template("matchSelect.html",matches=getAllMatches(True))
     
     # view test match with this link:
     # http://127.0.0.1:5000/match?matchNum=9999&compLevel=qm&setNum=1
