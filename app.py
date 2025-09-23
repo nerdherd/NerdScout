@@ -173,7 +173,7 @@ def addTeamsFromTBA(event: str):
         data = json.loads(data.text)
         if "Error" in data:
             app.logger.error(
-                f"Failed to load team data for {event} from The Blue Alliance. API error: {data["Error"]}"
+                f"Failed to load team data for {event} from The Blue Alliance. API error: {data['Error']}"
             )
             abort(500)
     except:
@@ -385,9 +385,13 @@ def renderMatch():
         matchNumber = int(request.args.get("matchNum"))  # type: ignore
         compLevel = CompLevel(request.args.get("compLevel"))  # type: ignore
         setNumber = int(request.args.get("setNum"))  # type: ignore
-        results = getMatch(compLevel, matchNumber, setNumber)
-    except:
-        abort(400)
+        results = getMatch(compLevel, matchNumber, setNumber)[-1]
+    except TypeError as err:
+        return render_template("matchSelect.html")
+    
+    # view test match with this link:
+    # http://127.0.0.1:5000/match?matchNum=9999&compLevel=qm&setNum=1
+    
     redTeams = []
     blueTeams = []
     matchData = {
@@ -410,7 +414,7 @@ def renderMatch():
             blueTeams.append(currentTeam)
         else:
             app.logger.error(
-                f"Team {results["teams"][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance."
+                f"Team {results['teams'][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance."
             )
     return render_template(
         "match.html", teams=[redTeams, blueTeams], matchData=matchData
@@ -556,7 +560,7 @@ def newUserPage():
             message = "New unapproved user created!"
         else:
             message = "User already exists."
-    return render_template("newUser.html", message=message)
+    return render_template("auth/newUser.html", message=message)
 
 
 @app.route("/submitScore", methods=["GET", "POST"])
@@ -608,7 +612,7 @@ def logout():
 def userManagementPage():
     if not isAdmin(session["username"]):
         app.logger.warning(
-            f"User {session["username"]} attempted to access user management page."
+            f"User {session['username']} attempted to access user management page."
         )
         abort(401)
     if request.method == "POST":
@@ -618,12 +622,12 @@ def userManagementPage():
             decision: bool = data["approved"]  # type: ignore
         except:
             app.logger.warning(
-                f"User {session["username"]} ({request.remote_addr}) failed to manage a user: Malformed Request."
+                f"User {session['username']} ({request.remote_addr}) failed to manage a user: Malformed Request."
             )
             abort(400)
         if isAdmin(user):
             app.logger.warning(
-                f"User {session["username"]} ({request.remote_addr}) failed to {"approve" if decision else "unapprove"} {user}: User Is An Admin"
+                f"User {session['username']} ({request.remote_addr}) failed to {'approve' if decision else 'unapprove'} {user}: User Is An Admin"
             )
             abort(401)
         result = accounts.update_one(
@@ -636,11 +640,11 @@ def userManagementPage():
         )
         if result.matched_count == 0:
             app.logger.warning(
-                f"User {session["username"]} ({request.remote_addr}) failed to {"approve" if decision else "unapprove"} {user}: User Does Not Exist"
+                f"User {session['username']} ({request.remote_addr}) failed to {'approve' if decision else 'unapprove'} {user}: User Does Not Exist"
             )
             abort(400)
         app.logger.info(
-            f"User {session["username"]} ({request.remote_addr}) {"approved" if decision else "unapproved"} {user}."
+            f"User {session['username']} ({request.remote_addr}) {'approved' if decision else 'unapproved'} {user}."
         )
     return render_template("accountManagement.html", users=getAllUsers())
 
