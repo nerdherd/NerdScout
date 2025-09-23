@@ -77,6 +77,7 @@ client = MongoClient(
 database = client.nerdScout
 matches = database.matches
 accounts = database.accounts
+teams = database.teams
 
 TBA_KEY = open(os.path.join(root, "secrets/theBlueAlliance"), "r").read()
 
@@ -129,15 +130,50 @@ def addMatchFromTBA(match: dict):
             int(match["alliances"]["blue"]["team_keys"][2][3:]),
         )
     except Exception as e:
-        app.logger.error(f"Unable to load match from The Blue Alliance. Aborting. Error {e}")
+        app.logger.error(f"Unable to load match from The Blue Alliance. Aborting. Error: {e}")
         abort(500)
 
 def addScheduleFromTBA(event: str):
-    data = requests.get(f"https://www.thebluealliance.com/api/v3/event/{event}/matches/simple",headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent":"Nerd Scout"})
-    data = json.loads(data.text)
+    try:
+        data = requests.get(f"https://www.thebluealliance.com/api/v3/event/{event}/matches/simple",headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent":"Nerd Scout"})
+        data = json.loads(data.text)
+    except:
+        app.logger.error(f"Failed to load match data for {event} from TBA.")
+        abort(500)
     for match in data:
         addMatchFromTBA(match)
     return "ok"
+
+def addTeam(number: int, longName:str, shortName:str, comment:str=""):
+    teams.insert_one(
+        {
+            "number": number,
+            "longName": longName,
+            "shortName": shortName,
+            "comment": comment,
+        }
+    )
+
+def addTeamsFromTBA(event: str):
+    try:
+        data = requests.get(f"https://www.thebluealliance.com/api/v3/event/{event}/teams/simple",headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent":"Nerd Scout"})
+        data = json.loads(data.text)
+        if "Error" in data:
+            app.logger.error(f"Failed to load team data for {event} from The Blue Alliance. API error: {data["Error"]}")
+            abort(500)
+    except:
+        app.logger.error(f"Failed to load team data for {event} from The Blue Alliance. Network error.")
+        abort(500)
+    for team in data:
+        try:
+            addTeam(
+                int(team["team_number"]),
+                team["name"],
+                team["nickname"],
+            )
+        except Exception as e:
+            app.logger.error(f"Failed to load team data for {event} from The Blue Alliance. {e}")
+            abort(500)
 
 # This always outputs an array, in case there are multiple matches with the same number
 def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
@@ -388,6 +424,13 @@ def testScoreCalc():
 def testDataGetting():
     return addScheduleFromTBA("2025caav")
 
+@app.route("/testTeamGetting")
+def testTeamGetting():
+    event = request.args.get("event")
+    if not event:
+        abort(400)
+    addTeamsFromTBA(event)
+    return "ok"
 
 def newUser(username: str, passwordHash: str):
     if getUser(username):
