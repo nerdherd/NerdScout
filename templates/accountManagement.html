@@ -20,6 +20,7 @@
         {% else %}
         <button id="button_{{ user['username'] }}" onclick="sendApprovalRequest('{{user['username']}}',true)">Approve User</button>
         {% endif %}
+        <p id="error_{{ user['username'] }}" style="display: none; color:red;">Error</p>
         {% endif %}
     </div>
 </li>
@@ -29,17 +30,24 @@
 <script>
     function sendApprovalRequest(username,approved){
         data = JSON.stringify({"username": username, "approved": approved});
+        error = document.getElementById("error_"+username);
+        button = document.getElementById("button_"+username);
         fetch(window.location.href, {
             method: "POST",
             body: data,
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
+        }).then(response => {
+            if (response.ok){
+                error.style =  "display: none; color:red;";
+                button.innerHTML = approved ? "Unapprove User" : "Approve User";
+                button.setAttribute("onclick","sendApprovalRequest('" + username + "'," + (!approved).toString() + ")");
+            } else{
+                error.style =  "display: inline; color:red;";
+            };
         });
-
-        button = document.getElementById("button_"+username);
-        button.innerHTML = approved ? "Unapprove User" : "Approve User";
-        button.setAttribute("onclick","sendApprovalRequest('" + username + "'," + (!approved).toString() + ")");
+        
     };
 </script>
 
