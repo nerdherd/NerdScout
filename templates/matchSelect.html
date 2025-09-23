@@ -1,16 +1,38 @@
 {% extends 'base.html' %}
 
-{% block head %}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/matchSelect.css') }}">
+<script src="{{ url_for('static', filename='javascript/matchSelect.js') }}" defer></script>
+{% endblock %}
 
 {% block title %}NerdScout Select Match{% endblock %}
 
 {% block content %}
-<h1>You didn't select a match</h1>
+<h1>Match Select</h1>
 <a href="?matchNum=9999&compLevel=qm&setNum=1">Click here to view the test match</a>
+<div>
+    <div>
+        <label for="matchNumberInput">Search by match number:</label>
+        <input type="number" min="1" max="9999999" name="matchNumberInput" id="matchNumberInput">
+    </div>
+    <div>
+        <p>Sort by competition level:</p>
+        <ul>
+            <input type="checkbox" id="qm-select" name="qm-select" checked><label for="qm-select">Qualifying</label><br>
+            <input type="checkbox" id="ef-select" name="ef-select" checked><label for="ef-select">ef</label><br>
+            <input type="checkbox" id="qf-select" name="qf-select" checked><label for="qf-select">qf</label><br>
+            <input type="checkbox" id="sf-select" name="sf-select" checked><label for="sf-select">Playoff</label><br>
+            <input type="checkbox" id="f-select" name="f-select" checked><label for="f-select">Final</label><br>
+        </ul>
+    </div>
+    <button onclick="updateSearch()">Search</button><br><br>
+</div>
 <ul>
     {% for match in matches %}
-    <div data-compLevel="{{ match['compLevel'] }}" data-matchNumber="{{ match['matchNumber'] }}" data-setNumber="{{ match['setNumber'] }}">
-        <h2>{{ match["compLevelText"] }} {{ match["matchNumber"] }} {% if match["compLevel"] == "f" %}Set {{ match["setNumber"] }}{% endif %}</h2>
+    <div class="match-div" data-compLevel="{{ match['compLevel'] }}" data-matchNumber="{{ match['matchNumber'] }}" data-setNumber="{{ match['setNumber'] }}" data-redTeams='{{ match["teams"]["red1"] }},{{ match["teams"]["red2"] }},{{ match["teams"]["red3"] }}' data-blueTeams='{{ match["teams"]["blue1"] }},{{ match["teams"]["blue2"] }},{{ match["teams"]["blue3"] }}'>
+        <h2>{{ match["compLevelText"] }} {{ match["matchNumber"] }} {% if match["compLevel"] == "f" or match["compLevel"] == "sf" %}Set {{ match["setNumber"] }}{% endif %}</h2>
+        <p>Red teams: {{ match["teams"]["red1"] }}, {{ match["teams"]["red2"] }}, {{ match["teams"]["red3"] }}</p>
+        <p>Blue teams: {{ match["teams"]["blue1"] }}, {{ match["teams"]["blue2"] }}, {{ match["teams"]["blue3"] }}</p>
         <p><a href="?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }}">Link</a></p>
     </div>
     {% endfor %}
