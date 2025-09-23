@@ -208,6 +208,9 @@ def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
     results.close()
     return parsedResults
 
+def getAllMatches():
+    return parseResults(matches.find({}))
+
 
 def scoreRobotInMatch(
     matchNumber: int,
@@ -387,7 +390,7 @@ def renderMatch():
         setNumber = int(request.args.get("setNum"))  # type: ignore
         results = getMatch(compLevel, matchNumber, setNumber)[-1]
     except TypeError as err:
-        return render_template("matchSelect.html")
+        return render_template("matchSelect.html",matches=getAllMatches())
     
     # view test match with this link:
     # http://127.0.0.1:5000/match?matchNum=9999&compLevel=qm&setNum=1

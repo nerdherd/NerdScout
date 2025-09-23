@@ -7,4 +7,12 @@
 {% block content %}
 <h1>You didn't select a match</h1>
 <a href="?matchNum=9999&compLevel=qm&setNum=1">Click here to view the test match</a>
+<ul>
+    {% for match in matches %}
+    <div>
+        <h2>{% if match["compLevel"] == "qm" %}Qualifying{% elif match["compLevel"] == "sf" %}Playoff{% elif match["compLevel"] == "f" %}Final{% else %}{{match["compLevel"]}}{% endif %} {{ match["matchNumber"] }} {% if match["compLevel"] == "f" %}Set {{ match["setNumber"] }}{% endif %}</h2>
+        <p><a href="?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }}">Link</a></p>
+    </div>
+    {% endfor %}
+</ul>
 {% endblock %}
