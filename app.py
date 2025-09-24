@@ -384,10 +384,25 @@ def calculateScoreFromData(matchData: dict, team: Station, edit: int = -1):
 
 def isImage(file):
     try:
-       return True if filetype.match(file,[filetype.filetype.get_type(mime="image/jpeg"),filetype.filetype.get_type(mime="image/png")]) else False
+       result = filetype.guess_extension(file)
+       return False if not (result == "png" or result == "jpg") else result
     except Exception as e:
         app.logger.info(f"Failed to check file type for {request.remote_addr}: {e}")
         return False
+    
+def addTeamImage(data,team:int):
+    extension = isImage(data)
+    if not extension:
+        abort(415)
+    teamInfo = parseResults(teams.find_one({"number":team}))
+    fileLocation = f"teamImages/{team}_{len(teamInfo['images'])}.{extension}"
+    open(os.path.join(root,fileLocation),"wb").write(data)
+    teams.update_one({"number": team}, 
+                     {"$push":{
+                        "images": fileLocation
+                        }
+                      }
+                     )
 
 def isLoggedIn():
     return "username" in session
@@ -543,6 +558,24 @@ def testTeamGetting():
     if not event:
         abort(400)
     addTeamsFromTBA(event)
+    return "ok"
+
+@app.route("/addTeamImage", methods=["GET", "POST"])
+def addTeamImagePage():
+    if request.method == "POST":
+        try:
+            image = request.data
+            addTeamImage(image,int(request.args.get("team"))) # type: ignore
+        except:
+            abort(400)
+    return "ok"
+
+@app.route("/testTeamImage")
+def testTeamImage():
+    if request.args.get("notWorking"):
+            addTeamImage(open(os.path.join(root, "static/javascript/match.js"), "rb").read(), 687)
+            return "an error should have occured"
+    addTeamImage(open(os.path.join(root, "static/testImage.jpg"), "rb").read(), 687)
     return "ok"
 
 
