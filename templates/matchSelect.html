@@ -25,6 +25,11 @@
             <input type="checkbox" id="f-select" name="f-select" checked><label for="f-select">Final</label><br>
         </ul>
     </div>
+    <div>
+        <label for="teamNumberInput">Search by team number:</label>
+        <input type="number" min="1" max="99999" name="teamNumberInput" id="teamNumberInput">
+    </div>
+    <br>
     <button onclick="updateSearch()">Search</button><br><br>
 </div>
 <ul>
@@ -34,7 +39,11 @@
         <p>Red teams: {{ match["teams"]["red1"] }}, {{ match["teams"]["red2"] }}, {{ match["teams"]["red3"] }}</p>
         <p>Blue teams: {{ match["teams"]["blue1"] }}, {{ match["teams"]["blue2"] }}, {{ match["teams"]["blue3"] }}</p>
         <p><a href="?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }}">Link</a></p>
+        <p class="small">complevel: {{ match['compLevel'] }}, matchnumber: {{ match['matchNumber'] }}, setnumber: {{ match['setNumber'] }}</p>
     </div>
     {% endfor %}
+    <div id="none-div" class="match-div hide">
+        <h2>No results matched.</h2>
+    </div>
 </ul>
 {% endblock %}
