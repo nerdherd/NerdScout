@@ -9,8 +9,6 @@
 
 {% block content %}
 <h1>Team Select</h1>
-<p>This is the temporary team display page</p>
-
 <div>
     <div>
         <label for="teamNameInput">Search by team name</label>
@@ -34,7 +32,9 @@
         <p>{{ team["longName"] }}</p>
         <a href="?team={{ team['number'] }}">To Page</a>
         <!-- <p>{{ team }}</p> -->
+        <br><br><br>
     </div>
+    <br>
 {% endfor %}
 </ul>
 
