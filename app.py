@@ -407,6 +407,16 @@ def addTeamImage(data,team:int,user:str):
                       }
                      )
 
+def getTeam(team:int):
+    result = teams.find_one(
+        {
+            "number":team
+        }
+    )
+    parsedResults = parseResults(result)
+    # result.close()
+    return parsedResults
+
 def isLoggedIn():
     return "username" in session
 
@@ -498,6 +508,15 @@ def renderMatch():
     return render_template(
         "match.html", teams=[redTeams, blueTeams], matchData=matchData
     )
+
+@app.route("/team")
+def teamPage():
+    try:
+        team = int(request.args.get("team"))  # type: ignore
+        results = getTeam(team)
+    except TypeError as err:
+        abort(400)
+    return render_template("team.html",team=results)
 
 
 @app.route("/scoreRobotTest")

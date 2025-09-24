@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- <script src="{{ url_for('static', filename='javascript/match.js') }}" defer></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/match.css') }}"> -->
+{% endblock %}
+
+{% block title %}Team Viewer {{ team["number"] }}{% endblock %}
+
+{% block content %}
+<h1>Team {{ team["number"] }}</h1>
+<p>This is the temporary team display page</p>
+
+<p>Team name: {{ team["shortName"] }}</p>
+<p>{{ team["longName"] }}</p>
+
+<p>Comment: {{ team["comment"] }}</p>
+
+<p>{{ team }}</p>
+
+{% endblock %}
