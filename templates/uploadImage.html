@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}Upload an Image{% endblock %}
+
+{% block content %}
+<h1>Upload an Image</h1>
+<form id="form">
+    <label for="image">Choose an image.</label>
+    <input type="file" accept="image/png, image/jpeg" id="image" name="image" required>
+    </br>
+    <label for="team">Team Number</label>
+    <input type="number" min="1" max="99999" id="team" name="team" required>
+    </br>
+    <input type="submit">
+</form>
+<p style="display:none;" id="message">Submitted image for team ####!</p>
+
+<script>
+    document.getElementById("form").addEventListener('submit', async function(event) {
+    event.preventDefault();
+    submitData(
+        document.getElementById("image").files[0],
+        document.getElementById("team").value
+    );
+    });
+
+    function submitData(image, number){
+        fetch(window.location.href+"?team="+number, {
+        method: "POST",
+        body: image,
+        headers: {
+            "Content-type": image.type
+        }
+        }).then(response =>{
+            message = document.getElementById("message");
+            if (response.ok){
+                message.innerHTML = "Submitted image for team " + number + "!";
+                message.style = "display:inline;"
+            } else{
+                message.innerHTML = "Error, unable to submit."
+                message.style = "display:inline; color:red;"
+            }
+        });
+    }
+</script>
+{% endblock %}

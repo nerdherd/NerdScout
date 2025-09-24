@@ -390,7 +390,7 @@ def isImage(file):
         app.logger.info(f"Failed to check file type for {request.remote_addr}: {e}")
         return False
     
-def addTeamImage(data,team:int):
+def addTeamImage(data,team:int,user:str):
     extension = isImage(data)
     if not extension:
         abort(415)
@@ -399,7 +399,10 @@ def addTeamImage(data,team:int):
     open(os.path.join(root,fileLocation),"wb").write(data)
     teams.update_one({"number": team}, 
                      {"$push":{
-                        "images": fileLocation
+                        "images": {
+                            "location":fileLocation,
+                            "scout":user,
+                            }
                         }
                       }
                      )
@@ -565,17 +568,18 @@ def addTeamImagePage():
     if request.method == "POST":
         try:
             image = request.data
-            addTeamImage(image,int(request.args.get("team"))) # type: ignore
-        except:
+            addTeamImage(image,int(request.args.get("team")),session["username"]) # type: ignore
+        except Exception as e:
+            app.logger.warning(e)
             abort(400)
-    return "ok"
+    return render_template("uploadImage.html")
 
 @app.route("/testTeamImage")
 def testTeamImage():
     if request.args.get("notWorking"):
-            addTeamImage(open(os.path.join(root, "static/javascript/match.js"), "rb").read(), 687)
+            addTeamImage(open(os.path.join(root, "static/javascript/match.js"), "rb").read(), 687,"tonnieboy300")
             return "an error should have occured"
-    addTeamImage(open(os.path.join(root, "static/testImage.jpg"), "rb").read(), 687)
+    addTeamImage(open(os.path.join(root, "static/testImage.jpg"), "rb").read(), 687,"tonnieboy300")
     return "ok"
 
 
