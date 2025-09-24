@@ -242,25 +242,19 @@ def addTeamsFromTBA(event: str):
 
 # This always outputs an array, in case there are multiple matches with the same number
 def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
-    results = matches.find(
-        {
+    searchDict = {
             "compLevel": compLevel.value,
             "matchNumber": matchNumber,
             "setNumber": setNumber,
         }
-    )
-    parsedResults = parseResults(results)
-    results.close()
+    with matches.find(searchDict) as results:
+        parsedResults = parseResults(results)
     return parsedResults
 
-def getAllMatches(compLevelToText=False):
-    results = parseResults(matches.find({}))
-    if compLevelToText:
-        for i in range(len(results)):
-            results[i]['compLevelText'] = results[i]['compLevel']
-            if results[i]['compLevelText'] in compLevelText:
-                results[i]['compLevelText']=compLevelText[results[i]['compLevelText']]
-    return results
+def getAllMatches():
+    with matches.find({}) as results:
+        parsedResults = parseResults(results)
+    return parsedResults
 
 
 def scoreRobotInMatch(
@@ -417,6 +411,11 @@ def getTeam(team:int):
     # result.close()
     return parsedResults
 
+def getAllTeams():
+    with teams.find({}) as results:
+        parsedResults = parseResults(results)
+    return parsedResults
+
 def isLoggedIn():
     return "username" in session
 
@@ -515,7 +514,7 @@ def teamPage():
         team = int(request.args.get("team"))  # type: ignore
         results = getTeam(team)
     except TypeError as err:
-        abort(400)
+        return render_template("teamSelect.html",teams=getAllTeams())
     return render_template("team.html",team=results)
 
 

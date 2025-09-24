@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- <script src="{{ url_for('static', filename='javascript/match.js') }}" defer></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/match.css') }}"> -->
+{% endblock %}
+
+{% block title %}Team Select{% endblock %}
+
+{% block content %}
+<h1>Team Select</h1>
+<p>This is the temporary team display page</p>
+
+<ul>
+{% for team in teams %}
+    <div>
+        <h1>{{ team["shortName"] }} - {{ team["number"] }}</h1>
+        <p>{{ team["longName"] }}</p>
+        <a href="?team={{ team['number'] }}">To Page</a>
+        <!-- <p>{{ team }}</p> -->
+    </div>
+{% endfor %}
+</ul>
+
+{% endblock %}
