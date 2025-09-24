@@ -88,6 +88,7 @@ def addScheduledMatch(
     setNumber: int,
     compLevel: CompLevel,
     matchKey: str,
+    displayName: str,
     red1: int,
     red2: int,
     red3: int,
@@ -101,6 +102,7 @@ def addScheduledMatch(
             "setNumber": setNumber,
             "compLevel": compLevel.value,
             "matchKey": matchKey,
+            "displayName": displayName,
             "teams": {
                 "red1": red1,
                 "red2": red2,
@@ -119,11 +121,24 @@ def addScheduledMatch(
 
 def addMatchFromTBA(match: dict):
     try:
+        compLevel = CompLevel(match["comp_level"])
+        matchNumber = match["match_number"]
+        setNumber = match["set_number"]
+        # TBA uses the same match number for playoffs, only changing set number.
+        if compLevel == CompLevel.QUALIFYING:
+            displayName = f"Qualifying {matchNumber}"
+        elif compLevel == CompLevel.PLAYOFF:
+            displayName = f"Playoff {setNumber}"
+        elif compLevel == CompLevel.FINAL:
+            displayName = f"Final {matchNumber}"
+        else:
+            displayName = f"{compLevel.value} {matchNumber}"
         addScheduledMatch(
-            match["match_number"],
-            match["set_number"],
-            CompLevel(match["comp_level"]),
+            matchNumber,
+            setNumber,
+            compLevel,
             match["key"],
+            displayName,
             int(match["alliances"]["red"]["team_keys"][0][3:]),
             int(match["alliances"]["red"]["team_keys"][1][3:]),
             int(match["alliances"]["red"]["team_keys"][2][3:]),
@@ -160,6 +175,7 @@ def addTeam(number: int, longName: str, shortName: str, comment: str = ""):
             "longName": longName,
             "shortName": shortName,
             "comment": comment,
+            "images": [],
         }
     )
 
@@ -369,6 +385,7 @@ def testMatchAddition():
         1,
         CompLevel.QUALIFYING,
         "2025caav_qm9999",
+        "Test Match 9999",
         9991,
         9992,
         9993,

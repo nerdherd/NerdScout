@@ -30,7 +30,7 @@
 <ul>
     {% for match in matches %}
     <div class="match-div" data-compLevel="{{ match['compLevel'] }}" data-matchNumber="{{ match['matchNumber'] }}" data-setNumber="{{ match['setNumber'] }}" data-redTeams='{{ match["teams"]["red1"] }},{{ match["teams"]["red2"] }},{{ match["teams"]["red3"] }}' data-blueTeams='{{ match["teams"]["blue1"] }},{{ match["teams"]["blue2"] }},{{ match["teams"]["blue3"] }}'>
-        <h2>{{ match["compLevelText"] }} {{ match["matchNumber"] }} {% if match["compLevel"] == "f" or match["compLevel"] == "sf" %}Set {{ match["setNumber"] }}{% endif %}</h2>
+        <h2>{{ match["displayName"] }}</h2>
         <p>Red teams: {{ match["teams"]["red1"] }}, {{ match["teams"]["red2"] }}, {{ match["teams"]["red3"] }}</p>
         <p>Blue teams: {{ match["teams"]["blue1"] }}, {{ match["teams"]["blue2"] }}, {{ match["teams"]["blue3"] }}</p>
         <p><a href="?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }}">Link</a></p>
