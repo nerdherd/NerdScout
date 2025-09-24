@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<!-- <script src="{{ url_for('static', filename='javascript/match.js') }}" defer></script>
-<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/match.css') }}"> -->
+<script src="{{ url_for('static', filename='javascript/teamSelect.js') }}" defer></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/teamSelect.css') }}">
 {% endblock %}
 
 {% block title %}Team Select{% endblock %}
@@ -11,9 +11,25 @@
 <h1>Team Select</h1>
 <p>This is the temporary team display page</p>
 
+<div>
+    <div>
+        <label for="teamNameInput">Search by team name</label>
+        <input type="text" id="teamNameInput" name="teamNameInput">
+        <input type="checkbox" id="teamNameExact" name="teamNameExact">
+        <label for="teamNameExact">Exact?</label>
+    </div>
+    <div>
+        <label for="teamNumInput">Search by team number</label>
+        <input type="number" id="teamNumInput" name="teamNumInput">
+        <input type="checkbox" id="teamNumExact" name="teamNumExact">
+        <label for="teamNumExact">Exact?</label>
+    </div>
+    <button onclick="updateSearch()">Search</button>
+</div>
+
 <ul>
 {% for team in teams %}
-    <div>
+    <div class="team-div" data-name="{{ team['shortName'] }}" data-num="{{ team['number'] }}">
         <h1>{{ team["shortName"] }} - {{ team["number"] }}</h1>
         <p>{{ team["longName"] }}</p>
         <a href="?team={{ team['number'] }}">To Page</a>
