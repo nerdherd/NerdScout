@@ -2,6 +2,7 @@ from array import array
 from http.client import HTTPException
 import os
 import re
+import filetype
 import urllib.parse
 from flask import Flask, abort, redirect, render_template, request, session, url_for
 import requests
@@ -381,6 +382,12 @@ def calculateScoreFromData(matchData: dict, team: Station, edit: int = -1):
     )
     return score
 
+def isImage(file):
+    try:
+       return True if filetype.match(file,[filetype.filetype.get_type(mime="image/jpeg"),filetype.filetype.get_type(mime="image/png")]) else False
+    except Exception as e:
+        app.logger.info(f"Failed to check file type for {request.remote_addr}: {e}")
+        return False
 
 def isLoggedIn():
     return "username" in session
