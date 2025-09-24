@@ -1,8 +1,8 @@
 /.venv
 /secrets/*
-/teamImages/*
+/static/teamImages/*
 /__pycache__
 
 !/secrets/README.md
-!/teamImages/README.md
+!/static/teamImages/README.md
 /database

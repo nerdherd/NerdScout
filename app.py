@@ -396,7 +396,7 @@ def addTeamImage(data,team:int,user:str):
         abort(415)
     teamInfo = parseResults(teams.find_one({"number":team}))
     fileLocation = f"teamImages/{team}_{len(teamInfo['images'])}.{extension}"
-    open(os.path.join(root,fileLocation),"wb").write(data)
+    open(os.path.join(root,"static/"+fileLocation),"wb").write(data)
     teams.update_one({"number": team}, 
                      {"$push":{
                         "images": {
