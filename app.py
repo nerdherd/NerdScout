@@ -20,6 +20,7 @@ root = os.path.dirname(__file__)
 app = Flask(__name__)
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+app.config["JSON_SORT_KEYS"] = False
 
 app.config.from_mapping(
     SECRET_KEY=open(os.path.join(root, "secrets/secretKey"), "r").read()
@@ -151,6 +152,33 @@ def addMatchFromTBA(match: dict):
             f"Unable to load match from The Blue Alliance. Aborting. Error: {e}"
         )
         abort(500)
+
+def sortMatches(matches:list):
+    qualMatches = []
+    playoffMatches = []
+    finalMatches = []
+    otherMatches = []
+    for match in matches:
+        compLevel = match["compLevel"]
+        if compLevel == CompLevel.QUALIFYING.value:
+            qualMatches.append(match)
+        elif compLevel == CompLevel.PLAYOFF.value:
+            playoffMatches.append(match)
+        elif compLevel == CompLevel.FINAL.value:
+            finalMatches.append(match)
+        else:
+            otherMatches.append(match)
+    if qualMatches:
+        qualMatches = sorted(qualMatches, key=lambda match: match["matchNumber"])
+    if playoffMatches:
+        playoffMatches = sorted(playoffMatches, key=lambda match: match["setNumber"])
+    if finalMatches:
+        finalMatches = sorted(finalMatches, key=lambda match: match["matchNumber"])
+    if otherMatches:
+        otherMatches = sorted(otherMatches, key=lambda match: match["matchNumber"])
+    return qualMatches + playoffMatches + finalMatches + otherMatches
+    
+
 
 
 def addScheduleFromTBA(event: str):
@@ -413,7 +441,7 @@ def renderMatch():
         setNumber = int(request.args.get("setNum"))  # type: ignore
         results = getMatch(compLevel, matchNumber, setNumber)[-1]
     except TypeError as err:
-        return render_template("matchSelect.html",matches=getAllMatches(True))
+        return render_template("matchSelect.html",matches=sortMatches(getAllMatches()))
     
     # view test match with this link:
     # http://127.0.0.1:5000/match?matchNum=9999&compLevel=qm&setNum=1
