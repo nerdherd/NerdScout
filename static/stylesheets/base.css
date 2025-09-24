@@ -6,11 +6,11 @@
     /* please define all colors here so they can be consistent */
 
     /* general */
-    --text-color: black;
-    --background-color: white;
+    --text-color: white;
+    --background-color: var(--nerd-herd-navy);
 
     /* footer */
-    --footer-background: var(--nerd-herd-navy);
+    --footer-background: black;
     --footer-text-color: white;
 }
 
