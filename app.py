@@ -821,7 +821,7 @@ def submitScorePage():
 @app.route("/logout")
 def logout():
     del session["username"]
-    return "logged out"
+    return render_template("auth/logout.html")
 
 
 @app.route("/manageUsers", methods=["GET", "POST"])
@@ -866,7 +866,7 @@ def userManagementPage():
 
 
 freeEndpoints = frozenset(
-    ["login", "newUserPage", "static", "index"]
+    ["login", "newUserPage", "static", "index", "logout"]
 )  # endpoints that shouldn't require signing in
 
 
