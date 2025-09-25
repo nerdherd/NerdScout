@@ -117,7 +117,7 @@ def addScheduledMatch(
         }
     )
     app.logger.info(
-        f"New match scheduled: Match {compLevel}{matchNumber} between red alliance {red1}, {red2}, {red3} and blue alliance {blue1}, {blue2}, {blue3}."
+        f"New match scheduled: Match {compLevel.value}{matchNumber} between red alliance {red1}, {red2}, {red3} and blue alliance {blue1}, {blue2}, {blue3}."
     )
 
 
@@ -183,11 +183,17 @@ def sortMatches(matches:list):
 
 
 def addScheduleFromTBA(event: str):
+    if matches.count_documents({}) != 0:
+        abort(409)
     try:
         data = requests.get(
             f"https://www.thebluealliance.com/api/v3/event/{event}/matches/simple",
             headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent": "Nerd Scout"},
         )
+        if data.status_code == 404:
+            abort(400)
+        elif not data.ok:
+            raise Exception
         data = json.loads(data.text)
     except:
         app.logger.error(f"Failed to load match data for {event} from TBA.")
@@ -476,6 +482,9 @@ def renderMatch():
         results = getMatch(compLevel, matchNumber, setNumber)[-1]
     except TypeError as err:
         return render_template("matchSelect.html",matches=sortMatches(getAllMatches()))
+    except IndexError as err:
+        # this would occur if no match is found, thus results is empty.
+        abort(404)
     
     # view test match with this link:
     # http://127.0.0.1:5000/match?matchNum=9999&compLevel=qm&setNum=1
@@ -571,6 +580,17 @@ def testScoreCalc():
 @app.route("/testDataGetting")
 def testDataGetting():
     return addScheduleFromTBA("2025caav")
+
+@app.route("/scheduleEvent", methods=["GET", "POST"])
+def scheduleEventPage():
+    if request.method == "POST":
+        try:
+            data = request.json
+            event = str(data["code"]) # type: ignore
+        except:
+            abort(400)
+        addScheduleFromTBA(event)
+    return render_template("addSchedule.html")
 
 
 @app.route("/testTeamGetting")
