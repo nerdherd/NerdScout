@@ -178,6 +178,10 @@ def sortMatches(matches:list):
     if otherMatches:
         otherMatches = sorted(otherMatches, key=lambda match: match["matchNumber"])
     return qualMatches + playoffMatches + finalMatches + otherMatches
+
+def sortTeams(teams:list):
+    sortedTeams = sorted(teams,key = lambda team: team["number"])
+    return sortedTeams
     
 def loadScheduleFromTBA(event:str):
     try:
@@ -710,8 +714,8 @@ def setTeamComment():
     if request.method == "POST":
         submission = request.json
         try:
-            team = int(submission["team"])
-            comment = submission["comment"]
+            team = int(submission["team"]) #type: ignore
+            comment = submission["comment"] #type: ignore
         except TypeError as e:
             app.logger.warning(e)
             abort(400)
@@ -730,7 +734,7 @@ def testTeamImage():
     if request.args.get("notWorking"):
             addTeamImage(open(os.path.join(root, "static/javascript/match.js"), "rb").read(), 687,"tonnieboy300")
             return "an error should have occured"
-    addTeamImage(open(os.path.join(root, "static/testImage.jpg"), "rb").read(), 687,"tonnieboy300")
+    addTeamImage(open(os.path.join(root, "static/images/testImage.jpg"), "rb").read(), 687,"tonnieboy300")
     return "ok"
 
 
@@ -854,7 +858,7 @@ def submitScorePage():
 @app.route("/logout")
 def logout():
     del session["username"]
-    return "logged out"
+    return render_template("auth/logout.html")
 
 
 @app.route("/manageUsers", methods=["GET", "POST"])
@@ -899,7 +903,7 @@ def userManagementPage():
 
 
 freeEndpoints = frozenset(
-    ["login", "newUserPage", "static", "index"]
+    ["login", "newUserPage", "static", "index", "logout"]
 )  # endpoints that shouldn't require signing in
 
 
