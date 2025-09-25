@@ -210,7 +210,7 @@ def updateScheduleFromTBA(event: str):
         if results == 0:
             addMatchFromTBA(match)
 
-def addTeam(number: int, longName: str, shortName: str, comment: str = ""):
+def addTeam(number: int, longName: str, shortName: str, comment: list = []):
     teams.insert_one(
         {
             "number": number,
@@ -414,10 +414,10 @@ def addTeamImage(data,team:int,user:str):
                       }
                      )
 
-def editComment(team:int,comment:str):
+def addComment(team:int,comment:str):
     teams.update_one(
         {"number":team},
-        {"$set": {"comment":comment}}
+        {"$push": {"comment":comment}}
     )
 
 def getTeam(team:int):
@@ -604,9 +604,9 @@ def teamPage():
         team = int(request.args.get("team"))  # type: ignore
         results = getTeam(team)
     except TypeError as err:
-        return render_template("teamSelect.html",teams=getAllTeams())
+        return render_template("team/teamSelect.html",teams=sortTeams(getAllTeams()))
     matches = getTeamMatches(team)
-    return render_template("team.html",team=results,matches=sortMatches(matches))
+    return render_template("team/team.html",team=results,matches=sortMatches(matches))
 
 
 @app.route("/scoreRobotTest")
@@ -704,6 +704,26 @@ def addTeamImagePage():
             app.logger.warning(e)
             abort(400)
     return render_template("uploadImage.html")
+
+@app.route("/team/addComment", methods=["GET","POST"])
+def setTeamComment():
+    if request.method == "POST":
+        submission = request.json
+        try:
+            team = int(submission["team"])
+            comment = submission["comment"]
+        except TypeError as e:
+            app.logger.warning(e)
+            abort(400)
+        addComment(team,comment)
+        return "ok"
+    else:
+        team=0
+        try:
+            team = int(request.args.get("team"))  # type: ignore
+        except TypeError as e:
+            app.logger.warning(e)
+        return render_template("team/addComment.html",team=team)
 
 @app.route("/testTeamImage")
 def testTeamImage():

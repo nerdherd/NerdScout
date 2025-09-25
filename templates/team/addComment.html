@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}Add a Comment{% endblock %}
+
+{% block content %}
+<h1>Add a Image</h1>
+<form id="form">
+    <label for="comment">Enter comment: </label>
+    <input type="text"  id="comment" name="comment" required>
+    <br/>
+    <label for="team">Team Number</label>
+    <input type="number" min="1" max="99999" id="team" name="team" {% if team>0 %}value={{ team }}{% endif %} required>
+    <br/>
+    <input type="submit">
+</form>
+<p style="display:none;" id="message">Added comment for team ####!</p>
+
+<script>
+    document.getElementById("form").addEventListener('submit', async function(event) {
+    event.preventDefault();
+    submitData(
+        document.getElementById("comment").value,
+        document.getElementById("team").value
+    );
+    });
+
+    function submitData(comment, number){
+
+        data = {
+            "team":number,
+            "comment":comment
+        };
+        fetch(window.location.href, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+        }).then(response =>{
+            message = document.getElementById("message");
+            if (response.ok){
+                message.innerHTML = "Added comment for team " + number + "!";
+                message.style = "display:inline;"
+            } else{
+                message.innerHTML = "Error, unable to submit."
+                message.style = "display:inline; color:red;"
+            }
+        });
+
+        /* fetch(window.location.href+"?team="+number, {
+        method: "POST",
+        body: image,
+        headers: {
+            "Content-type": image.type
+        }
+        }).then(response =>{
+            message = document.getElementById("message");
+            if (response.ok){
+                message.innerHTML = "Submitted image for team " + number + "!";
+                message.style = "display:inline;"
+            } else{
+                message.innerHTML = "Error, unable to submit."
+                message.style = "display:inline; color:red;"
+            }
+        });*/
+    }
+</script>
+{% endblock %}
