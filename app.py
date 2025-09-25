@@ -693,7 +693,7 @@ def testTeamImage():
     if request.args.get("notWorking"):
             addTeamImage(open(os.path.join(root, "static/javascript/match.js"), "rb").read(), 687,"tonnieboy300")
             return "an error should have occured"
-    addTeamImage(open(os.path.join(root, "static/testImage.jpg"), "rb").read(), 687,"tonnieboy300")
+    addTeamImage(open(os.path.join(root, "static/images/testImage.jpg"), "rb").read(), 687,"tonnieboy300")
     return "ok"
 
 
