@@ -178,6 +178,10 @@ def sortMatches(matches:list):
     if otherMatches:
         otherMatches = sorted(otherMatches, key=lambda match: match["matchNumber"])
     return qualMatches + playoffMatches + finalMatches + otherMatches
+
+def sortTeams(teams:list):
+    sortedTeams = sorted(teams,key = lambda team: team["number"])
+    return sortedTeams
     
 def loadScheduleFromTBA(event:str):
     try:
@@ -587,7 +591,7 @@ def teamPage():
         team = int(request.args.get("team"))  # type: ignore
         results = getTeam(team)
     except TypeError as err:
-        return render_template("teamSelect.html",teams=getAllTeams())
+        return render_template("teamSelect.html",teams=sortTeams(getAllTeams()))
     matches = getTeamMatches(team)
     return render_template("team.html",team=results,matches=sortMatches(matches))
 
