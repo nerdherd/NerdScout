@@ -417,6 +417,63 @@ def getTeam(team:int):
     # result.close()
     return parsedResults
 
+def getTeamMatches(team:int):
+    result = matches.find({"$or":[
+        {"teams.red1":team},
+        {"teams.red2":team},
+        {"teams.red3":team},
+        {"teams.blue1":team},
+        {"teams.blue2":team},
+        {"teams.blue3":team},
+    ]})
+    parsedResults = parseResults(result)
+    result.close()
+    return parsedResults
+
+def getTeamStation(team:int, match:dict):
+    station = None
+    for key, value in match["teams"].items():
+        if value == team:
+            station = key
+            break
+    return station
+
+def getTeamScoredMatches(team:int):
+    result = getTeamMatches(team)
+    filteredResults = []
+    for match in result:
+        station = getTeamStation(team, match)
+        if not station:
+            app.logger.error(f"Could not get scored matches for {team}: Failed to get station from match {match["compLevel"]}{match["matchNumber"]} set {match["setNumber"]}.")
+            abort(500)
+        if station in match["results"]:
+            filteredResults.append(match)
+    return filteredResults
+
+# strips out the teams array and all other teams' results
+def getTeamResults(team:int):
+    matches = getTeamMatches(team)
+    results = []
+    for match in matches:
+        station = getTeamStation(team, match)
+        if not station:
+            app.logger.error(f"Could not get results for {team}: Failed to get station from match {match["compLevel"]}{match["matchNumber"]} set {match["setNumber"]}.")
+            abort(500)
+        if station in match["results"]:
+            resultArray = match["results"][station]
+            result = {"results":resultArray}
+            result["matchNumber"] = match["matchNumber"]
+            result["compLevel"] = match["compLevel"]
+            result["setNumber"] = match["setNumber"]
+            result["matchKey"] = match["matchKey"]
+            result["displayName"] = match["displayName"]
+            results.append(result)
+    return results
+        
+# @app.route("/testGetTeamMatches")
+# def testGetTeamMatches():
+#     return getTeamResults(687)
+
 def getAllTeams():
     with teams.find({}) as results:
         parsedResults = parseResults(results)
