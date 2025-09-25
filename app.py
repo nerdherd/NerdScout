@@ -482,6 +482,17 @@ def getTeamResults(team:int):
             result["displayName"] = match["displayName"]
             results.append(result)
     return results
+
+def getAverageOfScoringCategory(data:list, key:str):
+    average:float = 0
+    for item in data:
+        try:
+            average += item["results"][-1][key]
+        except:
+            app.logger.error(f'Failed to get average for key {key} in data "{data}"')
+            abort(500)
+    average /= len(data)
+    return average
         
 # @app.route("/testGetTeamMatches")
 # def testGetTeamMatches():
