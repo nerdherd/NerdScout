@@ -23,20 +23,61 @@
     {% for result in team['results'] %}
     <div class="match-data revision-{{ loop.index }}">
         <p>Scored by: {{result['scout']}}</p>
-        <ul>
-            <li>Start Position: {{ result["startPos"] }}</li>
-            <li>Left During Auto: {{ result["autoLeave"] }}</li>
-            <li>Scored Reef During Auto: {{ result["autoReef"] }}</li>
-            <li>Scored Reef During Tele: {{ result["teleReef"] }}</li>
-            <li>Scored Processor During Auto: {{ result["autoProcessor"] }}</li>
-            <li>Scored Processor During Tele: {{ result["teleProcessor"] }}</li>
-            <li>Scored Net During Auto: {{ result["autoNet"] }}</li>
-            <li>Scored Net During Tele: {{ result["teleNet"] }}</li>
-            <li>End Position: {{ result["endPos"] }}</li>
-            <li>Minor Fouls: {{ result["minorFouls"] }}</li>
-            <li>Major Fouls: {{ result["majorFouls"] }}</li>
-            <li>Comment: {{ result["comment"] }}</li>
-        </ul>
+        <div class="pos-div">
+            <div>
+                <h3>Start Position: {{ result["startPos"] }}</h3>
+            </div>
+            <img src="{{ url_for('static', filename='images/matchDisplay/startingPositions.svg') }}">
+        </div>
+        <div>
+            <div class="section-title">
+                <h2>Auto</h2>
+            </div>
+            <h3>Left During Auto:</h3>
+            <p>{{ result["autoLeave"] }}</p>
+            <h3>Scored on reef:</h3>
+            <div class="reef-div">
+                <img src="{{ url_for('static', filename='images/matchDisplay/reef.svg') }}">
+                <div>
+                    <p class="reef-l4">L4: {{ result["autoReef"][3] }}</p>
+                    <p class="reef-l3">L3: {{ result["autoReef"][2] }}</p>
+                    <p class="reef-l2">L2: {{ result["autoReef"][1] }}</p>
+                    <p class="reef-l1">L1: {{ result["autoReef"][0] }}</p>
+                </div>
+            </div>
+            <h3>Scored on processor:</h3>
+            <p>{{ result["autoProcessor"] }}</p>
+            <h3>Scored on net:</h3>
+            <p>{{ result["autoNet"] }}</p>
+        </div>
+        <div>
+            <div class="section-title">
+                <h2>Teleop</h2>
+            </div>
+            <h3>Scored on reef:</h3>
+            <div class="reef-div">
+                <img src="{{ url_for('static', filename='images/matchDisplay/reef.svg') }}">
+                <div>
+                    <p class="reef-l4">L4: {{ result["teleReef"][3] }}</p>
+                    <p class="reef-l3">L3: {{ result["teleReef"][2] }}</p>
+                    <p class="reef-l2">L2: {{ result["teleReef"][1] }}</p>
+                    <p class="reef-l1">L1: {{ result["teleReef"][0] }}</p>
+                </div>
+            </div>
+            <h3>Scored on processor:</h3>
+            <p>{{ result["teleProcessor"] }}</p>
+            <h3>Scored on net:</h3>
+            <p>{{ result["teleNet"] }}</p>
+        </div>
+        <div class="section-title"></div>
+        <p>End position: {{ result["endPos"] }}</p>
+        {% if result["minorFouls"]>0 %}
+        <p>Minor fouls: {{ result["minorFouls"] }}</p>
+        {% endif %}
+        {% if result["majorFouls"]>0 %}
+        <p>Major fouls: {{ result["majorFouls"] }}</p>
+        {% endif %}
+        <p>Comment: {{ result["comment"] }}</p>
     </div>
     {% endfor %}
     </div>
