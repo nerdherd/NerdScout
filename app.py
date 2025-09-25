@@ -418,6 +418,12 @@ def addTeamImage(data,team:int,user:str):
                       }
                      )
 
+def editComment(team:int,comment:str):
+    teams.update_one(
+        {"number":team},
+        {"$set": {"comment":comment}}
+    )
+
 def getTeam(team:int):
     result = teams.find_one(
         {
