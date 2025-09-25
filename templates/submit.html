@@ -13,6 +13,7 @@
         });
     }
 </script>
+<script src="{{ url_for('static', filename='javascript/submit.js') }}" defer></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/input.css') }}">
 {% endblock %}
 
@@ -20,11 +21,12 @@
 
 {% block content %}
 <div class="takisBaro">
-    <button>Match</button>
-    <button>Auto</button>
-    <button>Teleop</button>
+    <button id="matchBtn"onClick="showMatch()" >Match</button>
+    <button id="autoBtn" onClick="showAuto()">Auto</button>
+    <button id="teleopBtn" onClick="showTeleop()">Teleop</button>
 </div>
-<div class="match">
+
+<div id="match" style="display: inline;">
     <p>Scouter Name</p>
     <input type="text">
     <p>Match Number</p>
@@ -32,7 +34,8 @@
     <p>Team number</p>
     <input type="number">
 </div>
-<div class="auto">
+
+<div id="auto" style="display: none;">
 
 
     <p>Starting position</p>
@@ -92,7 +95,7 @@
 
 </div>
 
-<div class="teleop">
+<div id="teleop" style="display: none;">
 
     <p>Coral</p>
 
@@ -163,11 +166,6 @@
     <p>Comments</p>
     <input class="text">
     
-</div>
-
-<div class="endgame">
-    
-
 </div>
 
 <button onclick="submitData()">Submit</button>
