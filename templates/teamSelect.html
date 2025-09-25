@@ -28,13 +28,13 @@
 <ul>
 {% for team in teams %}
     <div class="team-div" data-name="{{ team['shortName'] }}" data-num="{{ team['number'] }}">
+        <br>
         <h1>{{ team["shortName"] }} - {{ team["number"] }}</h1>
         <p>{{ team["longName"] }}</p>
         <a href="?team={{ team['number'] }}">To Page</a>
         <!-- <p>{{ team }}</p> -->
         <br><br><br>
     </div>
-    <br>
 {% endfor %}
 </ul>
 

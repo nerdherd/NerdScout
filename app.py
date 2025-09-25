@@ -444,7 +444,7 @@ def getTeamScoredMatches(team:int):
     for match in result:
         station = getTeamStation(team, match)
         if not station:
-            app.logger.error(f"Could not get scored matches for {team}: Failed to get station from match {match["compLevel"]}{match["matchNumber"]} set {match["setNumber"]}.")
+            app.logger.error(f'Could not get scored matches for {team}: Failed to get station from match {match["compLevel"]}{match["matchNumber"]} set {match["setNumber"]}.')
             abort(500)
         if station in match["results"]:
             filteredResults.append(match)
@@ -457,7 +457,7 @@ def getTeamResults(team:int):
     for match in matches:
         station = getTeamStation(team, match)
         if not station:
-            app.logger.error(f"Could not get results for {team}: Failed to get station from match {match["compLevel"]}{match["matchNumber"]} set {match["setNumber"]}.")
+            app.logger.error(f'Could not get results for {team}: Failed to get station from match {match["compLevel"]}{match["matchNumber"]} set {match["setNumber"]}.')
             abort(500)
         if station in match["results"]:
             resultArray = match["results"][station]
