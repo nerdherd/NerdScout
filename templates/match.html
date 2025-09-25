@@ -17,6 +17,7 @@
 {% for team in teamSection %}
 <div class="team-{{ loop.index }}">
     <p>Team Number {{ team['teamNumber'] }}</p>
+    <a href="{{ url_for('teamPage',team=team['teamNumber']) }}">To team page</a>
     {% if team["hasData"] %}
     <div class="results-div">
     {% for result in team['results'] %}

@@ -22,8 +22,8 @@
 
 .red-table > div, .blue-table > div {
     width:100%;
-    border:1px dotted black;
-    border-bottom: 1px solid black;
+    border:1px dotted white;
+    /* border-bottom: 1px solid white; */
 }
 
 .spacer {
@@ -31,7 +31,7 @@
 }
 
 .match-data{
-    border:1px dotted black;
+    border:1px dotted white;
 }
 
 
