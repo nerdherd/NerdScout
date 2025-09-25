@@ -179,12 +179,7 @@ def sortMatches(matches:list):
         otherMatches = sorted(otherMatches, key=lambda match: match["matchNumber"])
     return qualMatches + playoffMatches + finalMatches + otherMatches
     
-
-
-
-def addScheduleFromTBA(event: str):
-    if matches.count_documents({}) != 0:
-        abort(409)
+def loadScheduleFromTBA(event:str):
     try:
         data = requests.get(
             f"https://www.thebluealliance.com/api/v3/event/{event}/matches/simple",
@@ -198,10 +193,22 @@ def addScheduleFromTBA(event: str):
     except:
         app.logger.error(f"Failed to load match data for {event} from TBA.")
         abort(500)
+    return data
+
+def addScheduleFromTBA(event: str):
+    if matches.count_documents({}) != 0:
+        abort(409)
+    data = loadScheduleFromTBA(event)
     for match in data:
         addMatchFromTBA(match)
     return "ok"
 
+def updateScheduleFromTBA(event: str):
+    newData = loadScheduleFromTBA(event)
+    for match in newData:
+        results = matches.count_documents({"matchKey":match["key"]})
+        if results == 0:
+            addMatchFromTBA(match)
 
 def addTeam(number: int, longName: str, shortName: str, comment: str = ""):
     teams.insert_one(
@@ -648,6 +655,17 @@ def scheduleEventPage():
         except:
             abort(400)
         addScheduleFromTBA(event)
+    return render_template("addSchedule.html")
+
+@app.route("/updateSchedule", methods=["GET", "POST"])
+def updateSchedulePage():
+    if request.method == "POST":
+        try:
+            data = request.json
+            event = str(data["code"]) # type: ignore
+        except:
+            abort(400)
+        updateScheduleFromTBA(event)
     return render_template("addSchedule.html")
 
 
