@@ -13,11 +13,163 @@
         });
     }
 </script>
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/input.css') }}">
 {% endblock %}
 
 {% block title %}Error {{code}}{% endblock %}
 
 {% block content %}
+<div class="takisBaro">
+    <button>Match</button>
+    <button>Auto</button>
+    <button>Teleop</button>
+</div>
+<div class="match">
+    <p>Scouter Name</p>
+    <input type="text">
+    <p>Match Number</p>
+    <input type="number">
+    <p>Team number</p>
+    <input type="number">
+</div>
+<div class="auto">
+
+
+    <p>Starting position</p>
+    <button>One</button>
+    <button>Two</button>
+    <button>Three</button>
+
+    <p>Leave</p>
+    <input type="checkbox">
+
+    <p>Coral</p>
+
+    <p>L1</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    <p>L2</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    <p>L3</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    <p>L4</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    Algae
+
+    <p>Processor</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+    
+    <p>Net</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+
+</div>
+
+<div class="teleop">
+
+    <p>Coral</p>
+
+    <p>L1</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    <p>L2</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    <p>L3</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    <p>L4</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    Algae
+
+    <p>Processor</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+    
+    <p>Net</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    <p>Ending position</p>
+    <button>None</button>
+    <button>Park</button>
+    <button>Shallow</button>
+    <button>Deep</button>
+
+    <p>Minor Fouls</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    <p>Major Fouls</p>
+    <div class="counter">
+        <button>+</button>
+        <p>0</p>
+        <button>-</button>
+    </div>
+
+    <p>Comments</p>
+    <input class="text">
+    
+</div>
+
+<div class="endgame">
+    
+
+</div>
+
 <button onclick="submitData()">Submit</button>
 
 {% endblock %}
