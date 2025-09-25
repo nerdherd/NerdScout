@@ -22,4 +22,12 @@
 
 <p>{{ team }}</p>
 
+<ul>
+    {% for match in matches %}
+    <li>
+        <a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],setNum=match['setNumber'],compLevel=match['compLevel']) }}">{{match['displayName']}}</a>
+    </li>
+    {% endfor %}
+</ul>
+
 {% endblock %}

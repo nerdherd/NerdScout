@@ -581,7 +581,8 @@ def teamPage():
         results = getTeam(team)
     except TypeError as err:
         return render_template("teamSelect.html",teams=getAllTeams())
-    return render_template("team.html",team=results)
+    matches = getTeamMatches(team)
+    return render_template("team.html",team=results,matches=sortMatches(matches))
 
 
 @app.route("/scoreRobotTest")
