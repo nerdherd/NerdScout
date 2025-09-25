@@ -1,0 +1,31 @@
+.takisBaro{
+    width:100vw;
+}
+
+.takisBaro button{
+    width: 33%;
+    border-radius: 0px;
+}
+
+.counter button{
+    display: inline;
+}
+
+.counter p{
+    display: inline;
+}
+
+.submitButton{
+    margin:10px;
+    margin-left: 0px;
+}
+
+.submitDiv{
+    display: flex;
+    justify-content: center;
+}
+
+.mainInput{
+    display: flex;
+    justify-content: center;
+}
