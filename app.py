@@ -418,10 +418,10 @@ def addTeamImage(data,team:int,user:str):
                       }
                      )
 
-def addComment(team:int,comment:str):
+def addComment(team:int,comment:str,user:str):
     teams.update_one(
         {"number":team},
-        {"$push": {"comment":comment}}
+        {"$push": {"comments":{"comment":comment,"user":user}}}
     )
 
 def getTeam(team:int):
@@ -716,10 +716,11 @@ def setTeamComment():
         try:
             team = int(submission["team"]) #type: ignore
             comment = submission["comment"] #type: ignore
+            user = session["username"] #type: ignore
         except TypeError as e:
             app.logger.warning(e)
             abort(400)
-        addComment(team,comment)
+        addComment(team,comment,user)
         return "ok"
     else:
         team=0
