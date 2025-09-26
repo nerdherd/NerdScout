@@ -277,6 +277,18 @@ def scoreRobotInMatch(
                     "endPos": endPos.value,
                     "minorFouls": minorFouls,
                     "majorFouls": majorFouls,
+                    "score": calculateScore(
+                        autoLeave,
+                        autoReef,
+                        teleReef,
+                        autoProcessor,
+                        teleProcessor,
+                        autoNet,
+                        teleNet,
+                        endPos.value,
+                        minorFouls,
+                        majorFouls,
+                    ),
                     "comment": comment,
                     "scout": scout,
                 }
