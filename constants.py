@@ -29,8 +29,13 @@ STATION_LIST = [station.value for station in Station]
 
 
 class StartingPosition(Enum):
+    BLUE = 1
     TOP = 1
+
+    CENTER = 2
     MIDDLE = 2
+
+    RED = 3
     BOTTOM = 3
 
 
