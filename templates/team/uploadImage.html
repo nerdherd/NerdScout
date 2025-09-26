@@ -12,7 +12,7 @@
     <input type="file" accept="image/png, image/jpeg" id="image" name="image" required>
     <br/>
     <label for="team">Team Number</label>
-    <input type="number" min="1" max="99999" id="team" name="team" required>
+    <input type="number" min="1" max="99999" id="team" name="team" {% if team>0 %}value={{ team }}{% endif %} required>
     <br/>
     <input type="submit">
 </form>

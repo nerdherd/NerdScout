@@ -210,7 +210,7 @@ def testTeamGetting():
     return "ok"
 
 
-@app.route("/addTeamImage", methods=["GET", "POST"])
+@app.route("/team/addTeamImage", methods=["GET", "POST"])
 def addTeamImagePage():
     if request.method == "POST":
         try:
@@ -219,7 +219,12 @@ def addTeamImagePage():
         except Exception as e:
             app.logger.warning(e)
             abort(400)
-    return render_template("uploadImage.html")
+    team = 0
+    try:
+        team = int(request.args.get("team"))  # type: ignore
+    except:
+        pass
+    return render_template("team/uploadImage.html",team=team)
 
 
 @app.route("/team/addComment", methods=["GET", "POST"])
@@ -239,8 +244,8 @@ def setTeamComment():
         team = 0
         try:
             team = int(request.args.get("team"))  # type: ignore
-        except TypeError as e:
-            app.logger.warning(e)
+        except:
+            pass
         return render_template("team/addComment.html", team=team)
 
 

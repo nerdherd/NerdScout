@@ -20,8 +20,8 @@
 
 <p>Comment: {{ team["comments"] }}</p>
 
-<a>Add an image</a>
-<a>Set team comment</a>
+<a href="{{ url_for('addTeamImagePage', team=team['number']) }}">Add an image</a>
+<a href="{{ url_for('setTeamComment', team=team['number']) }}">Set team comment</a>
 
 <p>{{ team }}</p>
 
