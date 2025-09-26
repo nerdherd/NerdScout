@@ -1,7 +1,16 @@
 from enum import Enum
 import os
 from typing import List
-from flask import Flask, abort, redirect, render_template, request, session, url_for, Blueprint
+from flask import (
+    Flask,
+    abort,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+    Blueprint,
+)
 import filetype
 
 app = Flask(__name__)
@@ -46,6 +55,7 @@ class CompLevel(Enum):
     F = "f"
     FINAL = "f"
 
+
 root = os.path.dirname(__file__)
 TBA_KEY = open(os.path.join(root, "secrets/theBlueAlliance"), "r").read()
 # TODO: add all text descriptions for all match types
@@ -53,6 +63,7 @@ compLevelText = {"qm": "Qualifying", "sf": "Playoff", "f": "Final"}
 freeEndpoints = frozenset(
     ["login", "newUserPage", "static", "index", "logout"]
 )  # endpoints that shouldn't require signing in
+
 
 def calculateScore(
     autoLeave: bool,
@@ -101,21 +112,23 @@ def calculateScore(
 
     return score
 
+
 def isImage(file):
     try:
-       result = filetype.guess_extension(file)
-       return False if not (result == "png" or result == "jpg") else result
+        result = filetype.guess_extension(file)
+        return False if not (result == "png" or result == "jpg") else result
     except Exception as e:
-        app.logger.info(f"Failed to check file type for {request.remote_addr}: {e}") #type: ignore
+        app.logger.info(f"Failed to check file type for {request.remote_addr}: {e}")  # type: ignore
         return False
-    
-def getAverageOfScoringCategory(data:list, key:str):
-    average:float = 0
+
+
+def getAverageOfScoringCategory(data: list, key: str):
+    average: float = 0
     for item in data:
         try:
             average += item["results"][-1][key]
         except:
-            app.logger.error(f'Failed to get average for key {key} in data "{data}"') #type: ignore
+            app.logger.error(f'Failed to get average for key {key} in data "{data}"')  # type: ignore
             abort(500)
     average /= len(data)
     return average

@@ -4,7 +4,16 @@ import os
 import re
 import filetype
 import urllib.parse
-from flask import Flask, abort, redirect, render_template, request, session, url_for, Blueprint
+from flask import (
+    Flask,
+    abort,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+    Blueprint,
+)
 import requests
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
@@ -20,14 +29,13 @@ from database import *
 from auth import *
 
 
-
-
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.config["JSON_SORT_KEYS"] = False
 
 app.config.from_mapping(
     SECRET_KEY=open(os.path.join(root, "secrets/secretKey"), "r").read()
 )
+
 
 # Front-end Handlers
 @app.route("/")
@@ -52,9 +60,11 @@ def testMatchAddition():
     )
     return "ok"
 
+
 @app.route("/getMatchTest")
 def testMatchGetting():
     return getMatch(CompLevel.QUALIFYING, 9999, 1)
+
 
 @app.route("/match")
 def renderMatch():
@@ -64,14 +74,14 @@ def renderMatch():
         setNumber = int(request.args.get("setNum"))  # type: ignore
         results = getMatch(compLevel, matchNumber, setNumber)[-1]
     except TypeError as err:
-        return render_template("matchSelect.html",matches=sortMatches(getAllMatches()))
+        return render_template("matchSelect.html", matches=sortMatches(getAllMatches()))
     except IndexError as err:
         # this would occur if no match is found, thus results is empty.
         abort(404)
-    
+
     # view test match with this link:
     # http://127.0.0.1:5000/match?matchNum=9999&compLevel=qm&setNum=1
-    
+
     redTeams = []
     blueTeams = []
     matchData = {
@@ -100,15 +110,16 @@ def renderMatch():
         "match.html", teams=[redTeams, blueTeams], matchData=matchData
     )
 
+
 @app.route("/team")
 def teamPage():
     try:
         team = int(request.args.get("team"))  # type: ignore
         results = getTeam(team)
     except TypeError as err:
-        return render_template("team/teamSelect.html",teams=sortTeams(getAllTeams()))
+        return render_template("team/teamSelect.html", teams=sortTeams(getAllTeams()))
     matches = getTeamMatches(team)
-    return render_template("team/team.html",team=results,matches=sortMatches(matches))
+    return render_template("team/team.html", team=results, matches=sortMatches(matches))
 
 
 @app.route("/scoreRobotTest")
@@ -165,23 +176,25 @@ def testScoreCalc():
 def testDataGetting():
     return addScheduleFromTBA("2025caav")
 
+
 @app.route("/scheduleEvent", methods=["GET", "POST"])
 def scheduleEventPage():
     if request.method == "POST":
         try:
             data = request.json
-            event = str(data["code"]) # type: ignore
+            event = str(data["code"])  # type: ignore
         except:
             abort(400)
         addScheduleFromTBA(event)
     return render_template("addSchedule.html")
+
 
 @app.route("/updateSchedule", methods=["GET", "POST"])
 def updateSchedulePage():
     if request.method == "POST":
         try:
             data = request.json
-            event = str(data["code"]) # type: ignore
+            event = str(data["code"])  # type: ignore
         except:
             abort(400)
         updateScheduleFromTBA(event)
@@ -196,44 +209,55 @@ def testTeamGetting():
     addTeamsFromTBA(event)
     return "ok"
 
+
 @app.route("/addTeamImage", methods=["GET", "POST"])
 def addTeamImagePage():
     if request.method == "POST":
         try:
             image = request.data
-            addTeamImage(image,int(request.args.get("team")),session["username"]) # type: ignore
+            addTeamImage(image, int(request.args.get("team")), session["username"])  # type: ignore
         except Exception as e:
             app.logger.warning(e)
             abort(400)
     return render_template("uploadImage.html")
 
-@app.route("/team/addComment", methods=["GET","POST"])
+
+@app.route("/team/addComment", methods=["GET", "POST"])
 def setTeamComment():
     if request.method == "POST":
         submission = request.json
         try:
-            team = int(submission["team"]) #type: ignore
-            comment = submission["comment"] #type: ignore
-            user = session["username"] #type: ignore
+            team = int(submission["team"])  # type: ignore
+            comment = submission["comment"]  # type: ignore
+            user = session["username"]  # type: ignore
         except TypeError as e:
             app.logger.warning(e)
             abort(400)
-        addComment(team,comment,user)
+        addComment(team, comment, user)
         return "ok"
     else:
-        team=0
+        team = 0
         try:
             team = int(request.args.get("team"))  # type: ignore
         except TypeError as e:
             app.logger.warning(e)
-        return render_template("team/addComment.html",team=team)
+        return render_template("team/addComment.html", team=team)
+
 
 @app.route("/testTeamImage")
 def testTeamImage():
     if request.args.get("notWorking"):
-            addTeamImage(open(os.path.join(root, "static/javascript/match.js"), "rb").read(), 687,"tonnieboy300")
-            return "an error should have occured"
-    addTeamImage(open(os.path.join(root, "static/images/testImage.jpg"), "rb").read(), 687,"tonnieboy300")
+        addTeamImage(
+            open(os.path.join(root, "static/javascript/match.js"), "rb").read(),
+            687,
+            "tonnieboy300",
+        )
+        return "an error should have occured"
+    addTeamImage(
+        open(os.path.join(root, "static/images/testImage.jpg"), "rb").read(),
+        687,
+        "tonnieboy300",
+    )
     return "ok"
 
 
@@ -286,8 +310,8 @@ def submitScorePage():
                 CompLevel(compLevel),
                 Station(currentRobot),  # str
                 StartingPosition(
-                    submission["startPos"] # int between 1-3 # type: ignore
-                ),  
+                    submission["startPos"]  # int between 1-3 # type: ignore
+                ),
                 submission["autoLeave"],  # bool # type: ignore
                 submission["autoReef"],  # array of four ints # type: ignore
                 submission["teleReef"],  # array of four ints # type: ignore
@@ -352,6 +376,7 @@ def userManagementPage():
             f"User {session['username']} ({request.remote_addr}) {'approved' if decision else 'unapproved'} {user}."
         )
     return render_template("accountManagement.html", users=getAllUsers())
+
 
 @app.before_request
 def before_request():
