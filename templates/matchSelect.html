@@ -36,8 +36,18 @@
     {% for match in matches %}
     <div class="match-div" data-compLevel="{{ match['compLevel'] }}" data-matchNumber="{{ match['matchNumber'] }}" data-setNumber="{{ match['setNumber'] }}" data-redTeams='{{ match["teams"]["red1"] }},{{ match["teams"]["red2"] }},{{ match["teams"]["red3"] }}' data-blueTeams='{{ match["teams"]["blue1"] }},{{ match["teams"]["blue2"] }},{{ match["teams"]["blue3"] }}'>
         <h2>{{ match["displayName"] }}</h2>
-        <p>Red teams: {{ match["teams"]["red1"] }}, {{ match["teams"]["red2"] }}, {{ match["teams"]["red3"] }}</p>
-        <p>Blue teams: {{ match["teams"]["blue1"] }}, {{ match["teams"]["blue2"] }}, {{ match["teams"]["blue3"] }}</p>
+        <p>Click on the teams to go to the scouting page</p>
+        <p>Red teams: 
+            <a href="{{ url_for('submitScorePage', team=match['teams']['red1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["red1"] }}</a>, 
+            <a href="{{ url_for('submitScorePage', team=match['teams']['red2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["red2"] }}</a>,
+            <a href="{{ url_for('submitScorePage', team=match['teams']['red3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["red3"] }}</a>
+        </p>
+        <p>Blue teams: 
+            <a href="{{ url_for('submitScorePage', team=match['teams']['blue1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["blue1"] }}</a>, 
+            <a href="{{ url_for('submitScorePage', team=match['teams']['blue2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["blue2"] }}</a>,
+            <a href="{{ url_for('submitScorePage', team=match['teams']['blue3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["blue3"] }}</a>
+        </p>
+        
         <p><a href="?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }}">Link</a></p>
         <p class="small">complevel: {{ match['compLevel'] }}, matchnumber: {{ match['matchNumber'] }}, setnumber: {{ match['setNumber'] }}</p>
     </div>
