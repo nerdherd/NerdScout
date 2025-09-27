@@ -28,7 +28,8 @@
     });
 
     function submitData(image, number){
-        fetch(window.location.href+"?team="+number, {
+        //window.location.href+"?team="+number
+        fetch("{{ url_for('addTeamImagePage') }}"+"?team="+number, {
         method: "POST",
         body: image,
         headers: {
