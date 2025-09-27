@@ -38,14 +38,14 @@
         <h2>{{ match["displayName"] }}</h2>
         <p>Click on the teams to go to the scouting page</p>
         <p>Red teams: 
-            <a href="{{ url_for('submitScorePage', team=match['teams']['red1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["red1"] }}</a>, 
-            <a href="{{ url_for('submitScorePage', team=match['teams']['red2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["red2"] }}</a>,
-            <a href="{{ url_for('submitScorePage', team=match['teams']['red3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["red3"] }}</a>
+            <a href="{{ url_for('submitScorePage', team=match['teams']['red1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red1') }}">{{ match["teams"]["red1"] }}</a>, 
+            <a href="{{ url_for('submitScorePage', team=match['teams']['red2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red2') }}">{{ match["teams"]["red2"] }}</a>,
+            <a href="{{ url_for('submitScorePage', team=match['teams']['red3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red3') }}">{{ match["teams"]["red3"] }}</a>
         </p>
         <p>Blue teams: 
-            <a href="{{ url_for('submitScorePage', team=match['teams']['blue1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["blue1"] }}</a>, 
-            <a href="{{ url_for('submitScorePage', team=match['teams']['blue2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["blue2"] }}</a>,
-            <a href="{{ url_for('submitScorePage', team=match['teams']['blue3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber']) }}">{{ match["teams"]["blue3"] }}</a>
+            <a href="{{ url_for('submitScorePage', team=match['teams']['blue1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue1') }}">{{ match["teams"]["blue1"] }}</a>, 
+            <a href="{{ url_for('submitScorePage', team=match['teams']['blue2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue2') }}">{{ match["teams"]["blue2"] }}</a>,
+            <a href="{{ url_for('submitScorePage', team=match['teams']['blue3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue3') }}">{{ match["teams"]["blue3"] }}</a>
         </p>
         
         <p><a href="?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }}">Link</a></p>
