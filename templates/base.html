@@ -13,6 +13,7 @@
     <div class="footer-spacer"></div>
     <footer>
         {% if session["username"] %}<p>Logged in as {{ session["username"] }}</p>{% else %}<a href="{{ url_for('login',next=request.path) }}">login</a> <a href="{{ url_for('newUserPage') }}">create account</a>{% endif %}
+        <p><a href="{{ url_for('aboutPage')}}">about</a></p>
         <p>The Nerd Herd 687</p>
     </footer>
 </body>

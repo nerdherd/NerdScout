@@ -443,6 +443,10 @@ def userManagementPage():
         )
     return render_template("accountManagement.html", users=getAllUsers())
 
+@app.route("/about")
+def aboutPage():
+    return render_template('about.html')
+
 
 @app.before_request
 def before_request():

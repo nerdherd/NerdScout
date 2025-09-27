@@ -141,3 +141,23 @@
     font-weight: 100;
     font-style: italic;
 }
+
+@font-face {
+    font-family: "Material Symbols Sharp";
+    src: url("/static/fonts/MaterialSymbols/MaterialSymbolsSharp.woff2") format("woff2");
+    font-style: normal;
+}
+
+.material-symbols-sharp {
+  font-family: 'Material Symbols Sharp';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
