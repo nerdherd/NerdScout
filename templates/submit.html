@@ -3,6 +3,11 @@
 {% block head %}
 <script src="{{ url_for('static', filename='javascript/submit.js') }}" defer></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/submit.css') }}">
+<script>
+    function redirect_to_match(){
+        window.location.href = "{{ url_for('renderMatch',matchNum=matchVal,compLevel=compLvl,setNum=setVal) | safe}}";
+    }
+</script>
 {% endblock %}
 
 {% block title %}Error {{code}}{% endblock %}

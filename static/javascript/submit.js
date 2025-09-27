@@ -183,6 +183,12 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
     headers: {
         "Content-type": "application/json; charset=UTF-8"
     }
-    });
+    }).then(response =>{
+        if (response.ok){
+            redirect_to_match()
+        } else{
+            alert("There was an error submitting.");
+        }
+    });;
 }
 
