@@ -3,6 +3,7 @@
 {% block head %}
 <!-- <script src="{{ url_for('static', filename='javascript/match.js') }}" defer></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/match.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static',filename='stylesheets/team.css') }}">
 {% endblock %}
 
 {% block title %}Team Viewer {{ team["number"] }}{% endblock %}
@@ -15,7 +16,7 @@
 <p>{{ team["longName"] }}</p>
 
 {% for image in team["images"] %}
-<img src="{{ url_for('static', filename=image['location']) }}">
+<img src="{{ url_for('static', filename=image['location']) }}" class="teamImage">
 {% endfor %}
 
 <p>Comment: {{ team["comments"] }}</p>
@@ -30,8 +31,8 @@
     <li>Mean: {{ value["mean"] }}</li>
     <li>Median: {{ value["median"] }}</li>
     <li>Mode: {{ value["mode"] }}</li>
-    <li>Lowest: {{ value["lowestMatch"] }}</li>
-    <li>Highest: {{ value["highestMatch"] }}</li>
+    <li>Lowest: {{ value["lowestMatch"]["value"] }}{% if value["lowestMatch"]["displayName"]%} in <a href="{{ url_for('renderMatch',matchNum=value['lowestMatch']['matchNumber'],setNum=value['lowestMatch']['setNumber'],compLevel=value['lowestMatch']['compLevel']) }}">{{ value['lowestMatch']['displayName'] }}</a>{% endif %}</li>
+    <li>Highest: {{ value["highestMatch"]["value"] }}{% if value["highestMatch"]["displayName"]%} in <a href="{{ url_for('renderMatch',matchNum=value['highestMatch']['matchNumber'],setNum=value['highestMatch']['setNumber'],compLevel=value['highestMatch']['compLevel']) }}">{{ value['highestMatch']['displayName'] }}</a>{% endif %}</li>
 </ul>
 {% endfor %}
 

@@ -39,57 +39,65 @@
 
 
         <p>Starting position</p>
-        <button id="SP-1">One</button>
-        <button id="SP-2">Two</button>
-        <button id="SP-3">Three</button>
+        <button id="SP-1" onclick="setStartPos(1)">One</button>
+        <button id="SP-2" onclick="setStartPos(2)">Two</button>
+        <button id="SP-3" onclick="setStartPos(3)">Three</button>
 
-        <p>Leave</p>
-        <input type="checkbox">
+        <div class="cbDiv">
+            <p>Leave</p>
+            <input type="checkbox" id="leave">
+        </div>
 
         <p>Coral</p>
 
-        <p>L1</p>
+        
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>L1</p>
+            <button onclick="autoReefSub(0)">-</button>
+            <p id="aCL1">0</p>
+            <button onclick="autoReefAdd(0)">+</button>
         </div>
 
-        <p>L2</p>
+        
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>L2</p>
+            <button onclick="autoReefSub(1)">-</button>
+            <p id="aCL2">0</p>
+            <button onclick="autoReefAdd(1)">+</button>
         </div>
 
-        <p>L3</p>
+
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>L3</p>
+            <button onclick="autoReefSub(2)">-</button>
+            <p id="aCL3">0</p>
+            <button onclick="autoReefAdd(2)">+</button>
         </div>
 
-        <p>L4</p>
-        <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+        
+        <div class="counter" >
+            <p>L4</p>
+            <button onclick="autoReefSub(3)">-</button>
+            <p id="aCL4">0</p>
+            <button onclick="autoReefAdd(3)">+</button>
         </div>
 
-        Algae
+        <p>Algae</p>
 
-        <p>Processor</p>
+        
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>Processor</p>
+            <button onclick="procNetSub(0)">-</button>
+            <p id="aPr">0</p>
+            <button onclick="procNetAdd(0)">+</button>
         </div>
         
-        <p>Net</p>
+        
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>Net</p>
+            <button onclick="procNetSub(2)">-</button>
+            <p id="aNe">0</p>
+            <button onclick="procNetAdd(2)">+</button>
         </div>
 
 
@@ -99,49 +107,62 @@
 
         <p>Coral</p>
 
-        <p>L1</p>
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>L1</p>
+            <button onclick="teleReefSub(0)">-</button>
+            <p id="tCL1">0</p>
+            <button onclick="teleReefAdd(0)">+</button>
         </div>
 
-        <p>L2</p>
+        
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>L2</p>
+            <button onclick="teleReefSub(1)">-</button>
+            <p id="tCL2">0</p>
+            <button onclick="teleReefAdd(1)">+</button>
         </div>
 
-        <p>L3</p>
+
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>L3</p>
+            <button onclick="teleReefSub(2)">-</button>
+            <p id="tCL3">0</p>
+            <button onclick="teleReefAdd(2)">+</button>
         </div>
 
-        <p>L4</p>
+        
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>L4</p>
+            <button onclick="teleReefSub(3)">-</button>
+            <p id="tCL4">0</p>
+            <button onclick="teleReefAdd(3)">+</button>
         </div>
 
-        Algae
 
-        <p>Processor</p>
+        <p>Algae</p>
+
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>Processor</p>
+            <button onclick="procNetSub(1)">-</button>
+            <p id="tPr">0</p>
+            <button onclick="procNetAdd(1)">+</button>
         </div>
         
-        <p>Net</p>
+        
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <p>Net</p>
+            <button onclick="procNetSub(3)">-</button>
+            <p id="tNe">0</p>
+            <button onclick="procNetAdd(3)">+</button>
         </div>
+
+        <p>Ending Position</p>
+        <select id="endPos">
+            <option value="None">None</option>
+            <option value="Park">Park</option>
+            <option value="Shallow">Shallow</option>
+            <option value="Deep">Deep</option>
+        </select>
 
         <p>Ending position</p>
         <button>None</button>
@@ -163,15 +184,16 @@
             <button>+</button>
         </div>
 
-        <p>Comments</p>
-        <input class="text">
+        <div>
+            <p>Comments</p>
+            <input class="text">
+        </div>
         
+        <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
     </div>
 
 </div>
 
-<div class="submitDiv">
-    <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
-</div>
+
 
 {% endblock %}
