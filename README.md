@@ -1,4 +1,4 @@
-# Nerd Scout
+# NerdScout
 The scouting app of Nerd Herd 687.
 
 ## Setup
@@ -42,7 +42,7 @@ Note: You only have to set up the API key the first time.
 
 Make sure you have Python 3 installed.
 
-Create a terminal in the directory Nerd Scout is located in. Then, make a virtual environment and activate it.
+Create a terminal in the directory NerdScout is located in. Then, make a virtual environment and activate it.
 
 ```bash
 python3 -m venv .venv
@@ -89,4 +89,4 @@ or use debug mode.
 flask run --debug
 ```
 
-This should open a development server and display an IP Address. Navigate to this IP address to view Nerd Scout
+This should open a development server and display an IP Address. Navigate to this IP address to view NerdScout.
