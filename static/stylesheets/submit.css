@@ -12,6 +12,8 @@
 
 .counter{
     border-color: red;
+    display: flex;
+    justify-content: center;
 }
 
 .counter button{
@@ -27,6 +29,7 @@
 .submitButton{
     margin:10px;
     margin-left: 0px;
+    
 }
 
 .submitDiv{
@@ -41,4 +44,9 @@
 
 p{
     text-align: center;
+}
+
+.cbDiv{
+    display: flex;
+    justify-content:center;
 }
