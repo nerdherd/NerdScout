@@ -78,7 +78,7 @@ def renderMatch():
         setNumber = int(request.args.get("setNum"))  # type: ignore
         results = getMatch(compLevel, matchNumber, setNumber)[-1]
     except TypeError as err:
-        return render_template("matchSelect.html", matches=sortMatches(getAllMatches()))
+        return render_template("match/matchSelect.html", matches=sortMatches(getAllMatches()))
     except IndexError as err:
         # this would occur if no match is found, thus results is empty.
         abort(404)
@@ -111,7 +111,7 @@ def renderMatch():
                 f"Team {results['teams'][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance."
             )
     return render_template(
-        "match.html", teams=[redTeams, blueTeams], matchData=matchData
+        "match/match.html", teams=[redTeams, blueTeams], matchData=matchData
     )
 
 
@@ -223,7 +223,7 @@ def scheduleEventPage():
         except:
             abort(400)
         addScheduleFromTBA(event)
-    return render_template("addSchedule.html")
+    return render_template("match/schedule/addSchedule.html")
 
 
 @app.route("/updateSchedule", methods=["GET", "POST"])
@@ -235,7 +235,7 @@ def updateSchedulePage():
         except:
             abort(400)
         updateScheduleFromTBA(event)
-    return render_template("addSchedule.html")
+    return render_template("match/schedule/addSchedule.html")
 
 
 @app.route("/testTeamGetting")
@@ -388,7 +388,7 @@ def submitScorePage():
         match = setVal
     else:
         match = matchVal
-    return render_template("submit.html",match=match,compLvl=compLvl,rbtStat=rbtStat,teamNum=teamNum,setVal=setVal, matchVal=matchVal)
+    return render_template("match/submit.html",match=match,compLvl=compLvl,rbtStat=rbtStat,teamNum=teamNum,setVal=setVal, matchVal=matchVal)
 
 curAwesome = 0
 @app.route("/mr/harder")
