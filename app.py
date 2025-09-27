@@ -387,6 +387,12 @@ def submitScorePage():
         match = matchVal
     return render_template("submit.html",match=match,compLvl=compLvl,rbtStat=rbtStat,teamNum=teamNum,setVal=setVal, matchVal=matchVal)
 
+curAwesome = 0
+@app.route("/mr/harder")
+def awesome():
+    global curAwesome
+    curAwesome=(curAwesome+1)%2
+    return render_template("awesome.html",file="harder"+str(curAwesome+1)+".jpg")
 
 @app.route("/logout")
 def logout():
