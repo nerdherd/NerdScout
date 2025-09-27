@@ -23,6 +23,18 @@
 <a href="{{ url_for('addTeamImagePage', team=team['number']) }}">Add an image</a>
 <a href="{{ url_for('setTeamComment', team=team['number']) }}">Set team comment</a>
 
+<h2>Statistics</h2>
+{% for key, value in stats.items() %}
+<h3>{{ key }}</h3>
+<ul>
+    <li>Mean: {{ value["mean"] }}</li>
+    <li>Median: {{ value["median"] }}</li>
+    <li>Mode: {{ value["mode"] }}</li>
+    <li>Lowest: {{ value["lowestMatch"] }}</li>
+    <li>Highest: {{ value["highestMatch"] }}</li>
+</ul>
+{% endfor %}
+
 <p>{{ team }}</p>
 
 <ul>

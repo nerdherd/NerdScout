@@ -119,7 +119,27 @@ def teamPage():
     except TypeError as err:
         return render_template("team/teamSelect.html", teams=sortTeams(getAllTeams()))
     matches = getTeamMatches(team)
-    return render_template("team/team.html", team=results, matches=sortMatches(matches))
+    stats = {
+        "startPos": getAllStatsForCategory(getTeamResults(team),"startPos"),
+        "autoLeave": getAllStatsForCategory(getTeamResults(team),"autoLeave"),
+        "autoReefL1": getAllStatsForCategory(getTeamResults(team),"autoReef",0),
+        "autoReefL2": getAllStatsForCategory(getTeamResults(team),"autoReef",1),
+        "autoReefL3": getAllStatsForCategory(getTeamResults(team),"autoReef",2),
+        "autoReefL4": getAllStatsForCategory(getTeamResults(team),"autoReef",3),
+        "teleReefL1": getAllStatsForCategory(getTeamResults(team),"teleReef",0),
+        "teleReefL2": getAllStatsForCategory(getTeamResults(team),"teleReef",1),
+        "teleReefL3": getAllStatsForCategory(getTeamResults(team),"teleReef",2),
+        "teleReefL4": getAllStatsForCategory(getTeamResults(team),"teleReef",3),
+        "autoProcessor": getAllStatsForCategory(getTeamResults(team),"autoProcessor"),
+        "teleProcessor": getAllStatsForCategory(getTeamResults(team),"teleProcessor"),
+        "autoNet": getAllStatsForCategory(getTeamResults(team),"autoNet"),
+        "teleNet": getAllStatsForCategory(getTeamResults(team),"teleNet"),
+        "endPos": getAllStatsForCategory(getTeamResults(team),"endPos"),
+        "minorFouls": getAllStatsForCategory(getTeamResults(team),"minorFouls"),
+        "majorFouls": getAllStatsForCategory(getTeamResults(team),"majorFouls"),
+        "score": getAllStatsForCategory(getTeamResults(team),"score"),
+    }
+    return render_template("team/team.html", team=results, matches=sortMatches(matches), stats=stats)
 
 
 @app.route("/scoreRobotTest")

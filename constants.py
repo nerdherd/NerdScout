@@ -135,7 +135,7 @@ def getListOfScoringCategory(data: list, key: str, reefLevel: int = 0):
             score = item["results"][-1][key]
             if type(score) == list:
                 score = score[reefLevel]
-            scores.append(score)
+            scores.append(int(score))
         except:
             app.logger.error(f'Failed to get data for key {key} in data "{item}"')  # type: ignore
             abort(500)
@@ -154,7 +154,7 @@ def getModeOfScoringCategory(data: list, key: str, reefLevel: int = 0):
     return int(statistics.median(scores))
 
 def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
-    highestValue: int = 0
+    highestValue: int = -1
     matchKey: str = ""
     matchNumber: int = 0
     compLevel: str = ""
@@ -164,6 +164,7 @@ def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
         value = match["results"][-1][key]
         if type(value) == list:
             value = value[reefLevel]
+        value = int(value)
         if value > highestValue:
             highestValue = value
             matchKey = match["matchKey"]
@@ -194,6 +195,7 @@ def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
         value = match["results"][-1][key]
         if type(value) == list:
             value = value[reefLevel]
+        value = int(value)
         if value < lowestValue:
             lowestValue = value
             matchKey = match["matchKey"]
@@ -212,3 +214,13 @@ def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
         "reefLevel": reefLevel,
     }
     return lowestMatch
+
+def getAllStatsForCategory(data: list, key: str, reefLevel: int = 0):
+    scores: list = getListOfScoringCategory(data,key,reefLevel)
+    return {
+        "mean": float(statistics.mean(scores)),
+        "median": float(statistics.median(scores)),
+        "mode": int(statistics.mode(scores)),
+        "lowestMatch": getMatchWithLowestValue(data,key,reefLevel),
+        "highestMatch": getMatchWithHighestValue(data,key,reefLevel),
+    }
