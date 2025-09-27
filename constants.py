@@ -143,14 +143,20 @@ def getListOfScoringCategory(data: list, key: str, reefLevel: int = 0):
 
 def getMeanOfScoringCategory(data: list, key: str, reefLevel: int = 0):
     scores: list = getListOfScoringCategory(data,key,reefLevel)
+    if not scores:
+        return 0
     return float(statistics.mean(scores))
 
 def getMedianOfScoringCategory(data: list, key: str, reefLevel: int = 0):
     scores: list = getListOfScoringCategory(data,key,reefLevel)
+    if not scores:
+        return 0
     return float(statistics.median(scores))
 
 def getModeOfScoringCategory(data: list, key: str, reefLevel: int = 0):
     scores: list = getListOfScoringCategory(data,key,reefLevel)
+    if not scores:
+        return 0
     return int(statistics.median(scores))
 
 def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
@@ -172,6 +178,8 @@ def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
             compLevel = match["compLevel"]
             setNumber = match["setNumber"]
             displayName = match["displayName"]
+
+    highestValue = 0 if highestValue == -1 else highestValue
     highestMatch = {
         "value": highestValue,
         "category": key,
@@ -203,6 +211,8 @@ def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
             compLevel = match["compLevel"]
             setNumber = match["setNumber"]
             displayName = match["displayName"]
+    
+    lowestValue = 0 if lowestValue == 9999 else lowestValue
     lowestMatch = {
         "value": lowestValue,
         "category": key,
@@ -217,6 +227,14 @@ def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
 
 def getAllStatsForCategory(data: list, key: str, reefLevel: int = 0):
     scores: list = getListOfScoringCategory(data,key,reefLevel)
+    if not scores:
+        return{
+            "mean": 0,
+            "median": 0,
+            "mode": 0,
+            "lowestMatch":getMatchWithLowestValue(data,key,reefLevel),
+            "highestMatch": getMatchWithHighestValue(data,key,reefLevel),
+        }
     return {
         "mean": float(statistics.mean(scores)),
         "median": float(statistics.median(scores)),
