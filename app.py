@@ -365,7 +365,7 @@ def submitScorePage():
                 compLevel,
                 currentRobot,  # str
                 StartingPosition(
-                    submission["startPos"]  # int between 1-3 # type: ignore
+                    int(submission["startPos"])  # int between 1-3 # type: ignore
                 ),
                 bool(submission["autoLeave"]),  # bool # type: ignore
                 submission["autoReef"],  # array of four ints # type: ignore
