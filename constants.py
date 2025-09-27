@@ -15,7 +15,7 @@ import filetype
 import statistics
 
 app = Flask(__name__)
-
+root = os.path.dirname(__file__)
 
 class Station(Enum):
     RED1 = "red1"
@@ -61,8 +61,8 @@ class CompLevel(Enum):
     F = "f"
     FINAL = "f"
 
+STAT_CODES = ["mean", "median", "mode", "highest", "lowest"]
 
-root = os.path.dirname(__file__)
 TBA_KEY = open(os.path.join(root, "secrets/theBlueAlliance"), "r").read()
 # TODO: add all text descriptions for all match types
 compLevelText = {"qm": "Qualifying", "sf": "Playoff", "f": "Final"}
@@ -144,13 +144,13 @@ def getListOfScoringCategory(data: list, key: str, reefLevel: int = 0):
 def getMeanOfScoringCategory(data: list, key: str, reefLevel: int = 0):
     scores: list = getListOfScoringCategory(data,key,reefLevel)
     if not scores:
-        return 0
+        return 0.0
     return float(statistics.mean(scores))
 
 def getMedianOfScoringCategory(data: list, key: str, reefLevel: int = 0):
     scores: list = getListOfScoringCategory(data,key,reefLevel)
     if not scores:
-        return 0
+        return 0.0
     return float(statistics.median(scores))
 
 def getModeOfScoringCategory(data: list, key: str, reefLevel: int = 0):

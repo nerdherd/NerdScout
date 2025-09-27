@@ -432,6 +432,19 @@ def getUser(username: str):
     user = accounts.find_one({"username": username})
     return user
 
+def rankTeams(key:str, stat:str,sort:bool = True, reefLevel:int = 0):
+    teams = sortTeams(getAllTeams())
+    calculate = getMeanOfScoringCategory if stat == "mean" else getMedianOfScoringCategory if stat == "median" else getModeOfScoringCategory if stat == "mode" else getMatchWithHighestValue if stat == "highest" else getMatchWithLowestValue if stat == "lowest" else None
+    if not calculate:
+        return None
+    for team in teams:
+        team[key] = calculate(getTeamResults(team["number"]),key,reefLevel)
+    isDict = stat == "highest" or stat == "lowest"
+    if isDict:
+        return sorted(teams, key = lambda team: team[key]["value"],reverse = sort)
+    else:
+        return sorted(teams, key = lambda team: team[key],reverse = sort)
+
 
 # converts database results to JSON
 # the default functions get stuck on ObjectID objects

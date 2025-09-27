@@ -141,6 +141,19 @@ def teamPage():
     }
     return render_template("team/team.html", team=results, matches=sortMatches(matches), stats=stats)
 
+@app.route("/team/rank")
+def teamRankPage():
+    key = request.args.get("category")
+    stat = request.args.get("stat")
+    sort = request.args.get("sort")
+    sort = not sort == "ascending"
+    reefLevel = request.args.get("reefLevel")
+    reefLevel = 0 if not reefLevel else int(reefLevel)
+    if (not key) or (not stat in STAT_CODES):
+        abort(400)
+    return render_template("team/teamRank.html", ranking=rankTeams(key,stat,sort,reefLevel),category=key,stat=stat,sort=sort,reefLevel=reefLevel)
+    
+
 
 @app.route("/scoreRobotTest")
 def testRobotScorring():
