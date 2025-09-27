@@ -12,6 +12,7 @@ from flask import (
     Blueprint,
 )
 import filetype
+import statistics
 
 app = Flask(__name__)
 
@@ -125,15 +126,89 @@ def isImage(file):
     except Exception as e:
         app.logger.info(f"Failed to check file type for {request.remote_addr}: {e}")  # type: ignore
         return False
-
-
-def getAverageOfScoringCategory(data: list, key: str):
-    average: float = 0
+    
+# these functions use data from getResults(int)
+def getListOfScoringCategory(data: list, key: str, reefLevel: int = 0):
+    scores: list = []
     for item in data:
         try:
-            average += item["results"][-1][key]
+            score = item["results"][-1][key]
+            if type(score) == list:
+                score = score[reefLevel]
+            scores.append(score)
         except:
-            app.logger.error(f'Failed to get average for key {key} in data "{data}"')  # type: ignore
+            app.logger.error(f'Failed to get data for key {key} in data "{item}"')  # type: ignore
             abort(500)
-    average /= len(data)
-    return average
+    return scores
+
+def getMeanOfScoringCategory(data: list, key: str, reefLevel: int = 0):
+    scores: list = getListOfScoringCategory(data,key,reefLevel)
+    return float(statistics.mean(scores))
+
+def getMedianOfScoringCategory(data: list, key: str, reefLevel: int = 0):
+    scores: list = getListOfScoringCategory(data,key,reefLevel)
+    return float(statistics.median(scores))
+
+def getModeOfScoringCategory(data: list, key: str, reefLevel: int = 0):
+    scores: list = getListOfScoringCategory(data,key,reefLevel)
+    return int(statistics.median(scores))
+
+def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
+    highestValue: int = 0
+    matchKey: str = ""
+    matchNumber: int = 0
+    compLevel: str = ""
+    setNumber: int = 0
+    displayName: str = ""
+    for match in data:
+        value = match["results"][-1][key]
+        if type(value) == list:
+            value = value[reefLevel]
+        if value > highestValue:
+            highestValue = value
+            matchKey = match["matchKey"]
+            matchNumber = match["matchNumber"]
+            compLevel = match["compLevel"]
+            setNumber = match["setNumber"]
+            displayName = match["displayName"]
+    highestMatch = {
+        "value": highestValue,
+        "category": key,
+        "matchKey": matchKey,
+        "matchNumber": matchNumber,
+        "compLevel": compLevel,
+        "setNumber": setNumber,
+        "displayName": displayName,
+        "reefLevel": reefLevel,
+    }
+    return highestMatch
+
+def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
+    lowestValue: int = 9999
+    matchKey: str = ""
+    matchNumber: int = 0
+    compLevel: str = ""
+    setNumber: int = 0
+    displayName: str = ""
+    for match in data:
+        value = match["results"][-1][key]
+        if type(value) == list:
+            value = value[reefLevel]
+        if value < lowestValue:
+            lowestValue = value
+            matchKey = match["matchKey"]
+            matchNumber = match["matchNumber"]
+            compLevel = match["compLevel"]
+            setNumber = match["setNumber"]
+            displayName = match["displayName"]
+    lowestMatch = {
+        "value": lowestValue,
+        "category": key,
+        "matchKey": matchKey,
+        "matchNumber": matchNumber,
+        "compLevel": compLevel,
+        "setNumber": setNumber,
+        "displayName": displayName,
+        "reefLevel": reefLevel,
+    }
+    return lowestMatch
