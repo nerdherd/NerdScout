@@ -319,6 +319,14 @@ def newUserPage():
 
 @app.route("/submitScore", methods=["GET", "POST"])
 def submitScorePage():
+    try:
+        matchVal = int(request.args.get("matchNumber"))  # type: ignore
+        compLvl = (request.args.get("compLevel"))  # type: ignore
+        setVal = int(request.args.get("setNumber"))  # type: ignore
+        rbtStat = (request.args.get("robotStation")) #type: ignore
+        teamNum = int(request.args.get("team")) #type: ignore
+    except:
+        return redirect(url_for("teamPage"))
     if request.method == "POST":
         submission = request.json
         try:
@@ -353,7 +361,11 @@ def submitScorePage():
                 abort(400)
         except:
             abort(400)
-    return render_template("submit.html")
+    if (compLvl == CompLevel.PLAYOFF.value):
+        match = setVal
+    else:
+        match = matchVal
+    return render_template("submit.html",match=match,compLvl=compLvl,rbtStat=rbtStat,teamNum=teamNum,setVal=setVal, matchVal=matchVal)
 
 
 @app.route("/logout")

@@ -1,18 +1,6 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<script>
-    function submitData(){
-        data = '{"matchNum":9999,"compLevel":"qm","setNum":1,"robot":"blue3","startPos":2,"autoLeave":true,"autoReef":[0,0,1,1],"teleReef":[2,3,0,1],"autoProcessor":1,"teleProcessor":0,"autoNet":0,"teleNet":2,"endPos":3,"minorFouls":1,"majorFouls":2,"comment":"they did ok :)","scout":"tonnieboy300"}';
-        fetch(window.location.href, {
-        method: "POST",
-        body: data,
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-        });
-    }
-</script>
 <script src="{{ url_for('static', filename='javascript/submit.js') }}" defer></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/submit.css') }}">
 {% endblock %}
@@ -20,29 +8,40 @@
 {% block title %}Error {{code}}{% endblock %}
 
 {% block content %}
+
+<div class="infoBinfo">
+    <p>Match Number: {{match}} {{compLvl}} || Team: {{teamNum}} || Station Number: {{rbtStat}}</p>
+</div>
 <div class="takisBaro">
-    <button id="matchBtn"onClick="showMatch()" >Match</button>
     <button id="autoBtn" onClick="showAuto()">Auto</button>
     <button id="teleopBtn" onClick="showTeleop()">Teleop</button>
 </div>
 
 <div class="mainInput">
-    <div id="match" style="display: inline;">
-        <p>Scouter Name</p>
-        <input type="text">
-        <p>Match Number</p>
-        <input type="number">
-        <p>Team number</p>
-        <input type="number">
-    </div>
 
-    <div id="auto" style="display: none;">
+
+    <!-- <div id="match" style="display: inline;">
+        <p>Match Number </p>
+        <input type="number" value="{{ match }}" id="matchNumberInput">
+        <p>Team Number</p>
+        <input type="number" value= "{{ team }}" id="teamNumberInput">
+        <p>Competition Level</p>
+        <select id="compLevel">
+            <option value="Qualifying">Qualifying</option>
+            <option value="Playoff">Playoff</option>
+            <option value="Final">Final</option>
+            <option value="EF">EF</option>
+            <option value="QF">QF</option>
+        </select>
+    </div> -->
+
+    <div id="auto" style="display: inline;">
 
 
         <p>Starting position</p>
-        <button>One</button>
-        <button>Two</button>
-        <button>Three</button>
+        <button id="SP-1">One</button>
+        <button id="SP-2">Two</button>
+        <button id="SP-3">Three</button>
 
         <p>Leave</p>
         <input type="checkbox">
@@ -51,46 +50,46 @@
 
         <p>L1</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         <p>L2</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         <p>L3</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         <p>L4</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         Algae
 
         <p>Processor</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
         
         <p>Net</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
 
@@ -102,46 +101,46 @@
 
         <p>L1</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         <p>L2</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         <p>L3</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         <p>L4</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         Algae
 
         <p>Processor</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
         
         <p>Net</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         <p>Ending position</p>
@@ -152,16 +151,16 @@
 
         <p>Minor Fouls</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         <p>Major Fouls</p>
         <div class="counter">
-            <button>+</button>
-            <p>0</p>
             <button>-</button>
+            <p>0</p>
+            <button>+</button>
         </div>
 
         <p>Comments</p>
@@ -172,7 +171,7 @@
 </div>
 
 <div class="submitDiv">
-    <button onclick="submitData()" class="submitButton">Submit</button>
+    <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
 </div>
 
 {% endblock %}
