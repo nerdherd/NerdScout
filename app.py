@@ -40,7 +40,11 @@ app.config.from_mapping(
 # Front-end Handlers
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if "username" in session:
+        username = session["username"]
+    else:
+        username = None
+    return render_template("index.html", username=username)
 
 
 @app.route("/addMatchTest")

@@ -1,6 +1,11 @@
-.center{
+.mainMenu{
     width:100%;
+    height: calc(100vh - calc(2 * var(--footer-height)));
     display:flex;
     flex-direction: column;
     align-items: center;
+}
+
+body{
+    margin:0;
 }

@@ -7,9 +7,10 @@
 {% block title %}NerdScout{% endblock %}
 
 {% block content %}
-<div class="center">
+<div class="mainMenu">
     <h1>Welcome to NerdScout</h1>
     <a href="{{ url_for('teamPage') }}">View team list</a>
     <a href="{{ url_for('renderMatch') }}">View match list</a>
+    <p>{% if username %}Logged in as {{ username }}{% else %}Not logged in{% endif %}</p>
 </div>
 {% endblock %}
