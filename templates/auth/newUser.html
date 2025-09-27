@@ -5,7 +5,9 @@
 {% block form %}
 
 {% if message %}
-<p>{{message}}</p>
+<script>
+    alert("{{message}}");
+</script>
 {% endif %}
 
 <h1>Create an account</h1>
@@ -37,5 +39,11 @@
         />
     </div>
 </form>
+
+{% if created %}
+<script>
+    window.location.replace("{{ url_for('index') }}");
+</script>
+{% endif %}
 
 {% endblock %}

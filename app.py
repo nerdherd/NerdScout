@@ -325,14 +325,16 @@ def login():
 @app.route("/newUser", methods=["GET", "POST"])
 def newUserPage():
     message = None
+    created = False
     if request.method == "POST":
         if newUser(
             request.form["username"], generate_password_hash(request.form["password"])
         ):
             message = "New unapproved user created!"
+            created=True
         else:
             message = "User already exists."
-    return render_template("auth/newUser.html", message=message)
+    return render_template("auth/newUser.html",created=created, message=message)
 
 
 @app.route("/submitScore", methods=["GET", "POST"])
@@ -388,7 +390,8 @@ def submitScorePage():
 
 @app.route("/logout")
 def logout():
-    del session["username"]
+    if "username" in session:
+        del session["username"]
     return render_template("auth/logout.html")
 
 
@@ -438,7 +441,7 @@ def before_request():
     # check login status
     if request.endpoint not in freeEndpoints and not isLoggedIn():
         return redirect(
-            f"{url_for('login')}?next={urllib.parse.quote(request.path, safe='')}"
+            url_for('login',next=request.path)
         )
 
 

@@ -12,7 +12,7 @@
     {% block content %}{% endblock %}
     <div class="footer-spacer"></div>
     <footer>
-        <p>footer</p>
+        {% if session["username"] %}<p>Logged in as {{ session["username"] }}</p>{% else %}<a href="{{ url_for('login',next=request.path) }}">login</a> <a href="{{ url_for('newUserPage') }}">create account</a>{% endif %}
         <p>The Nerd Herd 687</p>
     </footer>
 </body>
