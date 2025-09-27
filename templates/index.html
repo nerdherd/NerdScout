@@ -1,17 +1,15 @@
 {% extends 'base.html' %}
 
-{% block head %}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/index.css') }}">
+{% endblock %}
 
 {% block title %}NerdScout{% endblock %}
 
 {% block content %}
-<h1>Hello World!</h1>
-<p>This is the temporary index page.</p>
-<ul>
-    <li>Hello!</li>
-    <li>Hello 2!</li>
-    <li>Hello 3!</li>
-    <li>Hello again!</li>
-</ul>
-<p>NerdScout</p>
+<div class="center">
+    <h1>Welcome to NerdScout</h1>
+    <a href="{{ url_for('teamPage') }}">View team list</a>
+    <a href="{{ url_for('renderMatch') }}">View match list</a>
+</div>
 {% endblock %}
