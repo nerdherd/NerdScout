@@ -312,12 +312,13 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        if checkPassword(username, password):
+        successful, result = checkPassword(username, password)
+        if successful:
             session["username"] = username
             location = request.args.get("next")
             return redirect(location if location else "/", 302)
         else:
-            error = "Couldn't log in."
+            error = "Couldn't log in: "+result
     return render_template("auth/login.html", error=error)
 
 

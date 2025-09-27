@@ -40,18 +40,19 @@ def checkPassword(username: str, password: str):
             app.logger.warning(  # type: ignore
                 f"Unsuccessful login by {username} at {request.remote_addr}: Account not approved."
             )
-            return False
+            return False, "Unapproved Account"
         result = check_password_hash(doc["passwordHash"], password)  # type: ignore
         if result:
             app.logger.info(f"Successful login by {username} at {request.remote_addr}.")  # type: ignore
+            return True, "Success"
         else:
             app.logger.warning(  # type: ignore
                 f"Unsuccessful login by {username} at {request.remote_addr}: Incorrect Password."
             )
-        return result
+            return False, "Incorrect Password"
     except TypeError:
         # if no users are found with a username, doc = None.
         app.logger.warning(  # type: ignore
             f"Unsuccessful login by {username} at {request.remote_addr}: Account not found."
         )
-        return False
+        return False, "Account not found"
