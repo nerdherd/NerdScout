@@ -9,18 +9,21 @@
 
 {% block content %}
 <h1>Team Select</h1>
-<div>
+<div class="search-input">
+    <label for="teamInput">Search: </label>
+    <input type="text" id="teamInput" name="teamInput">
+</div>
+<div class="search-bar">
     <div>
-        <label for="teamNameInput">Search by team name</label>
-        <input type="text" id="teamNameInput" name="teamNameInput">
-        <input type="checkbox" id="teamNameExact" name="teamNameExact">
-        <label for="teamNameExact">Exact?</label>
+        <label for="searchType">By: </label>
+        <select name="searchType" id="searchType">
+            <option value="name">Team Name</option>
+            <option value="number">Team Number</option>
+        </select>
     </div>
     <div>
-        <label for="teamNumInput">Search by team number</label>
-        <input type="number" id="teamNumInput" name="teamNumInput">
-        <input type="checkbox" id="teamNumExact" name="teamNumExact">
-        <label for="teamNumExact">Exact?</label>
+        <input type="checkbox" id="teamExact" name="teamExact">
+        <label for="teamExact">Exact?</label>
     </div>
     <button onclick="updateSearch()">Search</button>
 </div>

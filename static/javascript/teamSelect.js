@@ -1,29 +1,26 @@
-const teamNameInput = document.getElementById("teamNameInput");
-const teamNumInput = document.getElementById("teamNumInput");
-
-const teamNameExact = document.getElementById("teamNameExact");
-const teamNumExact = document.getElementById("teamNumExact");
+const teamInputEl = document.getElementById("teamInput");
+const teamExactEl = document.getElementById("teamExact");
+const searchTypeEl = document.getElementById("searchType");
 
 function updateSearch(){
-    let nameInput = teamNameInput.value.toLowerCase();
-    let nameEmpty = (nameInput === "");
-    let nameExact = teamNameExact.checked;
-
-    let numInput = teamNumInput.value;
-    let numEmpty = (numInput === "");
-    let numExact = teamNumExact.checked;
+    let teamInput = teamInputEl.value.toLowerCase();
+    let teamEmpty = (teamInput === "");
+    let teamExact = teamExactEl.checked;
+    let searchType = searchTypeEl.value;
 
     let noneFound = true;
     for (const teamDiv of document.querySelectorAll(".team-div")){
         teamDiv.classList.add("hide");
 
         let teamName = teamDiv.dataset.name.toLowerCase();
-        let nameValid = nameExact ? (teamName === nameInput):teamName.includes(nameInput);
+        let nameValid = teamExact ? (teamName === teamInput):teamName.includes(teamInput);
 
         let teamNum = teamDiv.dataset.num;
-        let numValid = numExact ? (teamNum === numInput) : teamNum.includes(numInput)
+        let numValid = teamExact ? (teamNum === teamInput) : teamNum.includes(teamInput);
 
-        if ((nameEmpty || nameValid) && (numEmpty || numValid)){
+        let valid = (teamEmpty || (searchType === "name" && nameValid) || (searchType==="number" && numValid));
+
+        if (valid){
             teamDiv.classList.remove("hide");
             noneFound = false;
         }
