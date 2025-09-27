@@ -72,14 +72,18 @@
             <p>{{ result["score"] }}</p>
         </div>
         <div class="section-title"></div>
-        <p>End position: {{ result["endPos"] }}</p>
+        <h3>End position:</h3>
+        <p>{{ (['None','Park','Shallow cage','Deep cage'])[result["endPos"]] }}</p>
         {% if result["minorFouls"]>0 %}
-        <p>Minor fouls: {{ result["minorFouls"] }}</p>
+        <h3>Minor fouls:</h3>
+        <p>{{ result["minorFouls"] }}</p>
         {% endif %}
         {% if result["majorFouls"]>0 %}
-        <p>Major fouls: {{ result["majorFouls"] }}</p>
+        <h3>Major fouls:</h3>
+        <p>{{ result["majorFouls"] }}</p>
         {% endif %}
-        <p>Comment: {{ result["comment"] }}</p>
+        <h3>Comment:</h3>
+        <p>{{ result["comment"] }}</p>
     </div>
     {% endfor %}
     </div>
