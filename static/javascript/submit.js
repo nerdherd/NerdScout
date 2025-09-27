@@ -24,6 +24,8 @@ const procNetLabels = [document.getElementById("aPr"),
     document.getElementById("aNe"),
     document.getElementById("tNe")]
 
+const endPosDDown = document.getElementById("endPos")
+
 let matchNum = 0
 let compLevel = 0
 let setNum = 0
@@ -117,6 +119,24 @@ function procNetSub(level){
     }
 }
 
+//-Minor +Minor -Major +Major
+function fouling(level){
+    switch(level){
+        case 0:
+            if(minorFouls!=0){minorFouls -= 1}; break
+        case 1:
+            minorFouls += 1; break
+        case 2:
+            if(majorFouls!=0){majorFouls -= 1}; break
+        case 3:
+            majorFouls += 1; break
+        default:
+            throw(400)
+    }
+    document.getElementById("minF").innerHTML = minorFouls
+    document.getElementById("majF").innerHTML = majorFouls
+}
+
 function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
 
     matchNum = tMatchNum
@@ -130,6 +150,10 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
     teleProcessor = procNetVars[1]
     autoNet = procNetVars[2] 
     teleNet = procNetVars[3]
+
+    endPos = endPosDDown.value
+
+    comment = document.getElementById("Comments").value
 
 
 
@@ -151,19 +175,14 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         "minorFouls": minorFouls,
         "majorFouls": majorFouls,
         "comment": comment,
-        "scout": scout
     };
-    alert(JSON.stringify(rawData))
-
-
-
-    // data = JSON.stringify(rawData)
-    // fetch(window.location.href, {
-    // method: "POST",
-    // body: data, 
-    // headers: {
-    //     "Content-type": "application/json; charset=UTF-8"
-    // }
-    // }    );
+    data = JSON.stringify(rawData)
+    fetch(window.location.href, {
+    method: "POST",
+    body: data, 
+    headers: {
+        "Content-type": "application/json; charset=UTF-8"
+    }
+    });
 }
 

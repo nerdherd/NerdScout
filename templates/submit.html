@@ -158,35 +158,29 @@
 
         <p>Ending Position</p>
         <select id="endPos">
-            <option value="None">None</option>
-            <option value="Park">Park</option>
-            <option value="Shallow">Shallow</option>
-            <option value="Deep">Deep</option>
+            <option value="0">None</option>
+            <option value="1">Park</option>
+            <option value="2">Shallow</option>
+            <option value="3">Deep</option>
         </select>
-
-        <p>Ending position</p>
-        <button>None</button>
-        <button>Park</button>
-        <button>Shallow</button>
-        <button>Deep</button>
 
         <p>Minor Fouls</p>
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <button onclick="fouling(0)">-</button>
+            <p id="minF">0</p>
+            <button onclick="fouling(1)">+</button>
         </div>
 
         <p>Major Fouls</p>
         <div class="counter">
-            <button>-</button>
-            <p>0</p>
-            <button>+</button>
+            <button onclick="fouling(2)">-</button>
+            <p id="majF">0</p>
+            <button onclick="fouling(3)">+</button>
         </div>
 
         <div>
             <p>Comments</p>
-            <input class="text">
+            <input class="text" id="Comments">
         </div>
         
         <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>

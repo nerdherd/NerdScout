@@ -346,40 +346,42 @@ def submitScorePage():
         rbtStat = (request.args.get("robotStation")) #type: ignore
         teamNum = int(request.args.get("team")) #type: ignore
     except:
-        return redirect(url_for("teamPage"))
+        return redirect(url_for("renderMatch"))
     if request.method == "POST":
         submission = request.json
         try:
-            matchNumber = submission["matchNum"]  # type: ignore
-            compLevel = submission["compLevel"]  # type: ignore
-            setNumber = submission["setNum"]  # type: ignore
-            currentRobot = submission["robot"]  # type: ignore
+            matchNumber = int(submission["matchNum"])  # type: ignore
+            compLevel = CompLevel(submission["compLevel"])  # type: ignore
+            setNumber = int(submission["setNum"])  # type: ignore
+            currentRobot = Station(submission["robot"])  # type: ignore
+            scout = session["username"]
         except:
             abort(400)
         try:
             if not scoreRobotInMatch(
-                int(matchNumber),
-                int(setNumber),
-                CompLevel(compLevel),
-                Station(currentRobot),  # str
+                matchNumber,
+                setNumber,
+                compLevel,
+                currentRobot,  # str
                 StartingPosition(
                     submission["startPos"]  # int between 1-3 # type: ignore
                 ),
-                submission["autoLeave"],  # bool # type: ignore
+                bool(submission["autoLeave"]),  # bool # type: ignore
                 submission["autoReef"],  # array of four ints # type: ignore
                 submission["teleReef"],  # array of four ints # type: ignore
                 submission["autoProcessor"],  # int # type: ignore
                 submission["teleProcessor"],  # int # type: ignore
                 submission["autoNet"],  # int # type: ignore
                 submission["teleNet"],  # int # type: ignore
-                EndPosition(submission["endPos"]),  # int between 0-3 # type: ignore
+                EndPosition(int(submission["endPos"])),  # int between 0-3 # type: ignore
                 submission["minorFouls"],  # int # type: ignore
                 submission["majorFouls"],  # int # type: ignore
                 submission["comment"],  # str # type: ignore
-                submission["scout"],  # str # type: ignore
+                scout,  # str # type: ignore
             ):
                 abort(400)
-        except:
+        except TypeError as err:
+            print(err)
             abort(400)
     if (compLvl == CompLevel.PLAYOFF.value):
         match = setVal
