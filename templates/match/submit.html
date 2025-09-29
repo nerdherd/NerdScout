@@ -55,6 +55,12 @@
 
         <p>Coral</p>
 
+        <div class="counter" >
+            <p>Miss</p>
+            <button onclick="missSub(0)">-</button>
+            <p id="aRM">0</p>
+            <button onclick="missAdd(0)">+</button>
+        </div>
         
         <div class="counter">
             <p>L1</p>
@@ -96,6 +102,13 @@
             <p id="aPr">0</p>
             <button onclick="procNetAdd(0)">+</button>
         </div>
+
+        <div class="counter" >
+            <p>Miss</p>
+            <button onclick="missSub(1)">-</button>
+            <p id="aPM">0</p>
+            <button onclick="missAdd(1)">+</button>
+        </div>
         
         
         <div class="counter">
@@ -105,12 +118,26 @@
             <button onclick="procNetAdd(2)">+</button>
         </div>
 
+        <div class="counter" >
+            <p>Miss</p>
+            <button onclick="missSub(2)">-</button>
+            <p id="aNM">0</p>
+            <button onclick="missAdd(2)">+</button>
+        </div>
+
 
     </div>
 
     <div id="teleop" style="display: none;">
 
         <p>Coral</p>
+
+        <div class="counter" >
+            <p>Miss</p>
+            <button onclick="missSub(3)">-</button>
+            <p id="tRM">0</p>
+            <button onclick="missAdd(3)">+</button>
+        </div>
 
         <div class="counter">
             <p>L1</p>
@@ -152,6 +179,13 @@
             <p id="tPr">0</p>
             <button onclick="procNetAdd(1)">+</button>
         </div>
+
+        <div class="counter" >
+            <p>Miss</p>
+            <button onclick="missSub(4)">-</button>
+            <p id="tPM">0</p>
+            <button onclick="missAdd(4)">+</button>
+        </div>
         
         
         <div class="counter">
@@ -159,6 +193,13 @@
             <button onclick="procNetSub(3)">-</button>
             <p id="tNe">0</p>
             <button onclick="procNetAdd(3)">+</button>
+        </div>
+
+        <div class="counter" >
+            <p>Miss</p>
+            <button onclick="missSub(5)">-</button>
+            <p id="tNM">0</p>
+            <button onclick="missAdd(5)">+</button>
         </div>
 
         <p>Ending Position</p>
@@ -169,6 +210,9 @@
             <option value="3">Deep</option>
         </select>
 
+        <p>Success?</p>
+        <input type="checkbox" id="attemptEP">
+
         <p>Minor Fouls</p>
         <div class="counter">
             <button onclick="fouling(0)">-</button>
@@ -176,6 +220,7 @@
             <button onclick="fouling(1)">+</button>
         </div>
 
+        
         <p>Major Fouls</p>
         <div class="counter">
             <button onclick="fouling(2)">-</button>
