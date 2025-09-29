@@ -6,3 +6,5 @@
 !/secrets/README.md
 !/static/teamImages/README.md
 /database
+
+*.ds_store
