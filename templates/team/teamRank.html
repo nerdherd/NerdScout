@@ -7,7 +7,7 @@
 
 {% block content %}
 <h1>Team Ranking</h1>
-<h2>Ranked by {{stat}} of {{ category }}{% if category == "autoReef" or category == "teleReef" %} L{{ reefLevel+1 }}{% endif %}{% if not sort %}, reverse order.{% endif %}</h2>
+<h2>Ranked by {{stat}} of {{ keyDisplayNames[category] }}{% if category == "autoReef" or category == "teleReef" %} L{{ reefLevel+1 }}{% endif %}{% if not sort %}, reverse order.{% endif %}</h2>
 <ol>
 {% for team in ranking %}
 <li><a href="{{ url_for('teamPage',team=team['number']) }}">Team {{ team["number"] }}: {{ team["shortName"] }}</a> - {{team[category]}}</li>
