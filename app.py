@@ -356,7 +356,7 @@ def submitScorePage():
             currentRobot = Station(submission["robot"])  # type: ignore
             scout = session["username"]
         except TypeError as err:
-            app.logger.error("Error submitting match: "+err)
+            app.logger.error(f"Error submitting match: {err}")
             abort(400)
         try:
             if not scoreRobotInMatch(
@@ -382,7 +382,7 @@ def submitScorePage():
             ):
                 abort(400)
         except TypeError as err:
-            app.logger.error("Error submitting match: "+err)
+            app.logger.error(f"Error submitting match: {err}")
             abort(400)
     if (compLvl == CompLevel.PLAYOFF.value):
         match = setVal
