@@ -51,7 +51,7 @@ let compLevel = 0
 let setNum = 0
 let robot = 0
 
-let startpos = 0
+let startpos = 1
 
 let autoLeave = false
 
@@ -220,14 +220,14 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         "teleProcessor": teleProcessor,
         "teleProcessorMiss": teleProcessorMiss,
         "autoNet": autoNet,
-        "autoNet": autoNetMiss,
+        "autoNetMiss": autoNetMiss,
         "teleNet": teleNet,
         "teleNetMiss": teleNetMiss,
         "endPos": endPos,
         "attemptedEndPos": attemptedEndPos,
         "minorFouls": minorFouls,
         "majorFouls": majorFouls,
-        "comment": comment,
+        "comment": comment
     };
     data = JSON.stringify(rawData)
     fetch(window.location.href, {
