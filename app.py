@@ -438,7 +438,7 @@ def userManagementPage():
         app.logger.warning(
             f"User {session['username']} attempted to access user management page."
         )
-        abort(401)
+        abort(403)
     if request.method == "POST":
         try:
             data = request.json
