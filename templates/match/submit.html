@@ -24,22 +24,6 @@
 
 <div class="mainInput">
 
-
-    <!-- <div id="match" style="display: inline;">
-        <p>Match Number </p>
-        <input type="number" value="{{ match }}" id="matchNumberInput">
-        <p>Team Number</p>
-        <input type="number" value= "{{ team }}" id="teamNumberInput">
-        <p>Competition Level</p>
-        <select id="compLevel">
-            <option value="Qualifying">Qualifying</option>
-            <option value="Playoff">Playoff</option>
-            <option value="Final">Final</option>
-            <option value="EF">EF</option>
-            <option value="QF">QF</option>
-        </select>
-    </div> -->
-
     <div id="auto" style="display: inline;">
 
 
@@ -47,6 +31,7 @@
         <button id="SP-1" onclick="setStartPos(1)">One</button>
         <button id="SP-2" onclick="setStartPos(2)">Two</button>
         <button id="SP-3" onclick="setStartPos(3)">Three</button>
+        <input type="range" min="1" max="3" step="1"  id="startPosSlider">
 
         <div class="cbDiv">
             <p>Leave</p>

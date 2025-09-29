@@ -5,6 +5,7 @@ const teleopTab = document.getElementById("teleop")
 const startPos1 = document.getElementById("SP-1")
 const startPos2 = document.getElementById("SP-2")
 const startPos3 = document.getElementById("SP-3")
+const startPosSlider = document.getElementById("startPosSlider")
 
 const leaveCheck = document.getElementById("leave")
 
@@ -96,15 +97,8 @@ function showTeleop() {
 
 
 function setStartPos(pos){
-    startpos = pos
-    let poss = [startPos1, startPos2, startPos3]
-    for(let i=0;i<3;i++){
-        poss[i].disabled = false
-        if(i==pos-1){
-            poss[i].disabled = true
-        }
-    }
-    poss[pos-1].disabled = true;
+    pos = 1
+    console.log(startPosSlider.value)
 }
 
 
@@ -185,6 +179,8 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
     setNum = tSetNum
     robot = tRobot
 
+
+    startPos = startPosSlider.value
     autoLeave = (leaveCheck.value == "on")
 
     autoProcessor = procNetVars[0] 
