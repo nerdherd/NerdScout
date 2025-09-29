@@ -245,12 +245,19 @@ def scoreRobotInMatch(
     startPos: StartingPosition,
     autoLeave: bool,
     autoReef: List[int],
+    autoReefMiss: int,
     teleReef: List[int],
+    teleReefMiss: int,
     autoProcessor: int,
+    autoProcessorMiss: int,
     teleProcessor: int,
+    teleProcessorMiss: int,
     autoNet: int,
+    autoNetMiss: int,
     teleNet: int,
+    teleNetMiss: int,
     endPos: EndPosition,
+    attemptedEndPos: EndPosition,
     minorFouls: int,
     majorFouls: int,
     comment: str,
@@ -269,12 +276,19 @@ def scoreRobotInMatch(
                     "startPos": startPos.value,
                     "autoLeave": autoLeave,
                     "autoReef": autoReef,
+                    "autoReefMiss": autoReefMiss,
                     "teleReef": teleReef,
+                    "teleReefMiss": teleReefMiss,
                     "autoProcessor": autoProcessor,
+                    "autoProcessorMiss": autoProcessorMiss,
                     "teleProcessor": teleProcessor,
+                    "teleProcessorMiss": teleProcessorMiss,
                     "autoNet": autoNet,
+                    "autoNetMiss": autoNetMiss,
                     "teleNet": teleNet,
+                    "teleNetMiss": teleNetMiss,
                     "endPos": endPos.value,
+                    "attemptedEndPos": attemptedEndPos.value,
                     "minorFouls": minorFouls,
                     "majorFouls": majorFouls,
                     "score": calculateScore(
@@ -297,7 +311,7 @@ def scoreRobotInMatch(
     )
     if result.matched_count == 0:
         app.logger.info(  # type: ignore
-            f"Failed to score robot {startPos.value} for match {matchNumber} by {scout}: Match does not exist."
+            f"Failed to score robot {station.value} for match {matchNumber} by {scout}: Match does not exist."
         )
         return False
     app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")  # type: ignore

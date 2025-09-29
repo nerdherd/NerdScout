@@ -130,15 +130,22 @@ def teamPage():
         "autoReefL2": getAllStatsForCategory(getTeamResults(team),"autoReef",1),
         "autoReefL3": getAllStatsForCategory(getTeamResults(team),"autoReef",2),
         "autoReefL4": getAllStatsForCategory(getTeamResults(team),"autoReef",3),
+        "autoReefMiss": getAllStatsForCategory(getTeamResults(team),"autoReefMiss"),
         "teleReefL1": getAllStatsForCategory(getTeamResults(team),"teleReef",0),
         "teleReefL2": getAllStatsForCategory(getTeamResults(team),"teleReef",1),
         "teleReefL3": getAllStatsForCategory(getTeamResults(team),"teleReef",2),
         "teleReefL4": getAllStatsForCategory(getTeamResults(team),"teleReef",3),
+        "teleReefMiss": getAllStatsForCategory(getTeamResults(team),"teleReefMiss"),
         "autoProcessor": getAllStatsForCategory(getTeamResults(team),"autoProcessor"),
+        "autoProcessorMiss": getAllStatsForCategory(getTeamResults(team),"autoProcessorMiss"),
         "teleProcessor": getAllStatsForCategory(getTeamResults(team),"teleProcessor"),
+        "teleProcessorMiss": getAllStatsForCategory(getTeamResults(team),"teleProcessorMiss"),
         "autoNet": getAllStatsForCategory(getTeamResults(team),"autoNet"),
+        "autoNetMiss": getAllStatsForCategory(getTeamResults(team),"autoNetMiss"),
         "teleNet": getAllStatsForCategory(getTeamResults(team),"teleNet"),
+        "teleNetMiss": getAllStatsForCategory(getTeamResults(team),"teleNetMiss"),
         "endPos": getAllStatsForCategory(getTeamResults(team),"endPos"),
+        "attemptedEndPos": getAllStatsForCategory(getTeamResults(team),"attemptedEndPos"),
         "minorFouls": getAllStatsForCategory(getTeamResults(team),"minorFouls"),
         "majorFouls": getAllStatsForCategory(getTeamResults(team),"majorFouls"),
         "score": getAllStatsForCategory(getTeamResults(team),"score"),
@@ -169,11 +176,18 @@ def testRobotScorring():
         StartingPosition.RED,
         False,
         [0, 0, 0, 4],
+        2,
         [2, 4, 3, 1],
+        7,
+        0,
         0,
         1,
         0,
+        0,
+        0,
         3,
+        1,
+        EndPosition.DEEP,
         EndPosition.DEEP,
         1,
         0,
@@ -188,11 +202,18 @@ def testRobotScorring():
         StartingPosition.RED,
         False,
         [0, 0, 0, 4],
+        2,
         [2, 4, 3, 1],
+        7,
+        0,
         0,
         1,
         0,
+        0,
+        0,
         3,
+        1,
+        EndPosition.DEEP,
         EndPosition.DEEP,
         1,
         0,
@@ -369,12 +390,19 @@ def submitScorePage():
                 ),
                 bool(submission["autoLeave"]),  # bool # type: ignore
                 submission["autoReef"],  # array of four ints # type: ignore
+                submission["autoReefMiss"], # int # type: ignore
                 submission["teleReef"],  # array of four ints # type: ignore
+                submission["teleReefMiss"], # int # type: ignore
                 submission["autoProcessor"],  # int # type: ignore
+                submission["autoProcessorMiss"], # int # type: ignore
                 submission["teleProcessor"],  # int # type: ignore
+                submission["teleProcessorMiss"], # int # type: ignore
                 submission["autoNet"],  # int # type: ignore
+                submission["autoNetMiss"], # int # type: ignore
                 submission["teleNet"],  # int # type: ignore
+                submission["teleNetMiss"], # int # type: ignore
                 EndPosition(int(submission["endPos"])),  # int between 0-3 # type: ignore
+                EndPosition(int(submission["attemptedEndPos"])), # int between 0-3, though should be 2 or 3 # type: ignore
                 submission["minorFouls"],  # int # type: ignore
                 submission["majorFouls"],  # int # type: ignore
                 submission["comment"],  # str # type: ignore
