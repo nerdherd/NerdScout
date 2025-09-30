@@ -44,11 +44,16 @@
                     <p class="reef-l2">L2: {{ result["autoReef"][1] }}</p>
                     <p class="reef-l1">L1: {{ result["autoReef"][0] }}</p>
                 </div>
+                <p class="reef-miss">Missed: {{ result["autoReefMiss"] }}</p>
             </div>
             <h3>Scored on processor:</h3>
             <p>{{ result["autoProcessor"] }}</p>
+            <h3>Missed on processor:</h3>
+            <p>{{ result["autoProcessorMiss"] }}</p>
             <h3>Scored on net:</h3>
             <p>{{ result["autoNet"] }}</p>
+            <h3>Missed on net:</h3>
+            <p>{{ result["autoNetMiss"] }}</p>
         </div>
         <div>
             <div class="section-title">
@@ -63,17 +68,24 @@
                     <p class="reef-l2">L2: {{ result["teleReef"][1] }}</p>
                     <p class="reef-l1">L1: {{ result["teleReef"][0] }}</p>
                 </div>
+                <p class="reef-miss">Missed: {{ result["teleReefMiss"] }}</p>
             </div>
             <h3>Scored on processor:</h3>
             <p>{{ result["teleProcessor"] }}</p>
+            <h3>Missed on processor:</h3>
+            <p>{{ result["teleProcessorMiss"] }}</p>
             <h3>Scored on net:</h3>
             <p>{{ result["teleNet"] }}</p>
+            <h3>Missed on net:</h3>
+            <p>{{ result["teleNetMiss"] }}</p>
             <h3>Score Impact:</h3>
             <p>{{ result["score"] }}</p>
         </div>
         <div class="section-title"></div>
         <h3>End position:</h3>
         <p>{{ (['None','Park','Shallow cage','Deep cage'])[result["endPos"]] }}</p>
+        <h3>Attempted end position:</h3>
+        <p>{{ (['None','Park','Shallow cage','Deep cage'])[result["attemptedEndPos"]] }}</p>
         {% if result["minorFouls"]>0 %}
         <h3>Minor fouls:</h3>
         <p>{{ result["minorFouls"] }}</p>
