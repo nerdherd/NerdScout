@@ -1,10 +1,1 @@
-/.venv
-/secrets/*
-/static/teamImages/*
-/__pycache__
-
-!/secrets/README.md
-!/static/teamImages/README.md
-/database
-
-*.ds_store
+/data/*

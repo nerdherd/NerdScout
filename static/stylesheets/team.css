@@ -1,9 +1,0 @@
-.teamImage{
-    width:500px;
-}
-
-@media screen and (width < 510px){
-    .teamImage{
-        width:95vw;
-    }
-}
