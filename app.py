@@ -138,7 +138,11 @@ def teamPage():
         team = int(request.args.get("team"))  # type: ignore
         results = getTeam(team)
     except TypeError as err:
-        return render_template("team/teamSelect.html", teams=sortTeams(getAllTeams()))
+        return render_template("team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1)
+    
+    if results is None:
+        return render_template("team/teamSelect.html", teams=sortTeams(getAllTeams()), team=team)
+    
     matches = getTeamMatches(team)
     stats = {
         keyDisplayNames["startPos"]: getAllStatsForCategory(getTeamResults(team),"startPos"),

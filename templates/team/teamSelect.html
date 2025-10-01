@@ -11,12 +11,12 @@
 <h1>Team Select</h1>
 <div class="search-input">
     <label for="teamInput">Search: </label>
-    <input type="text" id="teamInput" name="teamInput">
+    <input type="text" id="teamInput" name="teamInput" {% if team > -1 %}value={{ team }}{% endif %}>
 </div>
 <div class="search-bar">
     <div>
         <label for="searchType">By: </label>
-        <select name="searchType" id="searchType">
+        <select name="searchType" id="searchType" {% if team > -1 %}selected="number"{% endif %}>
             <option value="name">Team Name</option>
             <option value="number">Team Number</option>
         </select>
