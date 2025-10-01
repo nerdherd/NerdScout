@@ -13,16 +13,16 @@
 <div>
     <div>
         <label for="matchNumberInput">Search by match number:</label>
-        <input type="number" min="1" max="9999999" name="matchNumberInput" id="matchNumberInput">
+        <input type="number" min="1" max="9999999" name="matchNumberInput" id="matchNumberInput" {% if matchNum > -1 %}value={{matchNum}}{% endif %}>
     </div>
     <div>
         <p>Sort by competition level:</p>
         <ul>
-            <input type="checkbox" id="qm-select" name="qm-select" checked><label for="qm-select">Qualifying</label><br>
-            <input type="checkbox" id="ef-select" name="ef-select" checked><label for="ef-select">ef</label><br>
-            <input type="checkbox" id="qf-select" name="qf-select" checked><label for="qf-select">qf</label><br>
-            <input type="checkbox" id="sf-select" name="sf-select" checked><label for="sf-select">Playoff</label><br>
-            <input type="checkbox" id="f-select" name="f-select" checked><label for="f-select">Final</label><br>
+            <input type="checkbox" id="qm-select" name="qm-select" {% if compLevel == "none" or compLevel == "qm" %}checked{% endif %}><label for="qm-select">Qualifying</label><br>
+            <input type="checkbox" id="ef-select" name="ef-select" {% if compLevel == "none" or compLevel == "ef" %}checked{% endif %}><label for="ef-select">ef</label><br>
+            <input type="checkbox" id="qf-select" name="qf-select" {% if compLevel == "none" or compLevel == "qf" %}checked{% endif %}><label for="qf-select">qf</label><br>
+            <input type="checkbox" id="sf-select" name="sf-select" {% if compLevel == "none" or compLevel == "sf" %}checked{% endif %}><label for="sf-select">Playoff</label><br>
+            <input type="checkbox" id="f-select" name="f-select" {% if compLevel == "none" or compLevel == "f" %}checked{% endif %}><label for="f-select">Final</label><br>
         </ul>
     </div>
     <div>

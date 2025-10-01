@@ -72,16 +72,33 @@ def testMatchGetting():
 
 @app.route("/match")
 def renderMatch():
-    try:
+    matchNumber = -1
+    compLevel = "none"
+    setNumber = -1
+    
+    failed = False
+    
+    if "matchNum" in request.args:
         matchNumber = int(request.args.get("matchNum"))  # type: ignore
-        compLevel = CompLevel(request.args.get("compLevel"))  # type: ignore
+    
+    if "compLevel" in request.args:
+        compLevelString = request.args.get("compLevel")
+        try:
+            compLevel = CompLevel(compLevelString)  # type: ignore
+        except ValueError:
+            failed = True
+        
+    if "setNum" in request.args:
         setNumber = int(request.args.get("setNum"))  # type: ignore
+    try:
         results = getMatch(compLevel, matchNumber, setNumber)[-1]
-    except TypeError as err:
-        return render_template("match/matchSelect.html", matches=sortMatches(getAllMatches()))
-    except IndexError as err:
-        # this would occur if no match is found, thus results is empty.
-        abort(404)
+    except (IndexError,AttributeError) as err:
+        # IndexError: No matches are found that match
+        # AttributeError: compLevel is not set (is still "none")
+        failed = True
+    
+    if failed or matchNumber == -1 or compLevel == "none" or setNumber == -1:
+        return render_template("match/matchSelect.html", matches=sortMatches(getAllMatches()),matchNum=setNumber if (compLevel == CompLevel.PLAYOFF) else matchNumber,compLevel=compLevel if type(compLevel) is str else compLevel.value)
 
     # view test match with this link:
     # http://127.0.0.1:5000/match?matchNum=9999&compLevel=qm&setNum=1
