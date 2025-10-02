@@ -28,5 +28,6 @@ function downloadScore(robotNum,matchNum,compLevel,setNum,data){
         "data":data
     };
 
+    alert("Please save the file to a location you will remember")
     download(JSON.stringify(fullData),"score-"+robotNum+"-"+compLevel+"-"+matchNum+"-"+setNum,"application/json");
 }

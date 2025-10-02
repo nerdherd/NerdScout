@@ -1,1 +1,9 @@
+/.venv
+/secrets/*
+/__pycache__
+
+/database
+
+*.ds_store
+
 /data/*
