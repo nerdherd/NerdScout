@@ -185,9 +185,9 @@ function submitData(){
     // robot = tRobot
 
     let section = document.getElementById("sectionInput").value;
-    let matchNum = document.getElementById("matchNumInput").value;
+    let matchNum = parseInt(document.getElementById("matchNumInput").value);
     let compLevel = document.getElementById("compLevelInput").value;
-    let setNum = document.getElementById("setNumInput").value;
+    let setNum = parseInt(document.getElementById("setNumInput").value);
 
 
     startPos = startPosSlider.value
