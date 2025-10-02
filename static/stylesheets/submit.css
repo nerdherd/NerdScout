@@ -265,6 +265,8 @@ div{
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
     border: 1px solid rgba(220, 63, 97, 1);
+
+    transition: background 0.25s ease, transform 0.15s ease;
 }
 
 .plusCounter{
@@ -275,14 +277,18 @@ div{
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
     border: 1px solid rgba(127, 176, 105, 1);
+
+    transition: background 0.25s ease, transform 0.15s ease;
 }
 
 .plusCounter:active{
     background: rgba(127, 176, 105, 1);
+    transform: scale(1.1);
 }
 
 .minusCounter:active{
     background: rgba(220, 63, 97, 1);
+    transform: scale(1.1);
 }
 
 #endPos{
