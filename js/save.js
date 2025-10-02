@@ -19,9 +19,9 @@ function download(data, filename, type) {
     }
 }
 
-function downloadScore(robotNum,matchNum,compLevel,setNum,data){
+function downloadScore(section,matchNum,compLevel,setNum,data){
     fullData = {
-        "robotNum":robotNum,
+        "section":section,
         "matchNum":matchNum,
         "compLevel":compLevel,
         "setNum":setNum,
@@ -29,5 +29,5 @@ function downloadScore(robotNum,matchNum,compLevel,setNum,data){
     };
 
     alert("Please save the file to a location you will remember")
-    download(JSON.stringify(fullData),"score-"+robotNum+"-"+compLevel+"-"+matchNum+"-"+setNum,"application/json");
+    download(JSON.stringify(fullData),"score"+"-"+compLevel+"-"+matchNum+"-"+setNum+"-"+section,"application/json");
 }

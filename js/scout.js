@@ -47,10 +47,10 @@ const missVals = [0,0,0,0,0,0]
 const endPosDDown = document.getElementById("endPos")
 endPosDDown.value = 1;
 
-let matchNum = 0
-let compLevel = 0
-let setNum = 0
-let robot = 0
+// let matchNum = 0
+// let compLevel = 0
+// let setNum = 0
+// let robot = 0
 
 let startpos = 1
 
@@ -179,10 +179,15 @@ endPosDDown.addEventListener("change",()=>{
 
 function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
 
-    matchNum = tMatchNum
-    compLevel = tCompLevel
-    setNum = tSetNum
-    robot = tRobot
+    // matchNum = tMatchNum
+    // compLevel = tCompLevel
+    // setNum = tSetNum
+    // robot = tRobot
+
+    let section = document.getElementById("sectionInput").value;
+    let matchNum = document.getElementById("matchNumInput").value;
+    let compLevel = document.getElementById("compLevelInput").value;
+    let setNum = document.getElementById("setNumInput").value;
 
 
     startPos = startPosSlider.value
@@ -219,7 +224,7 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         "matchNum": matchNum,
         "compLevel": compLevel,
         "setNum": setNum, 
-        "robot": robot,
+        "robot": section,
         "startPos": startpos,
         "autoLeave": autoLeave,
         "autoReef": autoReef,
@@ -240,19 +245,8 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         "majorFouls": majorFouls,
         "comment": comment
     };
-    data = JSON.stringify(rawData);
-    alert(data);
-    // fetch(window.location.href, {
-    // method: "POST",
-    // body: data, 
-    // headers: {
-    //     "Content-type": "application/json; charset=UTF-8"
-    // }
-    // }).then(response =>{
-    //     if (response.ok){
-    //         redirect_to_match()
-    //     } else{
-    //         alert("There was an error submitting.");
-    //     }
-    // });;
+    // data = JSON.stringify(rawData);
+    // alert(data);
+
+    downloadScore(section,matchNum,compLevel,setNum,rawData);
 }
