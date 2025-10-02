@@ -45,7 +45,7 @@ const missVals = [0,0,0,0,0,0]
 
 const endPosDDown = document.getElementById("endPos")
 
-const endPosWin = document.getElementById("attemptEP").value
+const endPosWin = !(document.getElementById("attemptEP").value)
 
 let matchNum = 0
 let compLevel = 0
@@ -146,9 +146,9 @@ function missAdd(level){
     missLabels[level].innerHTML = missVals[level] 
 }
 
-function missSub(){
-    if(miss[level] != 0){
-        missVals[level] += 1
+function missSub(level){
+    if(missVals[level] != 0){
+        missVals[level] -= 1
         missLabels[level].innerHTML = missVals[level] 
     }
 }
@@ -195,7 +195,7 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
     }
     
 
-    comment = document.getElementById("Comments").value
+    comment = document.getElementById("comments").value
 
 
 
@@ -240,4 +240,3 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         }
     });;
 }
-
