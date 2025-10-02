@@ -11,8 +11,10 @@ body {
     background-color: var(--background-color);
 }
 
-input, button, select {
-    background-color: var(--background-color);
+input, button, select, textarea{
+    border-radius: 2em;
+    background-color: #061028;
+    border-width: 0px;
 }
 
 footer {
