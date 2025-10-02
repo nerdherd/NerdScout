@@ -439,6 +439,51 @@ def submitScorePage():
         match = matchVal
     return render_template("match/submit.html",match=match,compLvl=compLvl,rbtStat=rbtStat,teamNum=teamNum,setVal=setVal, matchVal=matchVal)
 
+@app.route("/uploadData", methods=["GET", "POST"])
+def uploadJSON():
+    if request.method == "POST":
+        try:
+            data:dict = request.json # type: ignore
+            station = Station(data["station"])
+            matchNum:int = data["matchNum"]
+            compLevel =  CompLevel(data["compLevel"])
+            setNum:int = data["setNum"]
+            results = data["data"]
+
+            if not scoreRobotInMatch(
+                matchNum,
+                setNum,
+                compLevel,
+                station,
+                StartingPosition(results["startPos"]),
+                results["autoLeave"],
+                results["autoReef"],
+                results["autoReefMiss"],
+                results["teleReef"],
+                results["teleReefMiss"],
+                results["autoProcessor"],
+                results["autoProcessorMiss"],
+                results["teleProcessor"],
+                results["teleProcessorMiss"],
+                results["autoNet"],
+                results["autoNetMiss"],
+                results["teleNet"],
+                results["teleNetMiss"],
+                EndPosition(results["endPos"]),
+                EndPosition(results["attemptedEndPos"]),
+                results["minorFouls"],
+                results["majorFouls"],
+                results["comment"],
+                str(session.get("username")),
+            ):
+                return "match not found", 404
+        except Exception as e:
+            app.logger.warning(e)
+            abort(400)
+        
+
+    return render_template("uploadJSON.html")
+
 curAwesome = 0
 @app.route("/mr/harder")
 def awesome():
