@@ -45,8 +45,6 @@ const missVals = [0,0,0,0,0,0]
 
 const endPosDDown = document.getElementById("endPos")
 
-const endPosWin = !(document.getElementById("attemptEP").value)
-
 let matchNum = 0
 let compLevel = 0
 let setNum = 0
@@ -95,11 +93,6 @@ function showTeleop() {
     teleopTab.style.display = 'inline';
 }
 
-
-function setStartPos(pos){
-    pos = 1
-    console.log(startPosSlider.value)
-}
 
 
 //autoProcessor teleProcessor autoNet teleNet
@@ -172,14 +165,12 @@ function fouling(level){
     document.getElementById("majF").innerHTML = majorFouls
 }
 
+function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
 
-
-function submitData(){
-
-    matchNum = 1
-    compLevel = "f"
-    setNum = 1
-    robot = 1
+    matchNum = tMatchNum
+    compLevel = tCompLevel
+    setNum = tSetNum
+    robot = tRobot
 
 
     startPos = startPosSlider.value
@@ -190,16 +181,26 @@ function submitData(){
     autoNet = procNetVars[2] 
     teleNet = procNetVars[3]
 
+    const endPosWin = !(document.getElementById("attemptEP").value);
+
+    attemptedEndPos = endPosDDown.value
+
     if(endPosWin){
         endPos = endPosDDown.value
     } else {
-        attemptedEndPos = endPosDDown.value
+        endPos = 1; // assume they parked
     }
     
 
     comment = document.getElementById("comments").value
 
+    autoReefMiss = missVals[0];
+    autoProcessorMiss = missVals[1];
+    autoNetMiss = missVals[2];
 
+    teleReefMiss = missVals[3];
+    teleProcessorMiss = missVals[4];
+    teleNetMiss = missVals[5];
 
 
     rawData = {
@@ -227,7 +228,7 @@ function submitData(){
         "majorFouls": majorFouls,
         "comment": comment
     };
-    data = JSON.stringify(rawData);
+    data = JSON.stringify(rawData)
     alert(data);
     // fetch(window.location.href, {
     // method: "POST",
