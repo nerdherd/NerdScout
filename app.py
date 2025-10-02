@@ -91,14 +91,14 @@ def renderMatch():
     if "setNum" in request.args:
         setNumber = int(request.args.get("setNum"))  # type: ignore
     try:
-        results = getMatch(compLevel, matchNumber, setNumber)[-1]
+        results = getMatch(compLevel, matchNumber, setNumber)[-1] # type: ignore
     except (IndexError,AttributeError) as err:
         # IndexError: No matches are found that match
         # AttributeError: compLevel is not set (is still "none")
         failed = True
     
     if failed or matchNumber == -1 or compLevel == "none" or setNumber == -1:
-        return render_template("match/matchSelect.html", matches=sortMatches(getAllMatches()),matchNum=setNumber if (compLevel == CompLevel.PLAYOFF) else matchNumber,compLevel=compLevel if type(compLevel) is str else compLevel.value)
+        return render_template("match/matchSelect.html", matches=sortMatches(getAllMatches()),matchNum=setNumber if (compLevel == CompLevel.PLAYOFF) else matchNumber,compLevel=compLevel if type(compLevel) is str else compLevel.value) # type: ignore
 
     # view test match with this link:
     # http://127.0.0.1:5000/match?matchNum=9999&compLevel=qm&setNum=1
