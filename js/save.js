@@ -21,7 +21,7 @@ function download(data, filename, type) {
 
 function downloadScore(section,matchNum,compLevel,setNum,data){
     fullData = {
-        "section":section,
+        "station":section,
         "matchNum":matchNum,
         "compLevel":compLevel,
         "setNum":setNum,

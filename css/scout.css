@@ -69,6 +69,7 @@
 body{
     margin:0px;
     padding:0px;
+    overflow:scroll;
 }
 
 div{
@@ -143,6 +144,7 @@ div{
     flex-direction: column;
     margin: 0px;
     padding: 0px;
+    width:100%;
  }
 
  .topbar div{

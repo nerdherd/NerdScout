@@ -177,7 +177,7 @@ endPosDDown.addEventListener("change",()=>{
     endposlabel.innerText = (["None","Park","Shallow Cage","Deep Cage"])[endPosDDown.value-1];
 });
 
-function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
+function submitData(){
 
     // matchNum = tMatchNum
     // compLevel = tCompLevel
