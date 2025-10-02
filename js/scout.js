@@ -6,6 +6,7 @@ const startPos1 = document.getElementById("SP-1")
 const startPos2 = document.getElementById("SP-2")
 const startPos3 = document.getElementById("SP-3")
 const startPosSlider = document.getElementById("startPosSlider")
+startPosSlider.value=2;
 
 const leaveCheck = document.getElementById("leave")
 
@@ -44,6 +45,7 @@ const missLabels = [
 const missVals = [0,0,0,0,0,0]
 
 const endPosDDown = document.getElementById("endPos")
+endPosDDown.value = 1;
 
 let matchNum = 0
 let compLevel = 0
@@ -164,6 +166,16 @@ function fouling(level){
     document.getElementById("minF").innerHTML = minorFouls
     document.getElementById("majF").innerHTML = majorFouls
 }
+
+const positionSliderLabel = document.getElementById("positionSliderLabel");
+startPosSlider.addEventListener("change",()=>{
+    positionSliderLabel.innerText="Starting position: "+(["Red","Middle","Blue"])[startPosSlider.value-1];
+});
+
+const endposlabel = document.getElementById("endposlabel");
+endPosDDown.addEventListener("change",()=>{
+    endposlabel.innerText = (["None","Park","Shallow Cage","Deep Cage"])[endPosDDown.value-1];
+});
 
 function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
 

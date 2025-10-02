@@ -15,136 +15,136 @@
 }
 
 /* Poppins is licensed under the SIL Open Font License */
-/* A copy of the license can be found at /static/fonts/Poppins/OFL.txt */
+/* A copy of the license can be found at /css/fonts/Poppins/OFL.txt */
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-Black.ttf");
+    src: url("/css/fonts/Poppins/Poppins-Black.ttf");
     font-weight: 900;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-BlackItalic.ttf");
+    src: url("/css/fonts/Poppins/Poppins-BlackItalic.ttf");
     font-weight: 900;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-Bold.ttf");
+    src: url("/css/fonts/Poppins/Poppins-Bold.ttf");
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-BoldItalic.ttf");
+    src: url("/css/fonts/Poppins/Poppins-BoldItalic.ttf");
     font-weight: 700;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-ExtraBold.ttf");
+    src: url("/css/fonts/Poppins/Poppins-ExtraBold.ttf");
     font-weight: 800;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-ExtraBoldItalic.ttf");
+    src: url("/css/fonts/Poppins/Poppins-ExtraBoldItalic.ttf");
     font-weight: 800;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-ExtraLight.ttf");
+    src: url("/css/fonts/Poppins/Poppins-ExtraLight.ttf");
     font-weight: 200;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-ExtraLightItalic.ttf");
+    src: url("/css/fonts/Poppins/Poppins-ExtraLightItalic.ttf");
     font-weight: 200;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-Italic.ttf");
+    src: url("/css/fonts/Poppins/Poppins-Italic.ttf");
     font-weight: 400;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-Light.ttf");
+    src: url("/css/fonts/Poppins/Poppins-Light.ttf");
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-LightItalic.ttf");
+    src: url("/css/fonts/Poppins/Poppins-LightItalic.ttf");
     font-weight: 300;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-Medium.ttf");
+    src: url("/css/fonts/Poppins/Poppins-Medium.ttf");
     font-weight: 500;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-MediumItalic.ttf");
+    src: url("/css/fonts/Poppins/Poppins-MediumItalic.ttf");
     font-weight: 500;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-Regular.ttf");
+    src: url("/css/fonts/Poppins/Poppins-Regular.ttf");
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-SemiBold.ttf");
+    src: url("/css/fonts/Poppins/Poppins-SemiBold.ttf");
     font-weight: 600;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-SemiBoldItalic.ttf");
+    src: url("/css/fonts/Poppins/Poppins-SemiBoldItalic.ttf");
     font-weight: 600;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-Thin.ttf");
+    src: url("/css/fonts/Poppins/Poppins-Thin.ttf");
     font-weight: 100;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url("/static/fonts/Poppins/Poppins-ThinItalic.ttf");
+    src: url("/css/fonts/Poppins/Poppins-ThinItalic.ttf");
     font-weight: 100;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Material Symbols Sharp";
-    src: url("/static/fonts/MaterialSymbols/MaterialSymbolsSharp.woff2") format("woff2");
+    src: url("/css/fonts/MaterialSymbols/MaterialSymbolsSharp.woff2") format("woff2");
     font-style: normal;
 }
 
