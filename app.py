@@ -437,7 +437,7 @@ def submitScorePage():
         match = setVal
     else:
         match = matchVal
-    return render_template("match/submit.html",match=match,compLvl=(compLvl).upper(),rbtStat=rbtStat,teamNum=teamNum,setVal=setVal, matchVal=matchVal)
+    return render_template("match/submit.html",match=match,compLvl=compLvl,rbtStat=rbtStat,teamNum=teamNum,setVal=setVal, matchVal=matchVal)
 
 curAwesome = 0
 @app.route("/mr/harder")

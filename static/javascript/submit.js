@@ -6,6 +6,7 @@ const startPos1 = document.getElementById("SP-1")
 const startPos2 = document.getElementById("SP-2")
 const startPos3 = document.getElementById("SP-3")
 const startPosSlider = document.getElementById("startPosSlider")
+startPosSlider.value=2;
 
 const leaveCheck = document.getElementById("leave")
 
@@ -44,8 +45,7 @@ const missLabels = [
 const missVals = [0,0,0,0,0,0]
 
 const endPosDDown = document.getElementById("endPos")
-
-const endPosWin = !(document.getElementById("attemptEP").value)
+endPosDDown.value = 1;
 
 let matchNum = 0
 let compLevel = 0
@@ -95,11 +95,6 @@ function showTeleop() {
     teleopTab.style.display = 'inline';
 }
 
-
-function setStartPos(pos){
-    pos = 1
-    console.log(startPosSlider.value)
-}
 
 
 //autoProcessor teleProcessor autoNet teleNet
@@ -172,6 +167,16 @@ function fouling(level){
     document.getElementById("majF").innerHTML = majorFouls
 }
 
+const positionSliderLabel = document.getElementById("positionSliderLabel");
+startPosSlider.addEventListener("change",()=>{
+    positionSliderLabel.innerText="Starting position: "+(["Red","Middle","Blue"])[startPosSlider.value-1];
+});
+
+const endposlabel = document.getElementById("endposlabel");
+endPosDDown.addEventListener("change",()=>{
+    endposlabel.innerText = (["None","Park","Shallow Cage","Deep Cage"])[endPosDDown.value-1];
+});
+
 function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
 
     matchNum = tMatchNum
@@ -188,16 +193,26 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
     autoNet = procNetVars[2] 
     teleNet = procNetVars[3]
 
+    const endPosWin = !(document.getElementById("attemptEP").value);
+
+    attemptedEndPos = endPosDDown.value-1
+
     if(endPosWin){
-        endPos = endPosDDown.value
+        endPos = endPosDDown.value-1
     } else {
-        attemptedEndPos = endPosDDown.value
+        endPos = 1; // assume they parked
     }
     
 
     comment = document.getElementById("comments").value
 
+    autoReefMiss = missVals[0];
+    autoProcessorMiss = missVals[1];
+    autoNetMiss = missVals[2];
 
+    teleReefMiss = missVals[3];
+    teleProcessorMiss = missVals[4];
+    teleNetMiss = missVals[5];
 
 
     rawData = {
@@ -240,4 +255,3 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         }
     });;
 }
-
