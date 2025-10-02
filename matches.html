@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Select</title>
+</head>
+<body>
+    <h1>Match Select</h1>
+    <div>
+        <div>
+            <label for="matchNumberInput">Search by match number:</label>
+            <input type="number" min="1" max="9999999" name="matchNumberInput" id="matchNumberInput">
+        </div>
+        <div>
+            <p>Sort by competition level:</p>
+            <ul>
+                <input type="checkbox" id="qm-select" name="qm-select"><label for="qm-select">Qualifying</label><br>
+                <input type="checkbox" id="ef-select" name="ef-select"><label for="ef-select">ef</label><br>
+                <input type="checkbox" id="qf-select" name="qf-select"><label for="qf-select">qf</label><br>
+                <input type="checkbox" id="sf-select" name="sf-select"><label for="sf-select">Playoff</label><br>
+                <input type="checkbox" id="f-select" name="f-select"><label for="f-select">Final</label><br>
+            </ul>
+        </div>
+        <div>
+            <label for="teamNumberInput">Search by team number:</label>
+            <input type="number" min="1" max="99999" name="teamNumberInput" id="teamNumberInput">
+        </div>
+        <br>
+        <button onclick="updateSearch()">Search</button><br><br>
+    </div>
+    <ul>
+        <!-- <div class="match-div" data-compLevel="{{ match['compLevel'] }}" data-matchNumber="{{ match['matchNumber'] }}" data-setNumber="{{ match['setNumber'] }}" data-redTeams='{{ match["teams"]["red1"] }},{{ match["teams"]["red2"] }},{{ match["teams"]["red3"] }}' data-blueTeams='{{ match["teams"]["blue1"] }},{{ match["teams"]["blue2"] }},{{ match["teams"]["blue3"] }}'>
+            <h2>{{ match["displayName"] }}</h2>
+            <p>Click on the teams to go to the scouting page</p>
+            <p>Red teams: 
+                <a href="{{ url_for('submitScorePage', team=match['teams']['red1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red1') }}">{{ match["teams"]["red1"] }}</a>, 
+                <a href="{{ url_for('submitScorePage', team=match['teams']['red2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red2') }}">{{ match["teams"]["red2"] }}</a>,
+                <a href="{{ url_for('submitScorePage', team=match['teams']['red3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red3') }}">{{ match["teams"]["red3"] }}</a>
+            </p>
+            <p>Blue teams: 
+                <a href="{{ url_for('submitScorePage', team=match['teams']['blue1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue1') }}">{{ match["teams"]["blue1"] }}</a>, 
+                <a href="{{ url_for('submitScorePage', team=match['teams']['blue2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue2') }}">{{ match["teams"]["blue2"] }}</a>,
+                <a href="{{ url_for('submitScorePage', team=match['teams']['blue3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue3') }}">{{ match["teams"]["blue3"] }}</a>
+            </p>
+            
+            <p><a href="?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }}">Link</a></p>
+            <p class="small">complevel: {{ match['compLevel'] }}, matchnumber: {{ match['matchNumber'] }}, setnumber: {{ match['setNumber'] }}</p>
+        </div> -->
+        <div id="none-div" class="match-div hide">
+            <h2>No results matched.</h2>
+        </div>
+    </ul>
+</body>
+</html>
