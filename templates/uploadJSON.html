@@ -34,6 +34,7 @@
             if (response.ok){
                 message.innerHTML = "Submitted data!";
                 message.style = "display:inline;"
+                document.getElementById("form").reset();
             } else if (response.status == 404){
                 message.innerHTML = "Error, match not found."
                 message.style = "display:inline; color:red;"
