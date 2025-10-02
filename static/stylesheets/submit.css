@@ -328,3 +328,9 @@ input[type=range]{
 .backButton{
     width: 10em;
 }
+
+.endPosImg{
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
