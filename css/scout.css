@@ -167,6 +167,17 @@ div{
     margin: 0px;
  }
 
+.infoBox {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.infoBox input, .infoBox select {
+    border: 1px solid white;
+}
+
  #id{
     justify-content: center;
  }

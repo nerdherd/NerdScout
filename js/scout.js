@@ -195,10 +195,10 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
 
     const endPosWin = !(document.getElementById("attemptEP").value);
 
-    attemptedEndPos = endPosDDown.value
+    attemptedEndPos = endPosDDown.value-1
 
     if(endPosWin){
-        endPos = endPosDDown.value
+        endPos = endPosDDown.value-1
     } else {
         endPos = 1; // assume they parked
     }
@@ -240,7 +240,7 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         "majorFouls": majorFouls,
         "comment": comment
     };
-    data = JSON.stringify(rawData)
+    data = JSON.stringify(rawData);
     alert(data);
     // fetch(window.location.href, {
     // method: "POST",
