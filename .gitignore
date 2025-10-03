@@ -8,3 +8,5 @@
 /database
 
 *.ds_store
+
+/schedules/*
