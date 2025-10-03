@@ -128,7 +128,7 @@ def renderMatch():
                 f"Team {results['teams'][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance."
             )
     return render_template(
-        "match/match.html", teams=[redTeams, blueTeams], matchData=matchData
+        "match/match.html", teams=[redTeams, blueTeams], matchData=matchData,results=results
     )
 
 
