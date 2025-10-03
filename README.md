@@ -21,6 +21,8 @@ Files to include:
 - the generated schedule
 - `INSTRUCTIONS.txt`
 
+If you would like, you can edit INSTRUCTIONS to include the filename of the schedule.
+
 ### Using the local app
 
 Either open `scout.html` to directly enter in match information or `matches.html` to be able to select what team to scout for.
