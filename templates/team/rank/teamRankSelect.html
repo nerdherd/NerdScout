@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Team Ranking{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<!--category-->
+<select id="categoryInput">
+    {% for key in options %}
+    <option value="{{ options[key] }}">{{ key }}</option>
+    {% endfor %}
+</select>
+<!--stat-->
+<select id="statInput">
+    <option value="mean">Mean</option>
+    <option value="median">Median</option>
+    <option value="mode">Mode</option>
+    <option value="highest">Highest</option>
+    <option value="lowest">Lowest</option>
+</select>
+<!--sort-->
+<select id="sortInput">
+    <option value="ascending">Ascending</option>
+    <option value="descending" selected>Descending</option>
+</select>
+<button onclick="goToRank()">Search</button>
+<script>
+    function goToRank(){
+
+        let categoryFull = document.getElementById("categoryInput").value.split(",");
+
+
+        let stat = document.getElementById("statInput").value;
+        let sort = document.getElementById("sortInput").value;
+
+        let url = "{{ url_for('teamRankPage') }}"+`?category=${categoryFull[0]}&stat=${stat}&sort=${sort}&reefLevel=${categoryFull[1]}`;
+        window.location.href = url;
+    }
+</script>
+{% endblock %}

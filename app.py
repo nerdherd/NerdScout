@@ -182,8 +182,39 @@ def teamRankPage():
     reefLevel = request.args.get("reefLevel")
     reefLevel = 0 if not reefLevel else int(reefLevel)
     if (not key) or (not stat in STAT_CODES):
-        abort(400)
-    return render_template("team/teamRank.html", ranking=rankTeams(key,stat,sort,reefLevel),category=key,stat=stat,sort=sort,reefLevel=reefLevel,keyDisplayNames=keyDisplayNames)
+        options = {
+            "Score Impact":"score,0",
+            "Starting Position":"startPos,0",
+            "Auto Leave":"autoLeave,0",
+            "Reef Auto":"autoReef,0",
+            "Reef Auto L1":"autoReef,0",
+            "Reef Auto L2":"autoReef,1",
+            "Reef Auto L3":"autoReef,2",
+            "Reef Auto L4":"autoReef,3",
+            "Reef Auto Missed":"autoReefMiss,0",
+            "Reef Tele-Op":"teleReef,0",
+            "Reef Tele-Op L1":"teleReef,0",
+            "Reef Tele-Op L2":"teleReef,1",
+            "Reef Tele-Op L3":"teleReef,2",
+            "Reef Tele-Op L4":"teleReef,3",
+            "Reef Tele-Op Missed":"teleReefMiss,0",
+            "Processor Auto":"autoProcessor,0",
+            "Processor Auto Missed":"autoProcessorMiss,0",
+            "Processor Tele-Op":"teleProcessor,0",
+            "Processor Tele-Op Missed":"teleProcessorMiss,0",
+            "Net Auto":"autoNet,0",
+            "Net Auto Missed":"autoNetMiss,0",
+            "Net Tele-Op":"teleNet,0",
+            "Net Tele-Op Missed":"teleNetMiss,0",
+            "Ending Position":"endPos,0",
+            "Attempted Ending Position":"attemptedEndPos,0",
+            "Minor Fouls":"minorFouls,0",
+            "Major Fouls":"majorFouls,0"
+        }
+        
+        return render_template("team/rank/teamRankSelect.html",options=options)
+        # abort(400)
+    return render_template("team/rank/teamRank.html", ranking=rankTeams(key,stat,sort,reefLevel),category=key,stat=stat,sort=sort,reefLevel=reefLevel,keyDisplayNames=keyDisplayNames)
     
 
 
