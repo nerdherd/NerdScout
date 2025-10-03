@@ -259,35 +259,35 @@ div{
 
 .minusCounter{
     /* From https://css.glass */
-    background: rgba(220, 63, 97, 0.67);
+    background: var(--red-transparent);
     border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 30px var(--shadow);
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
-    border: 1px solid rgba(220, 63, 97, 1);
+    border: 1px solid var(--red-opaque);
 
     transition: background 0.25s ease, transform 0.15s ease;
 }
 
 .plusCounter{
     /* From https://css.glass */
-    background: rgba(127, 176, 105, 0.67);
+    background: var(--green-transparent);
     border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 30px var(--shadow);
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
-    border: 1px solid rgba(127, 176, 105, 1);
+    border: 1px solid var(--green-opaque);
 
     transition: background 0.25s ease, transform 0.15s ease;
 }
 
 .plusCounter:active{
-    background: rgba(127, 176, 105, 1);
+    background: var(--green-opaque);
     transform: scale(1.1);
 }
 
 .minusCounter:active{
-    background: rgba(220, 63, 97, 1);
+    background: var(--red-opaque);
     transform: scale(1.1);
 }
 
@@ -296,7 +296,7 @@ div{
 }
 
 input[type=range]{
-    accent-color: #D9D9D9;
+    accent-color: var(--white-accent);
 }
 
 .endPosSuccess{

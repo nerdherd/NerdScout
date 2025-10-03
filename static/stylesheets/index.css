@@ -1,9 +1,39 @@
 .mainMenu{
     width:100%;
-    height: calc(100vh - calc(2 * var(--footer-height)));
+    height: calc(95svh - calc(2 * var(--footer-height)));
     display:flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    margin-top:5svh;
+}
+
+#logo{
+    height:125px;
+}
+
+.menuSection{
+    margin-top:3.3333%;
+    height:30%;
+    width: 95%;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+}
+
+a.menuSection{
+    background-color: var(--darker-navy);
+    border-radius: 2rem;
+    border-width:0;
+    text-align: center;
+    font-size:1.75rem;
+    text-decoration: none;
+}
+
+h1{
+    margin:0;
+    font-size:2.5rem;
 }
 
 body{

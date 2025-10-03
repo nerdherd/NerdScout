@@ -2,6 +2,7 @@
     --footer-height: 50px;
     
     --nerd-herd-navy: #081535ff;
+    --darker-navy: #061028;
 
     /* please define all colors here so they can be consistent */
 
@@ -12,6 +13,16 @@
     /* footer */
     --footer-background: black;
     --footer-text-color: white;
+
+    --red-transparent: rgba(220, 63, 97, 0.67);
+    --red-opaque: rgba(220, 63, 97, 1);
+
+    --green-transparent: rgba(127, 176, 105, 0.67);
+    --green-opaque: rgba(127, 176, 105, 1);
+
+    --white-accent: #D9D9D9;
+
+    --shadow: rgba(0, 0, 0, 0.1);
 }
 
 /* Poppins is licensed under the SIL Open Font License */

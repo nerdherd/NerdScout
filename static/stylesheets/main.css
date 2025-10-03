@@ -13,7 +13,7 @@ body {
 
 input, button, select, textarea{
     border-radius: 2em;
-    background-color: #061028;
+    background-color:  var(--darker-navy);
     border-width: 0px;
 }
 
@@ -27,6 +27,7 @@ footer {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    text-align: center;
     column-gap: 10px;
     height:var(--footer-height);
 }

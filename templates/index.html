@@ -8,9 +8,11 @@
 
 {% block content %}
 <div class="mainMenu">
-    <h1>Welcome to NerdScout</h1>
-    <a href="{{ url_for('teamPage') }}">View team list</a>
-    <a href="{{ url_for('renderMatch') }}">View match list</a>
-    <p>{% if username %}Logged in as {{ username }}{% else %}Not logged in{% endif %}</p>
+    <header class="menuSection">
+        <img id="logo" src="{{ url_for('static', filename='images/logo/logo.svg') }}">
+        <h1>NerdScout</h1>
+    </header>
+    <a href="{{ url_for('teamPage') }}" class="menuSection">Teams</a>
+    <a href="{{ url_for('renderMatch') }}" class="menuSection">Matches</a>
 </div>
 {% endblock %}
