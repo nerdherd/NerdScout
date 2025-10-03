@@ -9,7 +9,7 @@
 
 {% block content %}
 <h1>Display match</h1>
-<p>This is the temporary display match page</p>
+<p>This is the NOT temporary display match page</p>
 
 {% for teamSection in teams %}
 <div class="center-horizontal">
@@ -22,22 +22,31 @@
     <div class="results-div">
     {% for result in team['results'] %}
     <div class="match-data revision-{{ loop.index }}">
-        <p>Scored by: {{result['scout']}}</p>
+
+        <div class="scoredBy">
+            <p>Scored by: {{result['scout']}}</p>
+        </div>
+
+        
         <div class="pos-div">
             <div>
                 <h3>Start Position: {{ result["startPos"] }}</h3>
             </div>
-            <img src="{{ url_for('static', filename='images/matchDisplay/startingPositions.svg') }}">
+            <img src="{{ url_for('static', filename='images/matchDisplay/pos'~result['startPos']+'.svg') }}" class="startPosImg">
         </div>
+
         <div>
+            
             <div class="section-title">
                 <h2>Auto</h2>
             </div>
+            
             <h3>Left During Auto:</h3>
             <p>{{ result["autoLeave"] }}</p>
+
             <h3>Scored on reef:</h3>
             <div class="reef-div">
-                <img src="{{ url_for('static', filename='images/matchDisplay/reef.svg') }}">
+                <!-- <img src="{{ url_for('static', filename='images/matchDisplay/reef.svg') }}"> -->
                 <div>
                     <p class="reef-l4">L4: {{ result["autoReef"][3] }}</p>
                     <p class="reef-l3">L3: {{ result["autoReef"][2] }}</p>
@@ -46,6 +55,7 @@
                 </div>
                 <p class="reef-miss">Missed: {{ result["autoReefMiss"] }}</p>
             </div>
+            
             <h3>Scored on processor:</h3>
             <p>{{ result["autoProcessor"] }}</p>
             <h3>Missed on processor:</h3>
