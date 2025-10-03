@@ -177,6 +177,7 @@ def teamPage():
 def teamRankPage():
     key = request.args.get("category")
     stat = request.args.get("stat")
+    isDict = stat == "highest" or stat == "lowest"
     sort = request.args.get("sort")
     sort = not sort == "ascending"
     reefLevel = request.args.get("reefLevel")
@@ -214,7 +215,7 @@ def teamRankPage():
         
         return render_template("team/rank/teamRankSelect.html",options=options)
         # abort(400)
-    return render_template("team/rank/teamRank.html", ranking=rankTeams(key,stat,sort,reefLevel),category=key,stat=stat,sort=sort,reefLevel=reefLevel,keyDisplayNames=keyDisplayNames)
+    return render_template("team/rank/teamRank.html", ranking=rankTeams(key,stat,sort,reefLevel),category=key,stat=stat,sort=sort,reefLevel=reefLevel,keyDisplayNames=keyDisplayNames,isDict=isDict)
     
 
 

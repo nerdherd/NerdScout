@@ -1,0 +1,13 @@
+.team-card{
+    background: var(--darker-navy);
+    padding: 10px;
+    border-radius: 20px;
+    display:flex;
+    flex-direction: row;
+    margin: 10px;
+    width: clamp(300px,90%,500px);
+}
+
+.team-card .number{
+    width: 75px;
+}

@@ -3,14 +3,29 @@
 {% block title %}Team Ranking{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/teamRank.css') }}">
 {% endblock %}
 
 {% block content %}
+<a href="{{ url_for('teamRankPage') }}">To category select</a>
 <h1>Team Ranking</h1>
 <h2>Ranked by {{stat}} of {{ keyDisplayNames[category] }}{% if category == "autoReef" or category == "teleReef" %} L{{ reefLevel+1 }}{% endif %}{% if not sort %}, reverse order.{% endif %}</h2>
-<ol>
+<div>
 {% for team in ranking %}
-<li><a href="{{ url_for('teamPage',team=team['number']) }}">Team {{ team["number"] }}: {{ team["shortName"] }}</a> - {{team[category]}}</li>
+<div class="team-card">
+    <div class="number">
+        <h1>{{ loop.index }}.</h1>
+    </div>
+    <div class="info">
+        <a href="{{ url_for('teamPage',team=team['number']) }}">Team {{ team["number"] }}: {{ team["shortName"] }}</a>
+        {% if isDict %}
+        <p>{{stat.capitalize()}}: {{team[category]["value"]}}</p>
+        <p>During <a href="{{ url_for('renderMatch',matchNum=team[category]['matchNumber'],compLevel=team[category]['compLevel'],setNum=team[category]['setNumber']) }}">{{team[category]["displayName"]}}</a></p>
+        {% else %}
+        <p>{{stat.capitalize()}}: {{team[category]}}</p>
+        {% endif %}
+    </div>
+</div>
 {% endfor %}
-</ol>
+</div>
 {% endblock %}
