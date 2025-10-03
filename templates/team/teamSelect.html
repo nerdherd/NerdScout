@@ -25,20 +25,18 @@
         <input type="checkbox" id="teamExact" name="teamExact">
         <label for="teamExact">Exact?</label>
     </div>
-    <button onclick="updateSearch()">Search</button>
+    <button onclick="updateSearch()" class="search-button">Search</button>
 </div>
 
-<ul>
+<div class="teams-div">
 {% for team in teams %}
     <div class="team-div" data-name="{{ team['shortName'] }}" data-num="{{ team['number'] }}">
-        <br>
-        <h1>{{ team["shortName"] }} - {{ team["number"] }}</h1>
+        <h1>Team {{ team["number"] }}</h1>
+        <h2>{{ team["shortName"] }}</h2>
         <p>{{ team["longName"] }}</p>
-        <a href="?team={{ team['number'] }}">To Page</a>
-        <!-- <p>{{ team }}</p> -->
-        <br><br><br>
+        <a href="?team={{ team['number'] }}"></a>
     </div>
 {% endfor %}
-</ul>
+</div>
 
 {% endblock %}
