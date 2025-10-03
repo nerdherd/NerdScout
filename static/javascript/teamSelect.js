@@ -28,3 +28,11 @@ function updateSearch(){
 }
 
 updateSearch();
+
+for (const inputthing of document.querySelectorAll('input')){
+    inputthing.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            updateSearch();
+        }
+    });
+}
