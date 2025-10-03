@@ -3,10 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/matches.css">
+
+    <script src="js/matchSelect.js" defer></script>
     <title>Match Select</title>
 </head>
 <body>
     <h1>Match Select</h1>
+    <label for="scheduleInput">Input schedule:</label>
+    <input type="file" id="scheduleInput" name="scheduleInput" accept="application/json">
+    <button onclick="addFiles()">Load matches into search</button>
     <div>
         <div>
             <label for="matchNumberInput">Search by match number:</label>
@@ -29,24 +37,8 @@
         <br>
         <button onclick="updateSearch()">Search</button><br><br>
     </div>
-    <ul>
-        <!-- <div class="match-div" data-compLevel="{{ match['compLevel'] }}" data-matchNumber="{{ match['matchNumber'] }}" data-setNumber="{{ match['setNumber'] }}" data-redTeams='{{ match["teams"]["red1"] }},{{ match["teams"]["red2"] }},{{ match["teams"]["red3"] }}' data-blueTeams='{{ match["teams"]["blue1"] }},{{ match["teams"]["blue2"] }},{{ match["teams"]["blue3"] }}'>
-            <h2>{{ match["displayName"] }}</h2>
-            <p>Click on the teams to go to the scouting page</p>
-            <p>Red teams: 
-                <a href="{{ url_for('submitScorePage', team=match['teams']['red1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red1') }}">{{ match["teams"]["red1"] }}</a>, 
-                <a href="{{ url_for('submitScorePage', team=match['teams']['red2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red2') }}">{{ match["teams"]["red2"] }}</a>,
-                <a href="{{ url_for('submitScorePage', team=match['teams']['red3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red3') }}">{{ match["teams"]["red3"] }}</a>
-            </p>
-            <p>Blue teams: 
-                <a href="{{ url_for('submitScorePage', team=match['teams']['blue1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue1') }}">{{ match["teams"]["blue1"] }}</a>, 
-                <a href="{{ url_for('submitScorePage', team=match['teams']['blue2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue2') }}">{{ match["teams"]["blue2"] }}</a>,
-                <a href="{{ url_for('submitScorePage', team=match['teams']['blue3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue3') }}">{{ match["teams"]["blue3"] }}</a>
-            </p>
-            
-            <p><a href="?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }}">Link</a></p>
-            <p class="small">complevel: {{ match['compLevel'] }}, matchnumber: {{ match['matchNumber'] }}, setnumber: {{ match['setNumber'] }}</p>
-        </div> -->
+    <ul id="matches">
+        <p>Click on the teams to go to the scouting page</p>
         <div id="none-div" class="match-div hide">
             <h2>No results matched.</h2>
         </div>
