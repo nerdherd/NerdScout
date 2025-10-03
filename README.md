@@ -19,6 +19,7 @@ Files to include:
 - all files in `/js`
 - all files in `/css`
 - the generated schedule
+- `INSTRUCTIONS.txt`
 
 ### Using the local app
 

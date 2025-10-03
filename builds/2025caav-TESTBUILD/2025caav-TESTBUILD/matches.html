@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/matches.css">
+
+    <script src="js/matchSelect.js" defer></script>
+    <title>Match Select</title>
+</head>
+<body>
+    <h1>Match Select</h1>
+    <label for="scheduleInput">Input provided schedule:</label>
+    <input type="file" id="scheduleInput" name="scheduleInput" accept="application/json">
+    <button onclick="addFiles()">Load matches into search</button>
+    <div>
+        <div>
+            <label for="matchNumberInput">Search by match number:</label>
+            <input type="number" min="1" max="9999999" name="matchNumberInput" id="matchNumberInput">
+        </div>
+        <div>
+            <p>Sort by competition level:</p>
+            <ul>
+                <input type="checkbox" id="qm-select" name="qm-select"><label for="qm-select">Qualifying</label><br>
+                <input type="checkbox" id="ef-select" name="ef-select"><label for="ef-select">ef</label><br>
+                <input type="checkbox" id="qf-select" name="qf-select"><label for="qf-select">qf</label><br>
+                <input type="checkbox" id="sf-select" name="sf-select"><label for="sf-select">Playoff</label><br>
+                <input type="checkbox" id="f-select" name="f-select"><label for="f-select">Final</label><br>
+            </ul>
+        </div>
+        <div>
+            <label for="teamNumberInput">Search by team number:</label>
+            <input type="number" min="1" max="99999" name="teamNumberInput" id="teamNumberInput">
+        </div>
+        <br>
+        <button onclick="updateSearch()">Search</button><br><br>
+    </div>
+    <ul id="matches">
+        <p>Click on the teams to go to the scouting page</p>
+        <div id="none-div" class="match-div hide">
+            <h2>No results matched.</h2>
+        </div>
+    </ul>
+</body>
+</html>

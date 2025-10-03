@@ -1,0 +1,39 @@
+* {
+    font-family: system-ui, sans-serif;
+}
+
+* {
+    color: var(--text-color)
+}
+
+body {
+    background-color: var(--background-color);
+}
+
+input, button, select, textarea{
+    border-radius: 2em;
+    background-color: #061028;
+    border-width: 0px;
+}
+
+footer {
+    width: 100%;
+    position:fixed;
+    bottom: 0;
+    background-color: var(--footer-background);
+    left:0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+    height:var(--footer-height);
+}
+
+.footer-spacer{
+    height:var(--footer-height);
+}
+
+footer *{
+    color:var(--footer-text-color);
+}

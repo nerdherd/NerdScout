@@ -1,0 +1,13 @@
+Installing
+1. Either download the folder from the repository, or copy the folder from a usb
+2. Make sure the folder is unzipped
+
+Using
+1. Copy the filepath of matches.html into any browser
+2. Upload the schedule provided with the files (.json file)
+3. Search for the match you are scouting
+4. Click on the team you wish to scout for
+5. Fill in all of the information
+6. Save the json for later upload
+
+Alternatively you can manually input the match data, but this is not recommended.
