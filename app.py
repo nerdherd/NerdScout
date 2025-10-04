@@ -297,6 +297,7 @@ def scheduleEventPage():
         except:
             abort(400)
         addScheduleFromTBA(event)
+        addTeamsFromTBA(event)
     return render_template("match/schedule/addSchedule.html")
 
 
