@@ -36,7 +36,7 @@
     {% if team["hasData"] %}
     <select id="results-select-{{ color }}-{{ loop.index }}" onclick="set_visible(get_results_div('{{color}}','{{loop.index}}'),'results-select-{{ color }}-{{ loop.index }}')">
         {% for result in team['results'] %}
-        <option value="{{ loop.index }}">Revision {{loop.index}} ({{result['scout']}})</option>
+        <option value="{{ loop.index }}" {% if loop.last %} selected {% endif %}>Revision {{loop.index}} ({{result['scout']}})</option>
         {% endfor %}
     </select>
     <div class="results-div">
