@@ -3,6 +3,7 @@
 {% block title %}Team Ranking{% endblock %}
 
 {% block head %}
+<link rel="preload" href="{{ url_for('static', filename='stylesheets/teamRank.css') }}" as="style">
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/teamRank.css') }}">
 {% endblock %}
 

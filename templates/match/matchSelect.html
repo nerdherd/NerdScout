@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<link rel="preload" href="{{ url_for('static', filename='stylesheets/matchSelect.css') }}" as="style">
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/matchSelect.css') }}">
 <script src="{{ url_for('static', filename='javascript/matchSelect.js') }}" defer></script>
 {% endblock %}

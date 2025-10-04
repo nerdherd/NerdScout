@@ -2,6 +2,7 @@
 
 {% block head %}
 <script src="{{ url_for('static', filename='javascript/teamSelect.js') }}" defer></script>
+<link rel="preload" href="{{ url_for('static', filename='stylesheets/teamSelect.css') }}" as="style">
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/teamSelect.css') }}">
 {% endblock %}
 
