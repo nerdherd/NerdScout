@@ -13,8 +13,8 @@
         <img id="logo" src="{{ url_for('static', filename='images/logo/logo.svg') }}">
         <h1>NerdScout</h1>
     </header>
-    <p><a href="{{ url_for('aboutPage')}}">about</a></p>
     <a href="{{ url_for('teamPage') }}" class="menuSection">Teams</a>
     <a href="{{ url_for('renderMatch') }}" class="menuSection">Matches</a>
 </div>
+    <p id="aboutLink"><a href="{{ url_for('aboutPage')}}">About</a></p>
 {% endblock %}

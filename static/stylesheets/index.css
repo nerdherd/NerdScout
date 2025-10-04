@@ -39,3 +39,7 @@ h1{
 body{
     margin:0;
 }
+
+#aboutLink{
+    text-align: center;
+}
