@@ -40,14 +40,14 @@
         <p>Scout a team:</p>
         <table class="teamTable">
             <tr class="redRow">
-                <td class="redTeam"><a href="{{ url_for('submitScorePage', team=match['teams']['red1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red1') }}" >{{ match["teams"]["red1"] }}</a></td>
-                <td class="redTeam"><a href="{{ url_for('submitScorePage', team=match['teams']['red2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red2') }}">{{ match["teams"]["red2"] }}</a></td>
-                <td class="redTeam"><a href="{{ url_for('submitScorePage', team=match['teams']['red3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red3') }}">{{ match["teams"]["red3"] }}</a></td>
+                <td class="redTeam {% if match['results']['red1'] %}scouted{% endif %}"><a href="{{ url_for('submitScorePage', team=match['teams']['red1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red1') }}" >{{ match["teams"]["red1"] }}</a></td>
+                <td class="redTeam {% if match['results']['red2'] %}scouted{% endif %}"><a href="{{ url_for('submitScorePage', team=match['teams']['red2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red2') }}">{{ match["teams"]["red2"] }}</a></td>
+                <td class="redTeam {% if match['results']['red3'] %}scouted{% endif %}"><a href="{{ url_for('submitScorePage', team=match['teams']['red3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='red3') }}">{{ match["teams"]["red3"] }}</a></td>
             </tr>
             <tr class="blueRow">
-                <td class="blueTeam"><a href="{{ url_for('submitScorePage', team=match['teams']['blue1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue1') }}">{{ match["teams"]["blue1"] }}</a></td>
-                <td class="blueTeam"><a href="{{ url_for('submitScorePage', team=match['teams']['blue2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue2') }}">{{ match["teams"]["blue2"] }}</a></td>
-                <td class="blueTeam"><a href="{{ url_for('submitScorePage', team=match['teams']['blue3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue3') }}">{{ match["teams"]["blue3"] }}</a></td>
+                <td class="blueTeam {% if match['results']['blue1'] %}scouted{% endif %}"><a href="{{ url_for('submitScorePage', team=match['teams']['blue1'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue1') }}">{{ match["teams"]["blue1"] }}</a></td>
+                <td class="blueTeam {% if match['results']['blue2'] %}scouted{% endif %}"><a href="{{ url_for('submitScorePage', team=match['teams']['blue2'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue2') }}">{{ match["teams"]["blue2"] }}</a></td>
+                <td class="blueTeam {% if match['results']['blue3'] %}scouted{% endif %}"><a href="{{ url_for('submitScorePage', team=match['teams']['blue3'], compLevel=match['compLevel'], matchNumber=match['matchNumber'], setNumber=match['setNumber'], robotStation='blue3') }}">{{ match["teams"]["blue3"] }}</a></td>
             </tr>
         </table>
         <p><a href="?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }}">View Results</a></p>

@@ -45,6 +45,14 @@ td{
    text-align: center;
 }
 
+.scouted{
+    background-color: #ffffff1a;
+}
+
+.scouted a{
+    text-decoration: none;
+}
+
 @media screen and (width < 520px){
     .match-div{
         width:95vw !important; 
