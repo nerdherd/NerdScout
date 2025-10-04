@@ -14,7 +14,7 @@
 {% set color = 'red' if loop.index == 1 else 'blue' %}
 <div class="{{color}}-table">
 {% for team in teamSection %}
-<div class="team-{{ loop.index }}">
+<div class="team-{{ loop.index }} team team-{{color}}{{loop.index}}">
     <div class="headLine">
 
     </div>
@@ -202,6 +202,14 @@
 {% endfor %}
 </div>
 </div>
-{% if loop.index == 1 %}<div class="spacer"></div>{% endif %}
+<!-- {% if loop.index == 1 %}<div class="spacer"></div>{% endif %} -->
 {% endfor %}
+<div class="select-div">
+    {% for teamSection in teams %}
+    {% set color = 'red' if loop.index == 1 else 'blue' %}
+    {% for team in teamSection %}
+    <button onclick="set_team('{{color}}{{loop.index}}')">{{team['teamNumber']}}</button>
+    {% endfor %}
+    {% endfor%}
+</div>
 {% endblock %}
