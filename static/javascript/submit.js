@@ -170,6 +170,7 @@ function fouling(level){
 const positionSliderLabel = document.getElementById("positionSliderLabel");
 startPosSlider.addEventListener("change",()=>{
     positionSliderLabel.innerText="Starting position: "+(["Red","Middle","Blue"])[startPosSlider.value-1];
+    startpos = startPosSlider.value;
 });
 
 const endposlabel = document.getElementById("endposlabel");
@@ -185,7 +186,7 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
     robot = tRobot
 
 
-    startPos = startPosSlider.value
+    let startPos = 4-startPosSlider.value;
     autoLeave = (leaveCheck.value == "on")
 
     autoProcessor = procNetVars[0] 
@@ -193,7 +194,7 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
     autoNet = procNetVars[2] 
     teleNet = procNetVars[3]
 
-    const endPosWin = !(document.getElementById("attemptEP").value);
+    const endPosWin = !(document.getElementById("attemptEP").checked);
 
     attemptedEndPos = endPosDDown.value-1
 
@@ -202,6 +203,9 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
     } else {
         endPos = 1; // assume they parked
     }
+
+    alert(attemptedEndPos);
+    alert(endPos);
     
 
     comment = document.getElementById("comments").value
@@ -220,7 +224,7 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         "compLevel": compLevel,
         "setNum": setNum, 
         "robot": robot,
-        "startPos": startpos,
+        "startPos": startPos,
         "autoLeave": autoLeave,
         "autoReef": autoReef,
         "autoReefMiss": autoReefMiss,
