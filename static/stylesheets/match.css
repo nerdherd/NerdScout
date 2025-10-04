@@ -32,6 +32,10 @@
 
 .match-data{
     border:1px dotted white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
 }
 
 
@@ -128,12 +132,143 @@
     border-top: 1px solid white;
 }
 
-.match-data{
+.startPosImg{
+    height: 10vh;
+}
+
+.teamNumber{
+    font-size: xx-large;
+    font-weight: bold;
+    text-align: center;
+}
+
+.teamNumberWrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.pos-div{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.pos-div img{
+    margin: 1em;
+}
+
+.pos-div div{
+    margin:0px;
+}
+
+.pos-div h3{
+    margin: 0px;
+}
+
+.scoredBy{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.leaveBlock{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.leaveBlock img{
+    height: 2em;
+}
+
+.leaveBlock h3{
+    padding: 0px;
+    margin: 0px;
+}
+
+.reef-div{
+    display:flex;
+    flex-direction: column;
+    width:100%;
+    justify-content: center;
+    align-items: center;
+    padding: 2%;
+    padding-left: 0px;
+}
+
+.table{
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
     display: flex;
     flex-direction: row;
 }
 
-.startPosImg{
-    height: min-content;
+.cell{
+    outline-offset: -0.125em;
+    width:3em;
+    height: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.25em;
+    margin:0.2em;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
-    
+
+.cell2{
+    width: 6.5em;
+}
+
+.cell3{
+    width: 9.8em;
+}
+
+.cell4{
+    width:13.2em;
+}
+
+.cell5{
+    width: 17em;
+}
+
+.miss{
+    background-color: rgba(255,0,0,.25) ;
+}
+
+.algaeDiv{
+    padding: 2%;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding-left: 0px;
+}
+
+.endPosDiv{
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 2%;
+    padding-left: 0px;
+}
+
+.foulDiv{
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 2%;
+    padding-left: 0px;
+}

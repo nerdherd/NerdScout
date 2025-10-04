@@ -8,16 +8,18 @@
 {% block title %}Match Viewer{% endblock %}
 
 {% block content %}
-<h1>Display match</h1>
-<p>This is the NOT temporary display match page</p>
 
 {% for teamSection in teams %}
 <div class="center-horizontal">
 <div class="{% if loop.index == 1 %}red{% else %}blue{% endif %}-table">
 {% for team in teamSection %}
 <div class="team-{{ loop.index }}">
-    <p>Team Number {{ team['teamNumber'] }}</p>
-    <a href="{{ url_for('teamPage',team=team['teamNumber']) }}">To team page</a>
+    <div class="headLine">
+
+    </div>
+    <div class="teamNumberWrapper">
+        <a href="{{ url_for('teamPage',team=team['teamNumber']) }}" class="teamNumber">Team Number {{ team['teamNumber'] }}</a>
+    </div>
     {% if team["hasData"] %}
     <div class="results-div">
     {% for result in team['results'] %}
@@ -41,71 +43,147 @@
                 <h2>Auto</h2>
             </div>
             
-            <h3>Left During Auto:</h3>
-            <p>{{ result["autoLeave"] }}</p>
+            <div class="leaveBlock">
+                <h3>Leave:</h3>
+                {% if result["autoLeave"] %}
+                <img src="{{ url_for('static', filename='images/matchDisplay/True.svg') }}" class="startPosImg">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/matchDisplay/False.svg') }}" class="startPosImg">           
+                {% endif %}
+            </div>
 
-            <h3>Scored on reef:</h3>
             <div class="reef-div">
-                <!-- <img src="{{ url_for('static', filename='images/matchDisplay/reef.svg') }}"> -->
-                <div>
-                    <p class="reef-l4">L4: {{ result["autoReef"][3] }}</p>
-                    <p class="reef-l3">L3: {{ result["autoReef"][2] }}</p>
-                    <p class="reef-l2">L2: {{ result["autoReef"][1] }}</p>
-                    <p class="reef-l1">L1: {{ result["autoReef"][0] }}</p>
+                <div class="table">
+                    <div class="row">
+                        <div class="cell5 cell"><b>Coral</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="miss cell"><b>Miss</b></div> 
+                        <div class="cell"><b>L1</b></div> 
+                        <div class="cell"><b>L2</b></div> 
+                        <div class="cell"><b>L3</b></div> 
+                        <div class="cell"><b>L4</b></div>                    
+                    </div>
+                    <div class="row">
+                        <div class="cell miss">{{ result["autoReefMiss"] }}</div> 
+                        <div class="cell">{{ result["autoReef"][0] }}</div> 
+                        <div class="cell">{{ result["autoReef"][1] }}</div> 
+                        <div class="cell">{{ result["autoReef"][2] }}</div> 
+                        <div class="cell">{{ result["autoReef"][3] }}</div>                    
+                    </div>
                 </div>
-                <p class="reef-miss">Missed: {{ result["autoReefMiss"] }}</p>
             </div>
             
-            <h3>Scored on processor:</h3>
-            <p>{{ result["autoProcessor"] }}</p>
-            <h3>Missed on processor:</h3>
-            <p>{{ result["autoProcessorMiss"] }}</p>
-            <h3>Scored on net:</h3>
-            <p>{{ result["autoNet"] }}</p>
-            <h3>Missed on net:</h3>
-            <p>{{ result["autoNetMiss"] }}</p>
+            <div class="algaeDiv">
+                <div class="table">
+                    <div class="row">
+                        <div class="cell2 cell"><b>Processor</b></div>
+                        <div class="cell2 cell"><b>Net</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell miss">{{ result["autoProcessorMiss"] }}</div>
+                        <div class="cell">{{ result["autoProcessor"] }}</div>
+                        <div class="cell miss">{{ result["autoNetMiss"] }}</div>
+                        <div class="cell">{{ result["autoNet"] }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div>
+
             <div class="section-title">
                 <h2>Teleop</h2>
             </div>
-            <h3>Scored on reef:</h3>
+
             <div class="reef-div">
-                <img src="{{ url_for('static', filename='images/matchDisplay/reef.svg') }}">
-                <div>
-                    <p class="reef-l4">L4: {{ result["teleReef"][3] }}</p>
-                    <p class="reef-l3">L3: {{ result["teleReef"][2] }}</p>
-                    <p class="reef-l2">L2: {{ result["teleReef"][1] }}</p>
-                    <p class="reef-l1">L1: {{ result["teleReef"][0] }}</p>
+                <div class="table">
+                    <div class="row">
+                        <div class="cell5 cell"><b>Coral</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="miss cell"><b>Miss</b></div> 
+                        <div class="cell"><b>L1</b></div> 
+                        <div class="cell"><b>L2</b></div> 
+                        <div class="cell"><b>L3</b></div> 
+                        <div class="cell"><b>L4</b></div>                    
+                    </div>
+                    <div class="row">
+                        <div class="cell miss">{{ result["teleReefMiss"] }}</div> 
+                        <div class="cell">{{ result["teleReef"][0] }}</div> 
+                        <div class="cell">{{ result["teleReef"][1] }}</div> 
+                        <div class="cell">{{ result["teleReef"][2] }}</div> 
+                        <div class="cell">{{ result["teleReef"][3] }}</div>                    
+                    </div>
                 </div>
-                <p class="reef-miss">Missed: {{ result["teleReefMiss"] }}</p>
             </div>
-            <h3>Scored on processor:</h3>
-            <p>{{ result["teleProcessor"] }}</p>
-            <h3>Missed on processor:</h3>
-            <p>{{ result["teleProcessorMiss"] }}</p>
-            <h3>Scored on net:</h3>
-            <p>{{ result["teleNet"] }}</p>
-            <h3>Missed on net:</h3>
-            <p>{{ result["teleNetMiss"] }}</p>
-            <h3>Score Impact:</h3>
-            <p>{{ result["score"] }}</p>
+            
+            <div class="algaeDiv">
+                <div class="table">
+                    <div class="row">
+                        <div class="cell2 cell"><b>Processor</b></div>
+                        <div class="cell2 cell"><b>Net</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell miss">{{ result["teleProcessorMiss"] }}</div>
+                        <div class="cell">{{ result["teleProcessor"] }}</div>
+                        <div class="cell miss">{{ result["teleNetMiss"] }}</div>
+                        <div class="cell">{{ result["teleNet"] }}</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="section-title"></div>
-        <h3>End position:</h3>
-        <p>{{ (['None','Park','Shallow cage','Deep cage'])[result["endPos"]] }}</p>
-        <h3>Attempted end position:</h3>
-        <p>{{ (['None','Park','Shallow cage','Deep cage'])[result["attemptedEndPos"]] }}</p>
-        {% if result["minorFouls"]>0 %}
-        <h3>Minor fouls:</h3>
-        <p>{{ result["minorFouls"] }}</p>
-        {% endif %}
-        {% if result["majorFouls"]>0 %}
-        <h3>Major fouls:</h3>
-        <p>{{ result["majorFouls"] }}</p>
-        {% endif %}
-        <h3>Comment:</h3>
-        <p>{{ result["comment"] }}</p>
+
+        <div>
+            <div class="section-title">
+                <h3>Endgame</h3> 
+            </div>
+
+            <div class="endPosDiv">
+                <div class="table">
+                    <div class="row">
+                        <div class="cell cell3"><b>End Pos:</b></div>
+                        <div class="cell cell3"><b>Success?</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell cell3"><p>{{ (['None','Park','Shallow cage','Deep cage'])[result["endPos"]] }}</p></div>
+                        <div class="cell cell3"><p>
+                            {% if (result["attemptedEndPos"]==result["endPos"]) %}
+                            Success
+                            {% else %}
+                            No: {{ (['None','Park','Shallow cage','Deep cage'])[result["attemptedEndPos"]] }}
+                            {% endif %}
+                        </p></div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="foulDiv">
+                <div clas="table">
+                    <div class="row">
+                        <div class="cell cell2"><b>Minor:</b></div>
+                        <div class="cell cell2"><b>Major:</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell cell2">
+                            <p>{{ result["minorFouls"] }}</p>    
+                        </div>
+                        <div class="cell cell2">
+                            <p>{{ result["majorFouls"] }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Comment:</h3>
+            {% if result["comment"] %}
+            <p>{{ result["comment"] }}</p>
+            {% else %}
+            <p>No comment.</p>
+            {% endif %}
+            
+        </div>
     </div>
     {% endfor %}
     </div>
