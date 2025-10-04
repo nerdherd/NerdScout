@@ -204,10 +204,6 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         endPos = 1; // assume they parked
     }
 
-    alert(attemptedEndPos);
-    alert(endPos);
-    
-
     comment = document.getElementById("comments").value
 
     autoReefMiss = missVals[0];

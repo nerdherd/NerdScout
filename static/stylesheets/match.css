@@ -22,12 +22,12 @@
 
 .red-table > div{
     width:100%;
-    border:2px solid red;
+    border:2px solid var(--red-alliance);
     /* border-bottom: 1px solid white; */
 }
 .blue-table > div {
     width:100%;
-    border:2px solid blue;
+    border:2px solid var(--blue-alliance);
     /* border-bottom: 1px solid white; */
 }
 
