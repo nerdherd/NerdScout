@@ -8,5 +8,45 @@
 }
 
 .match-div{
-    border-bottom: 2px dashed var(--text-color);
+    background-color: var(--darker-navy);
+    box-sizing: border-box;
+    border-radius: 2rem;
+    padding: 8px;
+    margin-bottom:10px;
+    width:500px;
+}
+
+#matchList{
+    padding:0;
+}
+
+.teamTable{
+    width: 60%;
+    box-sizing: border-box;
+}
+
+.redTeam{
+    border:1px solid var(--red-alliance);
+}
+
+.redTeam a{
+    color: var(--red-alliance);
+}
+
+.blueTeam{
+    border:1px solid var(--blue-alliance);
+}
+
+.blueTeam a{
+    color: var(--blue-alliance);
+}
+
+td{
+   text-align: center;
+}
+
+@media screen and (width < 520px){
+    .match-div{
+        width:95vw !important; 
+    }
 }
