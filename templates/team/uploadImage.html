@@ -38,7 +38,7 @@
         }).then(response =>{
             message = document.getElementById("message");
             if (response.ok){
-                message.innerHTML = "Submitted image for team " + number + "!";
+                message.innerHTML = "Submitted image for <a href='{{ url_for('teamPage') }}?team=" + number +"'>Team " + number + "</a>!";
                 message.style = "display:inline;"
             } else{
                 message.innerHTML = "Error, unable to submit."

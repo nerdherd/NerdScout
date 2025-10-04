@@ -128,7 +128,7 @@ def renderMatch():
                 f"Team {results['teams'][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance."
             )
     return render_template(
-        "match/match.html", teams=[redTeams, blueTeams], matchData=matchData
+        "match/match.html", teams=[redTeams, blueTeams], matchData=matchData,results=results
     )
 
 
@@ -145,33 +145,33 @@ def teamPage():
     
     matches = getTeamMatches(team)
     stats = {
-        keyDisplayNames["startPos"]: getAllStatsForCategory(getTeamResults(team),"startPos"),
-        keyDisplayNames["autoLeave"]: getAllStatsForCategory(getTeamResults(team),"autoLeave"),
-        keyDisplayNames["autoReefL1"]: getAllStatsForCategory(getTeamResults(team),"autoReef",0),
-        keyDisplayNames["autoReefL2"]: getAllStatsForCategory(getTeamResults(team),"autoReef",1),
-        keyDisplayNames["autoReefL3"]: getAllStatsForCategory(getTeamResults(team),"autoReef",2),
-        keyDisplayNames["autoReefL4"]: getAllStatsForCategory(getTeamResults(team),"autoReef",3),
-        keyDisplayNames["autoReefMiss"]: getAllStatsForCategory(getTeamResults(team),"autoReefMiss"),
-        keyDisplayNames["teleReefL1"]: getAllStatsForCategory(getTeamResults(team),"teleReef",0),
-        keyDisplayNames["teleReefL2"]: getAllStatsForCategory(getTeamResults(team),"teleReef",1),
-        keyDisplayNames["teleReefL3"]: getAllStatsForCategory(getTeamResults(team),"teleReef",2),
-        keyDisplayNames["teleReefL4"]: getAllStatsForCategory(getTeamResults(team),"teleReef",3),
-        keyDisplayNames["teleReefMiss"]: getAllStatsForCategory(getTeamResults(team),"teleReefMiss"),
-        keyDisplayNames["autoProcessor"]: getAllStatsForCategory(getTeamResults(team),"autoProcessor"),
-        keyDisplayNames["autoProcessorMiss"]: getAllStatsForCategory(getTeamResults(team),"autoProcessorMiss"),
-        keyDisplayNames["teleProcessor"]: getAllStatsForCategory(getTeamResults(team),"teleProcessor"),
-        keyDisplayNames["teleProcessorMiss"]: getAllStatsForCategory(getTeamResults(team),"teleProcessorMiss"),
-        keyDisplayNames["autoNet"]: getAllStatsForCategory(getTeamResults(team),"autoNet"),
-        keyDisplayNames["autoNetMiss"]: getAllStatsForCategory(getTeamResults(team),"autoNetMiss"),
-        keyDisplayNames["teleNet"]: getAllStatsForCategory(getTeamResults(team),"teleNet"),
-        keyDisplayNames["teleNetMiss"]: getAllStatsForCategory(getTeamResults(team),"teleNetMiss"),
-        keyDisplayNames["endPos"]: getAllStatsForCategory(getTeamResults(team),"endPos"),
-        keyDisplayNames["attemptedEndPos"]: getAllStatsForCategory(getTeamResults(team),"attemptedEndPos"),
-        keyDisplayNames["minorFouls"]: getAllStatsForCategory(getTeamResults(team),"minorFouls"),
-        keyDisplayNames["majorFouls"]: getAllStatsForCategory(getTeamResults(team),"majorFouls"),
-        keyDisplayNames["score"]: getAllStatsForCategory(getTeamResults(team),"score"),
+        "startPos": getAllStatsForCategory(getTeamResults(team),"startPos"),
+        "autoLeave": getAllStatsForCategory(getTeamResults(team),"autoLeave"),
+        "autoReefL1": getAllStatsForCategory(getTeamResults(team),"autoReef",0),
+        "autoReefL2": getAllStatsForCategory(getTeamResults(team),"autoReef",1),
+        "autoReefL3": getAllStatsForCategory(getTeamResults(team),"autoReef",2),
+        "autoReefL4": getAllStatsForCategory(getTeamResults(team),"autoReef",3),
+        "autoReefMiss": getAllStatsForCategory(getTeamResults(team),"autoReefMiss"),
+        "teleReefL1": getAllStatsForCategory(getTeamResults(team),"teleReef",0),
+        "teleReefL2": getAllStatsForCategory(getTeamResults(team),"teleReef",1),
+        "teleReefL3": getAllStatsForCategory(getTeamResults(team),"teleReef",2),
+        "teleReefL4": getAllStatsForCategory(getTeamResults(team),"teleReef",3),
+        "teleReefMiss": getAllStatsForCategory(getTeamResults(team),"teleReefMiss"),
+        "autoProcessor": getAllStatsForCategory(getTeamResults(team),"autoProcessor"),
+        "autoProcessorMiss": getAllStatsForCategory(getTeamResults(team),"autoProcessorMiss"),
+        "teleProcessor": getAllStatsForCategory(getTeamResults(team),"teleProcessor"),
+        "teleProcessorMiss": getAllStatsForCategory(getTeamResults(team),"teleProcessorMiss"),
+        "autoNet": getAllStatsForCategory(getTeamResults(team),"autoNet"),
+        "autoNetMiss": getAllStatsForCategory(getTeamResults(team),"autoNetMiss"),
+        "teleNet": getAllStatsForCategory(getTeamResults(team),"teleNet"),
+        "teleNetMiss": getAllStatsForCategory(getTeamResults(team),"teleNetMiss"),
+        "endPos": getAllStatsForCategory(getTeamResults(team),"endPos"),
+        "attemptedEndPos": getAllStatsForCategory(getTeamResults(team),"attemptedEndPos"),
+        "minorFouls": getAllStatsForCategory(getTeamResults(team),"minorFouls"),
+        "majorFouls": getAllStatsForCategory(getTeamResults(team),"majorFouls"),
+        "score": getAllStatsForCategory(getTeamResults(team),"score"),
     }
-    return render_template("team/team.html", team=results, matches=sortMatches(matches), stats=stats)
+    return render_template("team/team.html", team=results, matches=sortMatches(matches), stats=stats, keyDisplayNames=keyDisplayNames)
 
 @app.route("/team/rank")
 def teamRankPage():
@@ -297,6 +297,7 @@ def scheduleEventPage():
         except:
             abort(400)
         addScheduleFromTBA(event)
+        addTeamsFromTBA(event)
     return render_template("match/schedule/addSchedule.html")
 
 

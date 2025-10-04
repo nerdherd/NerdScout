@@ -33,6 +33,10 @@ function updateSearch(){
         let teams = (matchDiv.dataset.redteams+","+matchDiv.dataset.blueteams).split(",");
 
         let matchNum = (compLevel==="sf")?matchDiv.dataset.setnumber:matchDiv.dataset.matchnumber;
+        
+        if (!matchNum || !teams){
+            continue;
+        }
 
         if ((matchEmpty || matchNum.includes(matchInput)) && compLevels.includes(compLevel) && (teamEmpty || teams.includes(teamInput))){
             matchDiv.classList.remove("hide");
@@ -47,3 +51,11 @@ function updateSearch(){
 }
 
 updateSearch();
+
+for (const inputthing of document.querySelectorAll('input')){
+    inputthing.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            updateSearch();
+        }
+    });
+}

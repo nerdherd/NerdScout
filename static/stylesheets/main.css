@@ -30,6 +30,7 @@ footer {
     text-align: center;
     column-gap: 10px;
     height:var(--footer-height);
+    z-index: 99;
 }
 
 .footer-spacer{

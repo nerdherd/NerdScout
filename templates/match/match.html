@@ -11,7 +11,8 @@
 
 {% for teamSection in teams %}
 <div class="center-horizontal">
-<div class="{% if loop.index == 1 %}red{% else %}blue{% endif %}-table">
+{% set color = 'red' if loop.index == 1 else 'blue' %}
+<div class="{{color}}-table">
 {% for team in teamSection %}
 <div class="team-{{ loop.index }}">
     <div class="headLine">
@@ -189,6 +190,7 @@
     </div>
     {% else %}
     <p>No data</p>
+    <a href="{{ url_for('submitScorePage', team=team['teamNumber'], compLevel=results['compLevel'], matchNumber=results['matchNumber'], setNumber=results['setNumber'], robotStation=color+(loop.index|string)) }}">Scout this team</a>
     {% endif %}
     <br>
 </div>
