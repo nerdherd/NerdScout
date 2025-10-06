@@ -17,6 +17,7 @@ import statistics
 app = Flask(__name__)
 root = os.path.dirname(__file__)
 
+
 class Station(Enum):
     RED1 = "red1"
     RED2 = "red2"
@@ -60,6 +61,7 @@ class CompLevel(Enum):
 
     F = "f"
     FINAL = "f"
+
 
 STAT_CODES = ["mean", "median", "mode", "highest", "lowest"]
 
@@ -171,7 +173,8 @@ def isImage(file):
     except Exception as e:
         app.logger.info(f"Failed to check file type for {request.remote_addr}: {e}")  # type: ignore
         return False
-    
+
+
 # these functions use data from getTeamResults(int)
 def getListOfScoringCategory(data: list, key: str, reefLevel: int = 0):
     scores: list = []
@@ -186,23 +189,27 @@ def getListOfScoringCategory(data: list, key: str, reefLevel: int = 0):
             abort(500)
     return scores
 
+
 def getMeanOfScoringCategory(data: list, key: str, reefLevel: int = 0):
-    scores: list = getListOfScoringCategory(data,key,reefLevel)
+    scores: list = getListOfScoringCategory(data, key, reefLevel)
     if not scores:
         return 0.0
     return float(statistics.mean(scores))
 
+
 def getMedianOfScoringCategory(data: list, key: str, reefLevel: int = 0):
-    scores: list = getListOfScoringCategory(data,key,reefLevel)
+    scores: list = getListOfScoringCategory(data, key, reefLevel)
     if not scores:
         return 0.0
     return float(statistics.median(scores))
 
+
 def getModeOfScoringCategory(data: list, key: str, reefLevel: int = 0):
-    scores: list = getListOfScoringCategory(data,key,reefLevel)
+    scores: list = getListOfScoringCategory(data, key, reefLevel)
     if not scores:
         return 0
     return int(statistics.median(scores))
+
 
 def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
     highestValue: int = -1
@@ -237,6 +244,7 @@ def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
     }
     return highestMatch
 
+
 def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
     lowestValue: int = 9999
     matchKey: str = ""
@@ -256,7 +264,7 @@ def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
             compLevel = match["compLevel"]
             setNumber = match["setNumber"]
             displayName = match["displayName"]
-    
+
     lowestValue = 0 if lowestValue == 9999 else lowestValue
     lowestMatch = {
         "value": lowestValue,
@@ -270,20 +278,21 @@ def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
     }
     return lowestMatch
 
+
 def getAllStatsForCategory(data: list, key: str, reefLevel: int = 0):
-    scores: list = getListOfScoringCategory(data,key,reefLevel)
+    scores: list = getListOfScoringCategory(data, key, reefLevel)
     if not scores:
-        return{
+        return {
             "mean": 0,
             "median": 0,
             "mode": 0,
-            "lowestMatch":getMatchWithLowestValue(data,key,reefLevel),
-            "highestMatch": getMatchWithHighestValue(data,key,reefLevel),
+            "lowestMatch": getMatchWithLowestValue(data, key, reefLevel),
+            "highestMatch": getMatchWithHighestValue(data, key, reefLevel),
         }
     return {
         "mean": float(statistics.mean(scores)),
         "median": float(statistics.median(scores)),
         "mode": int(statistics.mode(scores)),
-        "lowestMatch": getMatchWithLowestValue(data,key,reefLevel),
-        "highestMatch": getMatchWithHighestValue(data,key,reefLevel),
+        "lowestMatch": getMatchWithLowestValue(data, key, reefLevel),
+        "highestMatch": getMatchWithHighestValue(data, key, reefLevel),
     }

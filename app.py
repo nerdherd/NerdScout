@@ -75,30 +75,30 @@ def renderMatch():
     matchNumber = -1
     compLevel = "none"
     setNumber = -1
-    
+
     failed = False
-    
+
     if "matchNum" in request.args:
         matchNumber = int(request.args.get("matchNum"))  # type: ignore
-    
+
     if "compLevel" in request.args:
         compLevelString = request.args.get("compLevel")
         try:
             compLevel = CompLevel(compLevelString)  # type: ignore
         except ValueError:
             failed = True
-        
+
     if "setNum" in request.args:
         setNumber = int(request.args.get("setNum"))  # type: ignore
     try:
-        results = getMatch(compLevel, matchNumber, setNumber)[-1] # type: ignore
-    except (IndexError,AttributeError) as err:
+        results = getMatch(compLevel, matchNumber, setNumber)[-1]  # type: ignore
+    except (IndexError, AttributeError) as err:
         # IndexError: No matches are found that match
         # AttributeError: compLevel is not set (is still "none")
         failed = True
-    
+
     if failed or matchNumber == -1 or compLevel == "none" or setNumber == -1:
-        return render_template("match/matchSelect.html", matches=sortMatches(getAllMatches()),matchNum=setNumber if (compLevel == CompLevel.PLAYOFF) else matchNumber,compLevel=compLevel if type(compLevel) is str else compLevel.value) # type: ignore
+        return render_template("match/matchSelect.html", matches=sortMatches(getAllMatches()), matchNum=setNumber if (compLevel == CompLevel.PLAYOFF) else matchNumber, compLevel=compLevel if type(compLevel) is str else compLevel.value)  # type: ignore
 
     # view test match with this link:
     # http://127.0.0.1:5000/match?matchNum=9999&compLevel=qm&setNum=1
@@ -128,7 +128,10 @@ def renderMatch():
                 f"Team {results['teams'][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance."
             )
     return render_template(
-        "match/match.html", teams=[redTeams, blueTeams], matchData=matchData,results=results
+        "match/match.html",
+        teams=[redTeams, blueTeams],
+        matchData=matchData,
+        results=results,
     )
 
 
@@ -138,41 +141,52 @@ def teamPage():
         team = int(request.args.get("team"))  # type: ignore
         results = getTeam(team)
     except TypeError as err:
-        return render_template("team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1)
-    
+        return render_template(
+            "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1
+        )
+
     if results is None:
-        return render_template("team/teamSelect.html", teams=sortTeams(getAllTeams()), team=team)
-    
+        return render_template(
+            "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=team
+        )
+
     matches = getTeamMatches(team)
     teamResults = getTeamResults(team)
     stats = {
-        "startPos": getAllStatsForCategory(teamResults,"startPos"),
-        "autoLeave": getAllStatsForCategory(teamResults,"autoLeave"),
-        "autoReefL1": getAllStatsForCategory(teamResults,"autoReef",0),
-        "autoReefL2": getAllStatsForCategory(teamResults,"autoReef",1),
-        "autoReefL3": getAllStatsForCategory(teamResults,"autoReef",2),
-        "autoReefL4": getAllStatsForCategory(teamResults,"autoReef",3),
-        "autoReefMiss": getAllStatsForCategory(teamResults,"autoReefMiss"),
-        "teleReefL1": getAllStatsForCategory(teamResults,"teleReef",0),
-        "teleReefL2": getAllStatsForCategory(teamResults,"teleReef",1),
-        "teleReefL3": getAllStatsForCategory(teamResults,"teleReef",2),
-        "teleReefL4": getAllStatsForCategory(teamResults,"teleReef",3),
-        "teleReefMiss": getAllStatsForCategory(teamResults,"teleReefMiss"),
-        "autoProcessor": getAllStatsForCategory(teamResults,"autoProcessor"),
-        "autoProcessorMiss": getAllStatsForCategory(teamResults,"autoProcessorMiss"),
-        "teleProcessor": getAllStatsForCategory(teamResults,"teleProcessor"),
-        "teleProcessorMiss": getAllStatsForCategory(teamResults,"teleProcessorMiss"),
-        "autoNet": getAllStatsForCategory(teamResults,"autoNet"),
-        "autoNetMiss": getAllStatsForCategory(teamResults,"autoNetMiss"),
-        "teleNet": getAllStatsForCategory(teamResults,"teleNet"),
-        "teleNetMiss": getAllStatsForCategory(teamResults,"teleNetMiss"),
-        "endPos": getAllStatsForCategory(teamResults,"endPos"),
-        "attemptedEndPos": getAllStatsForCategory(teamResults,"attemptedEndPos"),
-        "minorFouls": getAllStatsForCategory(teamResults,"minorFouls"),
-        "majorFouls": getAllStatsForCategory(teamResults,"majorFouls"),
-        "score": getAllStatsForCategory(teamResults,"score"),
+        "startPos": getAllStatsForCategory(teamResults, "startPos"),
+        "autoLeave": getAllStatsForCategory(teamResults, "autoLeave"),
+        "autoReefL1": getAllStatsForCategory(teamResults, "autoReef", 0),
+        "autoReefL2": getAllStatsForCategory(teamResults, "autoReef", 1),
+        "autoReefL3": getAllStatsForCategory(teamResults, "autoReef", 2),
+        "autoReefL4": getAllStatsForCategory(teamResults, "autoReef", 3),
+        "autoReefMiss": getAllStatsForCategory(teamResults, "autoReefMiss"),
+        "teleReefL1": getAllStatsForCategory(teamResults, "teleReef", 0),
+        "teleReefL2": getAllStatsForCategory(teamResults, "teleReef", 1),
+        "teleReefL3": getAllStatsForCategory(teamResults, "teleReef", 2),
+        "teleReefL4": getAllStatsForCategory(teamResults, "teleReef", 3),
+        "teleReefMiss": getAllStatsForCategory(teamResults, "teleReefMiss"),
+        "autoProcessor": getAllStatsForCategory(teamResults, "autoProcessor"),
+        "autoProcessorMiss": getAllStatsForCategory(teamResults, "autoProcessorMiss"),
+        "teleProcessor": getAllStatsForCategory(teamResults, "teleProcessor"),
+        "teleProcessorMiss": getAllStatsForCategory(teamResults, "teleProcessorMiss"),
+        "autoNet": getAllStatsForCategory(teamResults, "autoNet"),
+        "autoNetMiss": getAllStatsForCategory(teamResults, "autoNetMiss"),
+        "teleNet": getAllStatsForCategory(teamResults, "teleNet"),
+        "teleNetMiss": getAllStatsForCategory(teamResults, "teleNetMiss"),
+        "endPos": getAllStatsForCategory(teamResults, "endPos"),
+        "attemptedEndPos": getAllStatsForCategory(teamResults, "attemptedEndPos"),
+        "minorFouls": getAllStatsForCategory(teamResults, "minorFouls"),
+        "majorFouls": getAllStatsForCategory(teamResults, "majorFouls"),
+        "score": getAllStatsForCategory(teamResults, "score"),
     }
-    return render_template("team/team.html", team=results, matches=sortMatches(matches), stats=stats, keyDisplayNames=keyDisplayNames)
+    return render_template(
+        "team/team.html",
+        team=results,
+        matches=sortMatches(matches),
+        stats=stats,
+        keyDisplayNames=keyDisplayNames,
+    )
+
 
 @app.route("/team/rank")
 def teamRankPage():
@@ -185,46 +199,56 @@ def teamRankPage():
     reefLevel = 0 if not reefLevel else int(reefLevel)
     if (not key) or (not stat in STAT_CODES):
         options = {
-            "Score Impact":"score,0",
-            "Starting Position":"startPos,0",
-            "Auto Leave":"autoLeave,0",
-            "Reef Auto":"autoReef,0",
-            "Reef Auto L1":"autoReef,0",
-            "Reef Auto L2":"autoReef,1",
-            "Reef Auto L3":"autoReef,2",
-            "Reef Auto L4":"autoReef,3",
-            "Reef Auto Missed":"autoReefMiss,0",
-            "Reef Tele-Op":"teleReef,0",
-            "Reef Tele-Op L1":"teleReef,0",
-            "Reef Tele-Op L2":"teleReef,1",
-            "Reef Tele-Op L3":"teleReef,2",
-            "Reef Tele-Op L4":"teleReef,3",
-            "Reef Tele-Op Missed":"teleReefMiss,0",
-            "Processor Auto":"autoProcessor,0",
-            "Processor Auto Missed":"autoProcessorMiss,0",
-            "Processor Tele-Op":"teleProcessor,0",
-            "Processor Tele-Op Missed":"teleProcessorMiss,0",
-            "Net Auto":"autoNet,0",
-            "Net Auto Missed":"autoNetMiss,0",
-            "Net Tele-Op":"teleNet,0",
-            "Net Tele-Op Missed":"teleNetMiss,0",
-            "Ending Position":"endPos,0",
-            "Attempted Ending Position":"attemptedEndPos,0",
-            "Minor Fouls":"minorFouls,0",
-            "Major Fouls":"majorFouls,0"
+            "Score Impact": "score,0",
+            "Starting Position": "startPos,0",
+            "Auto Leave": "autoLeave,0",
+            "Reef Auto": "autoReef,0",
+            "Reef Auto L1": "autoReef,0",
+            "Reef Auto L2": "autoReef,1",
+            "Reef Auto L3": "autoReef,2",
+            "Reef Auto L4": "autoReef,3",
+            "Reef Auto Missed": "autoReefMiss,0",
+            "Reef Tele-Op": "teleReef,0",
+            "Reef Tele-Op L1": "teleReef,0",
+            "Reef Tele-Op L2": "teleReef,1",
+            "Reef Tele-Op L3": "teleReef,2",
+            "Reef Tele-Op L4": "teleReef,3",
+            "Reef Tele-Op Missed": "teleReefMiss,0",
+            "Processor Auto": "autoProcessor,0",
+            "Processor Auto Missed": "autoProcessorMiss,0",
+            "Processor Tele-Op": "teleProcessor,0",
+            "Processor Tele-Op Missed": "teleProcessorMiss,0",
+            "Net Auto": "autoNet,0",
+            "Net Auto Missed": "autoNetMiss,0",
+            "Net Tele-Op": "teleNet,0",
+            "Net Tele-Op Missed": "teleNetMiss,0",
+            "Ending Position": "endPos,0",
+            "Attempted Ending Position": "attemptedEndPos,0",
+            "Minor Fouls": "minorFouls,0",
+            "Major Fouls": "majorFouls,0",
         }
-        
-        return render_template("team/rank/teamRankSelect.html",options=options)
+
+        return render_template("team/rank/teamRankSelect.html", options=options)
         # abort(400)
-    return render_template("team/rank/teamRank.html", ranking=rankTeams(key,stat,sort,reefLevel),category=key,stat=stat,sort=sort,reefLevel=reefLevel,keyDisplayNames=keyDisplayNames,isDict=isDict)
-    
-@app.route('/scoreAlliance')
+    return render_template(
+        "team/rank/teamRank.html",
+        ranking=rankTeams(key, stat, sort, reefLevel),
+        category=key,
+        stat=stat,
+        sort=sort,
+        reefLevel=reefLevel,
+        keyDisplayNames=keyDisplayNames,
+        isDict=isDict,
+    )
+
+
+@app.route("/scoreAlliance")
 def scoreAlliancePage():
     try:
-        team1 = int(request.args.get("team1")) #type: ignore
-        team2 = int(request.args.get("team2")) #type: ignore
-        team3 = int(request.args.get("team3")) #type: ignore
-        stat = str(request.args.get("stat")) #type: ignore
+        team1 = int(request.args.get("team1"))  # type: ignore
+        team2 = int(request.args.get("team2"))  # type: ignore
+        team3 = int(request.args.get("team3"))  # type: ignore
+        stat = str(request.args.get("stat"))  # type: ignore
         stat = stat.lower()
     except:
         abort(400)
@@ -233,15 +257,16 @@ def scoreAlliancePage():
         abort(400)
 
     if stat == "mean":
-        result = calculateAverageAllianceScore(team1,team2,team3)
+        result = calculateAverageAllianceScore(team1, team2, team3)
         if not result:
             abort(400)
         return result
     else:
-        result = calculateMinMaxAllianceScore(team1,team2,team3,stat=="highest")
+        result = calculateMinMaxAllianceScore(team1, team2, team3, stat == "highest")
         if not result:
             abort(400)
         return result
+
 
 # @app.route("/scoreRobotTest")
 # def testRobotScorring():
@@ -321,7 +346,7 @@ def scheduleEventPage():
         except:
             abort(400)
         addScheduleFromTBA(event)
-        addTeamsFromTBA(event)  
+        addTeamsFromTBA(event)
     return render_template("match/schedule/addSchedule.html")
 
 
@@ -360,7 +385,7 @@ def addTeamImagePage():
         team = int(request.args.get("team"))  # type: ignore
     except:
         pass
-    return render_template("team/uploadImage.html",team=team)
+    return render_template("team/uploadImage.html", team=team)
 
 
 @app.route("/team/addComment", methods=["GET", "POST"])
@@ -417,7 +442,7 @@ def login():
             location = request.args.get("next")
             return redirect(location if location else "/", 302)
         else:
-            error = "Couldn't log in: "+result
+            error = "Couldn't log in: " + result
     return render_template("auth/login.html", error=error)
 
 
@@ -430,20 +455,20 @@ def newUserPage():
             request.form["username"], generate_password_hash(request.form["password"])
         ):
             message = "New unapproved user created!"
-            created=True
+            created = True
         else:
             message = "User already exists."
-    return render_template("auth/newUser.html",created=created, message=message)
+    return render_template("auth/newUser.html", created=created, message=message)
 
 
 @app.route("/submitScore", methods=["GET", "POST"])
 def submitScorePage():
     try:
         matchVal = int(request.args.get("matchNumber"))  # type: ignore
-        compLvl = (request.args.get("compLevel"))  # type: ignore
+        compLvl = request.args.get("compLevel")  # type: ignore
         setVal = int(request.args.get("setNumber"))  # type: ignore
-        rbtStat = (request.args.get("robotStation")) #type: ignore
-        teamNum = int(request.args.get("team")) #type: ignore
+        rbtStat = request.args.get("robotStation")  # type: ignore
+        teamNum = int(request.args.get("team"))  # type: ignore
     except:
         return redirect(url_for("renderMatch"))
     if request.method == "POST":
@@ -468,19 +493,23 @@ def submitScorePage():
                 ),
                 bool(submission["autoLeave"]),  # bool # type: ignore
                 submission["autoReef"],  # array of four ints # type: ignore
-                submission["autoReefMiss"], # int # type: ignore
+                submission["autoReefMiss"],  # int # type: ignore
                 submission["teleReef"],  # array of four ints # type: ignore
-                submission["teleReefMiss"], # int # type: ignore
+                submission["teleReefMiss"],  # int # type: ignore
                 submission["autoProcessor"],  # int # type: ignore
-                submission["autoProcessorMiss"], # int # type: ignore
+                submission["autoProcessorMiss"],  # int # type: ignore
                 submission["teleProcessor"],  # int # type: ignore
-                submission["teleProcessorMiss"], # int # type: ignore
+                submission["teleProcessorMiss"],  # int # type: ignore
                 submission["autoNet"],  # int # type: ignore
-                submission["autoNetMiss"], # int # type: ignore
+                submission["autoNetMiss"],  # int # type: ignore
                 submission["teleNet"],  # int # type: ignore
-                submission["teleNetMiss"], # int # type: ignore
-                EndPosition(int(submission["endPos"])),  # int between 0-3 # type: ignore
-                EndPosition(int(submission["attemptedEndPos"])), # int between 0-3, though should be 2 or 3 # type: ignore
+                submission["teleNetMiss"],  # int # type: ignore
+                EndPosition(
+                    int(submission["endPos"]) # int between 0-3 # type: ignore
+                ),  
+                EndPosition(
+                    int(submission["attemptedEndPos"]) # int between 0-3, though should be 2 or 3 # type: ignore
+                ),  
                 submission["minorFouls"],  # int # type: ignore
                 submission["majorFouls"],  # int # type: ignore
                 submission["comment"],  # str # type: ignore
@@ -490,21 +519,30 @@ def submitScorePage():
         except TypeError as err:
             app.logger.error(f"Error submitting match: {err}")
             abort(400)
-    if (compLvl == CompLevel.PLAYOFF.value):
+    if compLvl == CompLevel.PLAYOFF.value:
         match = setVal
     else:
         match = matchVal
-    return render_template("match/submit.html",match=match,compLvl=compLvl,rbtStat=rbtStat,teamNum=teamNum,setVal=setVal, matchVal=matchVal)
+    return render_template(
+        "match/submit.html",
+        match=match,
+        compLvl=compLvl,
+        rbtStat=rbtStat,
+        teamNum=teamNum,
+        setVal=setVal,
+        matchVal=matchVal,
+    )
+
 
 @app.route("/uploadData", methods=["GET", "POST"])
 def uploadJSON():
     if request.method == "POST":
         try:
-            data:dict = request.json # type: ignore
+            data: dict = request.json  # type: ignore
             station = Station(data["station"])
-            matchNum:int = data["matchNum"]
-            compLevel =  CompLevel(data["compLevel"])
-            setNum:int = data["setNum"]
+            matchNum: int = data["matchNum"]
+            compLevel = CompLevel(data["compLevel"])
+            setNum: int = data["setNum"]
             results = data["data"]
 
             if not scoreRobotInMatch(
@@ -537,16 +575,19 @@ def uploadJSON():
         except Exception as e:
             app.logger.warning(e)
             abort(400)
-        
 
     return render_template("uploadJSON.html")
 
+
 curAwesome = 0
+
+
 @app.route("/mr/harder")
 def awesome():
     global curAwesome
-    curAwesome=(curAwesome+1)%2
-    return render_template("awesome.html",file="harder"+str(curAwesome+1)+".jpg")
+    curAwesome = (curAwesome + 1) % 2
+    return render_template("awesome.html", file="harder" + str(curAwesome + 1) + ".jpg")
+
 
 @app.route("/logout")
 def logout():
@@ -595,18 +636,17 @@ def userManagementPage():
         )
     return render_template("accountManagement.html", users=getAllUsers())
 
+
 @app.route("/about")
 def aboutPage():
-    return render_template('about.html')
+    return render_template("about.html")
 
 
 @app.before_request
 def before_request():
     # check login status
     if request.endpoint not in freeEndpoints and not isLoggedIn():
-        return redirect(
-            url_for('login',next=request.path)
-        )
+        return redirect(url_for("login", next=request.path))
 
 
 @app.errorhandler(HTTPException)
