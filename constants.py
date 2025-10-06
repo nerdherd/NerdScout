@@ -172,7 +172,7 @@ def isImage(file):
         app.logger.info(f"Failed to check file type for {request.remote_addr}: {e}")  # type: ignore
         return False
     
-# these functions use data from getResults(int)
+# these functions use data from getTeamResults(int)
 def getListOfScoringCategory(data: list, key: str, reefLevel: int = 0):
     scores: list = []
     for item in data:

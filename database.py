@@ -458,7 +458,223 @@ def rankTeams(key:str, stat:str,sort:bool = True, reefLevel:int = 0):
         return sorted(teams, key = lambda team: team[key]["value"],reverse = sort)
     else:
         return sorted(teams, key = lambda team: team[key],reverse = sort)
+    
+def calculateAverageAllianceScore(team1:int, team2:int, team3:int):
+    team1Listing = getTeam(team1)
+    if not team1Listing:
+        return None
+    team2Listing = getTeam(team2)
+    if not team2Listing:
+        return None
+    team3Listing = getTeam(team3)
+    if not team3Listing:
+        return None
+    
+    team1Data = getTeamResults(team1)
+    team2Data = getTeamResults(team2)
+    team3Data = getTeamResults(team3)
 
+    team1Leave = int(getMeanOfScoringCategory(team1Data,"autoLeave") >= 0.5)
+    team2Leave = int(getMeanOfScoringCategory(team2Data,"autoLeave") >= 0.5)
+    team3Leave = int(getMeanOfScoringCategory(team3Data,"autoLeave") >= 0.5)
+    leaveTotal = team1Leave + team2Leave + team3Leave
+
+    team1End = round(getMeanOfScoringCategory(team1Data,"endPos"))
+    team2End = round(getMeanOfScoringCategory(team2Data,"endPos"))
+    team3End = round(getMeanOfScoringCategory(team3Data,"endPos"))
+
+    team1Minors = getMeanOfScoringCategory(team1Data,"minorFouls")
+    team2Minors = getMeanOfScoringCategory(team2Data,"minorFouls")
+    team3Minors = getMeanOfScoringCategory(team3Data,"minorFouls")
+
+    team1Majors = getMeanOfScoringCategory(team1Data,"majorFouls")
+    team2Majors = getMeanOfScoringCategory(team2Data,"majorFouls")
+    team3Majors = getMeanOfScoringCategory(team3Data,"majorFouls")
+
+    autoReef = [round(getMeanOfScoringCategory(team1Data,"autoReef",0)) + round(getMeanOfScoringCategory(team2Data,"autoReef",0)) + round(getMeanOfScoringCategory(team3Data,"autoReef",0)),
+                round(getMeanOfScoringCategory(team1Data,"autoReef",1)) + round(getMeanOfScoringCategory(team2Data,"autoReef",1)) + round(getMeanOfScoringCategory(team3Data,"autoReef",1)),
+                round(getMeanOfScoringCategory(team1Data,"autoReef",2)) + round(getMeanOfScoringCategory(team2Data,"autoReef",2)) + round(getMeanOfScoringCategory(team3Data,"autoReef",2)),
+                round(getMeanOfScoringCategory(team1Data,"autoReef",3)) + round(getMeanOfScoringCategory(team2Data,"autoReef",3)) + round(getMeanOfScoringCategory(team3Data,"autoReef",3)),
+    ]
+
+    teleReef = [round(getMeanOfScoringCategory(team1Data,"teleReef",0)) + round(getMeanOfScoringCategory(team2Data,"teleReef",0)) + round(getMeanOfScoringCategory(team3Data,"teleReef",0)),
+                round(getMeanOfScoringCategory(team1Data,"teleReef",1)) + round(getMeanOfScoringCategory(team2Data,"teleReef",1)) + round(getMeanOfScoringCategory(team3Data,"teleReef",1)),
+                round(getMeanOfScoringCategory(team1Data,"teleReef",2)) + round(getMeanOfScoringCategory(team2Data,"teleReef",2)) + round(getMeanOfScoringCategory(team3Data,"teleReef",2)),
+                round(getMeanOfScoringCategory(team1Data,"teleReef",3)) + round(getMeanOfScoringCategory(team2Data,"teleReef",3)) + round(getMeanOfScoringCategory(team3Data,"teleReef",3)),
+    ]
+
+    autoProcessor = round(getMeanOfScoringCategory(team1Data,"autoProcessor")) + round(getMeanOfScoringCategory(team2Data,"autoProcessor")) + round(getMeanOfScoringCategory(team3Data,"autoProcessor"))
+    teleProcessor = round(getMeanOfScoringCategory(team1Data,"teleProcessor")) + round(getMeanOfScoringCategory(team2Data,"teleProcessor")) + round(getMeanOfScoringCategory(team3Data,"teleProcessor"))
+
+    autoNet = round(getMeanOfScoringCategory(team1Data,"autoNet")) + round(getMeanOfScoringCategory(team2Data,"autoNet")) + round(getMeanOfScoringCategory(team3Data,"autoNet"))
+    teleNet = round(getMeanOfScoringCategory(team1Data,"teleNet")) + round(getMeanOfScoringCategory(team2Data,"teleNet")) + round(getMeanOfScoringCategory(team3Data,"teleNet"))
+
+    score = calculateScore(
+        False,
+        autoReef,
+        teleReef,
+        autoProcessor,
+        teleProcessor,
+        autoNet,
+        teleNet,
+        0,
+        0,
+        0,
+    )
+
+    score += 3 * leaveTotal
+    score += (
+        2
+        if team1End == EndPosition.PARK.value
+        else (
+            6
+            if team1End == EndPosition.SHALLOW.value
+            else 12 if team1End == EndPosition.DEEP.value else 0
+        )
+    )
+    score += (
+        2
+        if team2End == EndPosition.PARK.value
+        else (
+            6
+            if team2End == EndPosition.SHALLOW.value
+            else 12 if team2End == EndPosition.DEEP.value else 0
+        )
+    )
+    score += (
+        2
+        if team3End == EndPosition.PARK.value
+        else (
+            6
+            if team3End == EndPosition.SHALLOW.value
+            else 12 if team3End == EndPosition.DEEP.value else 0
+        )
+    )
+
+    return {"score": score, 
+            "autoLeave": leaveTotal,
+            "autoReef": autoReef,
+            "teleReef": teleReef,
+            "autoProcessor": autoProcessor,
+            "teleProcessor": teleProcessor,
+            "autoNet": autoNet,
+            "teleNet": teleNet,
+            "endPos1": team1End,
+            "endPos2": team2End,
+            "endPos3": team3End,
+            "minorFouls": team1Minors + team2Minors + team3Minors, 
+            "majorFouls": team1Majors + team2Majors + team3Majors,
+            }
+
+def calculateMinMaxAllianceScore(team1:int, team2:int, team3:int, maximum:bool = True):
+    statistic = getMatchWithHighestValue if maximum else getMatchWithLowestValue
+    oppositeStatistic = getMatchWithLowestValue if maximum else getMatchWithHighestValue
+
+    team1Listing = getTeam(team1)
+    if not team1Listing:
+        return None
+    team2Listing = getTeam(team2)
+    if not team2Listing:
+        return None
+    team3Listing = getTeam(team3)
+    if not team3Listing:
+        return None
+    
+    team1Data = getTeamResults(team1)
+    team2Data = getTeamResults(team2)
+    team3Data = getTeamResults(team3)
+
+    team1Leave = statistic(team1Data,"autoLeave")["value"]
+    team2Leave = statistic(team2Data,"autoLeave")["value"]
+    team3Leave = statistic(team3Data,"autoLeave")["value"]
+    leaveTotal = team1Leave + team2Leave + team3Leave
+
+    team1End = statistic(team1Data,"endPos")["value"]
+    team2End = statistic(team2Data,"endPos")["value"]
+    team3End = statistic(team3Data,"endPos")["value"]
+
+    team1Minors = statistic(team1Data,"minorFouls")["value"]
+    team2Minors = statistic(team2Data,"minorFouls")["value"]
+    team3Minors = statistic(team3Data,"minorFouls")["value"]
+
+    team1Majors = statistic(team1Data,"majorFouls")["value"]
+    team2Majors = statistic(team2Data,"majorFouls")["value"]
+    team3Majors = statistic(team3Data,"majorFouls")["value"]
+
+    autoReef = [statistic(team1Data,"autoReef",0)["value"] + statistic(team2Data,"autoReef",0)["value"] + statistic(team3Data,"autoReef",0)["value"],
+                statistic(team1Data,"autoReef",1)["value"] + statistic(team2Data,"autoReef",1)["value"] + statistic(team3Data,"autoReef",1)["value"],
+                statistic(team1Data,"autoReef",2)["value"] + statistic(team2Data,"autoReef",2)["value"] + statistic(team3Data,"autoReef",2)["value"],
+                statistic(team1Data,"autoReef",3)["value"] + statistic(team2Data,"autoReef",3)["value"] + statistic(team3Data,"autoReef",3)["value"],
+    ]
+
+    teleReef = [statistic(team1Data,"teleReef",0)["value"] + statistic(team2Data,"teleReef",0)["value"] + statistic(team3Data,"teleReef",0)["value"],
+                statistic(team1Data,"teleReef",1)["value"] + statistic(team2Data,"teleReef",1)["value"] + statistic(team3Data,"teleReef",1)["value"],
+                statistic(team1Data,"teleReef",2)["value"] + statistic(team2Data,"teleReef",2)["value"] + statistic(team3Data,"teleReef",2)["value"],
+                statistic(team1Data,"teleReef",3)["value"] + statistic(team2Data,"teleReef",3)["value"] + statistic(team3Data,"teleReef",3)["value"],
+    ]
+
+    autoProcessor = statistic(team1Data,"autoProcessor")["value"] + statistic(team2Data,"autoProcessor")["value"] + statistic(team3Data,"autoProcessor")["value"]
+    teleProcessor = statistic(team1Data,"teleProcessor")["value"] + statistic(team2Data,"teleProcessor")["value"] + statistic(team3Data,"teleProcessor")["value"]
+
+    autoNet = statistic(team1Data,"autoNet")["value"] + statistic(team2Data,"autoNet")["value"] + statistic(team3Data,"autoNet")["value"]
+    teleNet = statistic(team1Data,"teleNet")["value"] + statistic(team2Data,"teleNet")["value"] + statistic(team3Data,"teleNet")["value"]
+
+    score = calculateScore(
+        False,
+        autoReef,
+        teleReef,
+        autoProcessor,
+        teleProcessor,
+        autoNet,
+        teleNet,
+        0,
+        0,
+        0,
+    )
+
+    score += 3 * leaveTotal
+    score += (
+        2
+        if team1End == EndPosition.PARK.value
+        else (
+            6
+            if team1End == EndPosition.SHALLOW.value
+            else 12 if team1End == EndPosition.DEEP.value else 0
+        )
+    )
+    score += (
+        2
+        if team2End == EndPosition.PARK.value
+        else (
+            6
+            if team2End == EndPosition.SHALLOW.value
+            else 12 if team2End == EndPosition.DEEP.value else 0
+        )
+    )
+    score += (
+        2
+        if team3End == EndPosition.PARK.value
+        else (
+            6
+            if team3End == EndPosition.SHALLOW.value
+            else 12 if team3End == EndPosition.DEEP.value else 0
+        )
+    )
+
+    return {"score": score, 
+            "autoLeave": leaveTotal,
+            "autoReef": autoReef,
+            "teleReef": teleReef,
+            "autoProcessor": autoProcessor,
+            "teleProcessor": teleProcessor,
+            "autoNet": autoNet,
+            "teleNet": teleNet,
+            "endPos1": team1End,
+            "endPos2": team2End,
+            "endPos3": team3End,
+            "minorFouls": team1Minors + team2Minors + team3Minors, 
+            "majorFouls": team1Majors + team2Majors + team3Majors,
+            }
 
 # converts database results to JSON
 # the default functions get stuck on ObjectID objects

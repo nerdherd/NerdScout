@@ -218,7 +218,30 @@ def teamRankPage():
         # abort(400)
     return render_template("team/rank/teamRank.html", ranking=rankTeams(key,stat,sort,reefLevel),category=key,stat=stat,sort=sort,reefLevel=reefLevel,keyDisplayNames=keyDisplayNames,isDict=isDict)
     
+@app.route('/scoreAlliance')
+def scoreAlliancePage():
+    try:
+        team1 = int(request.args.get("team1")) #type: ignore
+        team2 = int(request.args.get("team2")) #type: ignore
+        team3 = int(request.args.get("team3")) #type: ignore
+        stat = str(request.args.get("stat")) #type: ignore
+        stat = stat.lower()
+    except:
+        abort(400)
 
+    if (stat != "highest") and (stat != "lowest") and (stat != "mean"):
+        abort(400)
+
+    if stat == "mean":
+        result = calculateAverageAllianceScore(team1,team2,team3)
+        if not result:
+            abort(400)
+        return result
+    else:
+        result = calculateMinMaxAllianceScore(team1,team2,team3,stat=="highest")
+        if not result:
+            abort(400)
+        return result
 
 # @app.route("/scoreRobotTest")
 # def testRobotScorring():
