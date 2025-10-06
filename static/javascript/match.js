@@ -79,14 +79,25 @@ function set_visible(results_div,revision_id){
 // } 
 
 var count = 0;
+var shown = "";
 function set_team(team){
-    var show_team = "team-"+team;
-    for (const team of document.querySelectorAll(".team")){
-        team.classList.add("hide");
-        if (team.classList.contains(show_team)){
-            team.classList.remove("hide");
+    if (team != "" && shown != team){
+        var show_team = "team-"+team;
+        for (const team of document.querySelectorAll(".team")){
+            team.classList.add("hide");
+            if (team.classList.contains(show_team)){
+                team.classList.remove("hide");
+            }
         }
+        shown = team;
+        document.getElementById("score-breakdown").classList.add("hide");
+    } else {
+        for (const team of document.querySelectorAll(".team")){
+            team.classList.add("hide"); 
+        }
+        document.getElementById("score-breakdown").classList.remove("hide");
     }
+
     count++;
     if (count===2){
         document.getElementById("remove").remove();

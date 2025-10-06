@@ -210,5 +210,36 @@
 </div>
 <!-- {% if loop.index == 1 %}<div class="spacer"></div>{% endif %} -->
 {% endfor %}
+
 <div id="remove"><p>Press on one of the teams to see their results</p></div>
+<div class="score-breakdown" id="score-breakdown">
+<p>Score breakdown</p>
+<div class="score-div colorless">
+    <div class="number">
+        <p>Team</p>
+    </div>
+    <div class="score">
+        <p>Score</p>
+    </div>
+</div>
+{% for teamSection in teams %}
+{% set color = 'red' if loop.index == 1 else 'blue' %}
+<div class="{{color}}-score">
+{% for team in teamSection %}
+<div class="score-div">
+    <div class="number">
+        <p>{{team['teamNumber']}}</p>
+    </div>
+    <div class="score">
+        {% if team["hasData"] %}
+        <p>{{ team['results'][-1]['score'] }}</p>
+        {% else %}
+        <p>None</p>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+</div>
+{% endfor %}
+</div>
 {% endblock %}

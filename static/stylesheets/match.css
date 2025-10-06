@@ -386,3 +386,64 @@ body {
     display:flex;
     justify-content: center;
 }
+
+
+.score-breakdown {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    row-gap: 2px;
+}
+
+.red-score, .blue-score{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    column-gap: 2px;
+}
+
+.score-div {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    /* row-gap: 10px; */
+}
+
+.score-div .number, .score-div .score{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+}
+
+.score-div .number p, .score-div .score p {
+    /* height: 5px; */
+    margin: 2px;
+    /* margin-bottom: 20px; */
+}
+
+.score-div .number p{
+    font-weight: bold;
+}
+
+.red-score .score-div{
+    background:#DC3F618C;
+    border-radius: 16px;
+}
+
+.blue-score .score-div{
+    background:#5386E48C;
+    border-radius: 16px;
+}
+
+.score-div.colorless {
+    background:#88888831;
+    border-radius: 16px;
+}
