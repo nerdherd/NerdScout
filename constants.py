@@ -142,8 +142,8 @@ def calculateScore(
     score += 4 * teleReef[2]
     score += 5 * teleReef[3]
 
-    score += 6 * autoProcessor
-    score += 6 * teleProcessor
+    score += 2 * autoProcessor
+    score += 2 * teleProcessor
 
     score += 4 * autoNet
     score += 4 * teleNet
