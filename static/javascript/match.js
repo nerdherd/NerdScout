@@ -78,7 +78,7 @@ function set_visible(results_div,revision_id){
 //     }
 // } 
 
-
+var count = 0;
 function set_team(team){
     var show_team = "team-"+team;
     for (const team of document.querySelectorAll(".team")){
@@ -86,6 +86,10 @@ function set_team(team){
         if (team.classList.contains(show_team)){
             team.classList.remove("hide");
         }
+    }
+    count++;
+    if (count===2){
+        document.getElementById("remove").remove();
     }
 }
 

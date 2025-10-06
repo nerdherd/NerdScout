@@ -15,7 +15,7 @@
     {% set color = 'red' if loop.index == 1 else 'blue' %}
     <div class="{{color}}-div">
     {% for team in teamSection %}
-    <button onclick="set_team('{{color}}{{loop.index}}')" class="{{color}}Button">{{team['teamNumber']}}</button>
+    <button onclick="set_team('{{color}}{{loop.index}}')" class="{{color}}Button {% if team['hasData']%}scored{% endif %}">{{team['teamNumber']}}</button>
     {% endfor %}
     </div>
     {% endfor%}
@@ -210,4 +210,5 @@
 </div>
 <!-- {% if loop.index == 1 %}<div class="spacer"></div>{% endif %} -->
 {% endfor %}
+<div id="remove"><p>Press on one of the teams to see their results</p></div>
 {% endblock %}

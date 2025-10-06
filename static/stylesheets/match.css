@@ -1,3 +1,12 @@
+body {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .center-horizontal {
     width: 100%;
     padding: 0;
@@ -17,7 +26,7 @@
     display:flex;
     flex-direction: column;
     justify-content: space-between;
-    width: max(90%,500px);
+    width: max(90%,250px);
 }
 
 .red-table > div{
@@ -283,7 +292,7 @@
 }
 
 .select-div {
-    width: 100%;
+    width: 95%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -306,11 +315,33 @@
     
 }
 
+.red-div {
+    margin-right: 2px;
+}
+
+.blue-div {
+    margin-left: 2px;
+}
+
+.redButton, .blueButton {
+    margin: 2px;
+}
+
 .redButton{
-    background: #DC3F618C;
+    /* border: 1px solid #DC3F618C; */
+    background: #DC3F612c;
 }
 
 .blueButton{
+    /* border: 1px solid #5386E48C; */
+    background: #5386E42c;
+}
+
+.redButton.scored{
+    background: #DC3F618C;
+}
+
+.blueButton.scored{
     background: #5386E48C;
 }
 
@@ -348,4 +379,10 @@
         flex-direction: column;
         flex-grow: 1;
     }
+}
+
+#remove {
+    width: 100%;
+    display:flex;
+    justify-content: center;
 }
