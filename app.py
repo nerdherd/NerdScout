@@ -144,32 +144,33 @@ def teamPage():
         return render_template("team/teamSelect.html", teams=sortTeams(getAllTeams()), team=team)
     
     matches = getTeamMatches(team)
+    teamResults = getTeamResults(team)
     stats = {
-        "startPos": getAllStatsForCategory(getTeamResults(team),"startPos"),
-        "autoLeave": getAllStatsForCategory(getTeamResults(team),"autoLeave"),
-        "autoReefL1": getAllStatsForCategory(getTeamResults(team),"autoReef",0),
-        "autoReefL2": getAllStatsForCategory(getTeamResults(team),"autoReef",1),
-        "autoReefL3": getAllStatsForCategory(getTeamResults(team),"autoReef",2),
-        "autoReefL4": getAllStatsForCategory(getTeamResults(team),"autoReef",3),
-        "autoReefMiss": getAllStatsForCategory(getTeamResults(team),"autoReefMiss"),
-        "teleReefL1": getAllStatsForCategory(getTeamResults(team),"teleReef",0),
-        "teleReefL2": getAllStatsForCategory(getTeamResults(team),"teleReef",1),
-        "teleReefL3": getAllStatsForCategory(getTeamResults(team),"teleReef",2),
-        "teleReefL4": getAllStatsForCategory(getTeamResults(team),"teleReef",3),
-        "teleReefMiss": getAllStatsForCategory(getTeamResults(team),"teleReefMiss"),
-        "autoProcessor": getAllStatsForCategory(getTeamResults(team),"autoProcessor"),
-        "autoProcessorMiss": getAllStatsForCategory(getTeamResults(team),"autoProcessorMiss"),
-        "teleProcessor": getAllStatsForCategory(getTeamResults(team),"teleProcessor"),
-        "teleProcessorMiss": getAllStatsForCategory(getTeamResults(team),"teleProcessorMiss"),
-        "autoNet": getAllStatsForCategory(getTeamResults(team),"autoNet"),
-        "autoNetMiss": getAllStatsForCategory(getTeamResults(team),"autoNetMiss"),
-        "teleNet": getAllStatsForCategory(getTeamResults(team),"teleNet"),
-        "teleNetMiss": getAllStatsForCategory(getTeamResults(team),"teleNetMiss"),
-        "endPos": getAllStatsForCategory(getTeamResults(team),"endPos"),
-        "attemptedEndPos": getAllStatsForCategory(getTeamResults(team),"attemptedEndPos"),
-        "minorFouls": getAllStatsForCategory(getTeamResults(team),"minorFouls"),
-        "majorFouls": getAllStatsForCategory(getTeamResults(team),"majorFouls"),
-        "score": getAllStatsForCategory(getTeamResults(team),"score"),
+        "startPos": getAllStatsForCategory(teamResults,"startPos"),
+        "autoLeave": getAllStatsForCategory(teamResults,"autoLeave"),
+        "autoReefL1": getAllStatsForCategory(teamResults,"autoReef",0),
+        "autoReefL2": getAllStatsForCategory(teamResults,"autoReef",1),
+        "autoReefL3": getAllStatsForCategory(teamResults,"autoReef",2),
+        "autoReefL4": getAllStatsForCategory(teamResults,"autoReef",3),
+        "autoReefMiss": getAllStatsForCategory(teamResults,"autoReefMiss"),
+        "teleReefL1": getAllStatsForCategory(teamResults,"teleReef",0),
+        "teleReefL2": getAllStatsForCategory(teamResults,"teleReef",1),
+        "teleReefL3": getAllStatsForCategory(teamResults,"teleReef",2),
+        "teleReefL4": getAllStatsForCategory(teamResults,"teleReef",3),
+        "teleReefMiss": getAllStatsForCategory(teamResults,"teleReefMiss"),
+        "autoProcessor": getAllStatsForCategory(teamResults,"autoProcessor"),
+        "autoProcessorMiss": getAllStatsForCategory(teamResults,"autoProcessorMiss"),
+        "teleProcessor": getAllStatsForCategory(teamResults,"teleProcessor"),
+        "teleProcessorMiss": getAllStatsForCategory(teamResults,"teleProcessorMiss"),
+        "autoNet": getAllStatsForCategory(teamResults,"autoNet"),
+        "autoNetMiss": getAllStatsForCategory(teamResults,"autoNetMiss"),
+        "teleNet": getAllStatsForCategory(teamResults,"teleNet"),
+        "teleNetMiss": getAllStatsForCategory(teamResults,"teleNetMiss"),
+        "endPos": getAllStatsForCategory(teamResults,"endPos"),
+        "attemptedEndPos": getAllStatsForCategory(teamResults,"attemptedEndPos"),
+        "minorFouls": getAllStatsForCategory(teamResults,"minorFouls"),
+        "majorFouls": getAllStatsForCategory(teamResults,"majorFouls"),
+        "score": getAllStatsForCategory(teamResults,"score"),
     }
     return render_template("team/team.html", team=results, matches=sortMatches(matches), stats=stats, keyDisplayNames=keyDisplayNames)
 
@@ -297,7 +298,7 @@ def scheduleEventPage():
         except:
             abort(400)
         addScheduleFromTBA(event)
-        addTeamsFromTBA(event)
+        addTeamsFromTBA(event)  
     return render_template("match/schedule/addSchedule.html")
 
 

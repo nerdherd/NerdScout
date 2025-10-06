@@ -74,6 +74,15 @@
     {% for match in matches %}
     <li>
         <a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],setNum=match['setNumber'],compLevel=match['compLevel']) }}">{{match['displayName']}}</a>
+        {% for section in ["red1","red2","red3","blue1","blue2","blue3"] %}
+        {% if match['teams'][section] == team["number"]%}
+        {% if section in match['results']%}
+        {% if match['results'][section]|length > 0 %}
+        <p>Score Impact: {{match['results'][section][-1]['score']}} (scouted by {{match['results'][section][-1]['scout']}})</p>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        {% endfor %}
     </li>
     {% endfor %}
 </ul>
