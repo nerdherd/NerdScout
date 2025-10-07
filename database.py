@@ -360,6 +360,10 @@ def addComment(team: int, comment: str, user: str):
         {"number": team}, {"$push": {"comments": {"comment": comment, "user": user}}}
     )
 
+def pitScoutTeam(team: int, user: str, data):
+    teams.update_one(
+        {"number": team}, {"$push": {"pitScout": {"data": data, "user": user}}}
+    )
 
 def getTeam(team: int):
     result = teams.find_one({"number": team})

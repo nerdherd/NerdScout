@@ -415,11 +415,11 @@ def scoutTeam():
         submission = request.json
         try:
             team = int(request.headers["Team"])  # type: ignore
+            user = session["username"]  # type: ignore
         except TypeError as e:
             app.logger.warning(e)
             abort(400)
-        print(submission)
-        print(team)
+        pitScoutTeam(team,user,submission)
         return "ok"
     team = None
     try:
