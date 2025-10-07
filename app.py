@@ -413,7 +413,12 @@ def setTeamComment():
 def scoutTeam():
     if request.method == "POST":
         return "ok"
-    return render_template("team/pitScout.html")
+    team = None
+    try:
+        team = int(request.args.get("team"))  # type: ignore
+    except:
+        pass
+    return render_template("team/pitScout.html",team=team)
 
 # @app.route("/testTeamImage")
 # def testTeamImage():

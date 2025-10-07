@@ -8,6 +8,8 @@
 {% block title %}NerdScout{% endblock %}
 
 {% block content %}
+<label for="team">Team Number:</label>
+<input type="number" id="team" name="team" {% if team %}value="{{team}}"{%endif%}/>
     <div>
         <label for="drivebase">What drivebase do they use?</label>
         <input type="text" id="drivebase" name="drivebase"/>
@@ -101,6 +103,8 @@
     </div>
 </div>
 
+<button onclick="submitData()">Submit</button>
+
 <script>
     function getCheckbox(id){
         return document.getElementById(id).checked;
@@ -112,6 +116,7 @@
     function submitData(){
 
         let rawData = {
+            "team":getValue("team"),
             "drivebase": getValue("drivebase"),
             "languages": {
                 "java": getCheckbox("language-java"),
