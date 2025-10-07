@@ -412,6 +412,14 @@ def setTeamComment():
 @app.route("/team/scout", methods=["GET", "POST"])
 def scoutTeam():
     if request.method == "POST":
+        submission = request.json
+        try:
+            team = int(request.headers["Team"])  # type: ignore
+        except TypeError as e:
+            app.logger.warning(e)
+            abort(400)
+        print(submission)
+        print(team)
         return "ok"
     team = None
     try:

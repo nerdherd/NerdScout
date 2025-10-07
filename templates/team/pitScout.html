@@ -109,21 +109,33 @@
     function getCheckbox(id){
         return document.getElementById(id).checked;
     }
-    function getValue(id){
-        return document.getElementById(id).value;
+    function getValue(id,checkEmpty=true){
+        let value = document.getElementById(id).value;
+        let valueEmpty = (checkEmpty&&(value===""));
+        isEmpty ||= valueEmpty;
+        if (valueEmpty){
+            emptyList.push(id);
+        }
+        return value;
     }
 
+    var isEmpty = false;
+    var emptyList = [];
     function submitData(){
+        isEmpty=false;
+        emptyList = []
+
+        let team = getValue("team");
+        console.log(team);
 
         let rawData = {
-            "team":getValue("team"),
             "drivebase": getValue("drivebase"),
             "languages": {
                 "java": getCheckbox("language-java"),
                 "c++": getCheckbox("language-cpp"),
                 "python": getCheckbox("language-python"),
                 "labview": getCheckbox("language-labview"),
-                "other": getValue("language-other-input")
+                "other": getValue("language-other-input",false)
             },
             "camera": getCheckbox("camera"),
             "auto": {
@@ -154,12 +166,35 @@
             },
             "role":getValue("role"),
             "weight":getValue("weight"),
-            "special":getValue("special")
+            "special":getValue("special",false)
+        }
+
+        if (isEmpty) {
+            alert("Please fill out every field. Missing: "+emptyList.join(", "));
+            return;
         }
 
         console.log(rawData);
 
         let data = JSON.stringify(rawData);
+
+        
+        fetch(window.location.href, {
+            method: "POST",
+            body: data,
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "team":team
+            }
+            }).then(response =>{
+                if (response.ok){
+                    if (confirm('Submitted! Redirect to team page?')){
+                        window.location.href="{{url_for('teamPage')}}?team="+team;
+                    };
+                } else {
+                    alert("Error submitting!");
+                }
+        });
     }
 </script>
 {% endblock %}
