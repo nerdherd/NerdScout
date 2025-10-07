@@ -409,6 +409,11 @@ def setTeamComment():
             pass
         return render_template("team/addComment.html", team=team)
 
+@app.route("/team/scout", methods=["GET", "POST"])
+def scoutTeam():
+    if request.method == "POST":
+        return "ok"
+    return render_template("team/pitScout.html")
 
 # @app.route("/testTeamImage")
 # def testTeamImage():

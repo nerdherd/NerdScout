@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- <link rel="preload" href="{{ url_for('static', filename='stylesheets/index.css') }}" as="style">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/index.css') }}"> -->
+{% endblock %}
+
+{% block title %}NerdScout{% endblock %}
+
+{% block content %}
+    <div>
+        <label for="drivebase">What drivebase do they use?</label>
+        <input type="text" id="drivebase" name="drivebase"/>
+    </div>
+    <div>
+        <p>What programming language(s) do they use?</p>
+        <div>
+            <div>
+                <input type="checkbox" id="language-java" name="language-java"> <label for="language-java">Java</label>
+            </div>
+            <div>
+                <input type="checkbox" id="language-cpp" name="language-cpp"> <label for="language-cpp">C++</label>
+            </div>
+            <div>
+                <input type="checkbox" id="language-python" name="language-python"> <label for="language-python">Python</label>
+            </div>
+            <div>
+                <input type="checkbox" id="language-labview" name="language-labview"> <label for="language-labview">LabView</label>
+            </div>
+            <div>
+                <input type="checkbox" id="language-other" name="language-other"> <label for="language-labview">Other</label>
+                <input type="text" id="language-other-input">
+            </div>
+        </div>
+    </div>
+    <div>
+        <label for="camera">Do they CURRENTLY have a camera on their robot?</label>
+        <input type="checkbox" id="camera" name="camera">
+    </div>
+    <div>
+        <p>What can they realistically do during auto?</p>
+        <div>
+            <div>
+                <input type="checkbox" id="auto-leave" name="auto-leave"> <label for="auto-leave">Leave the starting area</label>
+            </div>
+            <div>
+                <input type="checkbox" id="auto-algae" name="auto-algae"> <label for="auto-algae">Remove algae from reef</label>
+            </div>
+            {% for level in ["L1","L2","L3","L4"] %}
+            <div>
+                <input type="checkbox" id="auto-reef-{{level}}" name="auto-reef-{{level}}"> <label for="auto-reef-{{level}}">Score on reef {{level}}</label>
+            </div>
+            {%endfor%}
+            <div>
+                <input type="checkbox" id="auto-processor" name="auto-processor"> <label for="auto-processor">Score on processor</label>
+            </div>
+            <div>
+                <input type="checkbox" id="auto-net" name="auto-net"> <label for="auto-net">Score on net</label>
+            </div>
+        </div>
+    </div>
+    <div>
+        <p>What can they realistically do during teleop?</p>
+        <div>
+            <div>
+                <input type="checkbox" id="tele-algae" name="tele-algae"> <label for="tele-algae">Remove algae from reef</label>
+            </div>
+            {% for level in ["L1","L2","L3","L4"] %}
+            <div>
+                <input type="checkbox" id="tele-reef-{{level}}" name="tele-reef-{{level}}"> <label for="tele-reef-{{level}}">Score on reef {{level}}</label>
+            </div>
+            {%endfor%}
+            <div>
+                <input type="checkbox" id="tele-processor" name="tele-processor"> <label for="tele-processor">Score on processor</label>
+            </div>
+            <div>
+                <input type="checkbox" id="tele-net" name="tele-net"> <label for="tele-net">Score on net</label>
+            </div>
+            <div>
+                <input type="checkbox" id="tele-park" name="tele-park"> <label for="tele-park">Park during endgame</label>
+            </div>
+            <div>
+                <input type="checkbox" id="tele-shallow" name="tele-shallow"> <label for="tele-shallow">Shallow cage during endgame</label>
+            </div>
+            <div>
+                <input type="checkbox" id="tele-deep" name="tele-deep"> <label for="tele-deep">Deep cage during endgame</label>
+            </div>
+        </div>
+    </div>
+    <div>
+        <label for="role">What role does their robot serve? </label>
+        <input type="text" id="role" name="role"/>
+    </div>
+    <div>
+        <label for="weight">What is their robot weight (without batteries and bumpers) (lbs)? </label>
+        <input type="number" id="weight" name="weight"/>
+    </div>
+    <div>
+        <label for="special">Anything special we should know about their robot? </label>
+        <input type="text" id="special" name="special"/>
+    </div>
+</div>
+
+<script>
+    function getCheckbox(id){
+        return document.getElementById(id).checked;
+    }
+    function getValue(id){
+        return document.getElementById(id).value;
+    }
+
+    function submitData(){
+
+        let rawData = {
+            "drivebase": getValue("drivebase"),
+            "languages": {
+                "java": getCheckbox("language-java"),
+                "c++": getCheckbox("language-cpp"),
+                "python": getCheckbox("language-python"),
+                "labview": getCheckbox("language-labview"),
+                "other": getValue("language-other-input")
+            },
+            "camera": getCheckbox("camera"),
+            "auto": {
+                "leave":getCheckbox("auto-leave"),
+                "removeAlgae":getCheckbox("auto-algae"),
+                "reef":[
+                    getCheckbox("auto-reef-L1"),
+                    getCheckbox("auto-reef-L2"),
+                    getCheckbox("auto-reef-L3"),
+                    getCheckbox("auto-reef-L4"),
+                ],
+                "processor":getCheckbox("auto-processor"),
+                "net":getCheckbox("auto-net")
+            },
+            "tele": {
+                "removeAlgae":getCheckbox("tele-algae"),
+                "reef":[
+                    getCheckbox("tele-reef-L1"),
+                    getCheckbox("tele-reef-L2"),
+                    getCheckbox("tele-reef-L3"),
+                    getCheckbox("tele-reef-L4"),
+                ],
+                "processor":getCheckbox("tele-processor"),
+                "net":getCheckbox("tele-net"),
+                "park":getCheckbox("tele-park"),
+                "shallow":getCheckbox("tele-shallow"),
+                "deep":getCheckbox("tele-deep")
+            },
+            "role":getValue("role"),
+            "weight":getValue("weight"),
+            "special":getValue("special")
+        }
+
+        console.log(rawData);
+
+        let data = JSON.stringify(rawData);
+    }
+</script>
+{% endblock %}
