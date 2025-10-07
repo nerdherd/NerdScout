@@ -28,7 +28,6 @@ from constants import *
 from database import *
 from auth import *
 
-
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.config["JSON_SORT_KEYS"] = False
 
@@ -36,6 +35,7 @@ app.config.from_mapping(
     SECRET_KEY=open(os.path.join(root, "secrets/secretKey"), "r").read()
 )
 
+app.jinja_env.filters['any'] = any
 
 # Front-end Handlers
 @app.route("/")

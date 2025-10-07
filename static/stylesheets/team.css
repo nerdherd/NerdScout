@@ -83,3 +83,19 @@
 #stats{
     background-color: var(--nerd-herd-navy);
 }
+
+li.unchecked::marker {
+    /* color: hotpink; */
+    content: 'check_box_outline_blank';
+    font-family: 'Material Symbols Sharp';
+}
+
+li.checked::marker {
+    /* color: hotpink; */
+    content: 'check_box';
+    font-family: 'Material Symbols Sharp';
+}
+
+.pit-scout{
+    border: 1px dotted white;
+}

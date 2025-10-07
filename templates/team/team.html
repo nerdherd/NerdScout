@@ -88,6 +88,87 @@
 </ul>
 </div>
 
+<div class="card">
+    <h1>Pit Scouting</h1>
+    {% if team["pitScout"] %}
+    <div>
+        <p>Scouted by: </p>
+        <select id="pitScoutSelect" onchange="updatePitScout()">
+            <!-- <option value="0" selected>None</option> -->
+            {% for pitScout in team["pitScout"]%}
+            <option value="{{loop.index}}" {% if loop.last %}selected{% endif %}>{{pitScout["user"]}}</option>
+            {% endfor %}
+        </select>
+        {% for pitScout in team["pitScout"]%}
+        {% set data = pitScout['data'] %}
+        <div class="pit-scout pit-{{loop.index}} hidden">
+            <p>Drivebase: {{data["drivebase"]}}</p>
+            <p>Languages: </p>
+            <ul>
+                {% if data["languages"]["java"] %}<li>Java</li>{% endif %}
+                {% if data["languages"]["c++"] %}<li>C++</li>{% endif %}
+                {% if data["languages"]["python"] %}<li>Python</li>{% endif %}
+                {% if data["languages"]["labview"] %}<li>LabView</li>{% endif %}
+                {% if data["languages"]["other"] %}<li>{{data["languages"]["other"]}}</li>{% endif %}
+            </ul>
+            <p>They do {% if not data["camera"] %}not {%endif%}have vision</p>
+            <h3>Auto:</h3>
+            <ul>
+                <li class="{{'checked' if data['auto']['leave'] else 'unchecked'}}">They {{ "" if data["auto"]["leave"] else "cannot"}} leave</li>
+                <li class="{{'checked' if data['auto']['algae'] else 'unchecked'}}">They {{ "can" if data["auto"]["algae"] else "cannot"}} remove algae</li>
+                <li class="{{'checked' if (data['auto']['reef'])|any else 'unchecked'}}">Reef:</li>
+                <ul>
+                    {% for canscore in data["auto"]["reef"]%}
+                    <li class="{{'checked' if canscore else 'unchecked'}}">They {{"can" if canscore else "cannot"}} score on L{{loop.index}}</li>
+                    {%endfor%}
+                </ul>
+                <li class="{{'checked' if data['auto']['processor'] else 'unchecked'}}">They {{"can" if data["auto"]["processor"] else "cannot"}} score on processor</li>
+                <li class="{{'checked' if data['auto']['net'] else 'unchecked'}}">They {{"can" if data["auto"]["net"] else "cannot"}} score on net</li>
+            </ul>
+            <h3>Tele:</h3>
+            <ul>
+                <li class="{{'checked' if data['tele']['algae'] else 'unchecked'}}">They {{ "can" if data["tele"]["algae"] else "cannot"}} remove algae</li>
+                <li class="{{'checked' if (data['tele']['reef'])|any else 'unchecked'}}">Reef:</li>
+                <ul>
+                    {% for canscore in data["tele"]["reef"]%}
+                    <li class="{{'checked' if canscore else 'unchecked'}}">They {{"can" if canscore else "cannot"}} score on L{{loop.index}}</li>
+                    {%endfor%}
+                </ul>
+                <li class="{{'checked' if data['tele']['processor'] else 'unchecked'}}">They {{"can" if data["tele"]["processor"] else "cannot"}} score on processor</li>
+                <li class="{{'checked' if data['tele']['net'] else 'unchecked'}}">They {{"can" if data["tele"]["net"] else "cannot"}} score on net</li>
+                <li class="{{'checked' if data['tele']['park'] else 'unchecked'}}">They {{"can" if data["tele"]["parl"] else "cannot"}} park during endgame</li>
+                {% if data['tele']['shallow']%}<li class="checked">They can shallow climb</li>{%endif%}
+                {% if data['tele']['shallow']%}<li class="checked">They can deep climb</li>{%endif%}
+            </ul>
+            <p>Main robot role: {{data["role"]}}</p>
+            <p>Robot weight: {{data["weight"]}}</p>
+            {% if data['special'] %}
+            <p>Special information: {{data['special']}}</p>
+            {% endif %}
+            <!-- {{data}} -->
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <a href="{{url_for('scoutTeam',team=team['number'])}}">Scout this team</a>
+</div>
+
+{% if team["pitScout"] %}
+<script>
+    function updatePitScout(){
+        let visible = document.getElementById("pitScoutSelect").value;
+        let visibleClass = "pit-"+visible;
+        for (const pitScout of document.querySelectorAll(".pit-scout")){
+            pitScout.classList.add("hidden");
+            if (pitScout.classList.contains(visibleClass)){
+                pitScout.classList.remove("hidden")
+            }
+        }
+    }
+    updatePitScout()
+</script>
+{% endif %}
+
 {% if team["images"] %}
 <script>
     const images = document.getElementById("teamImages");
