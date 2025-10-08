@@ -76,7 +76,7 @@ Now install the required packages.
 pip install -r requirements.txt
 ```
 
-Deactivate the virtual environment with the deactivate keyword.
+You can deactivate the virtual environment with the deactivate keyword.
 
 ```bash
 deactivate
