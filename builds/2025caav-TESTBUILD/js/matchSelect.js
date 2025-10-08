@@ -81,7 +81,10 @@ function updateSearch(){
     let noneFound = true;
 
     for (const matchDiv of document.querySelectorAll(".match-div")){
-        console.log(matchDiv);
+        if (matchDiv.id === "none-div"){
+            continue;
+        }
+
         matchDiv.classList.add("hide");
 
         let compLevel = matchDiv.dataset.complevel;

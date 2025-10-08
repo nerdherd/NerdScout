@@ -170,6 +170,7 @@ function fouling(level){
 const positionSliderLabel = document.getElementById("positionSliderLabel");
 startPosSlider.addEventListener("change",()=>{
     positionSliderLabel.innerText="Starting position: "+(["Red","Middle","Blue"])[startPosSlider.value-1];
+    startpos = startPosSlider.value;
 });
 
 const endposlabel = document.getElementById("endposlabel");
@@ -190,7 +191,7 @@ function submitData(){
     let setNum = parseInt(document.getElementById("setNumInput").value);
 
 
-    startPos = startPosSlider.value
+    let startPos = 4-startPosSlider.value;
     autoLeave = (leaveCheck.value == "on")
 
     autoProcessor = procNetVars[0] 
@@ -198,7 +199,7 @@ function submitData(){
     autoNet = procNetVars[2] 
     teleNet = procNetVars[3]
 
-    const endPosWin = !(document.getElementById("attemptEP").value);
+    const endPosWin = !(document.getElementById("attemptEP").checked);
 
     attemptedEndPos = endPosDDown.value-1
 
@@ -207,7 +208,6 @@ function submitData(){
     } else {
         endPos = 1; // assume they parked
     }
-    
 
     comment = document.getElementById("comments").value
 
@@ -225,7 +225,7 @@ function submitData(){
         "compLevel": compLevel,
         "setNum": setNum, 
         "robot": section,
-        "startPos": startpos,
+        "startPos": startPos,
         "autoLeave": autoLeave,
         "autoReef": autoReef,
         "autoReefMiss": autoReefMiss,
@@ -245,8 +245,6 @@ function submitData(){
         "majorFouls": majorFouls,
         "comment": comment
     };
-    // data = JSON.stringify(rawData);
-    // alert(data);
 
     downloadScore(section,matchNum,compLevel,setNum,rawData);
 }
