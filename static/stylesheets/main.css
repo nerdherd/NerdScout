@@ -40,3 +40,7 @@ footer {
 footer *{
     color:var(--footer-text-color);
 }
+
+input[type="checkbox"]{
+    accent-color: var(--anthony-wheeler-bwoo);
+}

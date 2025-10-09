@@ -1,20 +1,25 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<!-- <link rel="preload" href="{{ url_for('static', filename='stylesheets/index.css') }}" as="style">
-<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/index.css') }}"> -->
+<link rel="preload" href="{{ url_for('static', filename='stylesheets/index.css') }}" as="style">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/pitScout.css') }}">
 {% endblock %}
 
 {% block title %}NerdScout{% endblock %}
 
 {% block content %}
-<label for="team">Team Number:</label>
-<input type="number" id="team" name="team" {% if team %}value="{{team}}"{%endif%}/>
-    <div>
+
+    <div class="card">
+        <label for="team">Team Number:</label>
+        <input type="number" id="team" name="team" {% if team %}value="{{team}}"{%endif%}/>
+    </div>
+
+    <div class="card">
         <label for="drivebase">What drivebase do they use?</label>
         <input type="text" id="drivebase" name="drivebase"/>
     </div>
-    <div>
+    <div class="card">
         <p>What programming language(s) do they use?</p>
         <div>
             <div>
@@ -35,11 +40,11 @@
             </div>
         </div>
     </div>
-    <div>
+    <div class="card">
         <label for="camera">Do they CURRENTLY have a camera on their robot?</label>
         <input type="checkbox" id="camera" name="camera">
     </div>
-    <div>
+    <div class="card">
         <p>What can they realistically do during auto?</p>
         <div>
             <div>
@@ -61,7 +66,7 @@
             </div>
         </div>
     </div>
-    <div>
+    <div class="card">
         <p>What can they realistically do during teleop?</p>
         <div>
             <div>
@@ -89,15 +94,15 @@
             </div>
         </div>
     </div>
-    <div>
+    <div class="card">
         <label for="role">What role does their robot serve? </label>
         <input type="text" id="role" name="role"/>
     </div>
-    <div>
+    <div class="card">
         <label for="weight">What is their robot weight (without batteries and bumpers) (lbs)? </label>
         <input type="number" id="weight" name="weight"/>
     </div>
-    <div>
+    <div class="card"> 
         <label for="special">Anything special we should know about their robot? </label>
         <input type="text" id="special" name="special"/>
     </div>
@@ -129,6 +134,7 @@
 
     var isEmpty = false;
     var emptyList = [];
+
     function submitData(){
         isEmpty=false;
         emptyList = []
