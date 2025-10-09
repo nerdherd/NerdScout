@@ -212,7 +212,7 @@ def getModeOfScoringCategory(data: list, key: str, reefLevel: int = 0):
 
 
 def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
-    highestValue: int = -1
+    highestValue: int = -9999999999999
     matchKey: str = ""
     matchNumber: int = 0
     compLevel: str = ""
@@ -246,7 +246,7 @@ def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
 
 
 def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
-    lowestValue: int = 9999
+    lowestValue: int = 9999999999999
     matchKey: str = ""
     matchNumber: int = 0
     compLevel: str = ""
