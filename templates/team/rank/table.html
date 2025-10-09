@@ -10,6 +10,13 @@
 
 {% block content %}
 
+<div id="column-select">
+    {% for key in displayNames %}
+    <div><input type="checkbox" data-value="{{key.lower()}}" id="checkbox-{{key.lower()}}" name="checkbox-{{key.lower()}}" checked><label for="checkbox-{{key.lower()}}">{{displayNames[key]}}</label></div>
+    {% endfor %}
+    <button onclick="setColumns()">Apply</button>
+</div>
+
 <select id="sort-category">
     <option value="team" selected>Team</option>
     {% for key in displayNames %}
@@ -25,17 +32,17 @@
 
 <table id="main-table">
     <tr>
-        <th><button onclick="setSort('team')" class="header-button-team">Team Number</button></th>
+        <th class="team-thing column-team"><button onclick="setSort('team')" class="header-button-team">Team Number</button></th>
         {% for key in displayNames %}
-        <th><button onclick="setSort('{{key.lower()}}')" class="header-button-{{key.lower()}}">{{displayNames[key]}}</button></th>
+        <th class="column-{{key.lower()}}"><button onclick="setSort('{{key.lower()}}')" class="header-button-{{key.lower()}}">{{displayNames[key]}}</button></th>
         {% endfor %}
     </tr>
     {% for team in data %}
     {% if team["results"] %}
     <tr class="team-row" data-team="{{team['team']}}" {% for key in displayNames %}data-{{key}}="{{team['results'][loop.index-1][key]}}"{% endfor %}>
-        <td><p>{{team["team"]}}</p></td>
+        <td class="team-thing column-team"><p>{{team["team"]}}</p></td>
         {% for key in displayNames %}
-        <td>
+        <td  class="column-{{key.lower()}}">
             {% if links %}
             <a href="{{team['results'][loop.index-1]['matchId']}}">{{team["results"][loop.index-1][key]}}</a>
             {% else %}

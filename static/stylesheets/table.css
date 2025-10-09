@@ -1,8 +1,7 @@
 table {
-    border: 1px solid white;
     table-layout: fixed;
     width: 200px;
-    border-collapse: collapse;
+    /* border-collapse: collapse; */
     height: 1px;
 }
 
@@ -32,4 +31,25 @@ th button:hover:not(.title-selected) {
 
 .title-selected{
     background-color: var(--blue-alliance);
+}
+
+/* .team-thing{
+    position: sticky;
+    left:0;
+} */
+
+.team-thing{
+    background: var(--nerd-herd-navy);
+    position: sticky;
+    left: 0;
+    z-index: 10;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#column-select {
+    display:flex;
+    flex-direction: column;
 }

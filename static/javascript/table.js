@@ -81,3 +81,28 @@ function setSort(value){
         }
     }
 }
+
+function setColumns(){
+    const columnSelectDiv = document.getElementById("column-select");
+    let allowedColumns = ["column-team"];
+    for (const checkbox of columnSelectDiv.querySelectorAll("input")){
+        if (checkbox.checked){
+            allowedColumns.push("column-"+checkbox.dataset.value);
+        }
+    }
+
+    console.log(allowedColumns);
+
+
+    let rowNodes = mainTable.querySelectorAll("tr");
+    for (const rowNode of rowNodes){
+        for (const element of rowNode.children){
+            element.classList.add("hidden");
+            for (const curClass of element.classList){
+                if (allowedColumns.includes(curClass)){
+                    element.classList.remove("hidden");
+                }
+            }
+        }
+    }
+}
