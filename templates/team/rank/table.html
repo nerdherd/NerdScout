@@ -34,7 +34,7 @@
 <button onclick="updateSort()">sort</button>
 
 <table id="main-table">
-    <tr>
+    <tr id="header-row">
         <th class="team-thing column-team"><button onclick="setSort('team')" class="header-button-team">Team Number</button></th>
         {% for key in displayNames %}
         <th class="column-{{key.lower()}}"><button onclick="setSort('{{key.lower()}}')" class="header-button-{{key.lower()}}">{{displayNames[key]}}</button></th>
