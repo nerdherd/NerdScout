@@ -9,13 +9,15 @@
 {% endblock %}
 
 {% block content %}
-
-<div id="column-select">
-    {% for key in displayNames %}
-    <div><input type="checkbox" data-value="{{key.lower()}}" id="checkbox-{{key.lower()}}" name="checkbox-{{key.lower()}}" checked><label for="checkbox-{{key.lower()}}">{{displayNames[key]}}</label></div>
-    {% endfor %}
-    <button onclick="setColumns()">Apply</button>
-</div>
+<details>
+    <summary>Table Settings</summary>
+    <div id="column-select">
+        {% for key in displayNames %}
+        <div><input type="checkbox" data-value="{{key.lower()}}" id="checkbox-{{key.lower()}}" name="checkbox-{{key.lower()}}" checked><label for="checkbox-{{key.lower()}}">{{displayNames[key]}}</label></div>
+        {% endfor %}
+        <button onclick="setColumns()">Apply</button>
+    </div>
+</details>
 
 <select id="sort-category">
     <option value="team" selected>Team</option>
