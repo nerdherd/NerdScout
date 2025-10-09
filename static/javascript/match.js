@@ -96,6 +96,7 @@ function set_team(team){
             team.classList.add("hide"); 
         }
         document.getElementById("score-breakdown").classList.remove("hide");
+        shown = "";
     }
 
     count++;
