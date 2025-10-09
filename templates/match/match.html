@@ -41,7 +41,7 @@
     </select>
     <div class="results-div">
     {% for result in team['results'] %}
-    <div class="match-data revision-{{ loop.index }}">
+    <div class="match-data revision-{{ loop.index }} {% if not loop.last %} hidden {% endif %}">
 
         <div class="scoredBy">
             <p>Scored by: {{result['scout']}}</p>
