@@ -491,6 +491,48 @@ def teamDataSummary():
                     data[-1]["results"].append({key: piece})
     return data
 
+@app.route("/team/table")
+def teamTable():
+    stat = request.args.get("stat")
+    if not (
+        (stat == "mean")
+        or (stat == "median")
+        or (stat == "mode")
+        or (stat == "highest")
+        or (stat == "lowest")
+    ):
+        abort(400)
+    links = (stat == "highest" or stat == "lowest")
+    
+    displayNames = {
+        "startPos": "Starting Position",
+        "autoLeave": "Auto Leave",
+        "autoReefL1": "Reef Auto L1",
+        "autoReefL2": "Reef Auto L2",
+        "autoReefL3": "Reef Auto L3",
+        "autoReefL4": "Reef Auto L4",
+        "autoReefMiss": "Reef Auto Missed",
+        "teleReefL1": "Reef Tele-Op L1",
+        "teleReefL2": "Reef Tele-Op L2",
+        "teleReefL3": "Reef Tele-Op L3",
+        "teleReefL4": "Reef Tele-Op L4",
+        "teleReefMiss": "Reef Tele-Op Missed",
+        "autoProcessor": "Processor Auto",
+        "autoProcessorMiss": "Processor Auto Missed",
+        "teleProcessor": "Processor Tele-Op",
+        "teleProcessorMiss": "Processor Tele-Op Missed",
+        "autoNet": "Net Auto",
+        "autoNetMiss": "Net Auto Missed",
+        "teleNet": "Net Tele-Op",
+        "teleNetMiss": "Net Tele-Op Missed",
+        "endPos": "Ending Position",
+        "attemptedEndPos": "Attempted Ending Position",
+        "minorFouls": "Minor Fouls",
+        "majorFouls": "Major Fouls",
+        "score": "Score Impact",
+    }
+    data = teamDataSummary()
+    return render_template("team/rank/table.html",displayNames=displayNames,data=data,links=links)
 
 # @app.route("/testTeamImage")
 # def testTeamImage():

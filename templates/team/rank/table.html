@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Team Table{% endblock %}
+
+{% block head %}
+<!-- <link rel="preload" href="{{ url_for('static', filename='stylesheets/teamRank.css') }}" as="style">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/teamRank.css') }}"> -->
+<!-- <script>
+    var displayNames = {{displayNames|safe}};
+</script> -->
+<script src="{{ url_for('static',filename='javascript/table.js')}}" defer></script>
+{% endblock %}
+
+{% block content %}
+
+<select id="sort-category">
+    {% for key in displayNames %}
+    <option value="{{key.lower()}}" {% if loop.last %}selected{%endif%}>{{displayNames[key]}}</option>
+    {% endfor %}
+</select>
+
+<select id="sort-input">
+    <option value="ascending">Ascending</option>
+    <option value="descending" selected>Descending</option>
+</select>
+<button onclick="updateSort()">sort</button>
+
+<table id="main-table">
+    <tr>
+        <th><p>Team Number</p></th>
+        {% for key in displayNames %}
+        <th><p>{{displayNames[key]}}</p></th>
+        {% endfor %}
+    </tr>
+    {% for team in data %}
+    {% if team["results"] %}
+    <tr class="team-row" data-team="{{team['team']}}" {% for key in displayNames %}data-{{key}}="{{team['results'][loop.index-1][key]}}"{% endfor %}>
+        <td><p>{{team["team"]}}</p></td>
+        {% for key in displayNames %}
+        <td>
+            {% if links %}
+            <a href="{{team['results'][loop.index-1]['matchId']}}">{{team["results"][loop.index-1][key]}}</a>
+            {% else %}
+            <p>{{team["results"][loop.index-1][key]}}</p>
+            {% endif %}
+        </td>
+        {% endfor %}
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+{% endblock %}
