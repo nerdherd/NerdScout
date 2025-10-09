@@ -35,8 +35,8 @@
                 <input type="checkbox" id="language-labview" name="language-labview"> <label for="language-labview">LabView</label>
             </div>
             <div>
-                <input type="checkbox" id="language-other" name="language-other"> <label for="language-labview">Other</label>
-                <input type="text" id="language-other-input">
+                <input type="checkbox" id="language-other" name="language-other" onclick="showOtherInput()"> <label for="language-labview">Other</label><br>
+                <input type="text" id="language-other-input" style="display:none;">
             </div>
         </div>
     </div>
@@ -95,28 +95,28 @@
         </div>
     </div>
     <div class="card">
-        <label for="role">What role does their robot serve? </label>
+        <label for="role">What role does their robot serve? </label><br>
         <input type="text" id="role" name="role"/>
     </div>
     <div class="card">
-        <label for="weight">What is their robot weight (without batteries and bumpers) (lbs)? </label>
+        <label for="weight">What is their robot weight (without batteries and bumpers) (lbs)? </label><br>
         <input type="number" id="weight" name="weight"/>
     </div>
     <div class="card"> 
-        <label for="special">Anything special we should know about their robot? </label>
+        <label for="special">Anything special we should know about their robot? </label><br>
         <input type="text" id="special" name="special"/>
     </div>
-    <div>
-        <label for="organize">Observe for yourself and don't ask a question: how organized is their pit? </label>
+    <div class="card">
+        <label for="organize">Observe for yourself and don't ask a question: how organized is their pit? </label><br>
         <input type="text" id="organize" name="organize"/>
     </div>
-    <div>
-        <label for="comment">Any other comments? </label>
+    <div class="card">
+        <label for="comment">Any other comments? </label><br>
         <input type="text" id="comment" name="comment"/>
     </div>
 </div>
 
-<button onclick="submitData()">Submit</button>
+<button onclick="submitData()" class="card">Submit</button>
 
 <script>
     function getCheckbox(id){
@@ -130,6 +130,19 @@
             emptyList.push(id);
         }
         return value;
+    }
+
+    var otherInputBox = document.getElementById("language-other-input");
+    var otherCheck = document.getElementById("language-other");
+
+    function showOtherInput(){
+        console.log(otherCheck.checked);
+        if (otherCheck.checked){
+            otherInputBox.style = "display:inline;";
+        } else{
+            otherInputBox.style = "display:none";
+            otherInputBox.value = "";
+        }
     }
 
     var isEmpty = false;
