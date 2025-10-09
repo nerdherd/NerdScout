@@ -25,9 +25,9 @@
 
 <table id="main-table">
     <tr>
-        <th><a href="#" onclick="setSort('team')"><div>Team Number</div></a></th>
+        <th><button onclick="setSort('team')" class="header-button-team">Team Number</button></th>
         {% for key in displayNames %}
-        <th><a href="#" onclick="setSort('{{key.lower()}}')"><div>{{displayNames[key]}}</div></a></th>
+        <th><button onclick="setSort('{{key.lower()}}')" class="header-button-{{key.lower()}}">{{displayNames[key]}}</button></th>
         {% endfor %}
     </tr>
     {% for team in data %}

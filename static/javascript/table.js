@@ -68,10 +68,16 @@ function setSort(value){
         let selected = (option.value === value);
         if (option.selected&&selected){
             for (const orderoption of document.getElementById("sort-input").querySelectorAll("option")){
-                orderoption.toggleAttribute("selected")
+                orderoption.toggleAttribute("selected");
             }
         }
         option.selected = selected;
     }
     updateSort();
+    for (const button of document.querySelectorAll("th button")){
+        button.classList.remove("title-selected");
+        if (button.classList.contains("header-button-"+value)){
+            button.classList.add("title-selected");
+        }
+    }
 }

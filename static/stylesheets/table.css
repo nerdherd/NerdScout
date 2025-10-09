@@ -3,22 +3,33 @@ table {
     table-layout: fixed;
     width: 200px;
     border-collapse: collapse;
+    height: 1px;
 }
 
 th, td {
     border: 1px solid white;
     width: 100px;
     overflow: hidden;
+    height: 100%;
 }
 
-a{
+th button {
     width: 100%;
     height: 100%;
-    /* text-decoration: none;    */
-    display: block;
+    border-radius: 0;
+    font-weight: bold;
+    background: var(--nerd-herd-navy);
 }
 
-a div{
-    width: 100%;
-    height: 100%;
+th button:hover {
+    cursor: pointer;
+}
+
+th button:hover:not(.title-selected) {
+    cursor: pointer;
+    background: var(--darker-navy);
+}
+
+.title-selected{
+    background-color: var(--blue-alliance);
 }
