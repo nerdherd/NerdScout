@@ -61,3 +61,17 @@ function download_table_as_csv(separator = ',') {
     link.click();
     document.body.removeChild(link);
 }
+
+function setSort(value){
+    let options = document.getElementById("sort-category").querySelectorAll("option");
+    for (const option of options){
+        let selected = (option.value === value);
+        if (option.selected&&selected){
+            for (const orderoption of document.getElementById("sort-input").querySelectorAll("option")){
+                orderoption.toggleAttribute("selected")
+            }
+        }
+        option.selected = selected;
+    }
+    updateSort();
+}

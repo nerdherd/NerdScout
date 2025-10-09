@@ -11,8 +11,9 @@
 {% block content %}
 
 <select id="sort-category">
+    <option value="team" selected>Team</option>
     {% for key in displayNames %}
-    <option value="{{key.lower()}}" {% if loop.last %}selected{%endif%}>{{displayNames[key]}}</option>
+    <option value="{{key.lower()}}">{{displayNames[key]}}</option>
     {% endfor %}
 </select>
 
@@ -24,9 +25,9 @@
 
 <table id="main-table">
     <tr>
-        <th><p>Team Number</p></th>
+        <th><a href="#" onclick="setSort('team')"><div>Team Number</div></a></th>
         {% for key in displayNames %}
-        <th><p>{{displayNames[key]}}</p></th>
+        <th><a href="#" onclick="setSort('{{key.lower()}}')"><div>{{displayNames[key]}}</div></a></th>
         {% endfor %}
     </tr>
     {% for team in data %}
