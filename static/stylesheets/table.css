@@ -1,3 +1,7 @@
+:root{
+    --darker-cell: #040a1a;
+}
+
 table {
     table-layout: fixed;
     width: 200px;
@@ -10,6 +14,7 @@ th, td {
     width: 100px;
     overflow: hidden;
     height: 100%;
+    background-color: var(--darker-cell);
 }
 
 th button {
@@ -17,7 +22,7 @@ th button {
     height: 100%;
     border-radius: 0;
     font-weight: bold;
-    background: var(--nerd-herd-navy);
+    background: #00000000;
 }
 
 th button:hover {
@@ -26,7 +31,7 @@ th button:hover {
 
 th button:hover:not(.title-selected) {
     cursor: pointer;
-    background: var(--darker-navy);
+    background: #00000080;
 }
 
 .title-selected{
@@ -39,7 +44,7 @@ th button:hover:not(.title-selected) {
 } */
 
 .team-thing{
-    background: var(--nerd-herd-navy);
+    background-color: #040a1a;
     position: sticky;
     left: 0;
     z-index: 10;
@@ -52,4 +57,9 @@ th button:hover:not(.title-selected) {
 #column-select {
     display:flex;
     flex-direction: column;
+}
+
+td{
+    text-align: right;
+    padding-right:4px;
 }

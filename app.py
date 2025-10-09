@@ -532,7 +532,7 @@ def teamTable():
         "score": "Score Impact",
     }
     data = teamDataSummary()
-    return render_template("team/rank/table.html",displayNames=displayNames,data=data,links=links)
+    return render_template("team/rank/table.html",displayNames=displayNames,data=data,links=links,stat=stat,)
 
 # @app.route("/testTeamImage")
 # def testTeamImage():
