@@ -13,8 +13,8 @@ function updateSort(){
     }
 
     rows.sort(function(a,b){
-        var aVal = a.dataset[sortCategory];
-        var bVal = b.dataset[sortCategory];
+        var aVal = parseFloat(a.dataset[sortCategory]);
+        var bVal = parseFloat(b.dataset[sortCategory]);
         if (aVal > bVal) return 1;
         if (aVal < bVal) return -1;
         return 0;
