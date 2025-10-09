@@ -501,7 +501,7 @@ def teamTable():
         or (stat == "highest")
         or (stat == "lowest")
     ):
-        abort(400)
+        return render_template("team/rank/tableSelect.html")
     links = (stat == "highest" or stat == "lowest")
     
     displayNames = {
