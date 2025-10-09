@@ -142,8 +142,12 @@
             </ul>
             <p>Main robot role: {{data["role"]}}</p>
             <p>Robot weight: {{data["weight"]}}</p>
+            <p>Pit organization: {{data["organization"]}}</p>
             {% if data['special'] %}
             <p>Special information: {{data['special']}}</p>
+            {% endif %}
+            {% if data['comment'] %}
+            <p>Comment: {{data['special']}}</p>
             {% endif %}
             <!-- {{data}} -->
         </div>

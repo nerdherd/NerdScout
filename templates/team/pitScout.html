@@ -101,6 +101,14 @@
         <label for="special">Anything special we should know about their robot? </label>
         <input type="text" id="special" name="special"/>
     </div>
+    <div>
+        <label for="organize">Observe for yourself and don't ask a question: how organized is their pit? </label>
+        <input type="text" id="organize" name="organize"/>
+    </div>
+    <div>
+        <label for="comment">Any other comments? </label>
+        <input type="text" id="comment" name="comment"/>
+    </div>
 </div>
 
 <button onclick="submitData()">Submit</button>
@@ -166,7 +174,9 @@
             },
             "role":getValue("role"),
             "weight":getValue("weight"),
-            "special":getValue("special",false)
+            "special":getValue("special",false),
+            "organization":getValue("organize"),
+            "comment":getValue("comment",false)
         }
 
         if (isEmpty) {
