@@ -231,7 +231,7 @@ def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
             setNumber = match["setNumber"]
             displayName = match["displayName"]
 
-    highestValue = 0 if highestValue == -1 else highestValue
+    highestValue = 0 if highestValue == -9999999999999 else highestValue
     highestMatch = {
         "value": highestValue,
         "category": key,
@@ -265,7 +265,7 @@ def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
             setNumber = match["setNumber"]
             displayName = match["displayName"]
 
-    lowestValue = 0 if lowestValue == 9999 else lowestValue
+    lowestValue = 0 if lowestValue == 9999999999999 else lowestValue
     lowestMatch = {
         "value": lowestValue,
         "category": key,
