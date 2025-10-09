@@ -35,7 +35,8 @@ app.config.from_mapping(
     SECRET_KEY=open(os.path.join(root, "secrets/secretKey"), "r").read()
 )
 
-app.jinja_env.filters['any'] = any
+app.jinja_env.filters["any"] = any
+
 
 # Front-end Handlers
 @app.route("/")
@@ -409,6 +410,7 @@ def setTeamComment():
             pass
         return render_template("team/addComment.html", team=team)
 
+
 @app.route("/team/scout", methods=["GET", "POST"])
 def scoutTeam():
     if request.method == "POST":
@@ -419,14 +421,76 @@ def scoutTeam():
         except TypeError as e:
             app.logger.warning(e)
             abort(400)
-        pitScoutTeam(team,user,submission)
+        pitScoutTeam(team, user, submission)
         return "ok"
     team = None
     try:
         team = int(request.args.get("team"))  # type: ignore
     except:
         pass
-    return render_template("team/pitScout.html",team=team)
+    return render_template("team/pitScout.html", team=team)
+
+
+@app.route("/team/summary")
+def teamDataSummary():
+    stat = request.args.get("stat")
+    if not (
+        (stat == "mean")
+        or (stat == "median")
+        or (stat == "mode")
+        or (stat == "highest")
+        or (stat == "lowest")
+    ):
+        abort(400)
+    data = []
+    teams = getAllTeams()
+    if not teams:
+        app.logger.error("Failed to summarize team stats: No teams found.")
+        abort(500)
+    method = (
+        getMeanOfScoringCategory
+        if stat == "mean"
+        else (
+            getMedianOfScoringCategory
+            if stat == "median"
+            else (
+                getModeOfScoringCategory
+                if stat == "mode"
+                else (
+                    getMatchWithHighestValue
+                    if stat == "highest"
+                    else getMatchWithLowestValue
+                )
+            )
+        )
+    )
+    isAnObject: bool = stat == "highest" or stat == "lowest"
+    matchViewer = url_for("renderMatch")
+    for team in teams:
+        data.append({"team": team["number"], "results": []})
+        results = getTeamResults(team["number"])
+        if not results:
+            continue
+        for key, result in results[0]["results"][0].items():
+            if type(result) == str:
+                continue
+            if type(result) == list:
+                i = 0
+                for level in result:
+                    piece = method(results, key, i)
+                    if isAnObject:
+                        data[-1]["results"].append({f"{key}L{i+1}": piece["value"], "matchId": f"{matchViewer}?matchNum={piece['matchNumber']}&compLevel={piece['compLevel']}&setNum={piece['setNumber']}"})  # type: ignore
+                    else:
+                        data[-1]["results"].append({f"{key}L{i+1}": piece})
+                    i += 1
+            else:
+                piece = method(results, key)
+                if isAnObject:
+                    data[-1]["results"].append({key: piece["value"], "matchId": f"{matchViewer}?matchNum={piece['matchNumber']}&compLevel={piece['compLevel']}&setNum={piece['setNumber']}"})  # type: ignore
+                else:
+                    data[-1]["results"].append({key: piece})
+    return data
+
 
 # @app.route("/testTeamImage")
 # def testTeamImage():
@@ -523,11 +587,13 @@ def submitScorePage():
                 submission["teleNet"],  # int # type: ignore
                 submission["teleNetMiss"],  # int # type: ignore
                 EndPosition(
-                    int(submission["endPos"]) # int between 0-3 # type: ignore
-                ),  
+                    int(submission["endPos"])  # int between 0-3 # type: ignore
+                ),
                 EndPosition(
-                    int(submission["attemptedEndPos"]) # int between 0-3, though should be 2 or 3 # type: ignore
-                ),  
+                    int(
+                        submission["attemptedEndPos"] # int between 0-3, though should be 2 or 3 # type: ignore
+                    )  
+                ),
                 submission["minorFouls"],  # int # type: ignore
                 submission["majorFouls"],  # int # type: ignore
                 submission["comment"],  # str # type: ignore
