@@ -3,11 +3,8 @@
 {% block title %}Team Table{% endblock %}
 
 {% block head %}
-<!-- <link rel="preload" href="{{ url_for('static', filename='stylesheets/teamRank.css') }}" as="style">
-<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/teamRank.css') }}"> -->
-<!-- <script>
-    var displayNames = {{displayNames|safe}};
-</script> -->
+<link rel="preload" href="{{ url_for('static', filename='stylesheets/table.css') }}" as="style">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/table.css') }}">
 <script src="{{ url_for('static',filename='javascript/table.js')}}" defer></script>
 {% endblock %}
 
