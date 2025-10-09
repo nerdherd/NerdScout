@@ -772,7 +772,7 @@ def aboutPage():
 def before_request():
     # check login status
     if request.endpoint not in freeEndpoints and not isLoggedIn():
-        return redirect(url_for("login", next=request.path))
+        return redirect(url_for("login", next=request.full_path))
 
 
 @app.errorhandler(HTTPException)
