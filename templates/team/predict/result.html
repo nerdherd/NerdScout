@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block title %}Team Prediction{% endblock %}
+
+{% block head %}
+<style>
+    .reef-div,.leave-div,.algae-div {
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        margin-bottom: 40px;
+    }
+
+    .row{
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    img {
+        width: 2em;
+        height: 2em;
+    }
+
+    .cell{
+        outline-offset: -0.125em;
+        width:3em;
+        height: 3em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.25em;
+        margin:0.2em;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .cell-wide{
+        width: 6em;
+    }
+    .title {
+        width: 100%;
+        height: 3em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.25em;
+        margin:0.2em;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        flex-grow: 1;
+    }
+    .section {
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: fit-content;
+        border: 1px solid white;
+        width: 320px;
+    }
+    .items{
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        column-gap: 20px;
+    }
+
+    @media screen and (width < 660px){
+        .items {
+            flex-direction: column;
+            align-items: center;
+            row-gap: 20px;
+        }
+        .fouls {
+            width: 300px !important;
+        }
+    }
+
+    .main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        row-gap: 20px;
+    }
+
+    .fouls {
+        width: 642px;
+        border: 1px solid white;
+        padding-left: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Predicting reults for teams: {{team1}}, {{team2}}, {{team3}}</h1>
+<div class="main">
+    <div class="items">
+        <div class="section">
+            <div class="section-title">
+                <h2>Auto</h2>
+            </div>
+            
+            <div class="leave-div">
+                <div class="row">
+                    <div class="title"><b>Teams leaving:</b></div>
+                </div>
+                <div class="row">
+                    <div class="cell">
+                        {% if result["autoLeave"] > 0 %}
+                        <img src="{{ url_for('static', filename='images/matchDisplay/True.svg') }}" class="startPosImg">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/matchDisplay/False.svg') }}" class="startPosImg">           
+                        {% endif %}
+                    </div>
+                    <div class="cell">
+                        {% if result["autoLeave"] > 1 %}
+                        <img src="{{ url_for('static', filename='images/matchDisplay/True.svg') }}" class="startPosImg">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/matchDisplay/False.svg') }}" class="startPosImg">           
+                        {% endif %}
+                    </div>
+                    <div class="cell">
+                        {% if result["autoLeave"] > 2 %}
+                        <img src="{{ url_for('static', filename='images/matchDisplay/True.svg') }}" class="startPosImg">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/matchDisplay/False.svg') }}" class="startPosImg">           
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="reef-div">
+                <div class="row">
+                    <div class="title"><b>Reef</b></div>
+                </div>
+                <div class="row">
+                    <div class="cell">L1</div>
+                    <div class="cell">L2</div>
+                    <div class="cell">L3</div>
+                    <div class="cell">L4</div>
+                </div>
+                <div class="row">
+                    <div class="cell">{{result["autoReef"][0]}}</div>
+                    <div class="cell">{{result["autoReef"][1]}}</div>
+                    <div class="cell">{{result["autoReef"][2]}}</div>
+                    <div class="cell">{{result["autoReef"][3]}}</div>
+                </div>
+            </div>
+
+            <div class="algae-div">
+                <div class="row">
+                    <div class="title"><b>Algae</b></div>
+                </div>
+                <div class="row">
+                    <div class="cell cell-wide">Processor</div>
+                    <div class="cell cell-wide">Net</div>
+                </div>
+                <div class="row">
+                    <div class="cell cell-wide">{{result["autoProcessor"]}}</div>
+                    <div class="cell cell-wide">{{result["autoNet"]}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">
+                <h2>Tele</h2>
+            </div>
+            
+        
+            <div class="reef-div">
+                <div class="row">
+                    <div class="title"><b>Reef</b></div>
+                </div>
+                <div class="row">
+                    <div class="cell">L1</div>
+                    <div class="cell">L2</div>
+                    <div class="cell">L3</div>
+                    <div class="cell">L4</div>
+                </div>
+                <div class="row">
+                    <div class="cell">{{result["autoReef"][0]}}</div>
+                    <div class="cell">{{result["autoReef"][1]}}</div>
+                    <div class="cell">{{result["autoReef"][2]}}</div>
+                    <div class="cell">{{result["autoReef"][3]}}</div>
+                </div>
+            </div>
+        
+            <div class="algae-div">
+                <div class="row">
+                    <div class="title"><b>Algae</b></div>
+                </div>
+                <div class="row">
+                    <div class="cell cell-wide">Processor</div>
+                    <div class="cell cell-wide">Net</div>
+                </div>
+                <div class="row">
+                    <div class="cell cell-wide">{{result["autoProcessor"]}}</div>
+                    <div class="cell cell-wide">{{result["autoNet"]}}</div>
+                </div>
+            </div>
+
+            <div class="leave-div">
+                <div class="row">
+                    <div class="title"><b>End positions:</b></div>
+                </div>
+                <div class="row">
+                    <div class="cell cell-wide">
+                        {{team1}}
+                    </div>
+                    <div class="cell cell-wide">
+                        {{team2}}
+                    </div>
+                    <div class="cell cell-wide">
+                        {{team3}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="cell cell-wide">
+                        {{(["None","Park","Shallow","Deep"])[result["endPos1"]]}}
+                    </div>
+                    <div class="cell cell-wide">
+                        {{(["None","Park","Shallow","Deep"])[result["endPos2"]]}}
+                    </div>
+                    <div class="cell cell-wide">
+                        {{(["None","Park","Shallow","Deep"])[result["endPos3"]]}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fouls">
+        <h2>Minor Fouls: {{result["minorFouls"]}}</h2>
+        <h2>Major Fouls: {{result["majorFouls"]}}</h2>
+    </div>
+</div>
+{% endblock %}

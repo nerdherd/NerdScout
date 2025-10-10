@@ -481,7 +481,7 @@ def rankTeams(key: str, stat: str, sort: bool = True, reefLevel: int = 0):
         return sorted(teams, key=lambda team: team[key], reverse=sort)
 
 
-def calculateAverageAllianceScore(team1: int, team2: int, team3: int):
+def calculateAverageAllianceScore(team1: int, team2: int, team3: int, calc=getMeanOfScoringCategory):
     team1Listing = getTeam(team1)
     if not team1Listing:
         return None
@@ -496,73 +496,73 @@ def calculateAverageAllianceScore(team1: int, team2: int, team3: int):
     team2Data = getTeamResults(team2)
     team3Data = getTeamResults(team3)
 
-    team1Leave = int(getMeanOfScoringCategory(team1Data, "autoLeave") >= 0.5)
-    team2Leave = int(getMeanOfScoringCategory(team2Data, "autoLeave") >= 0.5)
-    team3Leave = int(getMeanOfScoringCategory(team3Data, "autoLeave") >= 0.5)
+    team1Leave = int(calc(team1Data, "autoLeave") >= 0.5)
+    team2Leave = int(calc(team2Data, "autoLeave") >= 0.5)
+    team3Leave = int(calc(team3Data, "autoLeave") >= 0.5)
     leaveTotal = team1Leave + team2Leave + team3Leave
 
-    team1End = round(getMeanOfScoringCategory(team1Data, "endPos"))
-    team2End = round(getMeanOfScoringCategory(team2Data, "endPos"))
-    team3End = round(getMeanOfScoringCategory(team3Data, "endPos"))
+    team1End = round(calc(team1Data, "endPos"))
+    team2End = round(calc(team2Data, "endPos"))
+    team3End = round(calc(team3Data, "endPos"))
 
-    team1Minors = getMeanOfScoringCategory(team1Data, "minorFouls")
-    team2Minors = getMeanOfScoringCategory(team2Data, "minorFouls")
-    team3Minors = getMeanOfScoringCategory(team3Data, "minorFouls")
+    team1Minors = calc(team1Data, "minorFouls")
+    team2Minors = calc(team2Data, "minorFouls")
+    team3Minors = calc(team3Data, "minorFouls")
 
-    team1Majors = getMeanOfScoringCategory(team1Data, "majorFouls")
-    team2Majors = getMeanOfScoringCategory(team2Data, "majorFouls")
-    team3Majors = getMeanOfScoringCategory(team3Data, "majorFouls")
+    team1Majors = calc(team1Data, "majorFouls")
+    team2Majors = calc(team2Data, "majorFouls")
+    team3Majors = calc(team3Data, "majorFouls")
 
     autoReef = [
-        round(getMeanOfScoringCategory(team1Data, "autoReef", 0))
-        + round(getMeanOfScoringCategory(team2Data, "autoReef", 0))
-        + round(getMeanOfScoringCategory(team3Data, "autoReef", 0)),
-        round(getMeanOfScoringCategory(team1Data, "autoReef", 1))
-        + round(getMeanOfScoringCategory(team2Data, "autoReef", 1))
-        + round(getMeanOfScoringCategory(team3Data, "autoReef", 1)),
-        round(getMeanOfScoringCategory(team1Data, "autoReef", 2))
-        + round(getMeanOfScoringCategory(team2Data, "autoReef", 2))
-        + round(getMeanOfScoringCategory(team3Data, "autoReef", 2)),
-        round(getMeanOfScoringCategory(team1Data, "autoReef", 3))
-        + round(getMeanOfScoringCategory(team2Data, "autoReef", 3))
-        + round(getMeanOfScoringCategory(team3Data, "autoReef", 3)),
+        round(calc(team1Data, "autoReef", 0))
+        + round(calc(team2Data, "autoReef", 0))
+        + round(calc(team3Data, "autoReef", 0)),
+        round(calc(team1Data, "autoReef", 1))
+        + round(calc(team2Data, "autoReef", 1))
+        + round(calc(team3Data, "autoReef", 1)),
+        round(calc(team1Data, "autoReef", 2))
+        + round(calc(team2Data, "autoReef", 2))
+        + round(calc(team3Data, "autoReef", 2)),
+        round(calc(team1Data, "autoReef", 3))
+        + round(calc(team2Data, "autoReef", 3))
+        + round(calc(team3Data, "autoReef", 3)),
     ]
 
     teleReef = [
-        round(getMeanOfScoringCategory(team1Data, "teleReef", 0))
-        + round(getMeanOfScoringCategory(team2Data, "teleReef", 0))
-        + round(getMeanOfScoringCategory(team3Data, "teleReef", 0)),
-        round(getMeanOfScoringCategory(team1Data, "teleReef", 1))
-        + round(getMeanOfScoringCategory(team2Data, "teleReef", 1))
-        + round(getMeanOfScoringCategory(team3Data, "teleReef", 1)),
-        round(getMeanOfScoringCategory(team1Data, "teleReef", 2))
-        + round(getMeanOfScoringCategory(team2Data, "teleReef", 2))
-        + round(getMeanOfScoringCategory(team3Data, "teleReef", 2)),
-        round(getMeanOfScoringCategory(team1Data, "teleReef", 3))
-        + round(getMeanOfScoringCategory(team2Data, "teleReef", 3))
-        + round(getMeanOfScoringCategory(team3Data, "teleReef", 3)),
+        round(calc(team1Data, "teleReef", 0))
+        + round(calc(team2Data, "teleReef", 0))
+        + round(calc(team3Data, "teleReef", 0)),
+        round(calc(team1Data, "teleReef", 1))
+        + round(calc(team2Data, "teleReef", 1))
+        + round(calc(team3Data, "teleReef", 1)),
+        round(calc(team1Data, "teleReef", 2))
+        + round(calc(team2Data, "teleReef", 2))
+        + round(calc(team3Data, "teleReef", 2)),
+        round(calc(team1Data, "teleReef", 3))
+        + round(calc(team2Data, "teleReef", 3))
+        + round(calc(team3Data, "teleReef", 3)),
     ]
 
     autoProcessor = (
-        round(getMeanOfScoringCategory(team1Data, "autoProcessor"))
-        + round(getMeanOfScoringCategory(team2Data, "autoProcessor"))
-        + round(getMeanOfScoringCategory(team3Data, "autoProcessor"))
+        round(calc(team1Data, "autoProcessor"))
+        + round(calc(team2Data, "autoProcessor"))
+        + round(calc(team3Data, "autoProcessor"))
     )
     teleProcessor = (
-        round(getMeanOfScoringCategory(team1Data, "teleProcessor"))
-        + round(getMeanOfScoringCategory(team2Data, "teleProcessor"))
-        + round(getMeanOfScoringCategory(team3Data, "teleProcessor"))
+        round(calc(team1Data, "teleProcessor"))
+        + round(calc(team2Data, "teleProcessor"))
+        + round(calc(team3Data, "teleProcessor"))
     )
 
     autoNet = (
-        round(getMeanOfScoringCategory(team1Data, "autoNet"))
-        + round(getMeanOfScoringCategory(team2Data, "autoNet"))
-        + round(getMeanOfScoringCategory(team3Data, "autoNet"))
+        round(calc(team1Data, "autoNet"))
+        + round(calc(team2Data, "autoNet"))
+        + round(calc(team3Data, "autoNet"))
     )
     teleNet = (
-        round(getMeanOfScoringCategory(team1Data, "teleNet"))
-        + round(getMeanOfScoringCategory(team2Data, "teleNet"))
-        + round(getMeanOfScoringCategory(team3Data, "teleNet"))
+        round(calc(team1Data, "teleNet"))
+        + round(calc(team2Data, "teleNet"))
+        + round(calc(team3Data, "teleNet"))
     )
 
     score = calculateScore(

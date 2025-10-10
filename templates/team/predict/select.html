@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Team Ranking{% endblock %}
+
+{% block head %}
+<style>
+.inputs {
+    display:flex;
+    flex-direction: column;
+    row-gap: 10px;
+    margin-bottom: 20px;
+}
+
+select {
+    font-size: large;
+}
+
+button {
+    width: 100%;
+    font-size: large;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Select teams categories</h1>
+<div class="inputs">
+    <select id="team1">
+        <option value="none">Select...</option>
+        {% for team in teams%}
+        <option value="{{team['number']}}">{{team['number']}} - {{team['shortName']}}</option>
+        {% endfor %}
+    </select>
+    <select id="team2">
+        <option value="none">Select...</option>
+        {% for team in teams%}
+        <option value="{{team['number']}}">{{team['number']}} - {{team['shortName']}}</option>
+        {% endfor %}
+    </select>
+    <select id="team3">
+        <option value="none">Select...</option>
+        {% for team in teams%}
+        <option value="{{team['number']}}">{{team['number']}} - {{team['shortName']}}</option>
+        {% endfor %}
+    </select>
+    <!--stat-->
+    <select id="statInput">
+        <option value="mean">Mean</option>
+        <option value="median">Median</option>
+        <option value="mode">Mode</option>
+        <option value="highest">Highest</option>
+        <option value="lowest">Lowest</option>
+    </select>
+</div>
+<button onclick="goToRank()">Search</button>
+<script>
+    function goToRank(){
+
+
+        let stat = document.getElementById("statInput").value;
+        
+        let team1 = document.getElementById("team1").value;
+        let team2 = document.getElementById("team2").value;
+        let team3 = document.getElementById("team3").value;
+
+        if (team1 === "none" || team2 === "none" || team3 === "none"){
+            alert("Please select all three teams.");
+            return;
+        }
+
+        let url = "{{ url_for('scoreAlliancePage') }}"+`?stat=${stat}&team1=${team1}&team2=${team2}&team3=${team3}`;
+        window.location.href = url;
+    }
+</script>
+{% endblock %}

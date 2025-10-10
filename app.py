@@ -245,28 +245,48 @@ def teamRankPage():
 
 @app.route("/scoreAlliance")
 def scoreAlliancePage():
+    
+    team1 = None
+    team2 = None
+    team3 = None
+    stat = None
     try:
         team1 = int(request.args.get("team1"))  # type: ignore
+    except TypeError:
+        pass
+    try:
         team2 = int(request.args.get("team2"))  # type: ignore
+    except TypeError:
+        pass
+    try:
         team3 = int(request.args.get("team3"))  # type: ignore
-        stat = str(request.args.get("stat"))  # type: ignore
-        stat = stat.lower()
-    except:
-        abort(400)
+    except TypeError:
+        pass
+    
+    stat = request.args.get("stat")  # type: ignore
+    
+    if not stat or not team1 or not team2 or not team3:
+        return render_template("team/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
+    
+    stat = str(stat).lower()
+    
 
-    if (stat != "highest") and (stat != "lowest") and (stat != "mean"):
-        abort(400)
+    if stat not in ["mean","median","mode","highest","lowest"]:
+        return render_template("team/predict/select.html",stat="none",team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
 
-    if stat == "mean":
-        result = calculateAverageAllianceScore(team1, team2, team3)
+    if stat == "mean" or stat == "median" or stat == "mode":
+        
+        calculateFunction = getMeanOfScoringCategory if stat == "mean" else getMedianOfScoringCategory if stat=="median" else getModeOfScoringCategory
+        
+        result = calculateAverageAllianceScore(team1, team2, team3,calculateFunction)
         if not result:
-            abort(400)
-        return result
+            return render_template("team/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
+        return render_template("team/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
     else:
         result = calculateMinMaxAllianceScore(team1, team2, team3, stat == "highest")
         if not result:
-            abort(400)
-        return result
+            return render_template("team/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
+        return render_template("team/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
 
 
 # @app.route("/scoreRobotTest")
