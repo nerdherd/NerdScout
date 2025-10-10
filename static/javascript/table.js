@@ -26,6 +26,13 @@ function updateSort(){
     rows.forEach(element => {
         mainTable.appendChild(element);
     });;
+
+    for (const button of document.querySelectorAll("th button")){
+        button.classList.remove("title-selected");
+        if (button.classList.contains("header-button-"+sortCategory)){
+            button.classList.add("title-selected");
+        }
+    }
 }
 
 function download_table_as_csv(separator = ',') {
@@ -74,12 +81,6 @@ function setSort(value){
         option.selected = selected;
     }
     updateSort();
-    for (const button of document.querySelectorAll("th button")){
-        button.classList.remove("title-selected");
-        if (button.classList.contains("header-button-"+value)){
-            button.classList.add("title-selected");
-        }
-    }
 }
 
 function setColumns(){

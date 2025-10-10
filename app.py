@@ -512,6 +512,7 @@ def teamDataSummary():
                     data[-1]["results"].append({key: piece["value"], "matchId": f"{matchViewer}?matchNum={piece['matchNumber']}&compLevel={piece['compLevel']}&setNum={piece['setNumber']}"})  # type: ignore
                 else:
                     data[-1]["results"].append({key: piece})
+        data[-1]["results"].insert(0,data[-1]["results"].pop())
     return data
 
 @app.route("/team/table")
@@ -528,6 +529,7 @@ def teamTable():
     links = (stat == "highest" or stat == "lowest")
     
     displayNames = {
+        "score": "Score Impact",
         "startPos": "Starting Position",
         "autoLeave": "Auto Leave",
         "autoReefL1": "Reef Auto L1",
@@ -552,7 +554,6 @@ def teamTable():
         "attemptedEndPos": "Attempted Ending Position",
         "minorFouls": "Minor Fouls",
         "majorFouls": "Major Fouls",
-        "score": "Score Impact",
     }
     data = teamDataSummary()
     return render_template("team/rank/table.html",displayNames=displayNames,data=data,links=links,stat=stat,)

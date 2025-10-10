@@ -11,6 +11,14 @@
 {% block content %}
 <h1>Team Data Table by {{ stat|capitalize }}</h1>
 <details>
+    <summary>Instructions</summary>
+    <ul>
+        <li>Use the table settings dropdown to select specific columns to show</li>
+        <li>Use the dropdowns to sort the table by any scoring category</li>
+        <li>Alternatively click on the header of any column to sort by it</li>
+    </ul>
+</details>
+<details>
     <summary>Table Settings</summary>
     <div id="column-select">
         {% for key in displayNames %}
@@ -32,7 +40,6 @@
     <option value="descending">Descending</option>
 </select>
 <button onclick="updateSort()">sort</button>
-
 <table id="main-table">
     <tr id="header-row">
         <th class="team-thing column-team"><button onclick="setSort('team')" class="header-button-team">Team Number</button></th>
