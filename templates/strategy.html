@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    .card{
+        background-color: var(--darker-navy);
+        box-sizing: border-box;
+        padding:8px;
+        margin-top:10px;
+        border-radius: 2rem;
+        width:500px;
+        padding-bottom: 30px;
+        padding-left: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block title %}NerdScout{% endblock %}
+
+{% block content %}
+<h1>Links for strategy team</h1>
+<div class="card">
+    <h2>Team ranking page</h2>
+    <p>Rank all teams by any scoring category</p>
+    <a href="{{url_for('teamRankPage')}}">Link</a>
+</div>
+<div class="card">
+    <h2>Team table page</h2>
+    <p>Table of results for all teams (you can sort this too)</p>
+    <a href="{{url_for('teamTable')}}">Link</a>
+</div>
+<div class="card">
+    <h2>Prediction page</h2>
+    <p>Select three teams and see a predicted score</p>
+    <a href="{{url_for('scoreAlliancePage')}}">Link</a>
+</div>
+{% endblock %}

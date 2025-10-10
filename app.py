@@ -288,6 +288,9 @@ def scoreAlliancePage():
             return render_template("team/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
         return render_template("team/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
 
+@app.route("/strategy")
+def strategyPage():
+    return render_template("strategy.html")
 
 # @app.route("/scoreRobotTest")
 # def testRobotScorring():
