@@ -104,7 +104,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>Predicting reults for teams: {{team1}}, {{team2}}, {{team3}}</h1>
+<h1>Predicting results for teams: {{team1}}, {{team2}}, {{team3}}</h1>
 <div class="main">
     <div class="items">
         <div class="section">
@@ -241,6 +241,7 @@
         </div>
     </div>
     <div class="fouls">
+        <h2>Score: {{result["score"]}}</h2>
         <h2>Minor Fouls: {{result["minorFouls"]}}</h2>
         <h2>Major Fouls: {{result["majorFouls"]}}</h2>
     </div>
