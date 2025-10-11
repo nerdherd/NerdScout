@@ -8,12 +8,14 @@
         padding:8px;
         margin-top:10px;
         border-radius: 2rem;
-        width:min(500px,calc(100vw - 40px));
+        min-width:min(500px,calc(100vw - 40px));
+        width: fit-content;
         margin-left: 20px;
 
         display: flex;
-        flex-direction: row;
-        align-items: center;
+        flex-direction: column;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
 
@@ -36,9 +38,11 @@
         background-color: rgba(255, 0, 0, 0.132);
     }
 
+    
     h2 {
-        width: 100px;
+        min-width: 100px;
     }
+
 
 </style>
 {% endblock %}
