@@ -219,6 +219,8 @@
                 if (response.ok){
                     if (confirm('Submitted! Redirect to image submision page?')){
                         window.location.href="{{url_for('addTeamImagePage')}}?team="+team;
+                    } else if (confirm("Redirect to team page?")){
+                        window.location.href="{{url_for('teamPage')}}?team="+team;
                     };
                 } else {
                     alert("Error submitting!");
