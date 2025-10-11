@@ -743,7 +743,7 @@ def awesome():
 def logout():
     if "username" in session:
         del session["username"]
-    return render_template("auth/logout.html")
+    return render_template("auth/logout.html",logoutPageVariable=True)
 
 
 @app.route("/manageUsers", methods=["GET", "POST"])
