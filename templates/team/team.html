@@ -111,7 +111,7 @@
                 {% if data["languages"]["labview"] %}<li>LabView</li>{% endif %}
                 {% if data["languages"]["other"] %}<li>{{data["languages"]["other"]}}</li>{% endif %}
             </ul>
-            <p>They do {% if not data["camera"] %}not {%endif%}have vision</p>
+            <p>Do they currently have a camera on their robot? {{data["camera"]}}</p>
             <h3>Auto:</h3>
             <ul>
                 <li class="{{'checked' if data['auto']['leave'] else 'unchecked'}}">They {{ "" if data["auto"]["leave"] else "cannot"}} leave</li>

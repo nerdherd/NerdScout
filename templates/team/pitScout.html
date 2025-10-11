@@ -41,8 +41,8 @@
         </div>
     </div>
     <div class="card">
-        <label for="camera">Do they CURRENTLY have a camera on their robot?</label>
-        <input type="checkbox" id="camera" name="camera">
+        <label for="camera">Do they CURRENTLY have a camera on their robot? If so, describe:</label>
+        <input type="text" id="camera" name="camera">
     </div>
     <div class="card">
         <p>What can they realistically do during auto?</p>
@@ -164,7 +164,7 @@
                 "labview": getCheckbox("language-labview"),
                 "other": getValue("language-other-input",false)
             },
-            "camera": getCheckbox("camera"),
+            "camera": getValue("camera"),
             "auto": {
                 "leave":getCheckbox("auto-leave"),
                 "removeAlgae":getCheckbox("auto-algae"),
