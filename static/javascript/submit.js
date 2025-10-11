@@ -187,7 +187,7 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
 
 
     let startPos = 4-startPosSlider.value;
-    autoLeave = (leaveCheck.value == "on")
+    autoLeave = leaveCheck.checked;
 
     autoProcessor = procNetVars[0] 
     teleProcessor = procNetVars[1]
