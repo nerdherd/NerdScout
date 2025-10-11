@@ -748,11 +748,6 @@ def logout():
 
 @app.route("/manageUsers", methods=["GET", "POST"])
 def userManagementPage():
-    if not isAdmin(session["username"]):
-        app.logger.warning(
-            f"User {session['username']} attempted to access user management page."
-        )
-        abort(403)
     if request.method == "POST":
         try:
             data = request.json
@@ -791,12 +786,23 @@ def userManagementPage():
 def aboutPage():
     return render_template("about.html")
 
-
+freeEndpoints = frozenset(
+    ["login", "newUserPage", "static", "index", "logout", "aboutPage", "awesome"]
+)  # endpoints that shouldn't require signing in
+adminEndpoints = frozenset(
+    ["strategyPage","teamRankPage","teamTable","scoreAlliancePage"]
+)  # endpoints that require user be admin
 @app.before_request
 def before_request():
     # check login status
     if request.endpoint not in freeEndpoints and not isLoggedIn():
         return redirect(url_for("login", next=request.full_path))
+    
+    if request.endpoint in adminEndpoints and not isAdmin(session["username"]):
+        app.logger.warning(
+            f"User {session['username']} attempted to access {request.endpoint} without admin"
+        )
+        abort(403)
 
 
 @app.errorhandler(HTTPException)

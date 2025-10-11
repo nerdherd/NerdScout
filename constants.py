@@ -68,9 +68,6 @@ STAT_CODES = ["mean", "median", "mode", "highest", "lowest"]
 TBA_KEY = open(os.path.join(root, "secrets/theBlueAlliance"), "r").read()
 # TODO: add all text descriptions for all match types
 compLevelText = {"qm": "Qualifying", "sf": "Playoff", "f": "Final"}
-freeEndpoints = frozenset(
-    ["login", "newUserPage", "static", "index", "logout", "aboutPage", "awesome"]
-)  # endpoints that shouldn't require signing in
 keyDisplayNames = {
     "matchNumber": "Match Number",
     "setNumber": "Set Number",
