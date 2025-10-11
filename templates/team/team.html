@@ -18,76 +18,6 @@
 
 </div>
 
-{% if team["images"] %}
-<div id="teamImagesContainer">
-        <div id="leftArrow" class="imageNav" onclick="changeImage(false)">&#xe5c4</div>
-        <div id="rightArrow" class="imageNav" onclick="changeImage(true)">&#xe5c8</div>
-    <div id="teamImages">
-        {% for image in team["images"] %}
-        <div style="background-image:url({{ url_for('static', filename=image['location']) }})" class="teamImage" id="img{{ loop.index0 }}"></div>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-
-<div class="card">
-<h2>Comments</h2>
-{% for comment in team["comments"] %}
-<p>{{ comment["user"] }}: {{ comment["comment"] }}</p>
-{% endfor %}
-{% if not team["comments"] %}
-<p>No comments :(</p>
-{% endif %}
-</div>
-
-<div class="card">
-<a href="{{ url_for('addTeamImagePage', team=team['number']) }}">Add an image</a>
-<a href="{{ url_for('setTeamComment', team=team['number']) }}">Add team comment</a>
-</div>
-
-<div class="card">
-<h2>Statistics</h2>
-<select name="stats" id="stats" onchange="changeStat()">
-    {% for key, value in stats.items()%}
-    <option value="{{ key }}">{{ keyDisplayNames[key] }}</option>
-    {% endfor %}
-</select>
-{% for key, value in stats.items() %}
-<div id="{{ key }}" class="statistic hidden">
-<h3>{{ keyDisplayNames[key] }}</h3>
-    <ul>
-        <li>Mean: {{ value["mean"] }}</li>
-        <li>Median: {{ value["median"] }}</li>
-        <li>Mode: {{ value["mode"] }}</li>
-        <li>Lowest: {{ value["lowestMatch"]["value"] }}{% if value["lowestMatch"]["displayName"]%} in <a href="{{ url_for('renderMatch',matchNum=value['lowestMatch']['matchNumber'],setNum=value['lowestMatch']['setNumber'],compLevel=value['lowestMatch']['compLevel']) }}">{{ value['lowestMatch']['displayName'] }}</a>{% endif %}</li>
-        <li>Highest: {{ value["highestMatch"]["value"] }}{% if value["highestMatch"]["displayName"]%} in <a href="{{ url_for('renderMatch',matchNum=value['highestMatch']['matchNumber'],setNum=value['highestMatch']['setNumber'],compLevel=value['highestMatch']['compLevel']) }}">{{ value['highestMatch']['displayName'] }}</a>{% endif %}</li>
-    </ul>
-</div>
-{% endfor %}
-</div>
-
-<!--<p>{{ team }}</p>-->
-
-<div class="card">
-<h2>Matches</h2>
-<ul>
-    {% for match in matches %}
-    <li>
-        <a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],setNum=match['setNumber'],compLevel=match['compLevel']) }}">{{match['displayName']}}</a>
-        {% for section in ["red1","red2","red3","blue1","blue2","blue3"] %}
-        {% if match['teams'][section] == team["number"]%}
-        {% if section in match['results']%}
-        {% if match['results'][section]|length > 0 %}
-        <p>Score Impact: {{match['results'][section][-1]['score']}} (scouted by {{match['results'][section][-1]['scout']}})</p>
-        {% endif %}
-        {% endif %}
-        {% endif %}
-        {% endfor %}
-    </li>
-    {% endfor %}
-</ul>
-</div>
-
 <div class="card">
     <h1>Pit Scouting</h1>
     {% if team["pitScout"] %}
@@ -155,6 +85,76 @@
     </div>
     {% endif %}
     <a href="{{url_for('scoutTeam',team=team['number'])}}">Scout this team</a>
+</div>
+
+{% if team["images"] %}
+<div id="teamImagesContainer">
+        <div id="leftArrow" class="imageNav" onclick="changeImage(false)">&#xe5c4</div>
+        <div id="rightArrow" class="imageNav" onclick="changeImage(true)">&#xe5c8</div>
+    <div id="teamImages">
+        {% for image in team["images"] %}
+        <div style="background-image:url({{ url_for('static', filename=image['location']) }})" class="teamImage" id="img{{ loop.index0 }}"></div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- <div class="card">
+<h2>Comments</h2>
+{% for comment in team["comments"] %}
+<p>{{ comment["user"] }}: {{ comment["comment"] }}</p>
+{% endfor %}
+{% if not team["comments"] %}
+<p>No comments :(</p>
+{% endif %}
+</div> -->
+
+<div class="card">
+<a href="{{ url_for('addTeamImagePage', team=team['number']) }}">Add an image</a>
+<!-- <a href="{{ url_for('setTeamComment', team=team['number']) }}">Add team comment</a> -->
+</div>
+
+<div class="card">
+<h2>Statistics</h2>
+<select name="stats" id="stats" onchange="changeStat()">
+    {% for key, value in stats.items()%}
+    <option value="{{ key }}">{{ keyDisplayNames[key] }}</option>
+    {% endfor %}
+</select>
+{% for key, value in stats.items() %}
+<div id="{{ key }}" class="statistic hidden">
+<h3>{{ keyDisplayNames[key] }}</h3>
+    <ul>
+        <li>Mean: {{ value["mean"] }}</li>
+        <li>Median: {{ value["median"] }}</li>
+        <li>Mode: {{ value["mode"] }}</li>
+        <li>Lowest: {{ value["lowestMatch"]["value"] }}{% if value["lowestMatch"]["displayName"]%} in <a href="{{ url_for('renderMatch',matchNum=value['lowestMatch']['matchNumber'],setNum=value['lowestMatch']['setNumber'],compLevel=value['lowestMatch']['compLevel']) }}">{{ value['lowestMatch']['displayName'] }}</a>{% endif %}</li>
+        <li>Highest: {{ value["highestMatch"]["value"] }}{% if value["highestMatch"]["displayName"]%} in <a href="{{ url_for('renderMatch',matchNum=value['highestMatch']['matchNumber'],setNum=value['highestMatch']['setNumber'],compLevel=value['highestMatch']['compLevel']) }}">{{ value['highestMatch']['displayName'] }}</a>{% endif %}</li>
+    </ul>
+</div>
+{% endfor %}
+</div>
+
+<!--<p>{{ team }}</p>-->
+
+<div class="card">
+<h2>Matches</h2>
+<ul>
+    {% for match in matches %}
+    <li>
+        <a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],setNum=match['setNumber'],compLevel=match['compLevel']) }}">{{match['displayName']}}</a>
+        {% for section in ["red1","red2","red3","blue1","blue2","blue3"] %}
+        {% if match['teams'][section] == team["number"]%}
+        {% if section in match['results']%}
+        {% if match['results'][section]|length > 0 %}
+        <p>Score Impact: {{match['results'][section][-1]['score']}} (scouted by {{match['results'][section][-1]['scout']}})</p>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </li>
+    {% endfor %}
+</ul>
 </div>
 
 {% if team["pitScout"] %}
