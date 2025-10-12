@@ -6,10 +6,15 @@
 <link rel="preload" href="{{ url_for('static', filename='stylesheets/table.css') }}" as="style">
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/table.css') }}">
 <script src="{{ url_for('static',filename='javascript/table.js')}}" defer></script>
+<style>
+    th, td {
+        width: 130px !important;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<h1>Team Data Table by {{ stat|capitalize }}</h1>
+<h1>Match Data Table</h1>
 <details>
     <summary>Instructions</summary>
     <ul>
