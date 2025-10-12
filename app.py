@@ -781,6 +781,57 @@ def userManagementPage():
         )
     return render_template("accountManagement.html", users=getAllUsers())
 
+@app.route("/team/table2")
+def matchTable():
+    matches = getAllMatches()
+    results = []
+    for match in matches:
+        for section in ["red1","red2","red3","blue1","blue2","blue3"]:
+            if section in match["results"]:
+                for result in match["results"][section]:
+                    result["team"] = match["teams"][section]
+                    for i in range(4):
+                        result["autoReefL"+str(i+1)] = result["autoReef"][i]
+                        result["teleReefL"+str(i+1)] = result["teleReef"][i]
+                    result["matchNumber"] = match["matchNumber"]
+                    result["setNumber"] = match["setNumber"]
+                    result["compLevel"] = match["compLevel"]
+                    result["displayName"] = match["displayName"]
+                    results.append(result)
+    
+    displayNames = {
+        "team":"Team",
+        "displayName": "Display Name",
+        "score": "Score Impact",
+        "matchNumber": "Match Number",
+        "setNumber": "Set Number",
+        "compLevel": "Competition Level",
+        "startPos": "Starting Position",
+        "autoLeave": "Auto Leave",
+        "autoReefL1": "Reef Auto L1",
+        "autoReefL2": "Reef Auto L2",
+        "autoReefL3": "Reef Auto L3",
+        "autoReefL4": "Reef Auto L4",
+        "autoReefMiss": "Reef Auto Missed",
+        "teleReefL1": "Reef Tele-Op L1",
+        "teleReefL2": "Reef Tele-Op L2",
+        "teleReefL3": "Reef Tele-Op L3",
+        "teleReefL4": "Reef Tele-Op L4",
+        "teleReefMiss": "Reef Tele-Op Missed",
+        "autoProcessor": "Processor Auto",
+        "autoProcessorMiss": "Processor Auto Missed",
+        "teleProcessor": "Processor Tele-Op",
+        "teleProcessorMiss": "Processor Tele-Op Missed",
+        "autoNet": "Net Auto",
+        "autoNetMiss": "Net Auto Missed",
+        "teleNet": "Net Tele-Op",
+        "teleNetMiss": "Net Tele-Op Missed",
+        "endPos": "Ending Position",
+        "attemptedEndPos": "Attempted Ending Position",
+        "minorFouls": "Minor Fouls",
+    }
+    
+    return render_template("/team/rank/table2.html",results=results,displayNames=displayNames)
 
 @app.route("/about")
 def aboutPage():
@@ -790,7 +841,7 @@ freeEndpoints = frozenset(
     ["login", "newUserPage", "static", "index", "logout", "aboutPage", "awesome"]
 )  # endpoints that shouldn't require signing in
 adminEndpoints = frozenset(
-    ["strategyPage","teamRankPage","teamTable","scoreAlliancePage"]
+    ["strategyPage","teamRankPage","teamTable","scoreAlliancePage","matchTable"]
 )  # endpoints that require user be admin
 @app.before_request
 def before_request():

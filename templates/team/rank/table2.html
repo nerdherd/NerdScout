@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Team Table{% endblock %}
+
+{% block head %}
+<link rel="preload" href="{{ url_for('static', filename='stylesheets/table.css') }}" as="style">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/table.css') }}">
+<script src="{{ url_for('static',filename='javascript/table.js')}}" defer></script>
+{% endblock %}
+
+{% block content %}
+<h1>Team Data Table by {{ stat|capitalize }}</h1>
+<details>
+    <summary>Instructions</summary>
+    <ul>
+        <li>Use the table settings dropdown to select specific columns to show</li>
+        <li>Use the dropdowns to sort the table by any scoring category</li>
+        <li>Alternatively click on the header of any column to sort by it</li>
+    </ul>
+</details>
+<details>
+    <summary>Table Settings</summary>
+    <div id="column-select">
+        {% for key in displayNames %}
+        <div><input type="checkbox" data-value="{{key.lower()}}" id="checkbox-{{key.lower()}}" name="checkbox-{{key.lower()}}" checked><label for="checkbox-{{key.lower()}}">{{displayNames[key]}}</label></div>
+        {% endfor %}
+        <button onclick="setColumns()">Apply</button>
+    </div>
+</details>
+
+<select id="sort-category">
+    <option value="team" selected>Team</option>
+    {% for key in displayNames %}
+    <option value="{{key.lower()}}">{{displayNames[key]}}</option>
+    {% endfor %}
+</select>
+
+<select id="sort-input">
+    <option value="ascending">Ascending</option>
+    <option value="descending">Descending</option>
+</select>
+<button onclick="updateSort()">sort</button>
+<table id="main-table">
+    <tr id="header-row">
+        {% for key in displayNames %}
+        <th class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}"><button onclick="setSort('{{key.lower()}}')" class="header-button-{{key.lower()}}">{{displayNames[key]}}</button></th>
+        {% endfor %}
+    </tr>
+    {% for match in results %}
+    <tr class="team-row" data-team="{{match['team']}}" {% for key in displayNames %}data-{{key}}="{{match[key]}}"{% endfor %}>
+        {% for key in displayNames %}
+        <td class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}">
+            <p>{{match[key]}}</p>
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="#" onclick="download_table_as_csv(true)">Download as CSV</a>
+{% endblock %}

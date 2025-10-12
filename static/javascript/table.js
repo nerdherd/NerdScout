@@ -35,7 +35,7 @@ function updateSort(){
     }
 }
 
-function download_table_as_csv(separator = ',') {
+function download_table_as_csv(isMatches=false,separator = ',') {
     var rows = document.querySelectorAll('table#main-table tr');
     var csv = [];
     for (var i = 0; i < rows.length; i++) {
@@ -58,7 +58,9 @@ function download_table_as_csv(separator = ',') {
     }
     var csv_string = csv.join('\n');
     // Download it
-    var filename = 'export_teams_' + new Date().toLocaleDateString() + '.csv';
+    var filename;
+    if (!isMatches) {filename = 'export_teams_' + new Date().toLocaleDateString() + '.csv'}
+    else {filename = 'export_matches_' + new Date().toLocaleDateString() + '.csv'};
     var link = document.createElement('a');
     link.style.display = 'none';
     link.setAttribute('target', '_blank');
