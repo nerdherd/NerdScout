@@ -527,8 +527,15 @@ def calculateAverageAllianceScore(team1: int, team2: int, team3: int, calc=getMe
         + round(calc(team2Data, "autoReef", 3))
         + round(calc(team3Data, "autoReef", 3)),
     ]
+    
+    autoReef = [
+        autoReef[0],
+        min(autoReef[1],12),
+        min(autoReef[2],12),
+        min(autoReef[3],12),
+    ]
 
-    teleReef = [
+    teleReefValues = [
         round(calc(team1Data, "teleReef", 0))
         + round(calc(team2Data, "teleReef", 0))
         + round(calc(team3Data, "teleReef", 0)),
@@ -542,6 +549,14 @@ def calculateAverageAllianceScore(team1: int, team2: int, team3: int, calc=getMe
         + round(calc(team2Data, "teleReef", 3))
         + round(calc(team3Data, "teleReef", 3)),
     ]
+    
+    teleReef = [
+        teleReefValues[0],
+        min(teleReefValues[1],12-autoReef[1]),
+        min(teleReefValues[1],12-autoReef[1]),
+        min(teleReefValues[1],12-autoReef[1])
+    ]
+    teleReef[0] += max(0,teleReefValues[1]-teleReef[1]) + max(0,teleReefValues[2]-teleReef[2]) + max(0,teleReefValues[3]-teleReef[3])
 
     autoProcessor = (
         round(calc(team1Data, "autoProcessor"))
