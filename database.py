@@ -527,6 +527,8 @@ def calculateAverageAllianceScore(team1: int, team2: int, team3: int, calc=getMe
         + round(calc(team2Data, "autoReef", 3))
         + round(calc(team3Data, "autoReef", 3)),
     ]
+
+    autoReef[0] += (max(autoReef[1],12)-12) + (max(autoReef[2],12)-12) + (max(autoReef[3],12)-12)
     
     autoReef = [
         autoReef[0],
@@ -677,34 +679,51 @@ def calculateMinMaxAllianceScore(
     team3Majors = statistic(team3Data, "majorFouls")["value"]
 
     autoReef = [
-        statistic(team1Data, "autoReef", 0)["value"]
-        + statistic(team2Data, "autoReef", 0)["value"]
-        + statistic(team3Data, "autoReef", 0)["value"],
-        statistic(team1Data, "autoReef", 1)["value"]
-        + statistic(team2Data, "autoReef", 1)["value"]
-        + statistic(team3Data, "autoReef", 1)["value"],
-        statistic(team1Data, "autoReef", 2)["value"]
-        + statistic(team2Data, "autoReef", 2)["value"]
-        + statistic(team3Data, "autoReef", 2)["value"],
-        statistic(team1Data, "autoReef", 3)["value"]
-        + statistic(team2Data, "autoReef", 3)["value"]
-        + statistic(team3Data, "autoReef", 3)["value"],
+        round(statistic(team1Data, "autoReef", 0)["value"])
+        + round(statistic(team2Data, "autoReef", 0)["value"])
+        + round(statistic(team3Data, "autoReef", 0)["value"]),
+        round(statistic(team1Data, "autoReef", 1)["value"])
+        + round(statistic(team2Data, "autoReef", 1)["value"])
+        + round(statistic(team3Data, "autoReef", 1)["value"]),
+        round(statistic(team1Data, "autoReef", 2)["value"])
+        + round(statistic(team2Data, "autoReef", 2)["value"])
+        + round(statistic(team3Data, "autoReef", 2)["value"]),
+        round(statistic(team1Data, "autoReef", 3)["value"])
+        + round(statistic(team2Data, "autoReef", 3)["value"])
+        + round(statistic(team3Data, "autoReef", 3)["value"]),
     ]
 
-    teleReef = [
-        statistic(team1Data, "teleReef", 0)["value"]
-        + statistic(team2Data, "teleReef", 0)["value"]
-        + statistic(team3Data, "teleReef", 0)["value"],
-        statistic(team1Data, "teleReef", 1)["value"]
-        + statistic(team2Data, "teleReef", 1)["value"]
-        + statistic(team3Data, "teleReef", 1)["value"],
-        statistic(team1Data, "teleReef", 2)["value"]
-        + statistic(team2Data, "teleReef", 2)["value"]
-        + statistic(team3Data, "teleReef", 2)["value"],
-        statistic(team1Data, "teleReef", 3)["value"]
-        + statistic(team2Data, "teleReef", 3)["value"]
-        + statistic(team3Data, "teleReef", 3)["value"],
+    autoReef[0] += (max(autoReef[1],12)-12) + (max(autoReef[2],12)-12) + (max(autoReef[3],12)-12)
+    
+    autoReef = [
+        autoReef[0],
+        min(autoReef[1],12),
+        min(autoReef[2],12),
+        min(autoReef[3],12),
     ]
+
+    teleReefValues = [
+        round(statistic(team1Data, "teleReef", 0)["value"])
+        + round(statistic(team2Data, "teleReef", 0)["value"])
+        + round(statistic(team3Data, "teleReef", 0)["value"]),
+        round(statistic(team1Data, "teleReef", 1)["value"])
+        + round(statistic(team2Data, "teleReef", 1)["value"])
+        + round(statistic(team3Data, "teleReef", 1)["value"]),
+        round(statistic(team1Data, "teleReef", 2)["value"])
+        + round(statistic(team2Data, "teleReef", 2)["value"])
+        + round(statistic(team3Data, "teleReef", 2)["value"]),
+        round(statistic(team1Data, "teleReef", 3)["value"])
+        + round(statistic(team2Data, "teleReef", 3)["value"])
+        + round(statistic(team3Data, "teleReef", 3)["value"]),
+    ]
+    
+    teleReef = [
+        teleReefValues[0],
+        min(teleReefValues[1],12-autoReef[1]),
+        min(teleReefValues[1],12-autoReef[1]),
+        min(teleReefValues[1],12-autoReef[1])
+    ]
+    teleReef[0] += max(0,teleReefValues[1]-teleReef[1]) + max(0,teleReefValues[2]-teleReef[2]) + max(0,teleReefValues[3]-teleReef[3])
 
     autoProcessor = (
         statistic(team1Data, "autoProcessor")["value"]
