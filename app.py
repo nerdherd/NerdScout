@@ -226,7 +226,7 @@ def teamRankPage():
             "Ending Position": "endPos,0",
             "Attempted Ending Position": "attemptedEndPos,0",
             "Minor Fouls": "minorFouls,0",
-            "Major Fouls": "majorFouls,0",
+            "Major Fouls": "majorFouls,0"
         }
 
         return render_template("team/rank/teamRankSelect.html", options=options)
@@ -829,6 +829,8 @@ def matchTable():
         "endPos": "Ending Position",
         "attemptedEndPos": "Attempted Ending Position",
         "minorFouls": "Minor Fouls",
+        "majorFouls": "Major Fouls",
+        "comment":"Comment"
     }
     
     return render_template("/team/rank/table2.html",results=results,displayNames=displayNames)
