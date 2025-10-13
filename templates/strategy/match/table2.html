@@ -76,7 +76,11 @@
     <tr class="team-row row-{{match['team']}}" data-team="{{match['team']}}" {% for key in displayNames %}data-{{key}}="{{match[key]}}"{% endfor %}>
         {% for key in displayNames %}
         <td class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}">
+            {% if key == "displayName" %}
+            <a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],compLevel=match['compLevel'],setNum=match['setNumber']) }}">{{match[key]}}</a>
+            {% else %}
             <p>{{(["Blue","Center","Red"])[match[key]-1] if key == "startPos" else (["None","Park","Shallow","Deep"])[match[key]] if key in ("endPos","attemptedEndPos") else match[key]}}</p>
+            {% endif %}
         </td>
         {% endfor %}
     </tr>
