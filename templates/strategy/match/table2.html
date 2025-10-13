@@ -34,9 +34,22 @@
     <summary>Table Settings</summary>
     <div id="column-select">
         {% for key in displayNames %}
+        {% if key != "team" %}
         <div><input type="checkbox" data-value="{{key.lower()}}" id="checkbox-{{key.lower()}}" name="checkbox-{{key.lower()}}" checked><label for="checkbox-{{key.lower()}}">{{displayNames[key]}}</label></div>
+        {% endif %}
         {% endfor %}
         <button onclick="setColumns()">Apply</button>
+    </div>
+</details>
+<details>
+    <summary>Team Settings</summary>
+    <div id="team-select">
+        {% for team in teams %}
+        <div>
+            <input type="checkbox" data-team="{{team}}" id="team-checkbox-{{team}}" name="team-checkbox-{{team}}" checked><label for="team-checkbox-{{team}}">{{team}}</label>
+        </div>
+        {% endfor %}
+        <button onclick="setRows()">Apply</button>
     </div>
 </details>
 
@@ -54,13 +67,13 @@
 <button onclick="updateSort()">sort</button>
 <!-- {{results}} -->
 <table id="main-table">
-    <tr id="header-row">
+    <tr id="header-row" class="header-row">
         {% for key in displayNames %}
         <th class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}"><button onclick="setSort('{{key.lower()}}')" class="header-button-{{key.lower()}}">{{displayNames[key]}}</button></th>
         {% endfor %}
     </tr>
     {% for match in results %}
-    <tr class="team-row" data-team="{{match['team']}}" {% for key in displayNames %}data-{{key}}="{{match[key]}}"{% endfor %}>
+    <tr class="team-row row-{{match['team']}}" data-team="{{match['team']}}" {% for key in displayNames %}data-{{key}}="{{match[key]}}"{% endfor %}>
         {% for key in displayNames %}
         <td class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}">
             <p>{{(["Blue","Center","Red"])[match[key]-1] if key == "startPos" else (["None","Park","Shallow","Deep"])[match[key]] if key in ("endPos","attemptedEndPos") else match[key]}}</p>

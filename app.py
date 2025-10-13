@@ -785,6 +785,7 @@ def userManagementPage():
 def matchTable():
     matches = getAllMatches()
     results = []
+    teams = []
     for match in matches:
         for section in ["red1","red2","red3","blue1","blue2","blue3"]:
             if section in match["results"]:
@@ -798,6 +799,8 @@ def matchTable():
                     result["compLevel"] = match["compLevel"]
                     result["displayName"] = match["displayName"]
                     results.append(result)
+                    if result["team"] not in teams:
+                        teams.append(result["team"])
     
     displayNames = {
         "team":"Team",
@@ -833,7 +836,7 @@ def matchTable():
         "comment":"Comment"
     }
     
-    return render_template("/strategy/match/table2.html",results=results,displayNames=displayNames)
+    return render_template("/strategy/match/table2.html",results=results,displayNames=displayNames,teams=teams)
 
 @app.route("/about")
 def aboutPage():

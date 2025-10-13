@@ -35,14 +35,24 @@ function updateSort(){
     }
 }
 
+function isNumeric(str) {
+    return !isNaN(str) && !isNaN(parseFloat(str))
+}
+
 function download_table_as_csv(isMatches=false,separator = ',') {
     var rows = document.querySelectorAll('table#main-table tr');
     var csv = [];
     for (var i = 0; i < rows.length; i++) {
+        if (rows[i].classList.contains("hidden")){
+            continue;
+        }
         var row = [], cols = rows[i].querySelectorAll('td, th');
         for (var j = 0; j < cols.length; j++) {
-            console.log(cols[j].nodeName);
-            if (cols[j].nodeName==="TH"){
+            if (cols[j].classList.contains("hidden")){
+                continue;
+            }
+
+            if (cols[j].nodeName==="TH" || isNaN(cols[j].innerText) || isNaN(parseFloat(cols[j].innerText))){
                 // Clean innertext to remove multiple spaces and jumpline (break csv)
                 var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
                 // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
@@ -105,6 +115,25 @@ function setColumns(){
                 if (allowedColumns.includes(curClass)){
                     element.classList.remove("hidden");
                 }
+            }
+        }
+    }
+}
+
+function setRows(){
+    const teamSelectDiv = document.getElementById("team-select");
+    let allowedRows = ["header-row"];
+    for (const checkbox of teamSelectDiv.querySelectorAll("input")){
+        if (checkbox.checked){
+            allowedRows.push("row-"+checkbox.dataset.team);
+        }
+    }
+    let rowNodes = mainTable.querySelectorAll("tr");
+    for (const rowNode of rowNodes){
+        rowNode.classList.add("hidden");
+        for (const curClass of rowNode.classList){
+            if (allowedRows.includes(curClass)){
+                rowNode.classList.remove("hidden");
             }
         }
     }

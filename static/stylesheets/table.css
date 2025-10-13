@@ -60,7 +60,7 @@ th button:hover:not(.title-selected) {
     display: none !important;
 }
 
-#column-select {
+#column-select, #team-select {
     display:flex;
     flex-direction: column;
 }
