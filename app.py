@@ -229,10 +229,10 @@ def teamRankPage():
             "Major Fouls": "majorFouls,0"
         }
 
-        return render_template("team/rank/teamRankSelect.html", options=options)
+        return render_template("strategy/team/teamRankSelect.html", options=options)
         # abort(400)
     return render_template(
-        "team/rank/teamRank.html",
+        "strategy/team/teamRank.html",
         ranking=rankTeams(key, stat, sort, reefLevel),
         category=key,
         stat=stat,
@@ -266,13 +266,13 @@ def scoreAlliancePage():
     stat = request.args.get("stat")  # type: ignore
     
     if not stat or not team1 or not team2 or not team3:
-        return render_template("team/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
+        return render_template("strategy/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
     
     stat = str(stat).lower()
     
 
     if stat not in ["mean","median","mode","highest","lowest"]:
-        return render_template("team/predict/select.html",stat="none",team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
+        return render_template("strategy/predict/select.html",stat="none",team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
 
     if stat == "mean" or stat == "median" or stat == "mode":
         
@@ -280,17 +280,17 @@ def scoreAlliancePage():
         
         result = calculateAverageAllianceScore(team1, team2, team3,calculateFunction)
         if not result:
-            return render_template("team/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
-        return render_template("team/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
+            return render_template("strategy/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
+        return render_template("strategy/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
     else:
         result = calculateMinMaxAllianceScore(team1, team2, team3, stat == "highest")
         if not result:
-            return render_template("team/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
-        return render_template("team/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
+            return render_template("strategy/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
+        return render_template("strategy/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
 
 @app.route("/strategy")
 def strategyPage():
-    return render_template("strategy.html")
+    return render_template("strategy/strategy.html")
 
 # @app.route("/scoreRobotTest")
 # def testRobotScorring():
@@ -525,7 +525,7 @@ def teamTable():
         or (stat == "highest")
         or (stat == "lowest")
     ):
-        return render_template("team/rank/tableSelect.html")
+        return render_template("strategy/team/tableSelect.html")
     links = (stat == "highest" or stat == "lowest")
     
     displayNames = {
@@ -556,7 +556,7 @@ def teamTable():
         "majorFouls": "Major Fouls",
     }
     data = teamDataSummary()
-    return render_template("team/rank/table.html",displayNames=displayNames,data=data,links=links,stat=stat,)
+    return render_template("strategy/team/table.html",displayNames=displayNames,data=data,links=links,stat=stat,)
 
 # @app.route("/testTeamImage")
 # def testTeamImage():
@@ -833,7 +833,7 @@ def matchTable():
         "comment":"Comment"
     }
     
-    return render_template("/team/rank/table2.html",results=results,displayNames=displayNames)
+    return render_template("/strategy/match/table2.html",results=results,displayNames=displayNames)
 
 @app.route("/about")
 def aboutPage():
