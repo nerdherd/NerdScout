@@ -454,6 +454,9 @@ def scoutTeam():
     return render_template("team/pitScout.html", team=team)
 
 
+dontSummarize = frozenset(
+    ["startPos","endPos","attemptedEndPos"]
+)
 @app.route("/team/summary")
 def teamDataSummary():
     stat = request.args.get("stat")
@@ -495,7 +498,7 @@ def teamDataSummary():
         if not results:
             continue
         for key, result in results[0]["results"][0].items():
-            if type(result) == str:
+            if type(result) == str or key in dontSummarize:
                 continue
             if type(result) == list:
                 i = 0
@@ -530,7 +533,6 @@ def teamTable():
     
     displayNames = {
         "score": "Score Impact",
-        "startPos": "Starting Position",
         "autoLeave": "Auto Leave",
         "autoReefL1": "Reef Auto L1",
         "autoReefL2": "Reef Auto L2",
@@ -550,8 +552,6 @@ def teamTable():
         "autoNetMiss": "Net Auto Missed",
         "teleNet": "Net Tele-Op",
         "teleNetMiss": "Net Tele-Op Missed",
-        "endPos": "Ending Position",
-        "attemptedEndPos": "Attempted Ending Position",
         "minorFouls": "Minor Fouls",
         "majorFouls": "Major Fouls",
     }

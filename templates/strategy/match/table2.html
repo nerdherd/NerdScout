@@ -52,6 +52,7 @@
     <option value="descending">Descending</option>
 </select>
 <button onclick="updateSort()">sort</button>
+<!-- {{results}} -->
 <table id="main-table">
     <tr id="header-row">
         {% for key in displayNames %}
@@ -62,7 +63,7 @@
     <tr class="team-row" data-team="{{match['team']}}" {% for key in displayNames %}data-{{key}}="{{match[key]}}"{% endfor %}>
         {% for key in displayNames %}
         <td class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}">
-            <p>{{match[key]}}</p>
+            <p>{{(["Blue","Center","Red"])[match[key]-1] if key == "startPos" else (["None","Park","Shallow","Deep"])[match[key]] if key in ("endPos","attemptedEndPos") else match[key]}}</p>
         </td>
         {% endfor %}
     </tr>

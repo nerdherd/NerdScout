@@ -53,6 +53,7 @@
         <td class="team-thing column-team"><p>{{team["team"]}}</p></td>
         {% for key in displayNames %}
         <td  class="column-{{key.lower()}}">
+            <!--{{key}}-->
             {% if links %}
             <a href="{{team['results'][loop.index-1]['matchId']}}">{{team["results"][loop.index-1][key]}}</a>
             {% else %}
