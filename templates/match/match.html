@@ -162,15 +162,21 @@
                 <div class="table">
                     <div class="row">
                         <div class="cell cell3"><b>Tried End Pos</b></div>
-                        <div class="cell cell3"><b>End Pos</b></div>
+                        <div class="cell cell3"><b>Succeeded</b></div>
                     </div>
                     <div class="row">
                         <div class="cell cell3"><p>{{ (['None','Park','Shallow cage','Deep cage'])[result["attemptedEndPos"]] }}</p></div>
-                        <div class="cell cell3"><p>{{ (['None','Park','Shallow cage','Deep cage'])[result["endPos"]] }}</p></div>
+                        <div class="cell cell3">
+                            {% if result['endPosSuccess'] %}
+                            <img src="{{ url_for('static', filename='images/matchDisplay/True.svg') }}" class="startPosImg">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='images/matchDisplay/False.svg') }}" class="startPosImg">           
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-           
+            
             <div class="foulDiv">
                 <div clas="table">
                     <div class="row">

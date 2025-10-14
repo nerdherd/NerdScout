@@ -196,13 +196,13 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
 
     const endPosWin = !(document.getElementById("attemptEP").checked);
 
-    attemptedEndPos = endPosDDown.value-1
+    attemptedEndPos = endPosDDown.value-1;
 
-    if(endPosWin){
-        endPos = endPosDDown.value-1
-    } else {
-        endPos = 1; // assume they parked
-    }
+    // if(endPosWin){
+    //     endPos = endPosDDown.value-1
+    // } else {
+    //     endPos = 1; // assume they parked
+    // }
 
     comment = document.getElementById("comments").value
 
@@ -234,7 +234,7 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         "autoNetMiss": autoNetMiss,
         "teleNet": teleNet,
         "teleNetMiss": teleNetMiss,
-        "endPos": endPos,
+        "endPosSuccess": endPosWin,
         "attemptedEndPos": attemptedEndPos,
         "minorFouls": minorFouls,
         "majorFouls": majorFouls,

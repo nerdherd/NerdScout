@@ -169,7 +169,7 @@
             }
         }
     }
-    updatePitScout()
+    addEventListener("DOMContentLoaded",updatePitScout());
 </script>
 {% endif %}
 
@@ -177,7 +177,7 @@
 <script>
     const images = document.getElementById("teamImages");
     let currentImage = 0;
-    const numberOfImages = {{ team["images"]|length }} - 1;
+    const numberOfImages = {{ team["images"]|length -1 }};
 
     const options = {
         root: null,
