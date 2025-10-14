@@ -256,3 +256,7 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         }
     });;
 }
+
+function turnOnLeave(){
+    leaveCheck.checked = true;
+}

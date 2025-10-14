@@ -70,14 +70,14 @@
                     <div class="counterBlockData">
                         <div class="counter" >
                             <p>Miss</p>
-                            <button onclick="missAdd(0)" class="plusCounter">+</button>
+                            <button onclick="missAdd(0);turnOnLeave()" class="plusCounter">+</button>
                             <p id="aRM">0</p>
                             <button onclick="missSub(0)" class="minusCounter">-</button>
                         </div>
                         
                         <div class="counter">
                             <p>L1</p>
-                            <button onclick="autoReefAdd(0)" class="plusCounter">+</button>
+                            <button onclick="autoReefAdd(0);turnOnLeave()" class="plusCounter">+</button>
                             <p id="aCL1">0</p>
                             <button onclick="autoReefSub(0)" class="minusCounter">-</button>
                         </div>
@@ -85,7 +85,7 @@
                         
                         <div class="counter">
                             <p>L2</p>
-                            <button onclick="autoReefAdd(1)" class="plusCounter">+</button>
+                            <button onclick="autoReefAdd(1);turnOnLeave()" class="plusCounter">+</button>
                             <p id="aCL2">0</p>
                             <button onclick="autoReefSub(1)" class="minusCounter">-</button>
                         </div>
@@ -93,7 +93,7 @@
 
                         <div class="counter">
                             <p>L3</p>
-                            <button onclick="autoReefAdd(2)" class="plusCounter">+</button>
+                            <button onclick="autoReefAdd(2);turnOnLeave()" class="plusCounter">+</button>
                             <p id="aCL3">0</p>
                             <button onclick="autoReefSub(2)" class="minusCounter">-</button>
                         </div>
@@ -101,7 +101,7 @@
                         
                         <div class="counter" >
                             <p>L4</p>
-                            <button onclick="autoReefAdd(3)" class="plusCounter">+</button>
+                            <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
                             <p id="aCL4">0</p>
                             <button onclick="autoReefSub(3)" class="minusCounter">-</button>
                         </div>
@@ -121,14 +121,14 @@
                             <div class="counterBlockData">
                                 <div class="counter">
                                     <p>Hit</p>
-                                    <button onclick="procNetAdd(0)" class="plusCounter">+</button>
+                                    <button onclick="procNetAdd(0);turnOnLeave()" class="plusCounter">+</button>
                                     <p id="aPr">0</p>
                                     <button onclick="procNetSub(0)" class="minusCounter">-</button>
                                 </div>
 
                                 <div class="counter" >
                                     <p>Miss</p>
-                                    <button onclick="missAdd(1)" class="plusCounter">+</button>
+                                    <button onclick="missAdd(1);turnOnLeave()" class="plusCounter">+</button>
                                     <p id="aPM">0</p>
                                     <button onclick="missSub(1)" class="minusCounter">-</button>
                                 </div>
@@ -143,16 +143,16 @@
                             <div class="counterBlockData">
                                 <div class="counter">
                                     <p>Hit</p>
-                                    <button onclick="procNetAdd(2)" class="plusCounter">+</button>
+                                    <button onclick="procNetAdd(2);turnOnLeave()" class="plusCounter">+</button>
                                     <p id="aNe">0</p>
-                                    <button onclick="procNetSub(2)" class="minusCounter">-</button>
+                                    <button onclick="procNetSub(2);turnOnLeave()" class="minusCounter">-</button>
                                 </div>
 
                                 <div class="counter" >
                                     <p>Miss</p>
-                                    <button onclick="missAdd(2)" class="plusCounter">+</button>
+                                    <button onclick="missAdd(2);turnOnLeave()" class="plusCounter">+</button>
                                     <p id="aNM">0</p>
-                                    <button onclick="missSub(2)" class="minusCounter">-</button>
+                                    <button onclick="missSub(2);turnOnLeave()" class="minusCounter">-</button>
                                 </div>
                             </div>
                         </div>
