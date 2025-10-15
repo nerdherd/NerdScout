@@ -675,7 +675,12 @@ def submitScorePage():
     cannedComments = [
         "Bad Driver",
         "Good Driver",
-        "Neither good nor bad driver"
+        "Mediocre Driver",
+        "Missed a lot",
+        "Focused on barge",
+        "Robot broke",
+        "Defense",
+        "Has exactly two cameras and no more then five wires and less than 7 batteries"
     ]
     
     return render_template(
