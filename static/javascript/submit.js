@@ -204,7 +204,13 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
     //     endPos = 1; // assume they parked
     // }
 
-    comment = document.getElementById("comments").value
+    comment = ""
+
+    for (const button of document.querySelectorAll(".canned-button.active")){
+        comment += button.dataset.text + ", ";
+    }
+
+    comment += document.getElementById("comments").value
 
     autoReefMiss = missVals[0];
     autoProcessorMiss = missVals[1];
@@ -259,4 +265,8 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
 
 function turnOnLeave(){
     leaveCheck.checked = true;
+}
+
+function toggleActive(id){
+    document.getElementById(id).classList.toggle("active");
 }

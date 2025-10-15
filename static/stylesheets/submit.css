@@ -334,3 +334,7 @@ input[type=range]{
     justify-content: space-between;
     width: 100%;
 }
+
+.canned-button.active {
+    border: 2px solid white;
+}

@@ -671,6 +671,13 @@ def submitScorePage():
         match = setVal
     else:
         match = matchVal
+    
+    cannedComments = [
+        "Bad Driver",
+        "Good Driver",
+        "Neither good nor bad driver"
+    ]
+    
     return render_template(
         "match/submit.html",
         match=match,
@@ -679,6 +686,7 @@ def submitScorePage():
         teamNum=teamNum,
         setVal=setVal,
         matchVal=matchVal,
+        cannedComments = cannedComments
     )
 
 
