@@ -13,8 +13,32 @@ function updateSort(){
     }
 
     rows.sort(function(a,b){
-        var aVal = parseFloat(a.dataset[sortCategory]);
-        var bVal = parseFloat(b.dataset[sortCategory]);
+        var aRaw = a.dataset[sortCategory];
+        var bRaw = b.dataset[sortCategory];
+        if (sortCategory === "autoleave"){
+            // true vs false
+            if (aRaw === bRaw) return 0;
+            if (aRaw === "True") return 1;
+            return -1;
+        }
+        var aVal = parseFloat(aRaw);
+        var bVal = parseFloat(bRaw);
+        if (sortCategory === "displayname"){
+            // display name
+            let aSplit = aRaw.split(" ");
+            let bSplit = bRaw.split(" ");
+            // get match number
+            aVal = parseInt(aSplit[1]);
+            bVal = parseInt(bSplit[1]);
+            // offset different match types
+            if (aSplit[0] === "Final") aVal+=20000;
+            if (bSplit[0] === "Final") bVal+=20000;
+            if (aSplit[0] === "Playoff") aVal+=10000;
+            if (bSplit[0] === "Playoff") bVal+=10000;
+        }
+        if (isNaN(aVal) || isNaN(bVal)){
+            console.log(sortCategory,"null");
+        }
         if (aVal > bVal) return 1;
         if (aVal < bVal) return -1;
         return 0;

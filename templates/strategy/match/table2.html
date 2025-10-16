@@ -52,6 +52,17 @@
         <button onclick="setRows()">Apply</button>
     </div>
 </details>
+<details>
+    <summary>Competition Level Settings</summary>
+    <div id="team-select">
+        {% for team in teams %}
+        <div>
+            <input type="checkbox" data-team="{{team}}" id="team-checkbox-{{team}}" name="team-checkbox-{{team}}" checked><label for="team-checkbox-{{team}}">{{team}}</label>
+        </div>
+        {% endfor %}
+        <button onclick="setRows()">Apply</button>
+    </div>
+</details>
 
 <select id="sort-category">
     <option value="team" selected>Team</option>
