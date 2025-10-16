@@ -455,7 +455,7 @@ def scoutTeam():
 
 
 dontSummarize = frozenset(
-    ["startPos","endPos","attemptedEndPos"]
+    ["startPos","endPos","attemptedEndPos","cannedComments","endPosSuccess"]
 )
 @app.route("/team/summary")
 def teamDataSummary():
@@ -539,11 +539,13 @@ def teamTable():
         "autoReefL3": "Reef Auto L3",
         "autoReefL4": "Reef Auto L4",
         "autoReefMiss": "Reef Auto Missed",
+        "autoReefTotal": "Reef Auto Total",
         "teleReefL1": "Reef Tele-Op L1",
         "teleReefL2": "Reef Tele-Op L2",
         "teleReefL3": "Reef Tele-Op L3",
         "teleReefL4": "Reef Tele-Op L4",
         "teleReefMiss": "Reef Tele-Op Missed",
+        "teleReefTotal": "Reef Tele-Op Total",
         "autoProcessor": "Processor Auto",
         "autoProcessorMiss": "Processor Auto Missed",
         "teleProcessor": "Processor Tele-Op",
