@@ -10,6 +10,8 @@
 {% block title %}Team {{ team["number"] }} - {{ team["shortName"] }}{% endblock %}
 
 {% block content %}
+{% set previousPage = url_for("teamPage") %}
+{% include 'backButton.html' %}
 <div class="card">
 <h1>Team {{ team["number"] }}</h1>
 

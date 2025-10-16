@@ -103,3 +103,7 @@ li.checked::marker {
 .pit-scout{
     border: 1px dotted white;
 }
+
+#backButtonLink{
+    align-self: baseline;
+}

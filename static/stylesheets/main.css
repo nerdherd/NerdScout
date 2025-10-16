@@ -59,3 +59,21 @@ input[type="checkbox"]{
         width: 95vw !important;
     }
 }
+
+.icon{
+    font-family: 'Material Symbols Sharp';
+    font-size: 40px;
+}
+
+#backButtonContents{
+    display:flex;
+    align-items: center;
+}
+
+#backButton{
+    width:fit-content !important;
+}
+
+#backButtonLink{
+    text-decoration: none;
+}
