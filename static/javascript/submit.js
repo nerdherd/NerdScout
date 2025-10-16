@@ -204,13 +204,13 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
     //     endPos = 1; // assume they parked
     // }
 
-    comment = ""
+    cannedComments = []
 
     for (const button of document.querySelectorAll(".canned-button.active")){
-        comment += button.dataset.text + ", ";
+        cannedComments.push(button.dataset.text);
     }
 
-    comment += document.getElementById("comments").value
+    comment = document.getElementById("comments").value
 
     autoReefMiss = missVals[0];
     autoProcessorMiss = missVals[1];
@@ -244,7 +244,8 @@ function submitData(tMatchNum, tCompLevel, tSetNum, tRobot){
         "attemptedEndPos": attemptedEndPos,
         "minorFouls": minorFouls,
         "majorFouls": majorFouls,
-        "comment": comment
+        "comment": comment,
+        "cannedComments": cannedComments
     };
     data = JSON.stringify(rawData)
     fetch(window.location.href, {
