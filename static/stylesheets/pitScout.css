@@ -5,21 +5,6 @@ body{
     align-items: center;
 }
 
-.card{
-    background-color: var(--darker-navy);
-    box-sizing: border-box;
-    padding:8px;
-    margin-top:10px;
-    border-radius: 2rem;
-    width:500px;
-}
-
-@media screen and (width < 520px){
-    .card{
-        width: 95vw !important;
-    }
-}
-
 input{
     background-color: var(--white-accent);
     color: var(--footer-background);

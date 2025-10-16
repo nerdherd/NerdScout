@@ -44,3 +44,18 @@ footer *{
 input[type="checkbox"]{
     accent-color: var(--anthony-wheeler-bwoo);
 }
+
+.card{
+    background-color: var(--darker-navy);
+    box-sizing: border-box;
+    padding:8px;
+    margin-top:10px;
+    border-radius: 2rem;
+    width:500px;
+}
+
+@media screen and (width < 520px){
+    .card{
+        width: 95vw !important;
+    }
+}

@@ -36,9 +36,6 @@ body{
     #teamImagesContainer{
         width:95vw !important;
     }
-    .card{
-        width: 95vw !important;
-    }
 }
 
 #teamImages{
@@ -85,15 +82,6 @@ body{
 
 .hidden{
     display:none;
-}
-
-.card{
-    background-color: var(--darker-navy);
-    box-sizing: border-box;
-    padding:8px;
-    margin-top:10px;
-    border-radius: 2rem;
-    width:500px;
 }
 
 #stats{
