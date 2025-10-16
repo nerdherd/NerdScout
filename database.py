@@ -261,6 +261,7 @@ def scoreRobotInMatch(
     minorFouls: int,
     majorFouls: int,
     comment: str,
+    cannedComments: List[str],
     scout: str,
 ):
     result = matches.update_many(
@@ -306,6 +307,7 @@ def scoreRobotInMatch(
                         majorFouls,
                     ),
                     "comment": comment,
+                    "cannedComments": cannedComments,
                     "scout": scout,
                 }
             }

@@ -661,6 +661,7 @@ def submitScorePage():
                 submission["minorFouls"],  # int # type: ignore
                 submission["majorFouls"],  # int # type: ignore
                 submission["comment"],  # str # type: ignore
+                submission["cannedComments"], # array of strs # type: ignore
                 scout,  # str # type: ignore
             ):
                 abort(400)
@@ -730,6 +731,7 @@ def uploadJSON():
                 results["minorFouls"],
                 results["majorFouls"],
                 results["comment"],
+                results["cannedComments"],
                 str(session.get("username")),
             ):
                 return "match not found", 404
