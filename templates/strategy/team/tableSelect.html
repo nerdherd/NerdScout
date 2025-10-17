@@ -44,4 +44,6 @@ button {
         window.location.href = url;
     }
 </script>
+{% set previousPage = url_for('strategyPage') %}
+{% include 'backButton.html' %}
 {% endblock %}

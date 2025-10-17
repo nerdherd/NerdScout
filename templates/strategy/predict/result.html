@@ -246,4 +246,6 @@
         <h2>Major Fouls: {{result["majorFouls"]}}</h2>
     </div>
 </div>
+{% set previousPage = url_for('scoreAlliancePage') %}
+{% include 'backButton.html' %}
 {% endblock %}

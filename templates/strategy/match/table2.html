@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Team Table{% endblock %}
+{% block title %}Match Table{% endblock %}
 
 {% block head %}
 <link rel="preload" href="{{ url_for('static', filename='stylesheets/table.css') }}" as="style">
@@ -98,4 +98,6 @@
 </table>
 
 <a href="#" onclick="download_table_as_csv(true)">Download as CSV</a>
+{% set previousPage = url_for('strategyPage') %}
+{% include 'backButton.html' %}
 {% endblock %}
