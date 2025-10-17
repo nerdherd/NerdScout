@@ -813,6 +813,10 @@ def matchTable():
                     result["setNumber"] = match["setNumber"]
                     result["compLevel"] = match["compLevel"]
                     result["displayName"] = match["displayName"]
+                    cannedComments = result["cannedComments"]
+                    if result["comment"]:
+                        cannedComments.append(result["comments"])
+                    result["comment"] = ", ".join(cannedComments)
                     results.append(result)
                     if result["team"] not in teams:
                         teams.append(result["team"])
@@ -848,7 +852,7 @@ def matchTable():
         "endPosSuccess":"Ending Position Sucecss",
         "minorFouls": "Minor Fouls",
         "majorFouls": "Major Fouls",
-        "comment":"Comment"
+        "comment":"Comment",
     }
     
     return render_template("/strategy/match/table2.html",results=results,displayNames=displayNames,teams=teams)
