@@ -815,7 +815,7 @@ def matchTable():
                     result["displayName"] = match["displayName"]
                     cannedComments = result["cannedComments"]
                     if result["comment"]:
-                        cannedComments.append(result["comments"])
+                        cannedComments.append(result["comment"])
                     result["comment"] = ", ".join(cannedComments)
                     results.append(result)
                     if result["team"] not in teams:
