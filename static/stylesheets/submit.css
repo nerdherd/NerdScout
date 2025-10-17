@@ -162,10 +162,11 @@ div{
     overflow-wrap: break-word;
  }
 
- .infoBox p{
+.infoBox p, .infoBox a{
     text-align: center;
     margin: 0px;
- }
+    text-decoration: none;
+}
 
  #id{
     justify-content: center;

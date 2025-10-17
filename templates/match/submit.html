@@ -21,7 +21,8 @@
     </div>
     <div class="actualInfo">
         <div class="infoBox">
-            <p>Match: <br> {{compLvl}} {{match}} </p>
+            <!-- ?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }} -->
+            <a href="{{url_for('renderMatch',matchNum=match,compLevel=compLvl,setNum=setVal)}}">Match: <br> {{compLvl}} {{match}} </a>
         </div>
         <div class="infoBox">
             <p>Team:<br>{{teamNum}}</p>
