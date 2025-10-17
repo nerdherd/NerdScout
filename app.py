@@ -844,8 +844,8 @@ def matchTable():
         "autoNetMiss": "Net Auto Missed",
         "teleNet": "Net Tele-Op",
         "teleNetMiss": "Net Tele-Op Missed",
-        "endPos": "Ending Position",
         "attemptedEndPos": "Attempted Ending Position",
+        "endPosSuccess":"Ending Position Sucecss",
         "minorFouls": "Minor Fouls",
         "majorFouls": "Major Fouls",
         "comment":"Comment"

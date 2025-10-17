@@ -12,14 +12,20 @@ function updateSort(){
         row.remove();
     }
 
+    let descending = (document.getElementById("sort-input").value === "descending");
+
     rows.sort(function(a,b){
         var aRaw = a.dataset[sortCategory];
         var bRaw = b.dataset[sortCategory];
-        if (sortCategory === "autoleave"){
+        if (sortCategory === "autoleave" || sortCategory === "endpossuccess"){
             // true vs false
             if (aRaw === bRaw) return 0;
+            if (aRaw === "") return descending ? -1 : 1;
+            if (bRaw === "") return descending ? 1 : -1;
             if (aRaw === "True") return 1;
-            return -1;
+            if (bRaw === "True") return -1;
+            return 0;
+            // return -1;
         }
         var aVal = parseFloat(aRaw);
         var bVal = parseFloat(bRaw);
@@ -43,7 +49,7 @@ function updateSort(){
         if (aVal < bVal) return -1;
         return 0;
     });
-    if (document.getElementById("sort-input").value == "descending"){
+    if (descending){
         rows = rows.reverse();
     }
     
