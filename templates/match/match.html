@@ -9,6 +9,8 @@
 {% block title %}Match Viewer{% endblock %}
 
 {% block content %}
+{% set previousPage = url_for("renderMatch") %}
+{% include 'backButton.html' %}
 
 <div class="select-div">
     {% for teamSection in teams %}

@@ -8,6 +8,7 @@ body{
     justify-content: center;
     align-items: center;
     width: 100%;
+    margin:0;
 }
 
 .teamLong{
@@ -106,4 +107,11 @@ li.checked::marker {
 
 #backButtonLink{
     align-self: baseline;
+    margin-left:8px;
+}
+
+@media screen and (width < 520px){
+    #backButtonLink{
+        margin-left:2.5vw !important;
+    }
 }

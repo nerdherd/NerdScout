@@ -447,3 +447,14 @@ body {
     background:#88888831;
     border-radius: 16px;
 }
+
+#backButtonLink{
+    align-self: baseline;
+    margin-left:8px;
+}
+
+@media screen and (width < 520px){
+    #backButtonLink{
+        margin-left:2.5vw !important;
+    }
+}

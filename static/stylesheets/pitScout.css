@@ -9,3 +9,14 @@ input{
     background-color: var(--white-accent);
     color: var(--footer-background);
 }
+
+#backButtonLink{
+    align-self: baseline;
+    margin-left:8px;
+}
+
+@media screen and (width < 520px){
+    #backButtonLink{
+        margin-left:2.5vw !important;
+    }
+}

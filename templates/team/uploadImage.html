@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<link rel="preload" href="{{ url_for('static', filename='stylesheets/uploadImage.css') }}" as="style">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/uploadImage.css') }}">
 {% endblock %}
 
 {% block title %}Upload an Image{% endblock %}
 
 {% block content %}
+{% set previousPage = "javascript:history.back()" %}
+{% include 'backButton.html' %}
 <h1>Upload an Image</h1>
 <form id="form">
     <label for="image">Choose an image.</label>

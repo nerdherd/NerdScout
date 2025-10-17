@@ -9,6 +9,8 @@
 {% block title %}NerdScout{% endblock %}
 
 {% block content %}
+{% set previousPage = "javascript:history.back()" %}
+{% include 'backButton.html' %}
 
     <div class="card">
         <label for="team">Team Number:</label>
