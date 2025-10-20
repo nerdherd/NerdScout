@@ -49,20 +49,31 @@
             <input type="checkbox" data-team="{{team}}" id="team-checkbox-{{team}}" name="team-checkbox-{{team}}" checked><label for="team-checkbox-{{team}}">{{team}}</label>
         </div>
         {% endfor %}
-        <button onclick="setRows()">Apply</button>
+        <button onclick="setRows(1)">Apply</button>
     </div>
 </details>
-<!-- <details>
+<details>
     <summary>Competition Level Settings</summary>
-    <div id="team-select">
-        {% for team in teams %}
+    <!-- qm, ef, qf, sf, f -->
+    <div id="comp-select">
         <div>
-            <input type="checkbox" data-team="{{team}}" id="team-checkbox-{{team}}" name="team-checkbox-{{team}}" checked><label for="team-checkbox-{{team}}">{{team}}</label>
+            <input type="checkbox" data-level="qm" id="comp-checkbox-qm" name="comp-checkbox-qm" checked><label for="comp-checkbox-qm">Qualifying</label>
         </div>
-        {% endfor %}
-        <button onclick="setRows()">Apply</button>
+        <div>
+            <input type="checkbox" data-level="ef" id="comp-checkbox-ef" name="comp-checkbox-ef" checked><label for="comp-checkbox-ef">ef</label>
+        </div>
+        <div>
+            <input type="checkbox" data-level="qf" id="comp-checkbox-qf" name="comp-checkbox-qf" checked><label for="comp-checkbox-qf">qf</label>
+        </div>
+        <div>
+            <input type="checkbox" data-level="sf" id="comp-checkbox-sf" name="comp-checkbox-sf" checked><label for="comp-checkbox-sf">Playoff</label>
+        </div>
+        <div>
+            <input type="checkbox" data-level="f" id="comp-checkbox-f" name="comp-checkbox-f" checked><label for="comp-checkbox-f">Final</label>
+        </div>
+        <button onclick="setRows(1)">Apply</button>
     </div>
-</details> -->
+</details>
 
 <select id="sort-category">
     <option value="team" selected>Team</option>
@@ -83,7 +94,7 @@
         {% endfor %}
     </tr>
     {% for match in results %}
-    <tr class="team-row row-{{match['team']}}" data-team="{{match['team']}}" {% for key in displayNames %}data-{{key}}="{{match[key]}}"{% endfor %}>
+    <tr class="team-row row-{{match['team']}} complevel-{{match['compLevel']}}" data-team="{{match['team']}}" {% for key in displayNames %}data-{{key}}="{{match[key]}}"{% endfor %}>
         {% for key in displayNames %}
         <td class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}">
             {% if key == "displayName" %}

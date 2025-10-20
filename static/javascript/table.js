@@ -150,9 +150,9 @@ function setColumns(){
     }
 }
 
-function setRows(){
+function setRows(type = 0){
     const teamSelectDiv = document.getElementById("team-select");
-    let allowedRows = ["header-row"];
+    var allowedRows = ["header-row"];
     for (const checkbox of teamSelectDiv.querySelectorAll("input")){
         if (checkbox.checked){
             allowedRows.push("row-"+checkbox.dataset.team);
@@ -164,6 +164,22 @@ function setRows(){
         for (const curClass of rowNode.classList){
             if (allowedRows.includes(curClass)){
                 rowNode.classList.remove("hidden");
+            }
+        }
+    }
+
+    const compSelectDiv = document.getElementById("comp-select");
+    allowedRows = ["header-row"];
+    for (const checkbox of compSelectDiv.querySelectorAll("input")){
+        if (checkbox.checked){
+            allowedRows.push("complevel-"+checkbox.dataset.level);
+        }
+    }
+    for (const rowNode of rowNodes){
+        rowNode.classList.add("hidden2");
+        for (const curClass of rowNode.classList){
+            if (allowedRows.includes(curClass)){
+                rowNode.classList.remove("hidden2");
             }
         }
     }

@@ -60,7 +60,11 @@ th button:hover:not(.title-selected) {
     display: none !important;
 }
 
-#column-select, #team-select {
+.hidden2 {
+    display: none !important;
+}
+
+#column-select, #team-select, #comp-select {
     display:flex;
     flex-direction: column;
 }
