@@ -2,6 +2,7 @@
 /secrets/*
 /__pycache__
 
+/static/teamImages/*
 /database
 
 *.ds_store

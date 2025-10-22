@@ -190,9 +190,8 @@ function submitData(){
     let compLevel = document.getElementById("compLevelInput").value;
     let setNum = parseInt(document.getElementById("setNumInput").value);
 
-
     let startPos = 4-startPosSlider.value;
-    autoLeave = (leaveCheck.value == "on")
+    autoLeave = leaveCheck.checked;
 
     autoProcessor = procNetVars[0] 
     teleProcessor = procNetVars[1]
@@ -201,13 +200,13 @@ function submitData(){
 
     const endPosWin = !(document.getElementById("attemptEP").checked);
 
-    attemptedEndPos = endPosDDown.value-1
+    attemptedEndPos = endPosDDown.value-1;
 
-    if(endPosWin){
-        endPos = endPosDDown.value-1
-    } else {
-        endPos = 1; // assume they parked
-    }
+    // if(endPosWin){
+    //     endPos = endPosDDown.value-1
+    // } else {
+    //     endPos = 1; // assume they parked
+    // }
 
     comment = document.getElementById("comments").value
 
@@ -239,12 +238,15 @@ function submitData(){
         "autoNetMiss": autoNetMiss,
         "teleNet": teleNet,
         "teleNetMiss": teleNetMiss,
-        "endPos": endPos,
+        "endPosSuccess": endPosWin,
         "attemptedEndPos": attemptedEndPos,
         "minorFouls": minorFouls,
         "majorFouls": majorFouls,
-        "comment": comment
+        "comment": comment,
     };
-
     downloadScore(section,matchNum,compLevel,setNum,rawData);
+}
+
+function turnOnLeave(){
+    leaveCheck.checked = true;
 }
