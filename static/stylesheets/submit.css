@@ -302,6 +302,7 @@ input[type=range]{
 
 .endPosSuccess{
     justify-content: center;
+    align-items: center;
 }
 
 .commentBlock{
@@ -349,4 +350,9 @@ input[type=range]{
 .cannedComments{
     flex-wrap: wrap;
     justify-content: center;
+}
+
+input[type="checkbox"] {
+    width: 2em;
+    height: 2em;
 }
