@@ -322,7 +322,7 @@
 
             <div class="commentBlock">
                 <p>Comments</p>
-                <div>
+                <div class="cannedComments">
                     {% for cannedComment in cannedComments%}
                     <button data-text="{{cannedComment}}" id="canned-{{cannedComment}}" onclick="toggleActive('canned-{{cannedComment}}')" class="canned-button">{{cannedComment}}</button>
                     {% endfor %}

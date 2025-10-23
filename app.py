@@ -676,14 +676,18 @@ def submitScorePage():
         match = matchVal
     
     cannedComments = [
-        "Bad Driver",
-        "Good Driver",
-        "Mediocre Driver",
-        "Missed a lot",
-        "Focused on barge",
-        "Robot broke",
-        "Defense",
-        "Has exactly two cameras and no more then five wires and less than 7 batteries"
+        "Good Driving",
+        "Fast Driving",
+        "Removed Algae",
+        "Played Defense",
+        "Was Defended",
+        "Multiple Fouls",
+        "Multiple Jams",
+        "Bumpers Off",
+        "Tipped/Stuck",
+        "Died",
+        "No Show",
+        "Bad Descision Making"
     ]
     
     return render_template(
