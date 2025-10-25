@@ -150,7 +150,7 @@ def teamPage():
         "autoNetMiss": getAllStatsForCategory(teamResults, "autoNetMiss"),
         "teleNet": getAllStatsForCategory(teamResults, "teleNet"),
         "teleNetMiss": getAllStatsForCategory(teamResults, "teleNetMiss"),
-        "endPos": getAllStatsForCategory(teamResults, "endPos"),
+        "endPosSuccess": getAllStatsForCategory(teamResults, "endPosSuccess"),
         "attemptedEndPos": getAllStatsForCategory(teamResults, "attemptedEndPos"),
         "minorFouls": getAllStatsForCategory(teamResults, "minorFouls"),
         "majorFouls": getAllStatsForCategory(teamResults, "majorFouls"),

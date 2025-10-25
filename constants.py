@@ -107,6 +107,7 @@ keyDisplayNames = {
     "teleNetMiss": "Net Tele-Op Missed",
     "endPos": "Ending Position",
     "attemptedEndPos": "Attempted Ending Position",
+    "endPosSuccess": "Succeeded End Position",
     "minorFouls": "Minor Fouls",
     "majorFouls": "Major Fouls",
     "score": "Score Impact",
