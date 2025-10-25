@@ -341,7 +341,7 @@ def scoutTeam():
         except TypeError as e:
             app.logger.warning(e)
             abort(400)
-        pitScoutTeam(team, user, submission)
+        pitScoutTeam(team, user, submission) # type: ignore
         return "ok"
     team = None
     try:
