@@ -47,30 +47,6 @@ def index():
         username = None
     return render_template("index.html", username=username)
 
-
-# @app.route("/addMatchTest")
-# def testMatchAddition():
-#     addScheduledMatch(
-#         9999,
-#         1,
-#         CompLevel.QUALIFYING,
-#         "2025caav_qm9999",
-#         "Test Match 9999",
-#         9991,
-#         9992,
-#         9993,
-#         9994,
-#         9995,
-#         9996,
-#     )
-#     return "ok"
-
-
-# @app.route("/getMatchTest")
-# def testMatchGetting():
-#     return getMatch(CompLevel.QUALIFYING, 9999, 1)
-
-
 @app.route("/match")
 def renderMatch():
     matchNumber = -1
@@ -292,75 +268,6 @@ def scoreAlliancePage():
 def strategyPage():
     return render_template("strategy/strategy.html")
 
-# @app.route("/scoreRobotTest")
-# def testRobotScorring():
-#     scoreRobotInMatch(
-#         9999,
-#         1,
-#         CompLevel.QUALIFYING,
-#         Station.RED1,
-#         StartingPosition.RED,
-#         False,
-#         [0, 0, 0, 4],
-#         2,
-#         [2, 4, 3, 1],
-#         7,
-#         0,
-#         0,
-#         1,
-#         0,
-#         0,
-#         0,
-#         3,
-#         1,
-#         EndPosition.DEEP,
-#         EndPosition.DEEP,
-#         1,
-#         0,
-#         "They did good :3",
-#         "tonnieboy300",
-#     )
-#     scoreRobotInMatch(
-#         9999,
-#         1,
-#         CompLevel.QUALIFYING,
-#         Station.RED1,
-#         StartingPosition.RED,
-#         False,
-#         [0, 0, 0, 4],
-#         2,
-#         [2, 4, 3, 1],
-#         7,
-#         0,
-#         0,
-#         1,
-#         0,
-#         0,
-#         0,
-#         3,
-#         1,
-#         EndPosition.DEEP,
-#         EndPosition.DEEP,
-#         1,
-#         0,
-#         "They did terrible >:(",
-#         "magician357",
-#     )
-#     return "ok"
-
-
-# @app.route("/calculateScoreTest")
-# def testScoreCalc():
-#     return str(
-#         calculateScoreFromData(getMatch(CompLevel.QUALIFYING, 9999, 1)[0], Station.RED1)
-#     )
-
-
-# @app.route("/testDataGetting")
-# def testDataGetting():
-#     return addScheduleFromTBA("2025caav")
-
-
 @app.route("/scheduleEvent", methods=["GET", "POST"])
 def scheduleEventPage():
     if request.method == "POST":
@@ -384,16 +291,6 @@ def updateSchedulePage():
             abort(400)
         updateScheduleFromTBA(event)
     return render_template("match/schedule/addSchedule.html")
-
-
-# @app.route("/testTeamGetting")
-# def testTeamGetting():
-#     event = request.args.get("event")
-#     if not event:
-#         abort(400)
-#     addTeamsFromTBA(event)
-#     return "ok"
-
 
 @app.route("/team/addTeamImage", methods=["GET", "POST"])
 def addTeamImagePage():
@@ -559,23 +456,6 @@ def teamTable():
     }
     data = teamDataSummary()
     return render_template("strategy/team/table.html",displayNames=displayNames,data=data,links=links,stat=stat,)
-
-# @app.route("/testTeamImage")
-# def testTeamImage():
-#     if request.args.get("notWorking"):
-#         addTeamImage(
-#             open(os.path.join(root, "static/javascript/match.js"), "rb").read(),
-#             687,
-#             "tonnieboy300",
-#         )
-#         return "an error should have occured"
-#     addTeamImage(
-#         open(os.path.join(root, "static/images/testImage.jpg"), "rb").read(),
-#         687,
-#         "tonnieboy300",
-#     )
-#     return "ok"
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
