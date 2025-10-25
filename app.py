@@ -557,9 +557,14 @@ def submitScorePage():
     
     cannedComments = [
         "Good Driving",
+        "Bad Driving",
         "Fast Driving",
+        "Slow Driving",
         "Removed Algae",
+        "Coral Station During Auto",
         "Played Defense",
+        "Good Defense",
+        "Bad Defense"
         "Was Defended",
         "Multiple Fouls",
         "Multiple Jams",
