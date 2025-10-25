@@ -12,10 +12,28 @@ from database import *
 
 
 def isLoggedIn():
+    """
+    Checks if the user is logged in.
+    
+    Returns:
+    - Boolean: User is logged in or not
+    """
     return "username" in session
 
 
 def newUser(username: str, passwordHash: str):
+    """
+    Attempts to create a new unnaproved user.
+    
+    Logs an error if the username already exists.
+    
+    Inputs:
+    - username (str): the username of the user
+    - passwordHash (str): the hash of the user's password
+    
+    Returns:
+    - Boolean: Whether or not the account was created successfully
+    """
     if getUser(username):
         app.logger.warning(  # type: ignore
             f"Failed to create user {username} by {request.remote_addr}: User already exists."
@@ -34,6 +52,17 @@ def newUser(username: str, passwordHash: str):
 
 
 def checkPassword(username: str, password: str):
+    """
+    Checks if the password is correct for a user, and if the user is approved.
+    
+    Inputs:
+    - username (str): the username of the user
+    - password (str): the the user's password
+    
+    Returns:
+    - Boolean: Password correct or not
+    - String: Extra information ("Success" if successful, else reason for failure)
+    """
     doc = getUser(username)
     try:
         if not doc["approved"]:  # type: ignore
