@@ -564,7 +564,7 @@ def submitScorePage():
         "Coral Station During Auto",
         "Played Defense",
         "Good Defense",
-        "Bad Defense"
+        "Bad Defense",
         "Was Defended",
         "Multiple Fouls",
         "Multiple Jams",
@@ -639,7 +639,7 @@ curAwesome = 0
 @app.route("/mr/harder")
 def awesome():
     global curAwesome
-    curAwesome = (curAwesome + 1) % 2
+    curAwesome = (curAwesome + 1) % 3
     return render_template("awesome.html", file="harder" + str(curAwesome + 1) + ".jpg")
 
 
