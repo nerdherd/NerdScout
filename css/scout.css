@@ -308,6 +308,7 @@ input[type=range]{
 
 .endPosSuccess{
     justify-content: center;
+    align-items: center;
 }
 
 .commentBlock{
@@ -334,4 +335,9 @@ input[type=range]{
 
 .backButton{
     width: 10em;
+}
+
+input[type="checkbox"]{
+    width: 2em;
+    height: 2em;
 }
