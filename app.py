@@ -104,11 +104,21 @@ def renderMatch():
             app.logger.error(
                 f"Team {results['teams'][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance."
             )
+    
+    nextMatch = False
+    try:
+        getMatch(compLevel, matchNumber+1, setNumber)[-1]  # type: ignore
+        nextMatch=True
+    except (IndexError, AttributeError) as err:
+        # IndexError: There isnt a next match
+        pass
+        
     return render_template(
         "match/match.html",
         teams=[redTeams, blueTeams],
         matchData=matchData,
         results=results,
+        nextMatch=nextMatch
     )
 
 

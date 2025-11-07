@@ -65,15 +65,15 @@ input[type="checkbox"]{
     font-size: 40px;
 }
 
-#backButtonContents{
+#backButtonContents, #nextButtonContents{
     display:flex;
     align-items: center;
 }
 
-#backButton{
+#backButton, #nextButton{
     width:fit-content !important;
 }
 
-#backButtonLink{
+#backButtonLink, #nextButtonLink{
     text-decoration: none;
 }

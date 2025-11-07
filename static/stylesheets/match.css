@@ -458,3 +458,14 @@ body {
         margin-left:2.5vw !important;
     }
 }
+
+.navbuttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+.navbuttons > a > div{
+    margin: 0;
+    height: 40px;
+}

@@ -10,7 +10,16 @@
 
 {% block content %}
 {% set previousPage = url_for("renderMatch") %}
-{% include 'backButton.html' %}
+<div class="navbuttons">
+    {% include 'backButton.html' %}
+    {% if nextMatch %}
+    <a href="{{ url_for('renderMatch',matchNum=results['matchNumber']+1,compLevel=results['compLevel'],setNum=results['setNumber']) }}" id="nextButtonLink">
+        <div id="nextButton" class="card">
+            <span id="nextButtonContents"><span style="white-space:pre;">Next </span><span class="icon" style="font-size: 20px;">arrow_forward_ios</span></span>
+        </div>
+    </a>
+    {% endif %}
+</div>
 
 <div class="select-div">
     {% for teamSection in teams %}
