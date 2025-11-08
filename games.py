@@ -1,5 +1,6 @@
 
 from constants import *
+from database import *
 from pymongo.collection import Collection
 
 class Game:
@@ -54,6 +55,40 @@ class Game:
         - int: calculated score
         """
         return 0
+    def calculateAverageAllianceScore(self, team1:int, team2:int, team3:int, calc=getMeanOfScoringCategory) -> dict|None:
+        """
+        Calculates a hypothetical alliance score of three teams using their average results in each category.
+
+        This shouldn't be used; replace this with a game specific function.
+
+        Inputs:
+        - team1 (int): team number 1
+        - team2 (int): team number 2
+        - team3 (int): team number 3
+        - calc (function): the static function to use, defaults to mean
+        
+        Returns:
+        - dict or none: dict of predicted results, or None if any teams are not found.
+        """
+        return None
+    def calculateMinMaxAllianceScore(
+        self, team1: int, team2: int, team3: int, maximum: bool = True
+    ) -> dict|None:
+        """
+        Calculates a hypothetical alliance score of three teams using their minimum or maximum results in each category.
+
+        This shouldn't be used; replace this with a game specific function.
+        
+        Inputs:
+        - team1 (int): team number 1
+        - team2 (int): team number 2
+        - team3 (int): team number 3
+        - maximum (bool): True uses maximum, False uses minimum, defaults to True
+        
+        Returns:
+        - dict or none: dict of predicted results, or None if any teams are not found.
+        """
+        return None
     
 class Reefscape(Game):
     def __init__(self, matches:Collection, teams:Collection):
@@ -105,182 +140,528 @@ class Reefscape(Game):
         }
         self.matches = matches
         self.teams = teams
-        def calculateScore(
-            self,
-            autoLeave: bool,
-            autoReef: List[int],
-            teleReef: List[int],
-            autoProcessor: int,
-            teleProcessor: int,
-            autoNet: int,
-            teleNet: int,
-            endPos: int,
-            minorFouls: int,
-            majorFouls: int,
-        ) -> int:
-            """
-            Calculate the total score from scouted values.
-            
-            Inputs:
-            - Self explanatory 
-            
-            Outputs:
-            - int: total score, minus points from fouls
-            
-            """
-            score = 0
+    def calculateScore(
+        self,
+        autoLeave: bool,
+        autoReef: List[int],
+        teleReef: List[int],
+        autoProcessor: int,
+        teleProcessor: int,
+        autoNet: int,
+        teleNet: int,
+        endPos: int,
+        minorFouls: int,
+        majorFouls: int,
+    ) -> int:
+        """
+        Calculate the total score from scouted values.
+        
+        Inputs:
+        - Self explanatory 
+        
+        Outputs:
+        - int: total score, minus points from fouls
+        
+        """
+        score = 0
 
-            score += 3 if autoLeave else 0
+        score += 3 if autoLeave else 0
 
-            score += 3 * autoReef[0]
-            score += 4 * autoReef[1]
-            score += 6 * autoReef[2]
-            score += 7 * autoReef[3]
+        score += 3 * autoReef[0]
+        score += 4 * autoReef[1]
+        score += 6 * autoReef[2]
+        score += 7 * autoReef[3]
 
-            score += 2 * teleReef[0]
-            score += 3 * teleReef[1]
-            score += 4 * teleReef[2]
-            score += 5 * teleReef[3]
+        score += 2 * teleReef[0]
+        score += 3 * teleReef[1]
+        score += 4 * teleReef[2]
+        score += 5 * teleReef[3]
 
-            score += 2 * autoProcessor
-            score += 2 * teleProcessor
+        score += 2 * autoProcessor
+        score += 2 * teleProcessor
 
-            score += 4 * autoNet
-            score += 4 * teleNet
+        score += 4 * autoNet
+        score += 4 * teleNet
 
-            score += (
-                2
-                if endPos == EndPosition.PARK.value
-                else (
-                    6
-                    if endPos == EndPosition.SHALLOW.value
-                    else 12 if endPos == EndPosition.DEEP.value else 0
-                )
+        score += (
+            2
+            if endPos == EndPosition.PARK.value
+            else (
+                6
+                if endPos == EndPosition.SHALLOW.value
+                else 12 if endPos == EndPosition.DEEP.value else 0
             )
+        )
 
-            score -= 2 * minorFouls
-            score -= 6 * majorFouls
+        score -= 2 * minorFouls
+        score -= 6 * majorFouls
 
-            return score
-        def scoreRobotInMatch(
-            matchNumber: int,
-            setNumber: int,
-            compLevel: CompLevel,
-            station: Station,
-            startPos: StartingPosition,
-            autoLeave: bool,
-            autoReef: List[int],
-            autoReefMiss: int,
-            teleReef: List[int],
-            teleReefMiss: int,
-            autoProcessor: int,
-            autoProcessorMiss: int,
-            teleProcessor: int,
-            teleProcessorMiss: int,
-            autoNet: int,
-            autoNetMiss: int,
-            teleNet: int,
-            teleNetMiss: int,
-            endPosSuccess: bool,
-            attemptedEndPos: EndPosition,
-            minorFouls: int,
-            majorFouls: int,
-            comment: str,
-            cannedComments: List[str],
-            scout: str,
-        ) -> bool:
-            """
-            Scores one robot in a match.
+        return score
+    def scoreRobotInMatch(
+        self,
+        matchNumber: int,
+        setNumber: int,
+        compLevel: CompLevel,
+        station: Station,
+        startPos: StartingPosition,
+        autoLeave: bool,
+        autoReef: List[int],
+        autoReefMiss: int,
+        teleReef: List[int],
+        teleReefMiss: int,
+        autoProcessor: int,
+        autoProcessorMiss: int,
+        teleProcessor: int,
+        teleProcessorMiss: int,
+        autoNet: int,
+        autoNetMiss: int,
+        teleNet: int,
+        teleNetMiss: int,
+        endPosSuccess: bool,
+        attemptedEndPos: EndPosition,
+        minorFouls: int,
+        majorFouls: int,
+        comment: str,
+        cannedComments: List[str],
+        scout: str,
+    ) -> bool:
+        """
+        Scores one robot in a match.
 
-            Should change every year.
+        Should change every year.
 
-            Inputs:
-            - self explanitory
-            
-            Returns:
-            - Boolean: if the robot was successfully scored
-            """
-            result = matches.update_many(
-                {
-                    "matchNumber": matchNumber,
-                    "setNumber": setNumber,
-                    "compLevel": compLevel.value,
-                },
-                {
-                    "$push": {
-                        "results."
-                        + station.value: {
-                            "startPos": startPos.value,
-                            "autoLeave": autoLeave,
-                            "autoReef": autoReef,
-                            "autoReefMiss": autoReefMiss,
-                            "autoReefTotal": autoReef[0] + autoReef[1] + autoReef[2] + autoReef[3],
-                            "teleReef": teleReef,
-                            "teleReefMiss": teleReefMiss,
-                            "teleReefTotal": teleReef[0] + teleReef[1] + teleReef[2] + teleReef[3],
-                            "autoProcessor": autoProcessor,
-                            "autoProcessorMiss": autoProcessorMiss,
-                            "teleProcessor": teleProcessor,
-                            "teleProcessorMiss": teleProcessorMiss,
-                            "autoNet": autoNet,
-                            "autoNetMiss": autoNetMiss,
-                            "teleNet": teleNet,
-                            "teleNetMiss": teleNetMiss,
-                            "endPosSuccess": endPosSuccess,
-                            "attemptedEndPos": attemptedEndPos.value,
-                            "minorFouls": minorFouls,
-                            "majorFouls": majorFouls,
-                            "score": calculateScore(
-                                self,
-                                autoLeave,
-                                autoReef,
-                                teleReef,
-                                autoProcessor,
-                                teleProcessor,
-                                autoNet,
-                                teleNet,
-                                attemptedEndPos.value if endPosSuccess else EndPosition.NONE.value,
-                                minorFouls,
-                                majorFouls,
-                            ),
-                            "comment": comment,
-                            "cannedComments": cannedComments,
-                            "scout": scout,
-                        }
+        Inputs:
+        - self explanitory
+        
+        Returns:
+        - Boolean: if the robot was successfully scored
+        """
+        result = matches.update_many(
+            {
+                "matchNumber": matchNumber,
+                "setNumber": setNumber,
+                "compLevel": compLevel.value,
+            },
+            {
+                "$push": {
+                    "results."
+                    + station.value: {
+                        "startPos": startPos.value,
+                        "autoLeave": autoLeave,
+                        "autoReef": autoReef,
+                        "autoReefMiss": autoReefMiss,
+                        "autoReefTotal": autoReef[0] + autoReef[1] + autoReef[2] + autoReef[3],
+                        "teleReef": teleReef,
+                        "teleReefMiss": teleReefMiss,
+                        "teleReefTotal": teleReef[0] + teleReef[1] + teleReef[2] + teleReef[3],
+                        "autoProcessor": autoProcessor,
+                        "autoProcessorMiss": autoProcessorMiss,
+                        "teleProcessor": teleProcessor,
+                        "teleProcessorMiss": teleProcessorMiss,
+                        "autoNet": autoNet,
+                        "autoNetMiss": autoNetMiss,
+                        "teleNet": teleNet,
+                        "teleNetMiss": teleNetMiss,
+                        "endPosSuccess": endPosSuccess,
+                        "attemptedEndPos": attemptedEndPos.value,
+                        "minorFouls": minorFouls,
+                        "majorFouls": majorFouls,
+                        "score": self.calculateScore(
+                            autoLeave,
+                            autoReef,
+                            teleReef,
+                            autoProcessor,
+                            teleProcessor,
+                            autoNet,
+                            teleNet,
+                            attemptedEndPos.value if endPosSuccess else EndPosition.NONE.value,
+                            minorFouls,
+                            majorFouls,
+                        ),
+                        "comment": comment,
+                        "cannedComments": cannedComments,
+                        "scout": scout,
                     }
-                },
+                }
+            },
+        )
+        if result.matched_count == 0:
+            app.logger.info(  # type: ignore
+                f"Failed to score robot {station.value} for match {matchNumber} by {scout}: Match does not exist."
             )
-            if result.matched_count == 0:
-                app.logger.info(  # type: ignore
-                    f"Failed to score robot {station.value} for match {matchNumber} by {scout}: Match does not exist."
-                )
-                return False
-            app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")  # type: ignore
-            return True
-        def calculateScoreFromData(matchData: dict, team: Station, edit: int = -1) -> int:
-            """
-            Gets a robot's result from the database and scores it.
-            
-            Inputs:
-            - matchData (dict): a match dict
-            - team (Station): the station to score
-            - edit (int): which revision to score, defaults to the latest
-            
-            Returns:
-            - int: calculated score
-            """
-            results = matchData["results"][team.value][edit]
-            score = calculateScore(
-                self,
-                results["autoLeave"],
-                results["autoReef"],
-                results["teleReef"],
-                results["autoProcessor"],
-                results["teleProcessor"],
-                results["autoNet"],
-                results["teleNet"],
-                results["endPos"],
-                results["minorFouls"],
-                results["majorFouls"],
+            return False
+        app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")  # type: ignore
+        return True
+    def calculateScoreFromData(self, matchData: dict, team: Station, edit: int = -1) -> int:
+        """
+        Gets a robot's result from the database and scores it.
+        
+        Inputs:
+        - matchData (dict): a match dict
+        - team (Station): the station to score
+        - edit (int): which revision to score, defaults to the latest
+        
+        Returns:
+        - int: calculated score
+        """
+        results = matchData["results"][team.value][edit]
+        score = self.calculateScore(
+            results["autoLeave"],
+            results["autoReef"],
+            results["teleReef"],
+            results["autoProcessor"],
+            results["teleProcessor"],
+            results["autoNet"],
+            results["teleNet"],
+            results["endPos"],
+            results["minorFouls"],
+            results["majorFouls"],
+        )
+        return score
+    def calculateAverageAllianceScore(self, team1: int, team2: int, team3: int, calc=getMeanOfScoringCategory):
+        """
+        Calculates a hypothetical alliance score of three teams using their average results in each category.
+
+        Should be edited every year.
+        
+        Inputs:
+        - team1 (int): team number 1
+        - team2 (int): team number 2
+        - team3 (int): team number 3
+        - calc (function): the static function to use, defaults to mean
+        
+        Returns:
+        - dict or none: dict of predicted results, or None if any teams are not found.
+        """
+        team1Listing = getTeam(team1)
+        if not team1Listing:
+            return None
+        team2Listing = getTeam(team2)
+        if not team2Listing:
+            return None
+        team3Listing = getTeam(team3)
+        if not team3Listing:
+            return None
+
+        team1Data = getTeamResults(team1)
+        team2Data = getTeamResults(team2)
+        team3Data = getTeamResults(team3)
+
+        team1Leave = int(calc(team1Data, "autoLeave") >= 0.5)
+        team2Leave = int(calc(team2Data, "autoLeave") >= 0.5)
+        team3Leave = int(calc(team3Data, "autoLeave") >= 0.5)
+        leaveTotal = team1Leave + team2Leave + team3Leave
+
+        team1End = round(calc(team1Data, "endPos"))
+        team2End = round(calc(team2Data, "endPos"))
+        team3End = round(calc(team3Data, "endPos"))
+
+        team1Minors = calc(team1Data, "minorFouls")
+        team2Minors = calc(team2Data, "minorFouls")
+        team3Minors = calc(team3Data, "minorFouls")
+
+        team1Majors = calc(team1Data, "majorFouls")
+        team2Majors = calc(team2Data, "majorFouls")
+        team3Majors = calc(team3Data, "majorFouls")
+
+        autoReef = [
+            round(calc(team1Data, "autoReef", 0))
+            + round(calc(team2Data, "autoReef", 0))
+            + round(calc(team3Data, "autoReef", 0)),
+            round(calc(team1Data, "autoReef", 1))
+            + round(calc(team2Data, "autoReef", 1))
+            + round(calc(team3Data, "autoReef", 1)),
+            round(calc(team1Data, "autoReef", 2))
+            + round(calc(team2Data, "autoReef", 2))
+            + round(calc(team3Data, "autoReef", 2)),
+            round(calc(team1Data, "autoReef", 3))
+            + round(calc(team2Data, "autoReef", 3))
+            + round(calc(team3Data, "autoReef", 3)),
+        ]
+
+        autoReef[0] += (max(autoReef[1],12)-12) + (max(autoReef[2],12)-12) + (max(autoReef[3],12)-12)
+        
+        autoReef = [
+            autoReef[0],
+            min(autoReef[1],12),
+            min(autoReef[2],12),
+            min(autoReef[3],12),
+        ]
+
+        teleReefValues = [
+            round(calc(team1Data, "teleReef", 0))
+            + round(calc(team2Data, "teleReef", 0))
+            + round(calc(team3Data, "teleReef", 0)),
+            round(calc(team1Data, "teleReef", 1))
+            + round(calc(team2Data, "teleReef", 1))
+            + round(calc(team3Data, "teleReef", 1)),
+            round(calc(team1Data, "teleReef", 2))
+            + round(calc(team2Data, "teleReef", 2))
+            + round(calc(team3Data, "teleReef", 2)),
+            round(calc(team1Data, "teleReef", 3))
+            + round(calc(team2Data, "teleReef", 3))
+            + round(calc(team3Data, "teleReef", 3)),
+        ]
+        
+        teleReef = [
+            teleReefValues[0],
+            min(teleReefValues[1],12-autoReef[1]),
+            min(teleReefValues[1],12-autoReef[1]),
+            min(teleReefValues[1],12-autoReef[1])
+        ]
+        teleReef[0] += max(0,teleReefValues[1]-teleReef[1]) + max(0,teleReefValues[2]-teleReef[2]) + max(0,teleReefValues[3]-teleReef[3])
+
+        autoProcessor = (
+            round(calc(team1Data, "autoProcessor"))
+            + round(calc(team2Data, "autoProcessor"))
+            + round(calc(team3Data, "autoProcessor"))
+        )
+        teleProcessor = (
+            round(calc(team1Data, "teleProcessor"))
+            + round(calc(team2Data, "teleProcessor"))
+            + round(calc(team3Data, "teleProcessor"))
+        )
+
+        autoNet = (
+            round(calc(team1Data, "autoNet"))
+            + round(calc(team2Data, "autoNet"))
+            + round(calc(team3Data, "autoNet"))
+        )
+        teleNet = (
+            round(calc(team1Data, "teleNet"))
+            + round(calc(team2Data, "teleNet"))
+            + round(calc(team3Data, "teleNet"))
+        )
+
+        score = self.calculateScore(
+            False,
+            autoReef,
+            teleReef,
+            autoProcessor,
+            teleProcessor,
+            autoNet,
+            teleNet,
+            0,
+            0,
+            0,
+        )
+
+        score += 3 * leaveTotal
+        score += (
+            2
+            if team1End == EndPosition.PARK.value
+            else (
+                6
+                if team1End == EndPosition.SHALLOW.value
+                else 12 if team1End == EndPosition.DEEP.value else 0
             )
-            return score
+        )
+        score += (
+            2
+            if team2End == EndPosition.PARK.value
+            else (
+                6
+                if team2End == EndPosition.SHALLOW.value
+                else 12 if team2End == EndPosition.DEEP.value else 0
+            )
+        )
+        score += (
+            2
+            if team3End == EndPosition.PARK.value
+            else (
+                6
+                if team3End == EndPosition.SHALLOW.value
+                else 12 if team3End == EndPosition.DEEP.value else 0
+            )
+        )
+
+        return {
+            "score": score,
+            "autoLeave": leaveTotal,
+            "autoReef": autoReef,
+            "teleReef": teleReef,
+            "autoProcessor": autoProcessor,
+            "teleProcessor": teleProcessor,
+            "autoNet": autoNet,
+            "teleNet": teleNet,
+            "endPos1": team1End,
+            "endPos2": team2End,
+            "endPos3": team3End,
+            "minorFouls": team1Minors + team2Minors + team3Minors,
+            "majorFouls": team1Majors + team2Majors + team3Majors,
+        }
+    def calculateMinMaxAllianceScore(
+        self, team1: int, team2: int, team3: int, maximum: bool = True
+    ):
+        """
+        Calculates a hypothetical alliance score of three teams using their minimum or maximum results in each category.
+        
+        Inputs:
+        - team1 (int): team number 1
+        - team2 (int): team number 2
+        - team3 (int): team number 3
+        - maximum (bool): True uses maximum, False uses minimum, defaults to True
+        
+        Returns:
+        - dict or none: dict of predicted results, or None if any teams are not found.
+        """
+        statistic = getMatchWithHighestValue if maximum else getMatchWithLowestValue
+        oppositeStatistic = getMatchWithLowestValue if maximum else getMatchWithHighestValue
+
+        team1Listing = getTeam(team1)
+        if not team1Listing:
+            return None
+        team2Listing = getTeam(team2)
+        if not team2Listing:
+            return None
+        team3Listing = getTeam(team3)
+        if not team3Listing:
+            return None
+
+        team1Data = getTeamResults(team1)
+        team2Data = getTeamResults(team2)
+        team3Data = getTeamResults(team3)
+
+        team1Leave = statistic(team1Data, "autoLeave")["value"]
+        team2Leave = statistic(team2Data, "autoLeave")["value"]
+        team3Leave = statistic(team3Data, "autoLeave")["value"]
+        leaveTotal = team1Leave + team2Leave + team3Leave
+
+        team1End = statistic(team1Data, "endPos")["value"]
+        team2End = statistic(team2Data, "endPos")["value"]
+        team3End = statistic(team3Data, "endPos")["value"]
+
+        team1Minors = statistic(team1Data, "minorFouls")["value"]
+        team2Minors = statistic(team2Data, "minorFouls")["value"]
+        team3Minors = statistic(team3Data, "minorFouls")["value"]
+
+        team1Majors = statistic(team1Data, "majorFouls")["value"]
+        team2Majors = statistic(team2Data, "majorFouls")["value"]
+        team3Majors = statistic(team3Data, "majorFouls")["value"]
+
+        autoReef = [
+            round(statistic(team1Data, "autoReef", 0)["value"])
+            + round(statistic(team2Data, "autoReef", 0)["value"])
+            + round(statistic(team3Data, "autoReef", 0)["value"]),
+            round(statistic(team1Data, "autoReef", 1)["value"])
+            + round(statistic(team2Data, "autoReef", 1)["value"])
+            + round(statistic(team3Data, "autoReef", 1)["value"]),
+            round(statistic(team1Data, "autoReef", 2)["value"])
+            + round(statistic(team2Data, "autoReef", 2)["value"])
+            + round(statistic(team3Data, "autoReef", 2)["value"]),
+            round(statistic(team1Data, "autoReef", 3)["value"])
+            + round(statistic(team2Data, "autoReef", 3)["value"])
+            + round(statistic(team3Data, "autoReef", 3)["value"]),
+        ]
+
+        autoReef[0] += (max(autoReef[1],12)-12) + (max(autoReef[2],12)-12) + (max(autoReef[3],12)-12)
+        
+        autoReef = [
+            autoReef[0],
+            min(autoReef[1],12),
+            min(autoReef[2],12),
+            min(autoReef[3],12),
+        ]
+
+        teleReefValues = [
+            round(statistic(team1Data, "teleReef", 0)["value"])
+            + round(statistic(team2Data, "teleReef", 0)["value"])
+            + round(statistic(team3Data, "teleReef", 0)["value"]),
+            round(statistic(team1Data, "teleReef", 1)["value"])
+            + round(statistic(team2Data, "teleReef", 1)["value"])
+            + round(statistic(team3Data, "teleReef", 1)["value"]),
+            round(statistic(team1Data, "teleReef", 2)["value"])
+            + round(statistic(team2Data, "teleReef", 2)["value"])
+            + round(statistic(team3Data, "teleReef", 2)["value"]),
+            round(statistic(team1Data, "teleReef", 3)["value"])
+            + round(statistic(team2Data, "teleReef", 3)["value"])
+            + round(statistic(team3Data, "teleReef", 3)["value"]),
+        ]
+        
+        teleReef = [
+            teleReefValues[0],
+            min(teleReefValues[1],12-autoReef[1]),
+            min(teleReefValues[1],12-autoReef[1]),
+            min(teleReefValues[1],12-autoReef[1])
+        ]
+        teleReef[0] += max(0,teleReefValues[1]-teleReef[1]) + max(0,teleReefValues[2]-teleReef[2]) + max(0,teleReefValues[3]-teleReef[3])
+
+        autoProcessor = (
+            statistic(team1Data, "autoProcessor")["value"]
+            + statistic(team2Data, "autoProcessor")["value"]
+            + statistic(team3Data, "autoProcessor")["value"]
+        )
+        teleProcessor = (
+            statistic(team1Data, "teleProcessor")["value"]
+            + statistic(team2Data, "teleProcessor")["value"]
+            + statistic(team3Data, "teleProcessor")["value"]
+        )
+
+        autoNet = (
+            statistic(team1Data, "autoNet")["value"]
+            + statistic(team2Data, "autoNet")["value"]
+            + statistic(team3Data, "autoNet")["value"]
+        )
+        teleNet = (
+            statistic(team1Data, "teleNet")["value"]
+            + statistic(team2Data, "teleNet")["value"]
+            + statistic(team3Data, "teleNet")["value"]
+        )
+
+        score = self.calculateScore(
+            False,
+            autoReef,
+            teleReef,
+            autoProcessor,
+            teleProcessor,
+            autoNet,
+            teleNet,
+            0,
+            0,
+            0,
+        )
+
+        score += 3 * leaveTotal
+        score += (
+            2
+            if team1End == EndPosition.PARK.value
+            else (
+                6
+                if team1End == EndPosition.SHALLOW.value
+                else 12 if team1End == EndPosition.DEEP.value else 0
+            )
+        )
+        score += (
+            2
+            if team2End == EndPosition.PARK.value
+            else (
+                6
+                if team2End == EndPosition.SHALLOW.value
+                else 12 if team2End == EndPosition.DEEP.value else 0
+            )
+        )
+        score += (
+            2
+            if team3End == EndPosition.PARK.value
+            else (
+                6
+                if team3End == EndPosition.SHALLOW.value
+                else 12 if team3End == EndPosition.DEEP.value else 0
+            )
+        )
+
+        return {
+            "score": score,
+            "autoLeave": leaveTotal,
+            "autoReef": autoReef,
+            "teleReef": teleReef,
+            "autoProcessor": autoProcessor,
+            "teleProcessor": teleProcessor,
+            "autoNet": autoNet,
+            "teleNet": teleNet,
+            "endPos1": team1End,
+            "endPos2": team2End,
+            "endPos3": team3End,
+            "minorFouls": team1Minors + team2Minors + team3Minors,
+            "majorFouls": team1Majors + team2Majors + team3Majors,
+        }

@@ -116,66 +116,6 @@ keyDisplayNames = {
 }
 
 
-def calculateScore(
-    autoLeave: bool,
-    autoReef: List[int],
-    teleReef: List[int],
-    autoProcessor: int,
-    teleProcessor: int,
-    autoNet: int,
-    teleNet: int,
-    endPos: int,
-    minorFouls: int,
-    majorFouls: int,
-):
-    """
-    Calculate the total score from scouted values.
-    
-    Should change every year.
-    
-    Inputs:
-    - Self explanatory 
-    
-    Outputs:
-    - int: total score, minus points from fouls
-    
-    """
-    score = 0
-
-    score += 3 if autoLeave else 0
-
-    score += 3 * autoReef[0]
-    score += 4 * autoReef[1]
-    score += 6 * autoReef[2]
-    score += 7 * autoReef[3]
-
-    score += 2 * teleReef[0]
-    score += 3 * teleReef[1]
-    score += 4 * teleReef[2]
-    score += 5 * teleReef[3]
-
-    score += 2 * autoProcessor
-    score += 2 * teleProcessor
-
-    score += 4 * autoNet
-    score += 4 * teleNet
-
-    score += (
-        2
-        if endPos == EndPosition.PARK.value
-        else (
-            6
-            if endPos == EndPosition.SHALLOW.value
-            else 12 if endPos == EndPosition.DEEP.value else 0
-        )
-    )
-
-    score -= 2 * minorFouls
-    score -= 6 * majorFouls
-
-    return score
-
-
 def isImage(file):
     """
     Checks if the provided file is an image (png or jpg)

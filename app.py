@@ -27,6 +27,7 @@ from typing import List
 from constants import *
 from database import *
 from auth import *
+from games import *
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.config["JSON_SORT_KEYS"] = False
@@ -37,6 +38,7 @@ app.config.from_mapping(
 
 app.jinja_env.filters["any"] = any
 
+game = Reefscape(matches,teams)
 
 # Front-end Handlers
 @app.route("/")
@@ -264,12 +266,12 @@ def scoreAlliancePage():
         
         calculateFunction = getMeanOfScoringCategory if stat == "mean" else getMedianOfScoringCategory if stat=="median" else getModeOfScoringCategory
         
-        result = calculateAverageAllianceScore(team1, team2, team3,calculateFunction)
+        result = game.calculateAverageAllianceScore(team1, team2, team3,calculateFunction)
         if not result:
             return render_template("strategy/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
         return render_template("strategy/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
     else:
-        result = calculateMinMaxAllianceScore(team1, team2, team3, stat == "highest")
+        result = game.calculateMinMaxAllianceScore(team1, team2, team3, stat == "highest")
         if not result:
             return render_template("strategy/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
         return render_template("strategy/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
@@ -523,8 +525,8 @@ def submitScorePage():
             app.logger.error(f"Error submitting match: {err}")
             abort(400)
         try:
-            if not scoreRobotInMatch(
-                matchNumber,
+            if not game.scoreRobotInMatch(
+                matchNumber, # type: ignore
                 setNumber,
                 compLevel,
                 currentRobot,  # str
@@ -608,8 +610,8 @@ def uploadJSON():
             setNum: int = data["setNum"]
             results = data["data"]
 
-            if not scoreRobotInMatch(
-                matchNum,
+            if not game.scoreRobotInMatch(
+                matchNum, #type: ignore
                 setNum,
                 compLevel,
                 station,
