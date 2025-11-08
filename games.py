@@ -13,6 +13,9 @@ class Game:
         self.keyDisplayNames = {}
         self.matches = matches
         self.teams = teams
+        self.teamRankOptions = {}
+        self.teamTableDisplayNames = {}
+        self.matchTableDisplayNames= {}
     def calculateScore(self) -> int:
         """
         Calculate the total score from scouted values.
@@ -89,6 +92,20 @@ class Game:
         - dict or none: dict of predicted results, or None if any teams are not found.
         """
         return None
+    def getAllStats(self,team:int) -> dict:
+        """
+        Calculates all stats for every single scoring category.
+
+        This shouldn't be used; replace this with a game specific function.
+
+        Inputs:
+        - team (int): Team number
+
+        Returns:
+        - dict: dict of every scoring category with every stat
+        """
+        return {}
+
     
 class Reefscape(Game):
     def __init__(self, matches:Collection, teams:Collection):
@@ -140,6 +157,94 @@ class Reefscape(Game):
         }
         self.matches = matches
         self.teams = teams
+        self.teamRankOptions = {
+            "Score Impact": "score,0",
+            "Starting Position": "startPos,0",
+            "Auto Leave": "autoLeave,0",
+            "Reef Auto": "autoReef,0",
+            "Reef Auto L1": "autoReef,0",
+            "Reef Auto L2": "autoReef,1",
+            "Reef Auto L3": "autoReef,2",
+            "Reef Auto L4": "autoReef,3",
+            "Reef Auto Missed": "autoReefMiss,0",
+            "Reef Tele-Op": "teleReef,0",
+            "Reef Tele-Op L1": "teleReef,0",
+            "Reef Tele-Op L2": "teleReef,1",
+            "Reef Tele-Op L3": "teleReef,2",
+            "Reef Tele-Op L4": "teleReef,3",
+            "Reef Tele-Op Missed": "teleReefMiss,0",
+            "Processor Auto": "autoProcessor,0",
+            "Processor Auto Missed": "autoProcessorMiss,0",
+            "Processor Tele-Op": "teleProcessor,0",
+            "Processor Tele-Op Missed": "teleProcessorMiss,0",
+            "Net Auto": "autoNet,0",
+            "Net Auto Missed": "autoNetMiss,0",
+            "Net Tele-Op": "teleNet,0",
+            "Net Tele-Op Missed": "teleNetMiss,0",
+            "Ending Position": "endPos,0",
+            "Attempted Ending Position": "attemptedEndPos,0",
+            "Minor Fouls": "minorFouls,0",
+            "Major Fouls": "majorFouls,0"
+        }
+        self.teamTableDisplayNames = {
+            "score": "Score Impact",
+            "autoLeave": "Auto Leave",
+            "autoReefL1": "Reef Auto L1",
+            "autoReefL2": "Reef Auto L2",
+            "autoReefL3": "Reef Auto L3",
+            "autoReefL4": "Reef Auto L4",
+            "autoReefMiss": "Reef Auto Missed",
+            "autoReefTotal": "Reef Auto Total",
+            "teleReefL1": "Reef Tele-Op L1",
+            "teleReefL2": "Reef Tele-Op L2",
+            "teleReefL3": "Reef Tele-Op L3",
+            "teleReefL4": "Reef Tele-Op L4",
+            "teleReefMiss": "Reef Tele-Op Missed",
+            "teleReefTotal": "Reef Tele-Op Total",
+            "autoProcessor": "Processor Auto",
+            "autoProcessorMiss": "Processor Auto Missed",
+            "teleProcessor": "Processor Tele-Op",
+            "teleProcessorMiss": "Processor Tele-Op Missed",
+            "autoNet": "Net Auto",
+            "autoNetMiss": "Net Auto Missed",
+            "teleNet": "Net Tele-Op",
+            "teleNetMiss": "Net Tele-Op Missed",
+            "minorFouls": "Minor Fouls",
+            "majorFouls": "Major Fouls",
+        }
+        self.matchTableDisplayNames = {
+            "team":"Team",
+            "displayName": "Display Name",
+            "score": "Score Impact",
+            "matchNumber": "Match Number",
+            "setNumber": "Set Number",
+            "compLevel": "Competition Level",
+            "startPos": "Starting Position",
+            "autoLeave": "Auto Leave",
+            "autoReefL1": "Reef Auto L1",
+            "autoReefL2": "Reef Auto L2",
+            "autoReefL3": "Reef Auto L3",
+            "autoReefL4": "Reef Auto L4",
+            "autoReefMiss": "Reef Auto Missed",
+            "teleReefL1": "Reef Tele-Op L1",
+            "teleReefL2": "Reef Tele-Op L2",
+            "teleReefL3": "Reef Tele-Op L3",
+            "teleReefL4": "Reef Tele-Op L4",
+            "teleReefMiss": "Reef Tele-Op Missed",
+            "autoProcessor": "Processor Auto",
+            "autoProcessorMiss": "Processor Auto Missed",
+            "teleProcessor": "Processor Tele-Op",
+            "teleProcessorMiss": "Processor Tele-Op Missed",
+            "autoNet": "Net Auto",
+            "autoNetMiss": "Net Auto Missed",
+            "teleNet": "Net Tele-Op",
+            "teleNetMiss": "Net Tele-Op Missed",
+            "attemptedEndPos": "Attempted Ending Position",
+            "endPosSuccess":"Ending Position Sucecss",
+            "minorFouls": "Minor Fouls",
+            "majorFouls": "Major Fouls",
+            "comment":"Comment",
+        }
     def calculateScore(
         self,
         autoLeave: bool,
@@ -664,4 +769,42 @@ class Reefscape(Game):
             "endPos3": team3End,
             "minorFouls": team1Minors + team2Minors + team3Minors,
             "majorFouls": team1Majors + team2Majors + team3Majors,
+        }
+    def getAllStats(self,team:int) -> dict:
+        """
+        Calculates all stats for every single scoring category.
+
+        Inputs:
+        - team (int): Team number
+
+        Returns:
+        - dict: dict of every scoring category with every stat
+        """
+        teamResults = getTeamResults(team)
+        return {
+            "startPos": getAllStatsForCategory(teamResults, "startPos"),
+            "autoLeave": getAllStatsForCategory(teamResults, "autoLeave"),
+            "autoReefL1": getAllStatsForCategory(teamResults, "autoReef", 0),
+            "autoReefL2": getAllStatsForCategory(teamResults, "autoReef", 1),
+            "autoReefL3": getAllStatsForCategory(teamResults, "autoReef", 2),
+            "autoReefL4": getAllStatsForCategory(teamResults, "autoReef", 3),
+            "autoReefMiss": getAllStatsForCategory(teamResults, "autoReefMiss"),
+            "teleReefL1": getAllStatsForCategory(teamResults, "teleReef", 0),
+            "teleReefL2": getAllStatsForCategory(teamResults, "teleReef", 1),
+            "teleReefL3": getAllStatsForCategory(teamResults, "teleReef", 2),
+            "teleReefL4": getAllStatsForCategory(teamResults, "teleReef", 3),
+            "teleReefMiss": getAllStatsForCategory(teamResults, "teleReefMiss"),
+            "autoProcessor": getAllStatsForCategory(teamResults, "autoProcessor"),
+            "autoProcessorMiss": getAllStatsForCategory(teamResults, "autoProcessorMiss"),
+            "teleProcessor": getAllStatsForCategory(teamResults, "teleProcessor"),
+            "teleProcessorMiss": getAllStatsForCategory(teamResults, "teleProcessorMiss"),
+            "autoNet": getAllStatsForCategory(teamResults, "autoNet"),
+            "autoNetMiss": getAllStatsForCategory(teamResults, "autoNetMiss"),
+            "teleNet": getAllStatsForCategory(teamResults, "teleNet"),
+            "teleNetMiss": getAllStatsForCategory(teamResults, "teleNetMiss"),
+            "endPosSuccess": getAllStatsForCategory(teamResults, "endPosSuccess"),
+            "attemptedEndPos": getAllStatsForCategory(teamResults, "attemptedEndPos"),
+            "minorFouls": getAllStatsForCategory(teamResults, "minorFouls"),
+            "majorFouls": getAllStatsForCategory(teamResults, "majorFouls"),
+            "score": getAllStatsForCategory(teamResults, "score"),
         }
