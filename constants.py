@@ -208,7 +208,7 @@ def getMatchWithHighestValue(data: list, key: str, index: int = 0):
         "compLevel": compLevel,
         "setNumber": setNumber,
         "displayName": displayName,
-        "reefLevel": index, # TODO: make this not reefscape specific
+        "index": index,
     }
     return highestMatch
 
@@ -253,7 +253,7 @@ def getMatchWithLowestValue(data: list, key: str, index: int = 0):
         "compLevel": compLevel,
         "setNumber": setNumber,
         "displayName": displayName,
-        "reefLevel": index, # TODO: make this not reefscape specific
+        "index": index,
     }
     return lowestMatch
 
