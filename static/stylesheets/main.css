@@ -77,3 +77,7 @@ input[type="checkbox"]{
 #backButtonLink, #nextButtonLink{
     text-decoration: none;
 }
+
+.indented {
+    padding-left: 40px;
+}
