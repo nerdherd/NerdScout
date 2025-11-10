@@ -146,7 +146,7 @@ def teamPage():
         team=results,
         matches=sortMatches(matches),
         stats=stats,
-        keyDisplayNames=keyDisplayNames,
+        keyDisplayNames=game.keyDisplayNames,
     )
 
 
@@ -171,7 +171,7 @@ def teamRankPage():
         stat=stat,
         sort=sort,
         index=index,
-        keyDisplayNames=keyDisplayNames,
+        keyDisplayNames=game.keyDisplayNames,
         isDict=isDict,
     )
 
@@ -627,7 +627,7 @@ def matchTable():
             if section in match["results"]:
                 for result in match["results"][section]:
                     result["team"] = match["teams"][section]
-                    for i in range(4):
+                    for i in range(4): # IMPORTANT: change/remove this for new game
                         result["autoReefL"+str(i+1)] = result["autoReef"][i]
                         result["teleReefL"+str(i+1)] = result["teleReef"][i]
                     result["matchNumber"] = match["matchNumber"]

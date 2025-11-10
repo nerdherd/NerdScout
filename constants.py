@@ -68,52 +68,6 @@ STAT_CODES = ["mean", "median", "mode", "highest", "lowest"]
 TBA_KEY = open(os.path.join(root, "secrets/theBlueAlliance"), "r").read()
 # TODO: add all text descriptions for all match types
 compLevelText = {"qm": "Qualifying", "sf": "Playoff", "f": "Final"}
-keyDisplayNames = {
-    "matchNumber": "Match Number",
-    "setNumber": "Set Number",
-    "compLevel": "Competition Level",
-    "matchKey": "Match Key",
-    "displayName": "Display Name",
-    "teams": "Teams",
-    "red1": "Red 1",
-    "red2": "Red 2",
-    "red3": "Red 3",
-    "blue1": "Blue 1",
-    "blue2": "Blue 2",
-    "blue3": "Blue 3",
-    "results": "Results",
-    "scored": "Scored",
-    "startPos": "Starting Position",
-    "autoLeave": "Auto Leave",
-    "autoReef": "Reef Auto",
-    "autoReefL1": "Reef Auto L1",
-    "autoReefL2": "Reef Auto L2",
-    "autoReefL3": "Reef Auto L3",
-    "autoReefL4": "Reef Auto L4",
-    "autoReefMiss": "Reef Auto Missed",
-    "teleReef": "Reef Tele-Op",
-    "teleReefL1": "Reef Tele-Op L1",
-    "teleReefL2": "Reef Tele-Op L2",
-    "teleReefL3": "Reef Tele-Op L3",
-    "teleReefL4": "Reef Tele-Op L4",
-    "teleReefMiss": "Reef Tele-Op Missed",
-    "autoProcessor": "Processor Auto",
-    "autoProcessorMiss": "Processor Auto Missed",
-    "teleProcessor": "Processor Tele-Op",
-    "teleProcessorMiss": "Processor Tele-Op Missed",
-    "autoNet": "Net Auto",
-    "autoNetMiss": "Net Auto Missed",
-    "teleNet": "Net Tele-Op",
-    "teleNetMiss": "Net Tele-Op Missed",
-    "endPos": "Ending Position",
-    "attemptedEndPos": "Attempted Ending Position",
-    "endPosSuccess": "Succeeded End Position",
-    "minorFouls": "Minor Fouls",
-    "majorFouls": "Major Fouls",
-    "score": "Score Impact",
-    "comment": "Comment",
-    "scout": "Scout",
-}
 
 
 def isImage(file):
@@ -135,16 +89,14 @@ def isImage(file):
 
 
 # these functions use data from getTeamResults(int)
-def getListOfScoringCategory(data: list, key: str, reefLevel: int = 0):
+def getListOfScoringCategory(data: list, key: str, index: int = 0):
     """
     Gets a list of all of the scores in a specific category for a team
-    
-    Should be edited every year (reefLevel).
     
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
-    - reefLevel (int): the specific reef level to get, if getting scores for reef. Defaults to 0, and doesn't do anything if key isn't reef
+    - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
     
     Returns:
     - List[int]: list of all of the scores from the data
@@ -154,7 +106,7 @@ def getListOfScoringCategory(data: list, key: str, reefLevel: int = 0):
         try:
             score = item["results"][-1][key]
             if type(score) == list:
-                score = score[reefLevel]
+                score = score[index]
             scores.append(int(score))
         except:
             app.logger.error(f'Failed to get data for key {key} in data "{item}"')  # type: ignore
@@ -162,76 +114,68 @@ def getListOfScoringCategory(data: list, key: str, reefLevel: int = 0):
     return scores
 
 
-def getMeanOfScoringCategory(data: list, key: str, reefLevel: int = 0):
+def getMeanOfScoringCategory(data: list, key: str, index: int = 0):
     """
     Gets the mean of a specific scoring category for a team
-    
-    Should be edited every year (reefLevel).
     
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
-    - reefLevel (int): the specific reef level to get, if getting scores for reef. Defaults to 0, and doesn't do anything if key isn't reef
+    - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
     
     Returns:
     - float: the mean of the scoring category
     """
-    scores: list = getListOfScoringCategory(data, key, reefLevel)
+    scores: list = getListOfScoringCategory(data, key, index)
     if not scores:
         return 0.0
     return float(statistics.mean(scores))
 
 
-def getMedianOfScoringCategory(data: list, key: str, reefLevel: int = 0):
+def getMedianOfScoringCategory(data: list, key: str, index: int = 0):
     """
     Gets the median of a specific scoring category for a team
-    
-    Should be edited every year (reefLevel).
     
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
-    - reefLevel (int): the specific reef level to get, if getting scores for reef. Defaults to 0, and doesn't do anything if key isn't reef
+    - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
     
     Returns:
     - float: the median of the scoring category
     """
-    scores: list = getListOfScoringCategory(data, key, reefLevel)
+    scores: list = getListOfScoringCategory(data, key, index)
     if not scores:
         return 0.0
     return float(statistics.median(scores))
 
 
-def getModeOfScoringCategory(data: list, key: str, reefLevel: int = 0):
+def getModeOfScoringCategory(data: list, key: str, index: int = 0):
     """
     Gets the mode of a specific scoring category for a team
-    
-    Should be edited every year (reefLevel).
-    
+
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
-    - reefLevel (int): the specific reef level to get, if getting scores for reef. Defaults to 0, and doesn't do anything if key isn't reef
-    
+    - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
+        
     Returns:
     - float: the mode of the scoring category
     """
-    scores: list = getListOfScoringCategory(data, key, reefLevel)
+    scores: list = getListOfScoringCategory(data, key, index)
     if not scores:
         return 0
     return int(statistics.median(scores))
 
 
-def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
+def getMatchWithHighestValue(data: list, key: str, index: int = 0):
     """
     Gets the highest value, and the match it was from, of a specific scoring category for a team
-    
-    Should be edited every year (reefLevel).
-    
+
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
-    - reefLevel (int): the specific reef level to get, if getting scores for reef. Defaults to 0, and doesn't do anything if key isn't reef
+    - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
     
     Returns:
     - dict: Dictionary containing the highest value, along with the match information
@@ -245,7 +189,7 @@ def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
     for match in data:
         value = match["results"][-1][key]
         if type(value) == list:
-            value = value[reefLevel]
+            value = value[index]
         value = int(value)
         if value > highestValue:
             highestValue = value
@@ -264,21 +208,19 @@ def getMatchWithHighestValue(data: list, key: str, reefLevel: int = 0):
         "compLevel": compLevel,
         "setNumber": setNumber,
         "displayName": displayName,
-        "reefLevel": reefLevel,
+        "reefLevel": index, # TODO: make this not reefscape specific
     }
     return highestMatch
 
 
-def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
+def getMatchWithLowestValue(data: list, key: str, index: int = 0):
     """
     Gets the lowest value, and the match it was from, of a specific scoring category for a team
-    
-    Should be edited every year (reefLevel).
     
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
-    - reefLevel (int): the specific reef level to get, if getting scores for reef. Defaults to 0, and doesn't do anything if key isn't reef
+    - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
     
     Returns:
     - dict: Dictionary containing the lowest value, along with the match information
@@ -292,7 +234,7 @@ def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
     for match in data:
         value = match["results"][-1][key]
         if type(value) == list:
-            value = value[reefLevel]
+            value = value[index]
         value = int(value)
         if value < lowestValue:
             lowestValue = value
@@ -311,38 +253,36 @@ def getMatchWithLowestValue(data: list, key: str, reefLevel: int = 0):
         "compLevel": compLevel,
         "setNumber": setNumber,
         "displayName": displayName,
-        "reefLevel": reefLevel,
+        "reefLevel": index, # TODO: make this not reefscape specific
     }
     return lowestMatch
 
 
-def getAllStatsForCategory(data: list, key: str, reefLevel: int = 0):
+def getAllStatsForCategory(data: list, key: str, index: int = 0):
     """
     Gets all of the different stats for a scoring category (mean, median, mode, highest, lowest) for a team
-    
-    Should be edited every year (reefLevel).
     
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
-    - reefLevel (int): the specific reef level to get, if getting scores for reef. Defaults to 0, and doesn't do anything if key isn't reef
+    - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
     
     Returns:
     - dict: Dictionary containing all five stats
     """
-    scores: list = getListOfScoringCategory(data, key, reefLevel)
+    scores: list = getListOfScoringCategory(data, key, index)
     if not scores:
         return {
             "mean": 0,
             "median": 0,
             "mode": 0,
-            "lowestMatch": getMatchWithLowestValue(data, key, reefLevel),
-            "highestMatch": getMatchWithHighestValue(data, key, reefLevel),
+            "lowestMatch": getMatchWithLowestValue(data, key, index),
+            "highestMatch": getMatchWithHighestValue(data, key, index),
         }
     return {
         "mean": float(statistics.mean(scores)),
         "median": float(statistics.median(scores)),
         "mode": int(statistics.mode(scores)),
-        "lowestMatch": getMatchWithLowestValue(data, key, reefLevel),
-        "highestMatch": getMatchWithHighestValue(data, key, reefLevel),
+        "lowestMatch": getMatchWithLowestValue(data, key, index),
+        "highestMatch": getMatchWithHighestValue(data, key, index),
     }
