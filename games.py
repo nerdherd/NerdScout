@@ -16,6 +16,7 @@ class Game:
         self.teamRankOptions = {}
         self.teamTableDisplayNames = {}
         self.matchTableDisplayNames= {}
+        raise NotImplementedError("Game Superclass __init__ used")
     def calculateScore(self) -> int:
         """
         Calculate the total score from scouted values.
@@ -29,7 +30,8 @@ class Game:
         - int: total score, minus points from fouls
         
         """
-        return 0
+        raise NotImplementedError("Game Superclass calculateScore used")
+        # return 0
     def scoreRobotInMatch(self) -> bool:
         """
         Scores one robot in a match.
@@ -42,7 +44,8 @@ class Game:
         Returns:
         - Boolean: if the robot was successfully scored
         """
-        return False
+        raise NotImplementedError("Game Superclass scoreRobotInMatch used")
+        # return False
     def calculateScoreFromData(self, matchData: dict, team: Station, edit: int = -1) -> int:
         """
         Gets a robot's result from the database and scores it.
@@ -57,7 +60,8 @@ class Game:
         Returns:
         - int: calculated score
         """
-        return 0
+        raise NotImplementedError("Game Superclass calculateScoreFromData used")
+        # return 0
     def calculateAverageAllianceScore(self, team1:int, team2:int, team3:int, calc=getMeanOfScoringCategory) -> dict|None:
         """
         Calculates a hypothetical alliance score of three teams using their average results in each category.
@@ -73,7 +77,8 @@ class Game:
         Returns:
         - dict or none: dict of predicted results, or None if any teams are not found.
         """
-        return None
+        raise NotImplementedError("Game Superclass calculateAverageAllianceScore used")
+        # return None
     def calculateMinMaxAllianceScore(
         self, team1: int, team2: int, team3: int, maximum: bool = True
     ) -> dict|None:
@@ -91,7 +96,8 @@ class Game:
         Returns:
         - dict or none: dict of predicted results, or None if any teams are not found.
         """
-        return None
+        raise NotImplementedError("Game Superclass calcualteMinMaxAllianceScore used")
+        # return None
     def getAllStats(self,team:int) -> dict:
         """
         Calculates all stats for every single scoring category.
@@ -104,7 +110,8 @@ class Game:
         Returns:
         - dict: dict of every scoring category with every stat
         """
-        return {}
+        raise NotImplementedError("Game Superclass getAllStats used")
+        # return {}
 
     
 class Reefscape(Game):
