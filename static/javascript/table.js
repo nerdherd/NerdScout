@@ -27,6 +27,9 @@ function updateSort(){
             return 0;
             // return -1;
         }
+        if (sortCategory === "comment"){
+            return aRaw.localeCompare(bRaw);
+        }
         var aVal = parseFloat(aRaw);
         var bVal = parseFloat(bRaw);
         if (sortCategory === "displayname"){
