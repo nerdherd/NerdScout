@@ -497,6 +497,11 @@ def passwordRequestPage():
             error = f"User {username} doesn't exist."
     return render_template("auth/passwordRequest.html", error=error)
 
+@app.route("/resetPasswords")
+def resetPasswordsPage():
+    # applyPasswordChange("69176e12d48220b435ba6012")
+    return getAllPasswordRequests()
+
 
 @app.route("/newUser", methods=["GET", "POST"])
 def newUserPage():
@@ -776,7 +781,7 @@ freeEndpoints = frozenset(
     ["login", "newUserPage", "static", "index", "logout", "aboutPage", "awesome", "passwordRequestPage"]
 )  # endpoints that shouldn't require signing in
 adminEndpoints = frozenset(
-    ["strategyPage","teamRankPage","teamTable","scoreAlliancePage","matchTable"]
+    ["strategyPage","teamRankPage","teamTable","scoreAlliancePage","matchTable","resetPasswordsPage"]
 )  # endpoints that require user be admin
 @app.before_request
 def before_request():

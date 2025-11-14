@@ -111,3 +111,38 @@ def requestPasswordChange(username:str, passwordHash:str) -> bool:
         }
     )
     return True
+
+def getAllPasswordRequests() -> list:
+    """
+    Gets all password requests from the requests collection.
+
+    Returns:
+    - list: list of dicts of requests
+    """
+    results = requestsDB.find(
+        {"type":"passwordChange"}
+    )
+    return parseResults(results)
+
+def applyPasswordChange(id:str) -> bool:
+    """
+    Applies a password change request by ObjectId
+    
+    Inputs:
+    - id (str): ObjectId str of request
+
+    Returns:
+    - bool: success
+    """
+    idParsed = ObjectId(id)
+    result = parseResults(requestsDB.find_one({"_id": idParsed}))
+    if not result:
+        app.logger.error(f"Failed to apply password update for request {id}: request not found.")
+        return False
+    accounts.find_one_and_update(
+        {"username": result["data"]["username"]},
+        {"$set":{"passwordHash": result["data"]["passwordHash"]}}
+    )
+    requestsDB.find_one_and_delete({"_id": idParsed})
+    app.logger.info(f"{request.cookies.get('username')} updated password for {result['data']['username']}.")
+    return True
