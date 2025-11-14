@@ -39,6 +39,7 @@ database = client.nerdScout
 matches = database.matches
 accounts = database.accounts
 teams = database.teams
+requestsDB = database.requests
 
 
 def addScheduledMatch(

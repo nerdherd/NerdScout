@@ -11,7 +11,7 @@ from flask import (
 from database import *
 
 
-def isLoggedIn():
+def isLoggedIn() -> bool:
     """
     Checks if the user is logged in.
     
@@ -21,7 +21,7 @@ def isLoggedIn():
     return "username" in session
 
 
-def newUser(username: str, passwordHash: str):
+def newUser(username: str, passwordHash: str) -> bool:
     """
     Attempts to create a new unnaproved user.
     
@@ -85,3 +85,27 @@ def checkPassword(username: str, password: str):
             f"Unsuccessful login by {username} at {request.remote_addr}: Account not found."
         )
         return False, "Account not found"
+
+def requestPasswordChange(username:str, passwordHash:str) -> bool:
+    """
+    Creates a new passwordChange in the requests database.
+
+    Inputs:
+    - username (str): the username of the user
+    - passwordHash (str): the hash of the new password
+
+    Returns:
+    - Boolean: if it was succesful or not
+
+    """
+    requestsDB.insert_one(
+        {
+            "type": "passwordChange",
+            "data":{
+                "username": username,
+                "passwordHash": passwordHash,
+            },
+        }
+    )
+    app.logger.info(f"Password change for {username} requested by {request.remote_addr}")
+    return True
