@@ -485,6 +485,18 @@ def login():
             error = "Couldn't log in: " + result
     return render_template("auth/login.html", error=error)
 
+@app.route("/passwordRequest", methods=["GET", "POST"])
+def passwordRequestPage():
+    error = None
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        if requestPasswordChange(username,generate_password_hash(password)):
+            error = f"Request for {username} submitted."
+        else:
+            error = f"User {username} doesn't exist."
+    return render_template("auth/passwordRequest.html", error=error)
+
 
 @app.route("/newUser", methods=["GET", "POST"])
 def newUserPage():
@@ -761,7 +773,7 @@ def aboutPage():
     return render_template("about.html")
 
 freeEndpoints = frozenset(
-    ["login", "newUserPage", "static", "index", "logout", "aboutPage", "awesome"]
+    ["login", "newUserPage", "static", "index", "logout", "aboutPage", "awesome", "passwordRequestPage"]
 )  # endpoints that shouldn't require signing in
 adminEndpoints = frozenset(
     ["strategyPage","teamRankPage","teamTable","scoreAlliancePage","matchTable"]

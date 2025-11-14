@@ -98,6 +98,9 @@ def requestPasswordChange(username:str, passwordHash:str) -> bool:
     - Boolean: if it was succesful or not
 
     """
+    app.logger.info(f"Password change for {username} requested by {request.remote_addr}")
+    if not getUser(username):
+        return False
     requestsDB.insert_one(
         {
             "type": "passwordChange",
@@ -107,5 +110,4 @@ def requestPasswordChange(username:str, passwordHash:str) -> bool:
             },
         }
     )
-    app.logger.info(f"Password change for {username} requested by {request.remote_addr}")
     return True
