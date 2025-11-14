@@ -12,7 +12,8 @@
 {% set previousPage = url_for('teamRankPage') %}
 {% include 'backButton.html' %}
 <h1>Team Ranking</h1>
-<h2>Ranked by {{stat}} of {{ keyDisplayNames[category] }}{% if category == "autoReef" or category == "teleReef" %} L{{ reefLevel+1 }}{% endif %}{% if not sort %}, reverse order.{% endif %}</h2>
+<!-- TODO: make this not reefscape specific -->
+<h2>Ranked by {{stat}} of {{ keyDisplayNames[category] }}{% if category == "autoReef" or category == "teleReef" %} L{{ index+1 }}{% endif %}{% if not sort %}, reverse order.{% endif %}</h2>
 <div>
 {% for team in ranking %}
 <div class="team-card">

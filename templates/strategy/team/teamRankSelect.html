@@ -55,7 +55,7 @@ button {
         let stat = document.getElementById("statInput").value;
         let sort = document.getElementById("sortInput").value;
 
-        let url = "{{ url_for('teamRankPage') }}"+`?category=${categoryFull[0]}&stat=${stat}&sort=${sort}&reefLevel=${categoryFull[1]}`;
+        let url = "{{ url_for('teamRankPage') }}"+`?category=${categoryFull[0]}&stat=${stat}&sort=${sort}&index=${categoryFull[1]}`;
         window.location.href = url;
     }
 </script>
