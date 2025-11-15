@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import (
     Flask,
     abort,
@@ -107,6 +108,7 @@ def requestPasswordChange(username:str, passwordHash:str) -> bool:
             "data":{
                 "username": username,
                 "passwordHash": passwordHash,
+                "timestamp": datetime.now()
             },
         }
     )
@@ -144,5 +146,22 @@ def applyPasswordChange(id:str) -> bool:
         {"$set":{"passwordHash": result["data"]["passwordHash"]}}
     )
     requestsDB.find_one_and_delete({"_id": idParsed})
-    app.logger.info(f"{request.cookies.get('username')} updated password for {result['data']['username']}.")
+    app.logger.info(f"{session["username"]} updated password for {result['data']['username']}.")
+    return True
+
+def deletePasswordChange(id:str) -> bool:
+    """
+    Deletes a password change request by ObjectId
+    
+    Inputs:
+    - id (str): ObjectId str of request
+
+    Returns:
+    - bool: success
+    """
+    idParsed = ObjectId(id)
+    result = requestsDB.find_one_and_delete({"_id": idParsed})
+    if not result:
+        return False
+    app.logger.info(f"{session["username"]} deleted password request {id} for {result['data']['username']}.")
     return True

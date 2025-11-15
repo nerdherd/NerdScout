@@ -497,10 +497,23 @@ def passwordRequestPage():
             error = f"User {username} doesn't exist."
     return render_template("auth/passwordRequest.html", error=error)
 
-@app.route("/resetPasswords")
+@app.route("/resetPasswords", methods=["GET", "POST"])
 def resetPasswordsPage():
     # applyPasswordChange("69176e12d48220b435ba6012")
-    return getAllPasswordRequests()
+    if request.method == "POST":
+        data = request.json
+        if not data:
+            app.logger.warning(f"Failed to apply password change request: no data sent.")
+            abort(400)
+        try:
+            if data['approved']:
+                applyPasswordChange(data["id"])
+            else:
+                deletePasswordChange(data["id"])
+        except Exception as e:
+            app.logger.warning(f"Failed to apply password change request: fields missing.")
+            abort(400)
+    return render_template("resetPasswords.html",requests=getAllPasswordRequests())
 
 
 @app.route("/newUser", methods=["GET", "POST"])
