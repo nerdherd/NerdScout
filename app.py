@@ -27,6 +27,7 @@ from typing import List
 from constants import *
 from database import *
 from auth import *
+from games import *
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.config["JSON_SORT_KEYS"] = False
@@ -37,6 +38,7 @@ app.config.from_mapping(
 
 app.jinja_env.filters["any"] = any
 
+game = Reefscape(matches,teams)
 
 # Front-end Handlers
 @app.route("/")
@@ -138,40 +140,13 @@ def teamPage():
         )
 
     matches = getTeamMatches(team)
-    teamResults = getTeamResults(team)
-    stats = {
-        "startPos": getAllStatsForCategory(teamResults, "startPos"),
-        "autoLeave": getAllStatsForCategory(teamResults, "autoLeave"),
-        "autoReefL1": getAllStatsForCategory(teamResults, "autoReef", 0),
-        "autoReefL2": getAllStatsForCategory(teamResults, "autoReef", 1),
-        "autoReefL3": getAllStatsForCategory(teamResults, "autoReef", 2),
-        "autoReefL4": getAllStatsForCategory(teamResults, "autoReef", 3),
-        "autoReefMiss": getAllStatsForCategory(teamResults, "autoReefMiss"),
-        "teleReefL1": getAllStatsForCategory(teamResults, "teleReef", 0),
-        "teleReefL2": getAllStatsForCategory(teamResults, "teleReef", 1),
-        "teleReefL3": getAllStatsForCategory(teamResults, "teleReef", 2),
-        "teleReefL4": getAllStatsForCategory(teamResults, "teleReef", 3),
-        "teleReefMiss": getAllStatsForCategory(teamResults, "teleReefMiss"),
-        "autoProcessor": getAllStatsForCategory(teamResults, "autoProcessor"),
-        "autoProcessorMiss": getAllStatsForCategory(teamResults, "autoProcessorMiss"),
-        "teleProcessor": getAllStatsForCategory(teamResults, "teleProcessor"),
-        "teleProcessorMiss": getAllStatsForCategory(teamResults, "teleProcessorMiss"),
-        "autoNet": getAllStatsForCategory(teamResults, "autoNet"),
-        "autoNetMiss": getAllStatsForCategory(teamResults, "autoNetMiss"),
-        "teleNet": getAllStatsForCategory(teamResults, "teleNet"),
-        "teleNetMiss": getAllStatsForCategory(teamResults, "teleNetMiss"),
-        "endPosSuccess": getAllStatsForCategory(teamResults, "endPosSuccess"),
-        "attemptedEndPos": getAllStatsForCategory(teamResults, "attemptedEndPos"),
-        "minorFouls": getAllStatsForCategory(teamResults, "minorFouls"),
-        "majorFouls": getAllStatsForCategory(teamResults, "majorFouls"),
-        "score": getAllStatsForCategory(teamResults, "score"),
-    }
+    stats = game.getAllStats(team)
     return render_template(
         "team/team.html",
         team=results,
         matches=sortMatches(matches),
         stats=stats,
-        keyDisplayNames=keyDisplayNames,
+        keyDisplayNames=game.keyDisplayNames,
     )
 
 
@@ -182,49 +157,21 @@ def teamRankPage():
     isDict = stat == "highest" or stat == "lowest"
     sort = request.args.get("sort")
     sort = not sort == "ascending"
-    reefLevel = request.args.get("reefLevel")
-    reefLevel = 0 if not reefLevel else int(reefLevel)
+    index = request.args.get("index")
+    index = 0 if not index else int(index)
     if (not key) or (not stat in STAT_CODES):
-        options = {
-            "Score Impact": "score,0",
-            "Starting Position": "startPos,0",
-            "Auto Leave": "autoLeave,0",
-            "Reef Auto": "autoReef,0",
-            "Reef Auto L1": "autoReef,0",
-            "Reef Auto L2": "autoReef,1",
-            "Reef Auto L3": "autoReef,2",
-            "Reef Auto L4": "autoReef,3",
-            "Reef Auto Missed": "autoReefMiss,0",
-            "Reef Tele-Op": "teleReef,0",
-            "Reef Tele-Op L1": "teleReef,0",
-            "Reef Tele-Op L2": "teleReef,1",
-            "Reef Tele-Op L3": "teleReef,2",
-            "Reef Tele-Op L4": "teleReef,3",
-            "Reef Tele-Op Missed": "teleReefMiss,0",
-            "Processor Auto": "autoProcessor,0",
-            "Processor Auto Missed": "autoProcessorMiss,0",
-            "Processor Tele-Op": "teleProcessor,0",
-            "Processor Tele-Op Missed": "teleProcessorMiss,0",
-            "Net Auto": "autoNet,0",
-            "Net Auto Missed": "autoNetMiss,0",
-            "Net Tele-Op": "teleNet,0",
-            "Net Tele-Op Missed": "teleNetMiss,0",
-            "Ending Position": "endPos,0",
-            "Attempted Ending Position": "attemptedEndPos,0",
-            "Minor Fouls": "minorFouls,0",
-            "Major Fouls": "majorFouls,0"
-        }
+        options = game.teamRankOptions
 
         return render_template("strategy/team/teamRankSelect.html", options=options)
         # abort(400)
     return render_template(
         "strategy/team/teamRank.html",
-        ranking=rankTeams(key, stat, sort, reefLevel),
+        ranking=rankTeams(key, stat, sort, index),
         category=key,
         stat=stat,
         sort=sort,
-        reefLevel=reefLevel,
-        keyDisplayNames=keyDisplayNames,
+        index=index,
+        keyDisplayNames=game.keyDisplayNames,
         isDict=isDict,
     )
 
@@ -264,12 +211,12 @@ def scoreAlliancePage():
         
         calculateFunction = getMeanOfScoringCategory if stat == "mean" else getMedianOfScoringCategory if stat=="median" else getModeOfScoringCategory
         
-        result = calculateAverageAllianceScore(team1, team2, team3,calculateFunction)
+        result = game.calculateAverageAllianceScore(team1, team2, team3,calculateFunction)
         if not result:
             return render_template("strategy/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
         return render_template("strategy/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
     else:
-        result = calculateMinMaxAllianceScore(team1, team2, team3, stat == "highest")
+        result = game.calculateMinMaxAllianceScore(team1, team2, team3, stat == "highest")
         if not result:
             return render_template("strategy/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
         return render_template("strategy/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
@@ -438,32 +385,7 @@ def teamTable():
         return render_template("strategy/team/tableSelect.html")
     links = (stat == "highest" or stat == "lowest")
     
-    displayNames = {
-        "score": "Score Impact",
-        "autoLeave": "Auto Leave",
-        "autoReefL1": "Reef Auto L1",
-        "autoReefL2": "Reef Auto L2",
-        "autoReefL3": "Reef Auto L3",
-        "autoReefL4": "Reef Auto L4",
-        "autoReefMiss": "Reef Auto Missed",
-        "autoReefTotal": "Reef Auto Total",
-        "teleReefL1": "Reef Tele-Op L1",
-        "teleReefL2": "Reef Tele-Op L2",
-        "teleReefL3": "Reef Tele-Op L3",
-        "teleReefL4": "Reef Tele-Op L4",
-        "teleReefMiss": "Reef Tele-Op Missed",
-        "teleReefTotal": "Reef Tele-Op Total",
-        "autoProcessor": "Processor Auto",
-        "autoProcessorMiss": "Processor Auto Missed",
-        "teleProcessor": "Processor Tele-Op",
-        "teleProcessorMiss": "Processor Tele-Op Missed",
-        "autoNet": "Net Auto",
-        "autoNetMiss": "Net Auto Missed",
-        "teleNet": "Net Tele-Op",
-        "teleNetMiss": "Net Tele-Op Missed",
-        "minorFouls": "Minor Fouls",
-        "majorFouls": "Major Fouls",
-    }
+    displayNames = game.teamTableDisplayNames
     data = teamDataSummary()
     return render_template("strategy/team/table.html",displayNames=displayNames,data=data,links=links,stat=stat,)
 
@@ -553,7 +475,7 @@ def submitScorePage():
             app.logger.error(f"Error submitting match: {err}")
             abort(400)
         try:
-            if not scoreRobotInMatch(
+            if not game.scoreRobotInMatch(
                 matchNumber,
                 setNumber,
                 compLevel,
@@ -638,8 +560,8 @@ def uploadJSON():
             setNum: int = data["setNum"]
             results = data["data"]
 
-            if not scoreRobotInMatch(
-                matchNum,
+            if not game.scoreRobotInMatch(
+                matchNum, #type: ignore
                 setNum,
                 compLevel,
                 station,
@@ -735,7 +657,7 @@ def matchTable():
             if section in match["results"]:
                 for result in match["results"][section]:
                     result["team"] = match["teams"][section]
-                    for i in range(4):
+                    for i in range(4): # IMPORTANT: change/remove this for new game
                         result["autoReefL"+str(i+1)] = result["autoReef"][i]
                         result["teleReefL"+str(i+1)] = result["teleReef"][i]
                     result["matchNumber"] = match["matchNumber"]
@@ -750,39 +672,7 @@ def matchTable():
                     if result["team"] not in teams:
                         teams.append(result["team"])
     
-    displayNames = {
-        "team":"Team",
-        "displayName": "Display Name",
-        "score": "Score Impact",
-        "matchNumber": "Match Number",
-        "setNumber": "Set Number",
-        "compLevel": "Competition Level",
-        "startPos": "Starting Position",
-        "autoLeave": "Auto Leave",
-        "autoReefL1": "Reef Auto L1",
-        "autoReefL2": "Reef Auto L2",
-        "autoReefL3": "Reef Auto L3",
-        "autoReefL4": "Reef Auto L4",
-        "autoReefMiss": "Reef Auto Missed",
-        "teleReefL1": "Reef Tele-Op L1",
-        "teleReefL2": "Reef Tele-Op L2",
-        "teleReefL3": "Reef Tele-Op L3",
-        "teleReefL4": "Reef Tele-Op L4",
-        "teleReefMiss": "Reef Tele-Op Missed",
-        "autoProcessor": "Processor Auto",
-        "autoProcessorMiss": "Processor Auto Missed",
-        "teleProcessor": "Processor Tele-Op",
-        "teleProcessorMiss": "Processor Tele-Op Missed",
-        "autoNet": "Net Auto",
-        "autoNetMiss": "Net Auto Missed",
-        "teleNet": "Net Tele-Op",
-        "teleNetMiss": "Net Tele-Op Missed",
-        "attemptedEndPos": "Attempted Ending Position",
-        "endPosSuccess":"Ending Position Sucecss",
-        "minorFouls": "Minor Fouls",
-        "majorFouls": "Major Fouls",
-        "comment":"Comment",
-    }
+    displayNames = game.matchTableDisplayNames
     
     return render_template("/strategy/match/table2.html",results=results,displayNames=displayNames,teams=teams)
 
