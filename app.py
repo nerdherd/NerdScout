@@ -38,7 +38,8 @@ app.config.from_mapping(
 
 app.jinja_env.filters["any"] = any
 
-game = Reefscape(matches,teams)
+game = Reefscape(matches, teams)
+
 
 # Front-end Handlers
 @app.route("/")
@@ -48,6 +49,7 @@ def index():
     else:
         username = None
     return render_template("index.html", username=username)
+
 
 @app.route("/match")
 def renderMatch():
@@ -106,21 +108,21 @@ def renderMatch():
             app.logger.error(
                 f"Team {results['teams'][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance."
             )
-    
+
     nextMatch = False
     try:
-        getMatch(compLevel, matchNumber+1, setNumber)[-1]  # type: ignore
-        nextMatch=True
+        getMatch(compLevel, matchNumber + 1, setNumber)[-1]  # type: ignore
+        nextMatch = True
     except (IndexError, AttributeError) as err:
         # IndexError: There isnt a next match
         pass
-        
+
     return render_template(
         "match/match.html",
         teams=[redTeams, blueTeams],
         matchData=matchData,
         results=results,
-        nextMatch=nextMatch
+        nextMatch=nextMatch,
     )
 
 
@@ -178,7 +180,7 @@ def teamRankPage():
 
 @app.route("/scoreAlliance")
 def scoreAlliancePage():
-    
+
     team1 = None
     team2 = None
     team3 = None
@@ -195,35 +197,88 @@ def scoreAlliancePage():
         team3 = int(request.args.get("team3"))  # type: ignore
     except TypeError:
         pass
-    
-    stat = request.args.get("stat")  # type: ignore
-    
-    if not stat or not team1 or not team2 or not team3:
-        return render_template("strategy/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
-    
-    stat = str(stat).lower()
-    
 
-    if stat not in ["mean","median","mode","highest","lowest"]:
-        return render_template("strategy/predict/select.html",stat="none",team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
+    stat = request.args.get("stat")  # type: ignore
+
+    if not stat or not team1 or not team2 or not team3:
+        return render_template(
+            "strategy/predict/select.html",
+            stat=stat,
+            team1=team1,
+            team2=team2,
+            team3=team3,
+            teams=sortTeams(getAllTeams()),
+        )
+
+    stat = str(stat).lower()
+
+    if stat not in ["mean", "median", "mode", "highest", "lowest"]:
+        return render_template(
+            "strategy/predict/select.html",
+            stat="none",
+            team1=team1,
+            team2=team2,
+            team3=team3,
+            teams=sortTeams(getAllTeams()),
+        )
 
     if stat == "mean" or stat == "median" or stat == "mode":
-        
-        calculateFunction = getMeanOfScoringCategory if stat == "mean" else getMedianOfScoringCategory if stat=="median" else getModeOfScoringCategory
-        
-        result = game.calculateAverageAllianceScore(team1, team2, team3,calculateFunction)
+
+        calculateFunction = (
+            getMeanOfScoringCategory
+            if stat == "mean"
+            else (
+                getMedianOfScoringCategory
+                if stat == "median"
+                else getModeOfScoringCategory
+            )
+        )
+
+        result = game.calculateAverageAllianceScore(
+            team1, team2, team3, calculateFunction
+        )
         if not result:
-            return render_template("strategy/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
-        return render_template("strategy/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
+            return render_template(
+                "strategy/predict/select.html",
+                stat=stat,
+                team1=team1,
+                team2=team2,
+                team3=team3,
+                teams=sortTeams(getAllTeams()),
+            )
+        return render_template(
+            "strategy/predict/result.html",
+            result=result,
+            team1=team1,
+            team2=team2,
+            team3=team3,
+        )
     else:
-        result = game.calculateMinMaxAllianceScore(team1, team2, team3, stat == "highest")
+        result = game.calculateMinMaxAllianceScore(
+            team1, team2, team3, stat == "highest"
+        )
         if not result:
-            return render_template("strategy/predict/select.html",stat=stat,team1=team1,team2=team2,team3=team3,teams=sortTeams(getAllTeams()))
-        return render_template("strategy/predict/result.html",result=result,team1=team1,team2=team2,team3=team3)
+            return render_template(
+                "strategy/predict/select.html",
+                stat=stat,
+                team1=team1,
+                team2=team2,
+                team3=team3,
+                teams=sortTeams(getAllTeams()),
+            )
+        return render_template(
+            "strategy/predict/result.html",
+            result=result,
+            team1=team1,
+            team2=team2,
+            team3=team3,
+        )
+
 
 @app.route("/strategy")
 def strategyPage():
     return render_template("strategy/strategy.html")
+
 
 @app.route("/scheduleEvent", methods=["GET", "POST"])
 def scheduleEventPage():
@@ -248,6 +303,7 @@ def updateSchedulePage():
             abort(400)
         updateScheduleFromTBA(event)
     return render_template("match/schedule/addSchedule.html")
+
 
 @app.route("/team/addTeamImage", methods=["GET", "POST"])
 def addTeamImagePage():
@@ -298,7 +354,7 @@ def scoutTeam():
         except TypeError as e:
             app.logger.warning(e)
             abort(400)
-        pitScoutTeam(team, user, submission) # type: ignore
+        pitScoutTeam(team, user, submission)  # type: ignore
         return "ok"
     team = None
     try:
@@ -309,8 +365,10 @@ def scoutTeam():
 
 
 dontSummarize = frozenset(
-    ["startPos","endPos","attemptedEndPos","cannedComments","endPosSuccess"]
+    ["startPos", "endPos", "attemptedEndPos", "cannedComments", "endPosSuccess"]
 )
+
+
 @app.route("/team/summary")
 def teamDataSummary():
     stat = request.args.get("stat")
@@ -369,8 +427,9 @@ def teamDataSummary():
                     data[-1]["results"].append({key: piece["value"], "matchId": f"{matchViewer}?matchNum={piece['matchNumber']}&compLevel={piece['compLevel']}&setNum={piece['setNumber']}"})  # type: ignore
                 else:
                     data[-1]["results"].append({key: piece})
-        data[-1]["results"].insert(0,data[-1]["results"].pop())
+        data[-1]["results"].insert(0, data[-1]["results"].pop())
     return data
+
 
 @app.route("/team/table")
 def teamTable():
@@ -383,11 +442,18 @@ def teamTable():
         or (stat == "lowest")
     ):
         return render_template("strategy/team/tableSelect.html")
-    links = (stat == "highest" or stat == "lowest")
-    
+    links = stat == "highest" or stat == "lowest"
+
     displayNames = game.teamTableDisplayNames
     data = teamDataSummary()
-    return render_template("strategy/team/table.html",displayNames=displayNames,data=data,links=links,stat=stat,)
+    return render_template(
+        "strategy/team/table.html",
+        displayNames=displayNames,
+        data=data,
+        links=links,
+        stat=stat,
+    )
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -407,17 +473,19 @@ def login():
             error = "Couldn't log in: " + result
     return render_template("auth/login.html", error=error)
 
+
 @app.route("/passwordRequest", methods=["GET", "POST"])
 def passwordRequestPage():
     error = None
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        if requestPasswordChange(username,generate_password_hash(password)):
+        if requestPasswordChange(username, generate_password_hash(password)):
             error = f"Request for {username} submitted."
         else:
             error = f"User {username} doesn't exist."
     return render_template("auth/passwordRequest.html", error=error)
+
 
 @app.route("/resetPasswords", methods=["GET", "POST"])
 def resetPasswordsPage():
@@ -425,17 +493,23 @@ def resetPasswordsPage():
     if request.method == "POST":
         data = request.json
         if not data:
-            app.logger.warning(f"Failed to apply password change request: no data sent.")
+            app.logger.warning(
+                f"Failed to apply password change request: no data sent."
+            )
             abort(400)
         try:
-            if data['approved']:
+            if data["approved"]:
                 applyPasswordChange(data["id"])
             else:
                 deletePasswordChange(data["id"])
         except Exception as e:
-            app.logger.warning(f"Failed to apply password change request: fields missing.")
+            app.logger.warning(
+                f"Failed to apply password change request: fields missing."
+            )
             abort(400)
-    return render_template("auth/resetPasswords.html",requests=getAllPasswordRequests())
+    return render_template(
+        "auth/resetPasswords.html", requests=getAllPasswordRequests()
+    )
 
 
 @app.route("/newUser", methods=["GET", "POST"])
@@ -496,16 +570,18 @@ def submitScorePage():
                 submission["autoNetMiss"],  # int # type: ignore
                 submission["teleNet"],  # int # type: ignore
                 submission["teleNetMiss"],  # int # type: ignore
-                submission["endPosSuccess"], # bool # type: ignore
+                submission["endPosSuccess"],  # bool # type: ignore
                 EndPosition(
                     int(
-                        submission["attemptedEndPos"] # int between 0-3, though should be 2 or 3 # type: ignore
-                    )  
+                        submission[ # int between 0-3, though should be 2 or 3 # type: ignore
+                            "attemptedEndPos"
+                        ]  
+                    )
                 ),
                 submission["minorFouls"],  # int # type: ignore
                 submission["majorFouls"],  # int # type: ignore
                 submission["comment"],  # str # type: ignore
-                submission["cannedComments"], # array of strs # type: ignore
+                submission["cannedComments"],  # array of strs # type: ignore
                 scout,  # str # type: ignore
             ):
                 abort(400)
@@ -516,7 +592,7 @@ def submitScorePage():
         match = setVal
     else:
         match = matchVal
-    
+
     cannedComments = [
         "Good Driving",
         "Bad Driving",
@@ -534,9 +610,9 @@ def submitScorePage():
         "Tipped/Stuck",
         "Died",
         "No Show",
-        "Bad Descision Making"
+        "Bad Descision Making",
     ]
-    
+
     return render_template(
         "match/submit.html",
         match=match,
@@ -545,7 +621,7 @@ def submitScorePage():
         teamNum=teamNum,
         setVal=setVal,
         matchVal=matchVal,
-        cannedComments = cannedComments
+        cannedComments=cannedComments,
     )
 
 
@@ -561,7 +637,7 @@ def uploadJSON():
             results = data["data"]
 
             if not game.scoreRobotInMatch(
-                matchNum, #type: ignore
+                matchNum,  # type: ignore
                 setNum,
                 compLevel,
                 station,
@@ -609,7 +685,7 @@ def awesome():
 def logout():
     if "username" in session:
         del session["username"]
-    return render_template("auth/logout.html",logoutPageVariable=True)
+    return render_template("auth/logout.html", logoutPageVariable=True)
 
 
 @app.route("/manageUsers", methods=["GET", "POST"])
@@ -647,9 +723,11 @@ def userManagementPage():
         )
     return render_template("auth/accountManagement.html", users=getAllUsers())
 
+
 @app.route("/admin")
 def adminPage():
     return render_template("auth/admin.html")
+
 
 @app.route("/team/table2")
 def matchTable():
@@ -657,13 +735,13 @@ def matchTable():
     results = []
     teams = []
     for match in matches:
-        for section in ["red1","red2","red3","blue1","blue2","blue3"]:
+        for section in ["red1", "red2", "red3", "blue1", "blue2", "blue3"]:
             if section in match["results"]:
                 for result in match["results"][section]:
                     result["team"] = match["teams"][section]
-                    for i in range(4): # IMPORTANT: change/remove this for new game
-                        result["autoReefL"+str(i+1)] = result["autoReef"][i]
-                        result["teleReefL"+str(i+1)] = result["teleReef"][i]
+                    for i in range(4):  # IMPORTANT: change/remove this for new game
+                        result["autoReefL" + str(i + 1)] = result["autoReef"][i]
+                        result["teleReefL" + str(i + 1)] = result["teleReef"][i]
                     result["matchNumber"] = match["matchNumber"]
                     result["setNumber"] = match["setNumber"]
                     result["compLevel"] = match["compLevel"]
@@ -675,27 +753,53 @@ def matchTable():
                     results.append(result)
                     if result["team"] not in teams:
                         teams.append(result["team"])
-    
+
     displayNames = game.matchTableDisplayNames
-    
-    return render_template("/strategy/match/table2.html",results=results,displayNames=displayNames,teams=teams)
+
+    return render_template(
+        "/strategy/match/table2.html",
+        results=results,
+        displayNames=displayNames,
+        teams=teams,
+    )
+
 
 @app.route("/about")
 def aboutPage():
     return render_template("about.html")
 
+
 freeEndpoints = frozenset(
-    ["login", "newUserPage", "static", "index", "logout", "aboutPage", "awesome", "passwordRequestPage"]
+    [
+        "login",
+        "newUserPage",
+        "static",
+        "index",
+        "logout",
+        "aboutPage",
+        "awesome",
+        "passwordRequestPage",
+    ]
 )  # endpoints that shouldn't require signing in
 adminEndpoints = frozenset(
-    ["strategyPage","teamRankPage","teamTable","scoreAlliancePage","matchTable","resetPasswordsPage","adminPage"]
+    [
+        "strategyPage",
+        "teamRankPage",
+        "teamTable",
+        "scoreAlliancePage",
+        "matchTable",
+        "resetPasswordsPage",
+        "adminPage",
+    ]
 )  # endpoints that require user be admin
+
+
 @app.before_request
 def before_request():
     # check login status
     if request.endpoint not in freeEndpoints and not isLoggedIn():
         return redirect(url_for("login", next=request.full_path))
-    
+
     if request.endpoint in adminEndpoints and not isAdmin(session["username"]):
         app.logger.warning(
             f"User {session['username']} attempted to access {request.endpoint} without admin"

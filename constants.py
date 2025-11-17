@@ -73,10 +73,10 @@ compLevelText = {"qm": "Qualifying", "sf": "Playoff", "f": "Final"}
 def isImage(file):
     """
     Checks if the provided file is an image (png or jpg)
-    
+
     Inputs:
     - file (any): the object to test
-    
+
     Outputs:
     - Boolean: whether or not the file is a png or a jpg
     """
@@ -92,12 +92,12 @@ def isImage(file):
 def getListOfScoringCategory(data: list, key: str, index: int = 0):
     """
     Gets a list of all of the scores in a specific category for a team
-    
+
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
     - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
-    
+
     Returns:
     - List[int]: list of all of the scores from the data
     """
@@ -117,12 +117,12 @@ def getListOfScoringCategory(data: list, key: str, index: int = 0):
 def getMeanOfScoringCategory(data: list, key: str, index: int = 0):
     """
     Gets the mean of a specific scoring category for a team
-    
+
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
     - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
-    
+
     Returns:
     - float: the mean of the scoring category
     """
@@ -135,12 +135,12 @@ def getMeanOfScoringCategory(data: list, key: str, index: int = 0):
 def getMedianOfScoringCategory(data: list, key: str, index: int = 0):
     """
     Gets the median of a specific scoring category for a team
-    
+
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
     - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
-    
+
     Returns:
     - float: the median of the scoring category
     """
@@ -158,7 +158,7 @@ def getModeOfScoringCategory(data: list, key: str, index: int = 0):
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
     - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
-        
+
     Returns:
     - float: the mode of the scoring category
     """
@@ -176,7 +176,7 @@ def getMatchWithHighestValue(data: list, key: str, index: int = 0):
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
     - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
-    
+
     Returns:
     - dict: Dictionary containing the highest value, along with the match information
     """
@@ -216,12 +216,12 @@ def getMatchWithHighestValue(data: list, key: str, index: int = 0):
 def getMatchWithLowestValue(data: list, key: str, index: int = 0):
     """
     Gets the lowest value, and the match it was from, of a specific scoring category for a team
-    
+
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
     - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
-    
+
     Returns:
     - dict: Dictionary containing the lowest value, along with the match information
     """
@@ -261,12 +261,12 @@ def getMatchWithLowestValue(data: list, key: str, index: int = 0):
 def getAllStatsForCategory(data: list, key: str, index: int = 0):
     """
     Gets all of the different stats for a scoring category (mean, median, mode, highest, lowest) for a team
-    
+
     Inputs:
     - data (list[dict]): a list with all of a team's match results. From getTeamResults
     - key (str): the key of the scoring category to get
     - index (int): if the data is a list, then what index to get. Defaults to 0, and does nothing if not a list.
-    
+
     Returns:
     - dict: Dictionary containing all five stats
     """

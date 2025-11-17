@@ -57,7 +57,7 @@ def addScheduledMatch(
 ):
     """
     Adds a single match to the database.
-    
+
     Inputs:
     - matchNumber (int): the match's identification number
     - setNumber (int): the match's set number
@@ -99,7 +99,7 @@ def addMatchFromTBA(match: dict):
     Adds a match using a dict provided by TBA.
 
     If any error occurs, aborts the request with 500.
-    
+
     Inputs:
     - match (dict): the full dict of a match from TBA
     """
@@ -139,10 +139,10 @@ def addMatchFromTBA(match: dict):
 def sortMatches(matches: list):
     """
     Sorts matches by compLevel then matchNumber
-    
+
     Inputs:
     - matches (list[dict]): a list of dicts of matches, as provided by the database
-    
+
     Returns:
     - list[dict]: a list of dicts of matches, sorted
     """
@@ -174,10 +174,10 @@ def sortMatches(matches: list):
 def sortTeams(teams: list):
     """
     Sorts teams by team number.
-    
+
     Inputs:
     - teams (list[dict]): a list of team dicts, as provided by the database
-    
+
     Returns:
     - list[dict]: a list of team dicts, sorted
     """
@@ -188,10 +188,10 @@ def sortTeams(teams: list):
 def loadScheduleFromTBA(event: str):
     """
     GETs an event schedule from TBA
-    
+
     Inputs:
     - event (str): event key
-    
+
     Returns:
     - list[dict]: a list of match dicts, as provided by TBA
     """
@@ -214,10 +214,10 @@ def loadScheduleFromTBA(event: str):
 def addScheduleFromTBA(event: str):
     """
     GETs a schedule from TBA, then adds the matches to the database
-    
+
     Inputs:
     - event (str): event key
-    
+
     Returns:
     - str: "ok" if ok, aborts the request if an error occurs
     """
@@ -232,7 +232,7 @@ def addScheduleFromTBA(event: str):
 def updateScheduleFromTBA(event: str):
     """
     GETs a schedule from TBA, and adds any matches that are not already in the database
-    
+
     Inputs:
     - event (str): event key
     """
@@ -246,7 +246,7 @@ def updateScheduleFromTBA(event: str):
 def addTeam(number: int, longName: str, shortName: str, comment: list = []):
     """
     Adds a team to the database
-    
+
     Inputs:
     - number (int): the team's number
     - longName (str): the team's full name, the one with their sponsors, from TBA
@@ -269,7 +269,7 @@ def addTeamsFromTBA(event: str):
     GETs the teams for an event and adds them to the database.
 
     Aborts with 500 if any errors occur
-    
+
     Inputs:
     - event (str): event key
     """
@@ -307,12 +307,12 @@ def addTeamsFromTBA(event: str):
 def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
     """
     Gets a match from the database
-    
+
     Inputs:
     - compLevel (CompLevel): the match's compLevel
     - matchNumber (int): the match's identification number
     - setNumber (int): the match's set number, usually 1
-    
+
     Returns:
     - list[dict]: a list of match dicts, empty if no matches found
     """
@@ -329,7 +329,7 @@ def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
 def getAllMatches():
     """
     Gets all matches from the database.
-    
+
     Returns:
     - list[dict]: a list of match dicts, empty if there are no matches
     """
@@ -343,12 +343,12 @@ def addTeamImage(data, team: int, user: str):
     Adds an image a team and store said image in static/teamImages
 
     Aborts 415 if data is not a png or jpg.
-    
+
     Inputs:
     - data (png or jpg): image to add
     - team (int): the team's number
     - user (str): the username of the uploader
-    
+
     """
     extension = isImage(data)
     if not extension:
@@ -372,7 +372,7 @@ def addTeamImage(data, team: int, user: str):
 def addComment(team: int, comment: str, user: str):
     """
     Adds a comment to a team
-    
+
     Inputs:
     - team (int): the team's number
     - comment (str): the comment to add
@@ -382,10 +382,11 @@ def addComment(team: int, comment: str, user: str):
         {"number": team}, {"$push": {"comments": {"comment": comment, "user": user}}}
     )
 
-def pitScoutTeam(team: int, user: str, data:dict):
+
+def pitScoutTeam(team: int, user: str, data: dict):
     """
     Adds a pit scout to a team
-    
+
     Inputs:
     - team (int): the team's number
     - user (str): the uploader's username
@@ -395,13 +396,14 @@ def pitScoutTeam(team: int, user: str, data:dict):
         {"number": team}, {"$push": {"pitScout": {"data": data, "user": user}}}
     )
 
+
 def getTeam(team: int):
     """
     Gets a team from the database
-    
+
     Inputs:
     - team (int): team number
-    
+
     Returns:
     - dict: the team's dict
     """
@@ -413,10 +415,10 @@ def getTeam(team: int):
 def getTeamMatches(team: int):
     """
     Gets all of a team's matches from the database.
-        
+
     Inputs:
     - team (int): team number
-    
+
     Returns:
     - list[dict]: a list of match dicts, from the database
     """
@@ -440,11 +442,11 @@ def getTeamMatches(team: int):
 def getTeamStation(team: int, match: dict):
     """
     Get a team's station from a match dict.
-        
+
     Inputs:
     - team (int): team number
     - match (dict): the match dict, provided by the database
-    
+
     Returns:
     - str or None: the station of the team, or None if the team is not in the match
     """
@@ -459,10 +461,10 @@ def getTeamStation(team: int, match: dict):
 def getTeamScoredMatches(team: int):
     """
     Gets all of a team's scouted matches.
-    
+
     Inputs:
     - team (int): team number
-    
+
     Returns:
     - list[dict]: list of match dicts, empty if no matches found
     """
@@ -482,10 +484,10 @@ def getTeamScoredMatches(team: int):
 def getTeamResults(team: int):
     """
     Gets a team's results for each of their scored matches.
-    
+
     Inputs:
     - team (int): team number
-    
+
     Returns:
     - list[dict]: list of dicts of the team's match results
     """
@@ -511,7 +513,7 @@ def getTeamResults(team: int):
 def getAllTeams():
     """
     Gets all teams from the database
-    
+
     Returns:
     - list[dict]: list of team dicts
     """
@@ -523,7 +525,7 @@ def getAllTeams():
 def getAllUsers():
     """
     Gets all users from the database
-    
+
     Returns:
     - list[dict]: list of account dicts
     """
@@ -533,10 +535,10 @@ def getAllUsers():
 def isAdmin(username: str):
     """
     Checks if a user is an admin
-    
+
     Inputs:
     - username (str): the username of the user
-    
+
     Returns:
     - bool: if the provided user is an admin
     """
@@ -546,10 +548,10 @@ def isAdmin(username: str):
 def getUser(username: str):
     """
     Gets a user from the database
-    
+
     Inputs:
     - username (str): the username of the user
-    
+
     Returns:
     - dict: the user dict of the requested user, empty if not found
     """
@@ -560,13 +562,13 @@ def getUser(username: str):
 def rankTeams(key: str, stat: str, sort: bool = True, index: int = 0):
     """
     Ranks all teams with match data by a given category.
-    
+
     Inputs:
     - key (str): the scoring category to rank by
     - stat (str): the statistic to rank using, either "mean", "median", "mode", "highest", or "lowest"
     - sort (bool): True for descending, False for ascending, defaults to true.
     - index (int): if the data is a list, which index to use
-    
+
     Returns:
     - list[dict]: the ranked teams with their calculated statistic
     """
@@ -604,10 +606,10 @@ def rankTeams(key: str, stat: str, sort: bool = True, index: int = 0):
 def parseResults(data):
     """
     Parses results from the database.
-    
+
     Inputs:
     - data (Cursor): raw output from the database
-    
+
     Returns:
     - dict or list: parsed results
     """

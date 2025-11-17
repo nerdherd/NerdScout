@@ -15,7 +15,7 @@ from database import *
 def isLoggedIn() -> bool:
     """
     Checks if the user is logged in.
-    
+
     Returns:
     - Boolean: User is logged in or not
     """
@@ -25,13 +25,13 @@ def isLoggedIn() -> bool:
 def newUser(username: str, passwordHash: str) -> bool:
     """
     Attempts to create a new unnaproved user.
-    
+
     Logs an error if the username already exists.
-    
+
     Inputs:
     - username (str): the username of the user
     - passwordHash (str): the hash of the user's password
-    
+
     Returns:
     - Boolean: Whether or not the account was created successfully
     """
@@ -55,11 +55,11 @@ def newUser(username: str, passwordHash: str) -> bool:
 def checkPassword(username: str, password: str):
     """
     Checks if the password is correct for a user, and if the user is approved.
-    
+
     Inputs:
     - username (str): the username of the user
     - password (str): the the user's password
-    
+
     Returns:
     - Boolean: Password correct or not
     - String: Extra information ("Success" if successful, else reason for failure)
@@ -87,7 +87,8 @@ def checkPassword(username: str, password: str):
         )
         return False, "Account not found"
 
-def requestPasswordChange(username:str, passwordHash:str) -> bool:
+
+def requestPasswordChange(username: str, passwordHash: str) -> bool:
     """
     Creates a new passwordChange in the requests database.
 
@@ -99,20 +100,23 @@ def requestPasswordChange(username:str, passwordHash:str) -> bool:
     - Boolean: if it was succesful or not
 
     """
-    app.logger.info(f"Password change for {username} requested by {request.remote_addr}")
+    app.logger.info(
+        f"Password change for {username} requested by {request.remote_addr}"
+    )
     if not getUser(username):
         return False
     requestsDB.insert_one(
         {
             "type": "passwordChange",
-            "data":{
+            "data": {
                 "username": username,
                 "passwordHash": passwordHash,
-                "timestamp": datetime.now()
+                "timestamp": datetime.now(),
             },
         }
     )
     return True
+
 
 def getAllPasswordRequests() -> list:
     """
@@ -121,15 +125,14 @@ def getAllPasswordRequests() -> list:
     Returns:
     - list: list of dicts of requests
     """
-    results = requestsDB.find(
-        {"type":"passwordChange"}
-    )
+    results = requestsDB.find({"type": "passwordChange"})
     return parseResults(results)
 
-def applyPasswordChange(id:str) -> bool:
+
+def applyPasswordChange(id: str) -> bool:
     """
     Applies a password change request by ObjectId
-    
+
     Inputs:
     - id (str): ObjectId str of request
 
@@ -139,20 +142,25 @@ def applyPasswordChange(id:str) -> bool:
     idParsed = ObjectId(id)
     result = parseResults(requestsDB.find_one({"_id": idParsed}))
     if not result:
-        app.logger.error(f"Failed to apply password update for request {id}: request not found.")
+        app.logger.error(
+            f"Failed to apply password update for request {id}: request not found."
+        )
         return False
     accounts.find_one_and_update(
         {"username": result["data"]["username"]},
-        {"$set":{"passwordHash": result["data"]["passwordHash"]}}
+        {"$set": {"passwordHash": result["data"]["passwordHash"]}},
     )
     requestsDB.find_one_and_delete({"_id": idParsed})
-    app.logger.info(f"{session["username"]} updated password for {result['data']['username']}.")
+    app.logger.info(
+        f"{session["username"]} updated password for {result['data']['username']}."
+    )
     return True
 
-def deletePasswordChange(id:str) -> bool:
+
+def deletePasswordChange(id: str) -> bool:
     """
     Deletes a password change request by ObjectId
-    
+
     Inputs:
     - id (str): ObjectId str of request
 
@@ -163,5 +171,7 @@ def deletePasswordChange(id:str) -> bool:
     result = requestsDB.find_one_and_delete({"_id": idParsed})
     if not result:
         return False
-    app.logger.info(f"{session["username"]} deleted password request {id} for {result['data']['username']}.")
+    app.logger.info(
+        f"{session["username"]} deleted password request {id} for {result['data']['username']}."
+    )
     return True

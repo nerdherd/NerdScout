@@ -1,7 +1,7 @@
-
 from constants import *
 from database import *
 from pymongo.collection import Collection
+
 
 class Game:
     """
@@ -9,29 +9,32 @@ class Game:
 
     This shouldn't be used; all functions should be replaced.
     """
-    def __init__(self, matches:Collection, teams:Collection):
+
+    def __init__(self, matches: Collection, teams: Collection):
         self.keyDisplayNames = {}
         self.matches = matches
         self.teams = teams
         self.teamRankOptions = {}
         self.teamTableDisplayNames = {}
-        self.matchTableDisplayNames= {}
+        self.matchTableDisplayNames = {}
         raise NotImplementedError("Game Superclass __init__ used")
+
     def calculateScore(self) -> int:
         """
         Calculate the total score from scouted values.
 
         This shouldn't be used; replace this with a game specific function.
-        
+
         Inputs:
         - Depends
-        
+
         Outputs:
         - int: total score, minus points from fouls
-        
+
         """
         raise NotImplementedError("Game Superclass calculateScore used")
         # return 0
+
     def scoreRobotInMatch(self) -> bool:
         """
         Scores one robot in a match.
@@ -40,29 +43,35 @@ class Game:
 
         Inputs:
         - self explanitory
-        
+
         Returns:
         - Boolean: if the robot was successfully scored
         """
         raise NotImplementedError("Game Superclass scoreRobotInMatch used")
         # return False
-    def calculateScoreFromData(self, matchData: dict, team: Station, edit: int = -1) -> int:
+
+    def calculateScoreFromData(
+        self, matchData: dict, team: Station, edit: int = -1
+    ) -> int:
         """
         Gets a robot's result from the database and scores it.
 
         This shouldn't be used; replace this with a game specific function.
-        
+
         Inputs:
         - matchData (dict): a match dict
         - team (Station): the station to score
         - edit (int): which revision to score, defaults to the latest
-        
+
         Returns:
         - int: calculated score
         """
         raise NotImplementedError("Game Superclass calculateScoreFromData used")
         # return 0
-    def calculateAverageAllianceScore(self, team1:int, team2:int, team3:int, calc=getMeanOfScoringCategory) -> dict|None:
+
+    def calculateAverageAllianceScore(
+        self, team1: int, team2: int, team3: int, calc=getMeanOfScoringCategory
+    ) -> dict | None:
         """
         Calculates a hypothetical alliance score of three teams using their average results in each category.
 
@@ -73,32 +82,34 @@ class Game:
         - team2 (int): team number 2
         - team3 (int): team number 3
         - calc (function): the static function to use, defaults to mean
-        
+
         Returns:
         - dict or none: dict of predicted results, or None if any teams are not found.
         """
         raise NotImplementedError("Game Superclass calculateAverageAllianceScore used")
         # return None
+
     def calculateMinMaxAllianceScore(
         self, team1: int, team2: int, team3: int, maximum: bool = True
-    ) -> dict|None:
+    ) -> dict | None:
         """
         Calculates a hypothetical alliance score of three teams using their minimum or maximum results in each category.
 
         This shouldn't be used; replace this with a game specific function.
-        
+
         Inputs:
         - team1 (int): team number 1
         - team2 (int): team number 2
         - team3 (int): team number 3
         - maximum (bool): True uses maximum, False uses minimum, defaults to True
-        
+
         Returns:
         - dict or none: dict of predicted results, or None if any teams are not found.
         """
         raise NotImplementedError("Game Superclass calcualteMinMaxAllianceScore used")
         # return None
-    def getAllStats(self,team:int) -> dict:
+
+    def getAllStats(self, team: int) -> dict:
         """
         Calculates all stats for every single scoring category.
 
@@ -113,9 +124,9 @@ class Game:
         raise NotImplementedError("Game Superclass getAllStats used")
         # return {}
 
-    
+
 class Reefscape(Game):
-    def __init__(self, matches:Collection, teams:Collection):
+    def __init__(self, matches: Collection, teams: Collection):
         self.keyDisplayNames = {
             "matchNumber": "Match Number",
             "setNumber": "Set Number",
@@ -191,7 +202,7 @@ class Reefscape(Game):
             "Ending Position": "endPos,0",
             "Attempted Ending Position": "attemptedEndPos,0",
             "Minor Fouls": "minorFouls,0",
-            "Major Fouls": "majorFouls,0"
+            "Major Fouls": "majorFouls,0",
         }
         self.teamTableDisplayNames = {
             "score": "Score Impact",
@@ -220,7 +231,7 @@ class Reefscape(Game):
             "majorFouls": "Major Fouls",
         }
         self.matchTableDisplayNames = {
-            "team":"Team",
+            "team": "Team",
             "displayName": "Display Name",
             "score": "Score Impact",
             "matchNumber": "Match Number",
@@ -247,11 +258,12 @@ class Reefscape(Game):
             "teleNet": "Net Tele-Op",
             "teleNetMiss": "Net Tele-Op Missed",
             "attemptedEndPos": "Attempted Ending Position",
-            "endPosSuccess":"Ending Position Sucecss",
+            "endPosSuccess": "Ending Position Sucecss",
             "minorFouls": "Minor Fouls",
             "majorFouls": "Major Fouls",
-            "comment":"Comment",
+            "comment": "Comment",
         }
+
     def calculateScore(
         self,
         autoLeave: bool,
@@ -267,13 +279,13 @@ class Reefscape(Game):
     ) -> int:
         """
         Calculate the total score from scouted values.
-        
+
         Inputs:
-        - Self explanatory 
-        
+        - Self explanatory
+
         Outputs:
         - int: total score, minus points from fouls
-        
+
         """
         score = 0
 
@@ -309,6 +321,7 @@ class Reefscape(Game):
         score -= 6 * majorFouls
 
         return score
+
     def scoreRobotInMatch(
         self,
         matchNumber: int,
@@ -344,7 +357,7 @@ class Reefscape(Game):
 
         Inputs:
         - self explanitory
-        
+
         Returns:
         - Boolean: if the robot was successfully scored
         """
@@ -362,10 +375,16 @@ class Reefscape(Game):
                         "autoLeave": autoLeave,
                         "autoReef": autoReef,
                         "autoReefMiss": autoReefMiss,
-                        "autoReefTotal": autoReef[0] + autoReef[1] + autoReef[2] + autoReef[3],
+                        "autoReefTotal": autoReef[0]
+                        + autoReef[1]
+                        + autoReef[2]
+                        + autoReef[3],
                         "teleReef": teleReef,
                         "teleReefMiss": teleReefMiss,
-                        "teleReefTotal": teleReef[0] + teleReef[1] + teleReef[2] + teleReef[3],
+                        "teleReefTotal": teleReef[0]
+                        + teleReef[1]
+                        + teleReef[2]
+                        + teleReef[3],
                         "autoProcessor": autoProcessor,
                         "autoProcessorMiss": autoProcessorMiss,
                         "teleProcessor": teleProcessor,
@@ -386,7 +405,11 @@ class Reefscape(Game):
                             teleProcessor,
                             autoNet,
                             teleNet,
-                            attemptedEndPos.value if endPosSuccess else EndPosition.NONE.value,
+                            (
+                                attemptedEndPos.value
+                                if endPosSuccess
+                                else EndPosition.NONE.value
+                            ),
                             minorFouls,
                             majorFouls,
                         ),
@@ -404,15 +427,18 @@ class Reefscape(Game):
             return False
         app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")  # type: ignore
         return True
-    def calculateScoreFromData(self, matchData: dict, team: Station, edit: int = -1) -> int:
+
+    def calculateScoreFromData(
+        self, matchData: dict, team: Station, edit: int = -1
+    ) -> int:
         """
         Gets a robot's result from the database and scores it.
-        
+
         Inputs:
         - matchData (dict): a match dict
         - team (Station): the station to score
         - edit (int): which revision to score, defaults to the latest
-        
+
         Returns:
         - int: calculated score
         """
@@ -430,18 +456,21 @@ class Reefscape(Game):
             results["majorFouls"],
         )
         return score
-    def calculateAverageAllianceScore(self, team1: int, team2: int, team3: int, calc=getMeanOfScoringCategory):
+
+    def calculateAverageAllianceScore(
+        self, team1: int, team2: int, team3: int, calc=getMeanOfScoringCategory
+    ):
         """
         Calculates a hypothetical alliance score of three teams using their average results in each category.
 
         Should be edited every year.
-        
+
         Inputs:
         - team1 (int): team number 1
         - team2 (int): team number 2
         - team3 (int): team number 3
         - calc (function): the static function to use, defaults to mean
-        
+
         Returns:
         - dict or none: dict of predicted results, or None if any teams are not found.
         """
@@ -491,13 +520,17 @@ class Reefscape(Game):
             + round(calc(team3Data, "autoReef", 3)),
         ]
 
-        autoReef[0] += (max(autoReef[1],12)-12) + (max(autoReef[2],12)-12) + (max(autoReef[3],12)-12)
-        
+        autoReef[0] += (
+            (max(autoReef[1], 12) - 12)
+            + (max(autoReef[2], 12) - 12)
+            + (max(autoReef[3], 12) - 12)
+        )
+
         autoReef = [
             autoReef[0],
-            min(autoReef[1],12),
-            min(autoReef[2],12),
-            min(autoReef[3],12),
+            min(autoReef[1], 12),
+            min(autoReef[2], 12),
+            min(autoReef[3], 12),
         ]
 
         teleReefValues = [
@@ -514,14 +547,18 @@ class Reefscape(Game):
             + round(calc(team2Data, "teleReef", 3))
             + round(calc(team3Data, "teleReef", 3)),
         ]
-        
+
         teleReef = [
             teleReefValues[0],
-            min(teleReefValues[1],12-autoReef[1]),
-            min(teleReefValues[1],12-autoReef[1]),
-            min(teleReefValues[1],12-autoReef[1])
+            min(teleReefValues[1], 12 - autoReef[1]),
+            min(teleReefValues[1], 12 - autoReef[1]),
+            min(teleReefValues[1], 12 - autoReef[1]),
         ]
-        teleReef[0] += max(0,teleReefValues[1]-teleReef[1]) + max(0,teleReefValues[2]-teleReef[2]) + max(0,teleReefValues[3]-teleReef[3])
+        teleReef[0] += (
+            max(0, teleReefValues[1] - teleReef[1])
+            + max(0, teleReefValues[2] - teleReef[2])
+            + max(0, teleReefValues[3] - teleReef[3])
+        )
 
         autoProcessor = (
             round(calc(team1Data, "autoProcessor"))
@@ -602,23 +639,26 @@ class Reefscape(Game):
             "minorFouls": team1Minors + team2Minors + team3Minors,
             "majorFouls": team1Majors + team2Majors + team3Majors,
         }
+
     def calculateMinMaxAllianceScore(
         self, team1: int, team2: int, team3: int, maximum: bool = True
     ):
         """
         Calculates a hypothetical alliance score of three teams using their minimum or maximum results in each category.
-        
+
         Inputs:
         - team1 (int): team number 1
         - team2 (int): team number 2
         - team3 (int): team number 3
         - maximum (bool): True uses maximum, False uses minimum, defaults to True
-        
+
         Returns:
         - dict or none: dict of predicted results, or None if any teams are not found.
         """
         statistic = getMatchWithHighestValue if maximum else getMatchWithLowestValue
-        oppositeStatistic = getMatchWithLowestValue if maximum else getMatchWithHighestValue
+        oppositeStatistic = (
+            getMatchWithLowestValue if maximum else getMatchWithHighestValue
+        )
 
         team1Listing = getTeam(team1)
         if not team1Listing:
@@ -666,13 +706,17 @@ class Reefscape(Game):
             + round(statistic(team3Data, "autoReef", 3)["value"]),
         ]
 
-        autoReef[0] += (max(autoReef[1],12)-12) + (max(autoReef[2],12)-12) + (max(autoReef[3],12)-12)
-        
+        autoReef[0] += (
+            (max(autoReef[1], 12) - 12)
+            + (max(autoReef[2], 12) - 12)
+            + (max(autoReef[3], 12) - 12)
+        )
+
         autoReef = [
             autoReef[0],
-            min(autoReef[1],12),
-            min(autoReef[2],12),
-            min(autoReef[3],12),
+            min(autoReef[1], 12),
+            min(autoReef[2], 12),
+            min(autoReef[3], 12),
         ]
 
         teleReefValues = [
@@ -689,14 +733,18 @@ class Reefscape(Game):
             + round(statistic(team2Data, "teleReef", 3)["value"])
             + round(statistic(team3Data, "teleReef", 3)["value"]),
         ]
-        
+
         teleReef = [
             teleReefValues[0],
-            min(teleReefValues[1],12-autoReef[1]),
-            min(teleReefValues[1],12-autoReef[1]),
-            min(teleReefValues[1],12-autoReef[1])
+            min(teleReefValues[1], 12 - autoReef[1]),
+            min(teleReefValues[1], 12 - autoReef[1]),
+            min(teleReefValues[1], 12 - autoReef[1]),
         ]
-        teleReef[0] += max(0,teleReefValues[1]-teleReef[1]) + max(0,teleReefValues[2]-teleReef[2]) + max(0,teleReefValues[3]-teleReef[3])
+        teleReef[0] += (
+            max(0, teleReefValues[1] - teleReef[1])
+            + max(0, teleReefValues[2] - teleReef[2])
+            + max(0, teleReefValues[3] - teleReef[3])
+        )
 
         autoProcessor = (
             statistic(team1Data, "autoProcessor")["value"]
@@ -777,7 +825,8 @@ class Reefscape(Game):
             "minorFouls": team1Minors + team2Minors + team3Minors,
             "majorFouls": team1Majors + team2Majors + team3Majors,
         }
-    def getAllStats(self,team:int) -> dict:
+
+    def getAllStats(self, team: int) -> dict:
         """
         Calculates all stats for every single scoring category.
 
@@ -802,9 +851,13 @@ class Reefscape(Game):
             "teleReefL4": getAllStatsForCategory(teamResults, "teleReef", 3),
             "teleReefMiss": getAllStatsForCategory(teamResults, "teleReefMiss"),
             "autoProcessor": getAllStatsForCategory(teamResults, "autoProcessor"),
-            "autoProcessorMiss": getAllStatsForCategory(teamResults, "autoProcessorMiss"),
+            "autoProcessorMiss": getAllStatsForCategory(
+                teamResults, "autoProcessorMiss"
+            ),
             "teleProcessor": getAllStatsForCategory(teamResults, "teleProcessor"),
-            "teleProcessorMiss": getAllStatsForCategory(teamResults, "teleProcessorMiss"),
+            "teleProcessorMiss": getAllStatsForCategory(
+                teamResults, "teleProcessorMiss"
+            ),
             "autoNet": getAllStatsForCategory(teamResults, "autoNet"),
             "autoNetMiss": getAllStatsForCategory(teamResults, "autoNetMiss"),
             "teleNet": getAllStatsForCategory(teamResults, "teleNet"),
