@@ -593,25 +593,7 @@ def submitScorePage():
     else:
         match = matchVal
 
-    cannedComments = [
-        "Good Driving",
-        "Bad Driving",
-        "Fast Driving",
-        "Slow Driving",
-        "Removed Algae",
-        "Coral Station During Auto",
-        "Played Defense",
-        "Good Defense",
-        "Bad Defense",
-        "Was Defended",
-        "Multiple Fouls",
-        "Multiple Jams",
-        "Bumpers Off",
-        "Tipped/Stuck",
-        "Died",
-        "No Show",
-        "Bad Descision Making",
-    ]
+    cannedComments = game.cannedComments
 
     return render_template(
         "match/submit.html",

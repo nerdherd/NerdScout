@@ -17,6 +17,7 @@ class Game:
         self.teamRankOptions = {}
         self.teamTableDisplayNames = {}
         self.matchTableDisplayNames = {}
+        self.cannedComments = {}
         raise NotImplementedError("Game Superclass __init__ used")
 
     def calculateScore(self) -> int:
@@ -263,6 +264,25 @@ class Reefscape(Game):
             "majorFouls": "Major Fouls",
             "comment": "Comment",
         }
+        self.cannedComments = [
+        "Good Driving",
+        "Bad Driving",
+        "Fast Driving",
+        "Slow Driving",
+        "Removed Algae",
+        "Coral Station During Auto",
+        "Played Defense",
+        "Good Defense",
+        "Bad Defense",
+        "Was Defended",
+        "Multiple Fouls",
+        "Multiple Jams",
+        "Bumpers Off",
+        "Tipped/Stuck",
+        "Died",
+        "No Show",
+        "Bad Descision Making",
+        ]
 
     def calculateScore(
         self,
