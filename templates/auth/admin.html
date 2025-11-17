@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    .card{
+        background-color: var(--darker-navy);
+        box-sizing: border-box;
+        padding:8px;
+        margin-top:10px;
+        border-radius: 2rem;
+        width:500px;
+        padding-bottom: 30px;
+        padding-left: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block title %}NerdScout{% endblock %}
+
+{% block content %}
+<h1>Links for admins</h1>
+<div class="card">
+    <h2>Account Management</h2>
+    <p>Approve new accounts or revoke access for others.</p>
+    <a href="{{url_for('userManagementPage')}}" target="_blank">Link</a>
+</div>
+<div class="card">
+    <h2>Password Resets</h2>
+    <p>Approve or deny password reset requests</p>
+    <a href="{{url_for('resetPasswordsPage')}}" target="_blank">Link</a>
+</div>
+{% endblock %}

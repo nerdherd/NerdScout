@@ -435,7 +435,7 @@ def resetPasswordsPage():
         except Exception as e:
             app.logger.warning(f"Failed to apply password change request: fields missing.")
             abort(400)
-    return render_template("resetPasswords.html",requests=getAllPasswordRequests())
+    return render_template("auth/resetPasswords.html",requests=getAllPasswordRequests())
 
 
 @app.route("/newUser", methods=["GET", "POST"])
@@ -645,7 +645,11 @@ def userManagementPage():
         app.logger.info(
             f"User {session['username']} ({request.remote_addr}) {'approved' if decision else 'unapproved'} {user}."
         )
-    return render_template("accountManagement.html", users=getAllUsers())
+    return render_template("auth/accountManagement.html", users=getAllUsers())
+
+@app.route("/admin")
+def adminPage():
+    return render_template("auth/admin.html")
 
 @app.route("/team/table2")
 def matchTable():
@@ -684,7 +688,7 @@ freeEndpoints = frozenset(
     ["login", "newUserPage", "static", "index", "logout", "aboutPage", "awesome", "passwordRequestPage"]
 )  # endpoints that shouldn't require signing in
 adminEndpoints = frozenset(
-    ["strategyPage","teamRankPage","teamTable","scoreAlliancePage","matchTable","resetPasswordsPage"]
+    ["strategyPage","teamRankPage","teamTable","scoreAlliancePage","matchTable","resetPasswordsPage","adminPage"]
 )  # endpoints that require user be admin
 @app.before_request
 def before_request():
