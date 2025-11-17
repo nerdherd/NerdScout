@@ -36,7 +36,9 @@
     <div class="team-div" data-name="{{ team['shortName'] }}" data-num="{{ team['number'] }}">
         <h1>Team {{ team["number"] }}</h1>
         <h2>{{ team["shortName"] }}</h2>
-        <p>{{ team["longName"] }}</p>
+        {% autoescape off %}
+        <p>{{ team["longName"]|replace("/","/<wbr/>") }}</p>
+        {% endautoescape %}
         <a href="?team={{ team['number'] }}"></a>
     </div>
 {% endfor %}
