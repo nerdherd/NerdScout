@@ -69,7 +69,7 @@ def createTestMatches():
             addScheduledMatch(i,1,CompLevel.QM,f"2026test_qm{i}",f"Test Match {i}", 9991,9992,9993,9994,9995,9996)
     for i in range(9991,9996):
         for team in Station:
-            game.scoreRobotInMatch(i,1,CompLevel.QM,team,random.random(),random.random(),int(random.random()*8),int(random.random()*30),int(random.random()*30),random.random()>0.5,random.random()>0.5,int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),EndPositionRebuilt(random.randint(0,3)),int(random.random()*30),int(random.random()*30),"abaca",[],"tonnieboy300")
+            game.scoreRobotInMatch(i,1,CompLevel.QM,team,random.random(),random.random(),int(random.random()*8),int(random.random()*30),int(random.random()*30),random.random()>0.5,random.random()>0.5,int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),EndPositionRebuilt(random.randint(0,3)),int(random.random()*4),int(random.random()**10*10),"abaca",[],"tonnieboy300")
     return "ok."
 
 
