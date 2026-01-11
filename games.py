@@ -894,13 +894,138 @@ class Reefscape(Game):
 
 class Rebuilt(Game):
     def __init__(self, matches: Collection, teams: Collection):
-        self.keyDisplayNames = {}
+        self.keyDisplayNames = {
+            "matchNumber": "Match Number",
+            "setNumber": "Set Number",
+            "compLevel": "Competition Level",
+            "startPos": "Starting Position",
+            "preloadFuel": "Preloaded Fuel",
+            "autoFuel": "Auto Fuel",
+            "autoFuelMiss": "Missed Auto Fuel",
+            "autoClimb": "Auto L1 Climb",
+            "firstShift": "Active in first and third shifts",
+            "transitionFuel": "Transition Shift Fuel",
+            "transitionFuelMiss": "Missed Transition Shift Fuel",
+            "shift1Fuel": "Shift 1 Fuel",
+            "shift1FuelMiss": "Missed Shift 1 Fuel",
+            "shift2Fuel": "Shift 2 Fuel",
+            "shift2FuelMiss": "Missed Shift 2 Fuel",
+            "shift3Fuel": "Shift 3 Fuel",
+            "shift3FuelMiss": "Missed Shift 3 Fuel",
+            "shift4Fuel": "Shift 4 Fuel",
+            "shift4FuelMiss": "Missed Shift 4 Fuel",
+            "endgameFuel": "Endgame Fuel",
+            "endgameFuelMiss": "Missed Endgame Fuel",
+            "endClimb": "Endgame Climb",
+            "totalFuel": "Total Fuel Scored",
+            "minorFouls": "Minor Fouls",
+            "majorFouls": "Major Fouls",
+            "score": "Score Impact",
+            "comment": "Comment",
+            "cannedComments": "Canned Comments",
+            "scout": "Scout",
+        }
         self.matches = matches
         self.teams = teams
-        self.teamRankOptions = {}
-        self.teamTableDisplayNames = {}
-        self.matchTableDisplayNames = {}
-        self.cannedComments = []
+        self.teamRankOptions = {
+            "Score Impact": "score,0",
+            "Starting Position": "startPos,0",
+            "Preloaded Fuel": "preloadFuel,0",
+            "Auto Fuel": "autoFuel,0",
+            "Missed Auto Fuel": "autoFuelMiss,0",
+            "Auto L1 Climb": "autoClimb,0",
+            "Active in first and third shifts": "firstShift,0",
+            "Transition Shift Fuel": "transitionFuel,0",
+            "Missed Transition Shift Fuel": "transitionFuelMiss,0",
+            "Shift 1 Fuel": "shift1Fuel,0",
+            "Missed Shift 1 Fuel": "shift1FuelMiss,0",
+            "Shift 2 Fuel": "shift2Fuel,0",
+            "Missed Shift 2 Fuel": "shift2FuelMiss,0",
+            "Shift 3 Fuel": "shift3Fuel,0",
+            "Missed Shift 3 Fuel": "shift3FuelMiss,0",
+            "Shift 4 Fuel": "shift4Fuel,0",
+            "Missed Shift 4 Fuel": "shift4FuelMiss,0",
+            "Endgame Fuel": "endgameFuel,0",
+            "Missed Endgame Fuel": "endgameFuelMiss,0",
+            "Endgame Climb": "endClimb,0",
+            "Total Fuel Scored": "totalFuel,0",
+            "Minor Fouls": "minorFouls,0",
+            "Major Fouls": "majorFouls,0",
+        }
+        self.teamTableDisplayNames = {
+            "score": "Score Impact",
+            "startPos": "Starting Position",
+            "preloadFuel": "Preloaded Fuel",
+            "autoFuel": "Auto Fuel",
+            "autoFuelMiss": "Missed Auto Fuel",
+            "autoClimb": "Auto L1 Climb",
+            "firstShift": "Active in first and third shifts",
+            "transitionFuel": "Transition Shift Fuel",
+            "transitionFuelMiss": "Missed Transition Shift Fuel",
+            "shift1Fuel": "Shift 1 Fuel",
+            "shift1FuelMiss": "Missed Shift 1 Fuel",
+            "shift2Fuel": "Shift 2 Fuel",
+            "shift2FuelMiss": "Missed Shift 2 Fuel",
+            "shift3Fuel": "Shift 3 Fuel",
+            "shift3FuelMiss": "Missed Shift 3 Fuel",
+            "shift4Fuel": "Shift 4 Fuel",
+            "shift4FuelMiss": "Missed Shift 4 Fuel",
+            "endgameFuel": "Endgame Fuel",
+            "endgameFuelMiss": "Missed Endgame Fuel",
+            "endClimb": "Endgame Climb",
+            "totalFuel": "Total Fuel Scored",
+            "minorFouls": "Minor Fouls",
+            "majorFouls": "Major Fouls",
+        }
+        self.matchTableDisplayNames = {
+            "team": "Team",
+            "displayName": "Display Name",
+            "score": "Score Impact",
+            "matchNumber": "Match Number",
+            "setNumber": "Set Number",
+            "compLevel": "Competition Level",
+            "startPos": "Starting Position",
+            "preloadFuel": "Preloaded Fuel",
+            "autoFuel": "Auto Fuel",
+            "autoFuelMiss": "Missed Auto Fuel",
+            "autoClimb": "Auto L1 Climb",
+            "firstShift": "Active in first and third shifts",
+            "transitionFuel": "Transition Shift Fuel",
+            "transitionFuelMiss": "Missed Transition Shift Fuel",
+            "shift1Fuel": "Shift 1 Fuel",
+            "shift1FuelMiss": "Missed Shift 1 Fuel",
+            "shift2Fuel": "Shift 2 Fuel",
+            "shift2FuelMiss": "Missed Shift 2 Fuel",
+            "shift3Fuel": "Shift 3 Fuel",
+            "shift3FuelMiss": "Missed Shift 3 Fuel",
+            "shift4Fuel": "Shift 4 Fuel",
+            "shift4FuelMiss": "Missed Shift 4 Fuel",
+            "endgameFuel": "Endgame Fuel",
+            "endgameFuelMiss": "Missed Endgame Fuel",
+            "endClimb": "Endgame Climb",
+            "totalFuel": "Total Fuel Scored",
+            "minorFouls": "Minor Fouls",
+            "majorFouls": "Major Fouls",
+            "comment": "Comment",
+            "cannedComments": "Canned Comments",
+            "scout": "Scout",}
+        self.cannedComments = [
+        "Good Driving",
+        "Bad Driving",
+        "Fast Driving",
+        "Slow Driving",
+        "Played Defense",
+        "Good Defense",
+        "Bad Defense",
+        "Was Defended",
+        "Multiple Fouls",
+        "Multiple Jams",
+        "Bumpers Off",
+        "Tipped/Stuck",
+        "Died",
+        "No Show",
+        "Bad Descision Making",
+        ]
 
     def calculateScore(self, fuel: int, autoClimb: bool, endClimb: EndPositionRebuilt, minorFouls: int, majorFouls: int) -> int:
         """
@@ -1127,4 +1252,133 @@ class Rebuilt(Game):
             "minorFouls": team1Minors + team2Minors + team3Minors,
             "majorFouls": team1Majors + team2Majors + team3Majors,
         }
+    
+    def calculateMinMaxAllianceScore(self, team1: int, team2: int, team3: int, maximum: bool = True) -> dict | None:
+        """
+        Calculates a hypothetical alliance score of three teams using their minimum or maximum results in each category.
 
+        Inputs:
+        - team1 (int): team number 1
+        - team2 (int): team number 2
+        - team3 (int): team number 3
+        - maximum (bool): True uses maximum, False uses minimum, defaults to True
+
+        Returns:
+        - dict or none: dict of predicted results, or None if any teams are not found.
+        """
+        statistic = getMatchWithHighestValue if maximum else getMatchWithLowestValue
+        oppositeStatistic = (
+            getMatchWithLowestValue if maximum else getMatchWithHighestValue
+        )
+
+        team1Listing = getTeam(team1)
+        if not team1Listing:
+            return None
+        team2Listing = getTeam(team2)
+        if not team2Listing:
+            return None
+        team3Listing = getTeam(team3)
+        if not team3Listing:
+            return None
+        
+        team1Data = getTeamResults(team1)
+        team2Data = getTeamResults(team2)
+        team3Data = getTeamResults(team3)
+
+        team1AutoClimb = int(statistic(team1Data, "autoClimb")["value"] >= 0.5)
+        team2AutoClimb = int(statistic(team2Data, "autoClimb")["value"] >= 0.5)
+        team3AutoClimb = int(statistic(team3Data, "autoClimb")["value"] >= 0.5)
+        autoClimbTotal = team1AutoClimb + team2AutoClimb + team3AutoClimb
+
+        team1End = round(statistic(team1Data, "endPos")["value"])
+        team2End = round(statistic(team2Data, "endPos")["value"])
+        team3End = round(statistic(team3Data, "endPos")["value"])
+
+        team1Minors = statistic(team1Data, "minorFouls")["value"]
+        team2Minors = statistic(team2Data, "minorFouls")["value"]
+        team3Minors = statistic(team3Data, "minorFouls")["value"]
+
+        team1Majors = statistic(team1Data, "majorFouls")["value"]
+        team2Majors = statistic(team2Data, "majorFouls")["value"]
+        team3Majors = statistic(team3Data, "majorFouls")["value"]
+
+        fuel = round(statistic(team1Data, "totalFuel")["value"]) + round(statistic(team2Data, "totalFuel")["value"]) + round(statistic(team3Data, "totalFuel")["value"])
+
+        score = self.calculateScore(fuel, False, EndPositionRebuilt.NONE, 0, 0)
+
+        score += autoClimbTotal * 15
+        score += (
+            10
+            if team1End == EndPositionRebuilt.L1.value
+            else(
+                20
+                if team1End == EndPositionRebuilt.L2.value
+                else 30 if team1End == EndPositionRebuilt.L3.value else 0
+            )
+        )
+        score += (
+            10
+            if team2End == EndPositionRebuilt.L1.value
+            else(
+                20
+                if team2End == EndPositionRebuilt.L2.value
+                else 30 if team2End == EndPositionRebuilt.L3.value else 0
+            )
+        )
+        score += (
+            10
+            if team3End == EndPositionRebuilt.L1.value
+            else(
+                20
+                if team3End == EndPositionRebuilt.L2.value
+                else 30 if team3End == EndPositionRebuilt.L3.value else 0
+            )
+        )
+    
+        return {
+            "score": score,
+            "autoClimb": autoClimbTotal,
+            "fuelTotal": fuel,
+            "endPos1": team1End,
+            "endPos2": team2End,
+            "endPos3": team3End,
+            "minorFouls": team1Minors + team2Minors + team3Minors,
+            "majorFouls": team1Majors + team2Majors + team3Majors,
+        }
+    
+    def getAllStats(self, team: int) -> dict:
+        """
+        Calculates all stats for every single scoring category.
+
+        Inputs:
+        - team (int): Team number
+
+        Returns:
+        - dict: dict of every scoring category with every stat
+        """
+        teamResults = getTeamResults(team)
+        return {
+            "score": getAllStatsForCategory(teamResults,"score"),
+            "startPos": getAllStatsForCategory(teamResults,"startPos"),
+            "preloadFuel": getAllStatsForCategory(teamResults,"preloadFuel"),
+            "autoFuel": getAllStatsForCategory(teamResults,"autoFuel"),
+            "autoFuelMiss": getAllStatsForCategory(teamResults,"autoFuelMiss"),
+            "autoClimb": getAllStatsForCategory(teamResults,"autoClimb"),
+            "firstShift": getAllStatsForCategory(teamResults,"firstShift"),
+            "transitionFuel": getAllStatsForCategory(teamResults,"transitionFuel"),
+            "transitionFuelMiss": getAllStatsForCategory(teamResults,"transitionFuelMiss"),
+            "shift1Fuel": getAllStatsForCategory(teamResults,"shift1Fuel"),
+            "shift1FuelMiss": getAllStatsForCategory(teamResults,"shift1FuelMiss"),
+            "shift2Fuel": getAllStatsForCategory(teamResults,"shift2Fuel"),
+            "shift2FuelMiss": getAllStatsForCategory(teamResults,"shift2FuelMiss"),
+            "shift3Fuel": getAllStatsForCategory(teamResults,"shift3Fuel"),
+            "shift3FuelMiss": getAllStatsForCategory(teamResults,"shift3FuelMiss"),
+            "shift4Fuel": getAllStatsForCategory(teamResults,"shift4Fuel"),
+            "shift4FuelMiss": getAllStatsForCategory(teamResults,"shift4FuelMiss"),
+            "endgameFuel": getAllStatsForCategory(teamResults,"endgameFuel"),
+            "endgameFuelMiss": getAllStatsForCategory(teamResults,"endgameFuelMiss"),
+            "endClimb": getAllStatsForCategory(teamResults,"endClimb"),
+            "totalFuel": getAllStatsForCategory(teamResults,"totalFuel"),
+            "minorFouls": getAllStatsForCategory(teamResults,"minorFouls"),
+            "majorFouls": getAllStatsForCategory(teamResults,"majorFouls"),
+        }
