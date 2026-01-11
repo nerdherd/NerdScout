@@ -1,264 +1,48 @@
-/* .takisBaro{
-    width:100vw;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-} */
-
-/* .takisBaro button{
-    width: 45%;
-    border-radius: 0px;
-} */
-
-/* .counter{
-    border-color: red;
-    display: flex;
-    justify-content: center;
-} */
-
-/* .counter button{
-    display: inline;
-    justify-content: center;
-} */
-
-/* .counter p{
-    display: inline;
-    justify-content: center;
-} */
-
-/* .submitButton{
-    margin:10px;
-    margin-left: 0px;
-    
-} */
-
-/* .submitDiv{
-    display: flex;
-    justify-content: center;
-} */
-
-/* .mainInput{
-    display: flex;
-    justify-content: center;
-} */
-
-/* p{
-    text-align: center;
-} */
-
-/* .cbDiv{
-    display: flex;
-    justify-content:center;
-} */
-
-#startPosSlider{
-    margin:0px;
-    /* transform: rotate(-90deg);
-    transform-origin: center;
-    width: 50vh;
-    height: 10vw; */
-    writing-mode: sideways-lr;
-    height: 40vh;
+body {
+    margin:0;
+    padding:0;
 }
 
-.sliderWrapper{
-    width: 10vw;
-    height: 50vh;
-}
-
-body{
-    margin:0px;
-    padding:0px;
-}
-
-div{
-    /* border-color: red; */
+.topbar {
     display: flex;
-    padding: 2px;
-    margin: 2px;
-}
-/* 
- div div{
-    border-color: green;
- }
-
- div div div{
-    border-color:blue;
- }
-
- div div div div{
-    border-color:yellow;
- }
-
- div div div div div{
-    border-color:magenta;
- }
-
- div div div div div div{
-    border-color:cyan;
- }
-
- div div div div div div div{
-    border-color:white;
- }
-
- div div div div div div div div{
-    border-color:red;
- } */
-
-
- .counter{
-    display: flex;
-    flex-direction: column;
-    width: 30px;
-    flex-grow: 1;
- }
-
- .counterBlock{
-    display: flex;
-    flex-direction: column;
-    justify-content: right;
-    border: 5px, solid, black;
- }
-
- .counterBlockNoBorder{
-    display: flex;
-    flex-direction: column;
-    justify-content: right;
- }
-
- .counterBlockLabel{
-    justify-content: center;
- }
-
- .counterBlockLabel p{
-    margin: 2px;
- }
-
- .counterBlockData{
-    justify-content: center;
- }
-
- .topbar{
-    flex-direction: column;
-    margin: 0px;
-    padding: 0px;
- }
-
- .topbar div{
-    justify-content: center;
-    flex-grow: 1;
-    background-color: black;
-    margin: 0px;
- }
-
- .nowScouting p{
-    font-weight: bold;
-    font-size: 3vh;
-    margin: 0px;
- }
- 
- .actualInfo div{
-    overflow-wrap: break-word;
- }
-
-.infoBox p, .infoBox a{
-    text-align: center;
-    margin: 0px;
-    text-decoration: none;
-}
-
- #id{
-    justify-content: center;
- }
-
- .title{
-    justify-content: center;
- }
-
-.title h1{
-    margin: 0px;
-    padding: 0px;
-}
-
- #auto{
-    width:100%;
- }
-
- .positionBlock{
     flex-direction: column;
     align-items: center;
-    justify-content: center;
- }
-
- .positionSlider{
-    flex-direction: column;
-    align-items: center; 
-    padding: 5px;
- }
-
-.cbDiv{
-    flex-direction: column;
-}
-
-.cbDiv p{
-    margin:0px;
-}
-
-.autoCounters{
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-#positionSliderLabel{
-    width: 20vw;
-}
-
-.counter p{
-    font-size: 2vh;
-}
-
-#toTeleOp{
     width: 100%;
+    position: fixed;
+    top:0;
+    left: 0;
+    background-color: black;
+    height: 100px;
+    z-index: 100;
 }
-
-.algaeCounterBlockData div{
-    width: 100%
-}
-
-.algaeCounterBlockData div .counterBlockData div{
-    width: 50%;
-    justify-content: space-around;
-}
-
-.endPosBlock{
-    flex-direction: column;
-    align-items: center;
-}
-
-.endPosBlock p{
-    text-align: center;
-}
-
- #teleop{
-    width:100%;
- }
-
- .counter p{
-    text-align: center;
-    padding:0px;
-    margin:0px;
- }
-
-.counter button{
-    height: 5vh;
-}
-
-.toTeleOpWrapper{
+.topbar > div {
+    display: flex;
+    flex-direction: row;
     flex-grow: 1;
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
-.minusCounter{
+.topbar * {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.main {
+    margin-top: 100px;
+}
+
+.minus, .plus {
+    width: 50px;
+    height: 50px;
+    border-radius: 30%;
+    font-size: 30px;
+    transition: background 0.25s, transform 0.15s;
+}
+
+.minus {
     /* From https://css.glass */
     background: var(--red-transparent);
     border-radius: 16px;
@@ -266,11 +50,9 @@ div{
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
     border: 1px solid var(--red-opaque);
-
-    transition: background 0.25s ease, transform 0.15s ease;
 }
 
-.plusCounter{
+.plus {
     /* From https://css.glass */
     background: var(--green-transparent);
     border-radius: 16px;
@@ -278,63 +60,16 @@ div{
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
     border: 1px solid var(--green-opaque);
-
-    transition: background 0.25s ease, transform 0.15s ease;
 }
 
-.plusCounter:active{
-    background: var(--green-opaque);
-    transform: scale(1.1);
-}
-
-.minusCounter:active{
+.minus:active,.minus:hover{
     background: var(--red-opaque);
-    transform: scale(1.1);
+    cursor: pointer;
 }
 
-#endPos{
-    width: 100%;
-}
-
-input[type=range]{
-    accent-color: var(--white-accent);
-}
-
-.endPosSuccess{
-    justify-content: center;
-    align-items: center;
-}
-
-.commentBlock{
-    flex-direction: column;
-}
-
-#comments{
-    border-radius: 1em;
-    height: 10em;
-    text-align: left;
-    vertical-align: top;
-    font-size: large;
-}
-
-.submitButton{
-    width: 100vw;
-    height: 10vh;
-}
-
-.titleText{
-    flex-grow: 1;
-    text-align: center;
-}
-
-.backButton{
-    width: 10em;
-}
-
-.endPosImg{
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
+.plus:active,.plus:hover{
+    background: var(--green-opaque);
+    cursor: pointer;
 }
 
 .canned-button {
@@ -350,9 +85,4 @@ input[type=range]{
 .cannedComments{
     flex-wrap: wrap;
     justify-content: center;
-}
-
-input[type="checkbox"] {
-    width: 2em;
-    height: 2em;
 }

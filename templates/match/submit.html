@@ -16,112 +16,124 @@
 {% block content %}
 
 <div class="topbar">
-    <div class="nowScouting">
-        <p>NOW SCOUTING</p>
+    <div>
+        <h1>NOW SCOUTING</h1>
     </div>
-    <div class="actualInfo">
-        <div class="infoBox">
-            <!-- ?matchNum={{ match['matchNumber'] }}&compLevel={{ match['compLevel'] }}&setNum={{ match['setNumber'] }} -->
+    <div>
+        <div>
             <a href="{{url_for('renderMatch',matchNum=match,compLevel=compLvl,setNum=setVal)}}">Match: <br> {{compLvl}} {{match}} </a>
         </div>
-        <div class="infoBox">
+        <div>
             <p>Team:<br>{{teamNum}}</p>
         </div>
-        <div class="infoBox">
+        <div>
             <p>Station:<br>{{rbtStat}}</p>
         </div>
-
-
         <!-- <p>Match Number: {{match}} {{compLvl}} || Team: {{teamNum}} || Station Number: {{rbtStat}}</p> -->
     </div>
 </div>
 
-<div class="mainInput">
-
-    <div id="auto">
-
-        <div class="title">
-            <h1>Auto</h1>
+<div class="main">
+    <div>
+        <label for="preloadFuel">Preload fuel</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('preloadFuel',false)">-</button>
+            <input type="number" id="preloadFuel" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('preloadFuel',true)">+</button>
         </div>
-
-        
-
-        <div class="autoInputs">
-
-            <div class="positionDider">
-                
-            </div>
-
-            <div class="counter" >
-                <p>Preload</p>
-                <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
-                <p id="aCL4">0</p>
-                <button onclick="autoReefSub(3)" class="minusCounter">-</button>
-            </div>
-
-            <div class="counter" >
-                <p>Scored</p>
-                <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
-                <p id="aCL4">0</p>
-                <button onclick="autoReefSub(3)" class="minusCounter">-</button>
-            </div>
-
-            <div class="counter" >
-                <p>Missed</p>
-                <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
-                <p id="aCL4">0</p>
-                <button onclick="autoReefSub(3)" class="minusCounter">-</button>
-            </div>
-
-            <div class="counter" >
-                <p>Climb</p>
-                <input type="checkbox" id="leave">
-            </div>
-
-            <div class="cbDiv">
-                <p>Leave</p>
-                <input type="checkbox" id="leave">
-            </div>
-
-        </div>
-
-        <div class="firstHalfInputs">
-
-            <div class="transitionInputs">
-
-                <div class="counter">
-                    <p>Scored</p>
-                    <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
-                    <p id="aCL4">0</p>
-                    <button onclick="autoReefSub(3)" class="minusCounter">-</button>
-                </div>
-
-                <div class="counter">
-                    <p>Missed</p>
-                    <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
-                    <p id="aCL4">0</p>
-                    <button onclick="autoReefSub(3)" class="minusCounter">-</button>
-                </div>
-
-            </div>
-
-        </div>
-
-
     </div>
-
-
-    <div class="counter" >
-        <p>L4</p>
-        <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
-        <p id="aCL4">0</p>
-        <button onclick="autoReefSub(3)" class="minusCounter">-</button>
+    <div>
+        <label for="autoFuel">Auto fuel</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('autoFuel',false)">-</button>
+            <input type="number" id="autoFuel" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('autoFuel',true)">+</button>
+        </div>
+        <label for="autoFuelMiss">Auto fuel miss</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('autoFuelMiss',false)">-</button>
+            <input type="number" id="autoFuelMiss" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('autoFuelMiss',true)">+</button>
+        </div>
+        <label for="autoClimb">Hung in auto?</label>
+        <input type="checkbox" id="autoClimb">
     </div>
-
-</div>
-
-    
-
+    <div>
+        <label for="firstShift">Did they get first shift?</label>
+        <input type="checkbox" id="firstShift">
+    </div>
+    <div>
+        <label for="transitionFuel">Transition period fuel</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('transitionFuel',false)">-</button>
+            <input type="number" id="transitionFuel" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('transitionFuel',true)">+</button>
+        </div>
+        <label for="transitionFuelMiss">Transition period miss</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('transitionFuelMiss',false)">-</button>
+            <input type="number" id="transitionFuelMiss" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('transitionFuelMiss',true)">+</button>
+        </div>
+    </div>
+    {% for n in range(1,5)%}
+    <div class="shift{{n}}">
+        <label for="shift1Fuel">Shift {{n}} fuel</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('shift{{n}}Fuel',false)">-</button>
+            <input type="number" id="shift{{n}}Fuel" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('shift{{n}}Fuel',true)">+</button>
+        </div>
+        <label for="shift{{n}}FuelMiss">Shift {{n}} fuel miss</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('shift{{n}}FuelMiss',false)">-</button>
+            <input type="number" id="shift{{n}}FuelMiss" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('shift{{n}}FuelMiss',true)">+</button>
+        </div>
+    </div>
+    {% endfor %}
+    <div>
+        <label for="endgameFuel">Endgame fuel</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('endgameFuel',false)">-</button>
+            <input type="number" id="endgameFuel" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('endgameFuel',true)">+</button>
+        </div>
+        <label for="endgameFuelMiss">Endgame fuel miss</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('endgameFuelMiss',false)">-</button>
+            <input type="number" id="endgameFuelMiss" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('endgameFuelMiss',true)">+</button>
+        </div>
+    </div>
+    <div>
+        <label for="attemptedEndPos">End position:</label>
+        <input type="range" min="0" max="3" step="1" value="1" id="attemptedEndPos">
+    </div>
+    <div>
+        <label for="minorFouls">Minor fouls</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('minorFouls',false)">-</button>
+            <input type="number" id="minorFouls" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('minorFouls',true)">+</button>
+        </div>
+        <label for="majorFouls">Major fouls</label>
+        <div class="counter">
+            <button class="minus" onclick="incrementCounter('majorFouls',false)">-</button>
+            <input type="number" id="majorFouls" min="0" value="0">
+            <button class="plus" onclick="incrementCounter('majorFouls',true)">+</button>
+        </div>
+    </div>
+    <div>
+        <p>Comments</p>
+        <div class="cannedComments">
+            {% for cannedComment in cannedComments%}
+            <button data-text="{{cannedComment}}" id="canned-{{cannedComment}}" onclick="toggleActive('canned-{{cannedComment}}')" class="canned-button">{{cannedComment}}</button>
+            {% endfor %}
+        </div>
+        <textarea id="comments"></textarea>
+    </div>
+    <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
 </div>
 
 
