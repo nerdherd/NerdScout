@@ -898,7 +898,6 @@ class Rebuilt(Game):
             "matchNumber": "Match Number",
             "setNumber": "Set Number",
             "compLevel": "Competition Level",
-            "startPos": "Starting Position",
             "preloadFuel": "Preloaded Fuel",
             "autoFuel": "Auto Fuel",
             "autoFuelMiss": "Missed Auto Fuel",
@@ -929,7 +928,6 @@ class Rebuilt(Game):
         self.teams = teams
         self.teamRankOptions = {
             "Score Impact": "score,0",
-            "Starting Position": "startPos,0",
             "Preloaded Fuel": "preloadFuel,0",
             "Auto Fuel": "autoFuel,0",
             "Missed Auto Fuel": "autoFuelMiss,0",
@@ -954,7 +952,6 @@ class Rebuilt(Game):
         }
         self.teamTableDisplayNames = {
             "score": "Score Impact",
-            "startPos": "Starting Position",
             "preloadFuel": "Preloaded Fuel",
             "autoFuel": "Auto Fuel",
             "autoFuelMiss": "Missed Auto Fuel",
@@ -984,7 +981,6 @@ class Rebuilt(Game):
             "matchNumber": "Match Number",
             "setNumber": "Set Number",
             "compLevel": "Competition Level",
-            "startPos": "Starting Position",
             "preloadFuel": "Preloaded Fuel",
             "autoFuel": "Auto Fuel",
             "autoFuelMiss": "Missed Auto Fuel",
@@ -1059,7 +1055,8 @@ class Rebuilt(Game):
             setNumber: int,
             compLevel: CompLevel,
             station: Station,
-            startPos: StartingPosition,
+            startPosX: float,
+            startPosY:float,
             preloadFuel: int,
             autoFuel: int,
             autoFuelMiss: int,
@@ -1106,7 +1103,8 @@ class Rebuilt(Game):
                 "$push": {
                     "results."
                     + station.value: {
-                        "startPos": startPos.value,
+                        "startPosX": startPosX,
+                        "startPosY": startPosY,
                         "preloadFuel": preloadFuel,
                         "autoFuel": autoFuel,
                         "autoFuelMiss": autoFuelMiss,
@@ -1359,7 +1357,6 @@ class Rebuilt(Game):
         teamResults = getTeamResults(team)
         return {
             "score": getAllStatsForCategory(teamResults,"score"),
-            "startPos": getAllStatsForCategory(teamResults,"startPos"),
             "preloadFuel": getAllStatsForCategory(teamResults,"preloadFuel"),
             "autoFuel": getAllStatsForCategory(teamResults,"autoFuel"),
             "autoFuelMiss": getAllStatsForCategory(teamResults,"autoFuelMiss"),

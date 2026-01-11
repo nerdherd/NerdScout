@@ -20,6 +20,7 @@ from werkzeug.exceptions import HTTPException
 import certifi
 from werkzeug.security import check_password_hash, generate_password_hash
 import json
+import random
 from bson import json_util, ObjectId
 from pymongo import MongoClient
 from enum import Enum
@@ -49,6 +50,27 @@ def index():
     else:
         username = None
     return render_template("index.html", username=username)
+
+@app.route("/createTestMatches")
+def createTestMatches():
+    foundationNames = (
+        "Abaca",
+        "Louis & Lewis",
+        "Super Evil Wevils",
+        "Wheler",
+        "Mr. Hello's",
+        "John"
+    )
+    for i,foundationName in zip(range(9991,9997),foundationNames):
+        if not getTeam(i):
+            addTeam(i, f"{foundationName} Foundation", foundationName)
+    for i in range(9991,9996):
+        if not getMatch(CompLevel.QM, i, 1):
+            addScheduledMatch(i,1,CompLevel.QM,f"2026test_qm{i}",f"Test Match {i}", 9991,9992,9993,9994,9995,9996)
+    for i in range(9991,9996):
+        for team in Station:
+            game.scoreRobotInMatch(i,1,CompLevel.QM,team,random.random(),random.random(),int(random.random()*8),int(random.random()*30),int(random.random()*30),random.random()>0.5,random.random()>0.5,int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),EndPositionRebuilt(random.randint(0,3)),int(random.random()*30),int(random.random()*30),"abaca",[],"tonnieboy300")
+    return "ok."
 
 
 @app.route("/match")
