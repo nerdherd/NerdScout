@@ -1035,7 +1035,7 @@ class Rebuilt(Game):
 
         """
         score = 0
-        score += fuel
+        score += int(fuel)
         if autoClimb: score += 15
         match endClimb:
             case EndPositionRebuilt.L1:
@@ -1092,7 +1092,7 @@ class Rebuilt(Game):
         Returns:
         - Boolean: if the robot was successfully scored
         """
-        totalFuel: int = autoFuel + transitionFuel + endgameFuel + ((shift1Fuel+shift3Fuel) if firstShift else (shift2Fuel+shift4Fuel))
+        totalFuel: int = int(autoFuel) + int(transitionFuel) + int(endgameFuel) + ((int(shift1Fuel)+int(shift3Fuel)) if firstShift else (int(shift2Fuel)+int(shift4Fuel)))
         result = matches.update_many(
             {
                 "matchNumber": matchNumber,
