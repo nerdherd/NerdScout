@@ -58,9 +58,214 @@
             <p>Scored by: {{result['scout']}}</p>
         </div>
 
-        
-        <div>    
-            <div class="foulDiv">
+        <div>
+            
+            <div class="sectionDiv">
+                <!-- TODO Fix this -->
+
+                {{ result["startPosX"] }}
+                {{ result["startPosY"] }}
+
+            </div>
+
+            <div class="sectionDiv">
+                <h1>Auto</h1>
+
+
+                <div clas="table">
+                    <div class="row">
+                        <div class="cell cell2"><b>Preload:</b></div>
+                        <div class="cell cell2"><b>Scored:</b></div>
+                        <div class="cell cell2 miss"><b>Missed:</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell cell2">
+                            <p>{{ result["preloadFuel"] }}</p>    
+                        </div>
+                        <div class="cell cell2">
+                            <p>{{ result["autoFuel"] }}</p>
+                        </div>
+                        <div class="cell cell2 miss">
+                            <p>{{ result["autoFuelMiss"] }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sectionDiv">
+                <div class="row">
+                    <h2>Climb L1:</h2>
+                    {% if result["autoClimb"] %}
+                    <img src="static\images\matchDisplay\True.svg">
+                    {% else %}
+                    <img src="static\images\matchDisplay\False.svg">
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="sectionDiv">
+                <h1>Transition</h1>
+
+                <div clas="table">
+                    <div class="row">
+                        <div class="cell cell2"><b>Scored:</b></div>
+                        <div class="cell cell2 miss"><b>Missed:</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell cell2">
+                            <p>{{ result["transitionFuel"] }}</p>    
+                        </div>
+                        <div class="cell cell2 miss">
+                            <p>{{ result["transitionFuelMiss"] }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sectionDiv">
+                <div class="row">
+                    <h2>Won Auto:</h2>
+                    {% if not result["firstShift"] %}
+                    <img src="static\images\matchDisplay\True.svg">
+                    {% else %}
+                    <img src="static\images\matchDisplay\False.svg">
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="sectionDiv">
+                <h1> Shifts</h1>
+
+                <div class="row">
+
+                    <div clas="table">
+                        <div class="row">
+                            <div class="cell cell4">
+                                {% if result["firstShift"] %}
+                                <h1>1: Active</h1>
+                                {% else %}
+                                <h1>1: Inactive</h1>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell2"><b>Scored:</b></div>
+                            <div class="cell cell2 miss"><b>Missed:</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell2">
+                                <p>{{ result["shift1Fuel"] }}</p>    
+                            </div>
+                            <div class="cell cell2 miss">
+                                <p>{{ result["shift1FuelMiss"] }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cell hidden"></div>
+
+                    <div class="table">
+                        <div class="row">
+                            <div class="cell cell4">
+                                {% if not result["firstShift"] %}
+                                <h1>2: Active</h1>
+                                {% else %}
+                                <h1>2: Inactive</h1>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell2"><b>Scored:</b></div>
+                            <div class="cell cell2 miss"><b>Missed:</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell2">
+                                <p>{{ result["shift2Fuel"] }}</p>    
+                            </div>
+                            <div class="cell cell2 miss">
+                                <p>{{ result["shift2FuelMiss"] }}</p>
+                            </div>
+                        </div>
+                    </div>    
+                    
+                    <div class="cell cell2 hidden"></div>
+
+                    <div clas="table">
+                        <div class="row">
+                            <div class="cell cell4">
+                                {% if result["firstShift"] %}
+                                <h1>3: Active</h1>
+                                {% else %}
+                                <h1>3: Inactive</h1>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell2"><b>Scored:</b></div>
+                            <div class="cell cell2 miss"><b>Missed:</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell2">
+                                <p>{{ result["shift3Fuel"] }}</p>    
+                            </div>
+                            <div class="cell cell2 miss">
+                                <p>{{ result["shift3FuelMiss"] }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cell hidden"></div>
+
+                    <div class="table">
+                        <div class="row">
+                            <div class="cell cell4">
+                                {% if not result["firstShift"] %}
+                                <h1>4: Active</h1>
+                                {% else %}
+                                <h1>4: Inactive</h1>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell2"><b>Scored:</b></div>
+                            <div class="cell cell2 miss"><b>Missed:</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="cell cell2">
+                                <p>{{ result["shift4Fuel"] }}</p>    
+                            </div>
+                            <div class="cell cell2 miss">
+                                <p>{{ result["shift4FuelMiss"] }}</p>
+                            </div>
+                        </div>
+                    </div>                    
+
+                </div>
+
+            </div>
+
+            <div class="sectionDiv">
+                <h1>Endgame</h1>
+
+                <div clas="table">
+                    <div class="row">
+                        <div class="cell cell2"><b>Scored:</b></div>
+                        <div class="cell cell2 miss"><b>Missed:</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell cell2">
+                            <p>{{ result["endgameFuel"] }}</p>    
+                        </div>
+                        <div class="cell cell2 miss">
+                            <p>{{ result["endgameFuelMiss"] }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sectionDiv">
+                <h1> Fouls </h1>
+
                 <div clas="table">
                     <div class="row">
                         <div class="cell cell2"><b>Minor:</b></div>
