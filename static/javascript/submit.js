@@ -1,3 +1,56 @@
+const startPosCanvas = document.getElementById("startPosCanvas");
+const startPosCtx = startPosCanvas.getContext("2d");
+
+function updateMousePos(e) {
+    let rect = startPosCanvas.getBoundingClientRect();
+
+    startPosX = (e.clientX - rect.left) * startPosCanvas.width / rect.width;
+    startPosY = (e.clientY - rect.top) * startPosCanvas.height / rect.height;
+}
+
+var mouseDown = 0;
+document.body.onmousedown = function() { 
+    ++mouseDown;
+}
+document.body.onmouseup = function() {
+    --mouseDown;
+}
+
+startPosCanvas.addEventListener("mousemove", (e) => {
+    if (mouseDown) {
+        updateMousePos(e);
+        requestAnimationFrame(drawStartPos);
+    }
+});
+
+startPosCanvas.addEventListener("click", (e) => {
+    updateMousePos(e);
+    requestAnimationFrame(drawStartPos);
+});
+
+var startPosX = 0.0;
+var startPosY = 0.0;
+var lastX = 100000.0;
+var lastY = 100000.0;
+function drawStartPos(){
+    let isDifferent = (Math.abs(startPosX-lastX)>3||Math.abs(startPosY-lastY)>3);
+    if (isDifferent){
+        lastX = Math.round(0.6*startPosX + 0.4*lastX);
+        lastY = Math.round(0.6*startPosY + 0.4*lastY);
+    } else {
+        lastX = startPosX;
+        lastY = startPosY; 
+    }
+
+    startPosCtx.clearRect(0,0,startPosCanvas.width,startPosCanvas.height);
+    startPosCtx.beginPath();
+    startPosCtx.rect(lastX-15,lastY-15,30,30);
+    startPosCtx.fillStyle = "red";
+    startPosCtx.fill();
+
+    if (isDifferent) requestAnimationFrame(drawStartPos);
+}
+
 function toggleActive(id){
     document.getElementById(id).classList.toggle("active");
 }
@@ -46,8 +99,8 @@ function submitData(matchNum, compLevel, setNum, robot){
         "compLevel": compLevel,
         "setNum": setNum, 
         "robot": robot,
-        "startPosX": 0.0,
-        "startPosY": 0.0,
+        "startPosX": startPosY/startPosCanvas.height,
+        "startPosY": startPosX/startPosCanvas.width,
         "preloadFuel": getId("preloadFuel"),
         "autoFuel": getId("autoFuel"),
         "autoFuelMiss": getId("autoFuelMiss"),
