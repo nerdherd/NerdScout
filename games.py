@@ -1,5 +1,3 @@
-from multiprocessing import Value
-from os import minor
 from constants import *
 from constants import Station, getMeanOfScoringCategory
 from database import *
