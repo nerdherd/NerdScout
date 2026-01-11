@@ -38,7 +38,7 @@ app.config.from_mapping(
 
 app.jinja_env.filters["any"] = any
 
-game = Reefscape(matches, teams)
+game = Rebuilt(matches, teams)
 
 
 # Front-end Handlers
@@ -557,28 +557,31 @@ def submitScorePage():
                 StartingPosition(
                     int(submission["startPos"])  # int between 1-3 # type: ignore
                 ),
-                bool(submission["autoLeave"]),  # bool # type: ignore
-                submission["autoReef"],  # array of four ints # type: ignore
-                submission["autoReefMiss"],  # int # type: ignore
-                submission["teleReef"],  # array of four ints # type: ignore
-                submission["teleReefMiss"],  # int # type: ignore
-                submission["autoProcessor"],  # int # type: ignore
-                submission["autoProcessorMiss"],  # int # type: ignore
-                submission["teleProcessor"],  # int # type: ignore
-                submission["teleProcessorMiss"],  # int # type: ignore
-                submission["autoNet"],  # int # type: ignore
-                submission["autoNetMiss"],  # int # type: ignore
-                submission["teleNet"],  # int # type: ignore
-                submission["teleNetMiss"],  # int # type: ignore
-                submission["endPosSuccess"],  # bool # type: ignore
-                EndPositionReefscape(
+                submission["preloadFuel"],
+                submission["autoFuel"],
+                submission["autoFuelMiss"],
+                submission["autoClimb"],
+                submission["firstShift"],
+                submission["transitionFuel"],
+                submission["transitionFuelMiss"],
+                submission["shift1Fuel"],
+                submission["shift1FuelMiss"],
+                submission["shift2Fuel"],
+                submission["shift2FuelMiss"],
+                submission["shift3Fuel"],
+                submission["shift3FuelMiss"],
+                submission["shift4Fuel"],
+                submission["shift4FuelMiss"],
+                submission["endgameFuel"],
+                submission["endgameFuelMiss"],
+                EndPositionRebuilt(
                     int(
                         submission[ # int between 0-3, though should be 2 or 3 # type: ignore
                             "attemptedEndPos"
                         ]  
                     )
                 ),
-                submission["minorFouls"],  # int # type: ignore
+                submission["minorFouls"],
                 submission["majorFouls"],  # int # type: ignore
                 submission["comment"],  # str # type: ignore
                 submission["cannedComments"],  # array of strs # type: ignore
@@ -619,31 +622,42 @@ def uploadJSON():
             results = data["data"]
 
             if not game.scoreRobotInMatch(
-                matchNum,  # type: ignore
+                matchNum,
                 setNum,
                 compLevel,
-                station,
-                StartingPosition(results["startPos"]),
-                results["autoLeave"],
-                results["autoReef"],
-                results["autoReefMiss"],
-                results["teleReef"],
-                results["teleReefMiss"],
-                results["autoProcessor"],
-                results["autoProcessorMiss"],
-                results["teleProcessor"],
-                results["teleProcessorMiss"],
-                results["autoNet"],
-                results["autoNetMiss"],
-                results["teleNet"],
-                results["teleNetMiss"],
-                results["endPosSuccess"],
-                EndPositionReefscape(results["attemptedEndPos"]),
+                station,  # str
+                StartingPosition(
+                    int(results["startPos"])  # int between 1-3 # type: ignore
+                ),
+                results["preloadFuel"],
+                results["autoFuel"],
+                results["autoFuelMiss"],
+                results["autoClimb"],
+                results["firstShift"],
+                results["transitionFuel"],
+                results["transitionFuelMiss"],
+                results["shift1Fuel"],
+                results["shift1FuelMiss"],
+                results["shift2Fuel"],
+                results["shift2FuelMiss"],
+                results["shift3Fuel"],
+                results["shift3FuelMiss"],
+                results["shift4Fuel"],
+                results["shift4FuelMiss"],
+                results["endgameFuel"],
+                results["endgameFuelMiss"],
+                EndPositionRebuilt(
+                    int(
+                        results[ # int between 0-3, though should be 2 or 3 # type: ignore
+                            "attemptedEndPos"
+                        ]  
+                    )
+                ),
                 results["minorFouls"],
-                results["majorFouls"],
-                results["comment"],
-                results["cannedComments"],
-                str(session.get("username")),
+                results["majorFouls"],  # int # type: ignore
+                results["comment"],  # str # type: ignore
+                results["cannedComments"],  # array of strs # type: ignore
+                str(session.get("username")),  # str # type: ignore
             ):
                 return "match not found", 404
         except Exception as e:
@@ -721,9 +735,6 @@ def matchTable():
             if section in match["results"]:
                 for result in match["results"][section]:
                     result["team"] = match["teams"][section]
-                    for i in range(4):  # IMPORTANT: change/remove this for new game
-                        result["autoReefL" + str(i + 1)] = result["autoReef"][i]
-                        result["teleReefL" + str(i + 1)] = result["teleReef"][i]
                     result["matchNumber"] = match["matchNumber"]
                     result["setNumber"] = match["setNumber"]
                     result["compLevel"] = match["compLevel"]
