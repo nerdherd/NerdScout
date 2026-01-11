@@ -35,305 +35,90 @@
         <!-- <p>Match Number: {{match}} {{compLvl}} || Team: {{teamNum}} || Station Number: {{rbtStat}}</p> -->
     </div>
 </div>
-<!-- <div class="takisBaro">
-    <button id="autoBtn" onClick="showAuto()">Auto</button>
-    <button id="teleopBtn" onClick="showTeleop()">Teleop</button>
-</div> -->
 
 <div class="mainInput">
 
-    <div id="auto" style="display: inline;">
+    <div id="auto">
 
         <div class="title">
             <h1>Auto</h1>
         </div>
 
+        
+
         <div class="autoInputs">
 
-            <div class="positionBlock">
-                <div class="positionSlider">
-                        <input type="range" min="1" max="3" step="1"  id="startPosSlider">
-                        <p id="positionSliderLabel">Starting position: Middle</p>
-                </div>
-
-                <div class="cbDiv">
-                    <p>Leave</p>
-                    <input type="checkbox" id="leave">
-                </div>
-            </div>
-
-            <div class="autoCounters">
-                <div class="counterBlock">
-                    <div class="counterBlockLabel">
-                        <p>Coral</p>
-                    </div>
-
-                    <div class="counterBlockData">
-                        <div class="counter" >
-                            <p>Miss</p>
-                            <button onclick="missAdd(0);turnOnLeave()" class="plusCounter">+</button>
-                            <p id="aRM">0</p>
-                            <button onclick="missSub(0)" class="minusCounter">-</button>
-                        </div>
-                        
-                        <div class="counter">
-                            <p>L1</p>
-                            <button onclick="autoReefAdd(0);turnOnLeave()" class="plusCounter">+</button>
-                            <p id="aCL1">0</p>
-                            <button onclick="autoReefSub(0)" class="minusCounter">-</button>
-                        </div>
-
-                        
-                        <div class="counter">
-                            <p>L2</p>
-                            <button onclick="autoReefAdd(1);turnOnLeave()" class="plusCounter">+</button>
-                            <p id="aCL2">0</p>
-                            <button onclick="autoReefSub(1)" class="minusCounter">-</button>
-                        </div>
-
-
-                        <div class="counter">
-                            <p>L3</p>
-                            <button onclick="autoReefAdd(2);turnOnLeave()" class="plusCounter">+</button>
-                            <p id="aCL3">0</p>
-                            <button onclick="autoReefSub(2)" class="minusCounter">-</button>
-                        </div>
-
-                        
-                        <div class="counter" >
-                            <p>L4</p>
-                            <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
-                            <p id="aCL4">0</p>
-                            <button onclick="autoReefSub(3)" class="minusCounter">-</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="counterBlockNoBorder">
-                    <div class="counterBlockLabel">
-                        <p>Algae</p>
-                    </div>
-
-                    <div class="algaeCounterBlockData">
-                        <div class="counterBlock">    
-                            <div class="counterBlockLabel">
-                                <p>Processor</p>
-                            </div>
-                            <div class="counterBlockData">
-                                <div class="counter">
-                                    <p>Hit</p>
-                                    <button onclick="procNetAdd(0);turnOnLeave()" class="plusCounter">+</button>
-                                    <p id="aPr">0</p>
-                                    <button onclick="procNetSub(0)" class="minusCounter">-</button>
-                                </div>
-
-                                <div class="counter" >
-                                    <p>Miss</p>
-                                    <button onclick="missAdd(1);turnOnLeave()" class="plusCounter">+</button>
-                                    <p id="aPM">0</p>
-                                    <button onclick="missSub(1)" class="minusCounter">-</button>
-                                </div>
-                            </div>
-                        </div> 
-                        
-                        <div class="counterBlock">
-                            <div class="counterBlockLabel">
-                                <p>Net</p>
-                            </div>
-                            
-                            <div class="counterBlockData">
-                                <div class="counter">
-                                    <p>Hit</p>
-                                    <button onclick="procNetAdd(2);turnOnLeave()" class="plusCounter">+</button>
-                                    <p id="aNe">0</p>
-                                    <button onclick="procNetSub(2);turnOnLeave()" class="minusCounter">-</button>
-                                </div>
-
-                                <div class="counter" >
-                                    <p>Miss</p>
-                                    <button onclick="missAdd(2);turnOnLeave()" class="plusCounter">+</button>
-                                    <p id="aNM">0</p>
-                                    <button onclick="missSub(2);turnOnLeave()" class="minusCounter">-</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="toTeleOpWrapper">
-                    <button id="toTeleOp" onClick="showTeleop()">PROCEED TO TELE-OP</button>
-                </div>
-            </div>
-        
-            
-        
-        </div>
-
-        </div>
-
-        
-
-        <div id="teleop" style="display: none;">
-
-            <div class="title">
-                <button class="backButton" onClick="showAuto()"> &lt; Back </button>
-                <h1 class="titleText">Tele-Op</h1>
-            </div>
-            
-            <div class="counterBlock">
-
-                <div class="counterBlockLabel">
-                    <p>Coral</p>
-                </div>
-
-                <div class="counterBlockData">
-                    <div class="counter" >
-                        <p>Miss</p>
-                        <button onclick="missAdd(3)" class="plusCounter">+</button>
-                        <p id="tRM">0</p>
-                        <button onclick="missSub(3)" class="minusCounter">-</button>
-                    </div>
-
-                    <div class="counter">
-                        <p>L1</p>
-                        <button onclick="teleReefAdd(0)" class="plusCounter">+</button>
-                        <p id="tCL1">0</p>
-                        <button onclick="teleReefSub(0)" class="minusCounter">-</button>
-                    </div>
-
-                    
-                    <div class="counter">
-                        <p>L2</p>
-                        <button onclick="teleReefAdd(1)" class="plusCounter">+</button>
-                        <p id="tCL2">0</p>
-                        <button onclick="teleReefSub(1)" class="minusCounter">-</button>
-                    </div>
-
-
-                    <div class="counter">
-                        <p>L3</p>
-                        <button onclick="teleReefAdd(2)" class="plusCounter">+</button>
-                        <p id="tCL3">0</p>
-                        <button onclick="teleReefSub(2)" class="minusCounter">-</button>
-                    </div>
-
-                    
-                    <div class="counter">
-                        <p>L4</p>
-                        <button onclick="teleReefAdd(3)" class="plusCounter">+</button>
-                        <p id="tCL4">0</p>
-                        <button onclick="teleReefSub(3)" class="minusCounter">-</button>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="counterBlockNoBorder">
-                <div class="counterBlockLabel">
-                    <p>Algae</p>
-                </div>
-
-                <div class="algaeCounterBlockData">
-                    <div class="counterBlock">
-                        <div class="counterBlockLabel">
-                            <p>Processor</p>
-                        </div>
-                        <div class="counterBlockData">
-                            <div class="counter">
-                                <p>Processor</p>
-                                <button onclick="procNetAdd(1)" class="plusCounter">+</button>
-                                <p id="tPr">0</p>
-                                <button onclick="procNetSub(1)" class="minusCounter">-</button>
-                            </div>
-
-                            <div class="counter" >
-                                <p>Miss</p>
-                                <button onclick="missAdd(4)" class="plusCounter">+</button>
-                                <p id="tPM">0</p>
-                                <button onclick="missSub(4)" class="minusCounter">-</button>
-                            </div>
-                        </div>  
-                    </div>
-                        
-                    <div class="counterBlock">
-                        <div class="counterBlockLabel">
-                            <p>Net</p>
-                        </div>
-
-                        <div class="counterBlockData">
-                            <div class="counter">
-                                <p>Net</p>
-                                <button onclick="procNetAdd(3)" class="plusCounter">+</button>
-                                <p id="tNe">0</p>
-                                <button onclick="procNetSub(3)" class="minusCounter">-</button>
-                            </div>
-
-                            <div class="counter" >
-                                <p>Miss</p>
-                                <button onclick="missAdd(5)" class="plusCounter">+</button>
-                                <p id="tNM">0</p>
-                                <button onclick="missSub(5)" class="minusCounter">-</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>    
-
-            <div class="endPosBlock">
-                <p>Attempted Ending Position: <br> <span id="endposlabel">None</span> </p>
-                <div class="endPosImg">
-                    <img src="{{ url_for('static', filename='images/park/None.svg') }}">
-                    <img src="{{ url_for('static', filename='images/park/Park.svg') }}">
-                    <img src="{{ url_for('static', filename='images/park/High.svg') }}">
-                    <img src="{{ url_for('static', filename='images/park/Low.svg') }}">
-                </div>
-                <input type="range" min="1" max="4" step="1" id="endPos">
-            </div>
-
-            <div class="endPosSuccess">
-                <p>Climb Failed?</p>
-                <input type="checkbox" id="attemptEP">
-            </div>
-
-            <div class="counterBlock">
-                <div class="counterBlockLabel">
-                    Fouls
-                </div>
+            <div class="positionDider">
                 
-                <div class="counterBlockData">
-                    <div class="counter">
-                        <p>Minor Fouls</p>
-                        <button onclick="fouling(1)" class="plusCounter">+</button>
-                        <p id="minF">0</p>
-                        <button onclick="fouling(0)" class="minusCounter">-</button>
-                    </div>
-
-                    
-                    <div class="counter">
-                        <p>Major Fouls</p>
-                        <button onclick="fouling(3)" class="plusCounter">+</button>
-                        <p id="majF">0</p>
-                        <button onclick="fouling(2)" class="minusCounter">-</button>
-                    </div>
-                </div>  
-            </div>     
-
-            <div class="commentBlock">
-                <p>Comments</p>
-                <div class="cannedComments">
-                    {% for cannedComment in cannedComments%}
-                    <button data-text="{{cannedComment}}" id="canned-{{cannedComment}}" onclick="toggleActive('canned-{{cannedComment}}')" class="canned-button">{{cannedComment}}</button>
-                    {% endfor %}
-                </div>
-                <textarea id="comments"></textarea>
             </div>
-            
-            <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
+
+            <div class="counter" >
+                <p>Preload</p>
+                <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
+                <p id="aCL4">0</p>
+                <button onclick="autoReefSub(3)" class="minusCounter">-</button>
+            </div>
+
+            <div class="counter" >
+                <p>Scored</p>
+                <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
+                <p id="aCL4">0</p>
+                <button onclick="autoReefSub(3)" class="minusCounter">-</button>
+            </div>
+
+            <div class="counter" >
+                <p>Missed</p>
+                <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
+                <p id="aCL4">0</p>
+                <button onclick="autoReefSub(3)" class="minusCounter">-</button>
+            </div>
+
+            <div class="counter" >
+                <p>Climb</p>
+                <input type="checkbox" id="leave">
+            </div>
+
+            <div class="cbDiv">
+                <p>Leave</p>
+                <input type="checkbox" id="leave">
+            </div>
+
         </div>
+
+        <div class="firstHalfInputs">
+
+            <div class="transitionInputs">
+
+                <div class="counter">
+                    <p>Scored</p>
+                    <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
+                    <p id="aCL4">0</p>
+                    <button onclick="autoReefSub(3)" class="minusCounter">-</button>
+                </div>
+
+                <div class="counter">
+                    <p>Missed</p>
+                    <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
+                    <p id="aCL4">0</p>
+                    <button onclick="autoReefSub(3)" class="minusCounter">-</button>
+                </div>
+
+            </div>
+
+        </div>
+
 
     </div>
+
+
+    <div class="counter" >
+        <p>L4</p>
+        <button onclick="autoReefAdd(3);turnOnLeave()" class="plusCounter">+</button>
+        <p id="aCL4">0</p>
+        <button onclick="autoReefSub(3)" class="minusCounter">-</button>
+    </div>
+
+</div>
 
     
 
