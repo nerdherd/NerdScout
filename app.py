@@ -571,7 +571,7 @@ def submitScorePage():
                 submission["teleNet"],  # int # type: ignore
                 submission["teleNetMiss"],  # int # type: ignore
                 submission["endPosSuccess"],  # bool # type: ignore
-                EndPosition(
+                EndPositionReefscape(
                     int(
                         submission[ # int between 0-3, though should be 2 or 3 # type: ignore
                             "attemptedEndPos"
@@ -638,7 +638,7 @@ def uploadJSON():
                 results["teleNet"],
                 results["teleNetMiss"],
                 results["endPosSuccess"],
-                EndPosition(results["attemptedEndPos"]),
+                EndPositionReefscape(results["attemptedEndPos"]),
                 results["minorFouls"],
                 results["majorFouls"],
                 results["comment"],

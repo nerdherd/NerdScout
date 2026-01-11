@@ -1,6 +1,11 @@
+from multiprocessing import Value
+from os import minor
 from constants import *
+from constants import Station, getMeanOfScoringCategory
 from database import *
 from pymongo.collection import Collection
+
+from database import Station, getMeanOfScoringCategory
 
 
 class Game:
@@ -17,7 +22,7 @@ class Game:
         self.teamRankOptions = {}
         self.teamTableDisplayNames = {}
         self.matchTableDisplayNames = {}
-        self.cannedComments = {}
+        self.cannedComments = []
         raise NotImplementedError("Game Superclass __init__ used")
 
     def calculateScore(self) -> int:
@@ -329,11 +334,11 @@ class Reefscape(Game):
 
         score += (
             2
-            if endPos == EndPosition.PARK.value
+            if endPos == EndPositionReefscape.PARK.value
             else (
                 6
-                if endPos == EndPosition.SHALLOW.value
-                else 12 if endPos == EndPosition.DEEP.value else 0
+                if endPos == EndPositionReefscape.SHALLOW.value
+                else 12 if endPos == EndPositionReefscape.DEEP.value else 0
             )
         )
 
@@ -363,7 +368,7 @@ class Reefscape(Game):
         teleNet: int,
         teleNetMiss: int,
         endPosSuccess: bool,
-        attemptedEndPos: EndPosition,
+        attemptedEndPos: EndPositionReefscape,
         minorFouls: int,
         majorFouls: int,
         comment: str,
@@ -428,7 +433,7 @@ class Reefscape(Game):
                             (
                                 attemptedEndPos.value
                                 if endPosSuccess
-                                else EndPosition.NONE.value
+                                else EndPositionReefscape.NONE.value
                             ),
                             minorFouls,
                             majorFouls,
@@ -618,29 +623,29 @@ class Reefscape(Game):
         score += 3 * leaveTotal
         score += (
             2
-            if team1End == EndPosition.PARK.value
+            if team1End == EndPositionReefscape.PARK.value
             else (
                 6
-                if team1End == EndPosition.SHALLOW.value
-                else 12 if team1End == EndPosition.DEEP.value else 0
+                if team1End == EndPositionReefscape.SHALLOW.value
+                else 12 if team1End == EndPositionReefscape.DEEP.value else 0
             )
         )
         score += (
             2
-            if team2End == EndPosition.PARK.value
+            if team2End == EndPositionReefscape.PARK.value
             else (
                 6
-                if team2End == EndPosition.SHALLOW.value
-                else 12 if team2End == EndPosition.DEEP.value else 0
+                if team2End == EndPositionReefscape.SHALLOW.value
+                else 12 if team2End == EndPositionReefscape.DEEP.value else 0
             )
         )
         score += (
             2
-            if team3End == EndPosition.PARK.value
+            if team3End == EndPositionReefscape.PARK.value
             else (
                 6
-                if team3End == EndPosition.SHALLOW.value
-                else 12 if team3End == EndPosition.DEEP.value else 0
+                if team3End == EndPositionReefscape.SHALLOW.value
+                else 12 if team3End == EndPositionReefscape.DEEP.value else 0
             )
         )
 
@@ -804,29 +809,29 @@ class Reefscape(Game):
         score += 3 * leaveTotal
         score += (
             2
-            if team1End == EndPosition.PARK.value
+            if team1End == EndPositionReefscape.PARK.value
             else (
                 6
-                if team1End == EndPosition.SHALLOW.value
-                else 12 if team1End == EndPosition.DEEP.value else 0
+                if team1End == EndPositionReefscape.SHALLOW.value
+                else 12 if team1End == EndPositionReefscape.DEEP.value else 0
             )
         )
         score += (
             2
-            if team2End == EndPosition.PARK.value
+            if team2End == EndPositionReefscape.PARK.value
             else (
                 6
-                if team2End == EndPosition.SHALLOW.value
-                else 12 if team2End == EndPosition.DEEP.value else 0
+                if team2End == EndPositionReefscape.SHALLOW.value
+                else 12 if team2End == EndPositionReefscape.DEEP.value else 0
             )
         )
         score += (
             2
-            if team3End == EndPosition.PARK.value
+            if team3End == EndPositionReefscape.PARK.value
             else (
                 6
-                if team3End == EndPosition.SHALLOW.value
-                else 12 if team3End == EndPosition.DEEP.value else 0
+                if team3End == EndPositionReefscape.SHALLOW.value
+                else 12 if team3End == EndPositionReefscape.DEEP.value else 0
             )
         )
 
@@ -888,3 +893,240 @@ class Reefscape(Game):
             "majorFouls": getAllStatsForCategory(teamResults, "majorFouls"),
             "score": getAllStatsForCategory(teamResults, "score"),
         }
+
+class Rebuilt(Game):
+    def __init__(self, matches: Collection, teams: Collection):
+        self.keyDisplayNames = {}
+        self.matches = matches
+        self.teams = teams
+        self.teamRankOptions = {}
+        self.teamTableDisplayNames = {}
+        self.matchTableDisplayNames = {}
+        self.cannedComments = []
+
+    def calculateScore(self, fuel: int, autoClimb: bool, endClimb: EndPositionRebuilt, minorFouls: int, majorFouls: int) -> int:
+        """
+        Calculate the total score from scouted values.
+
+        Inputs:
+        - Self explanatory
+
+        Outputs:
+        - int: total score, minus points from fouls
+
+        """
+        score = 0
+        score += fuel
+        if autoClimb: score += 15
+        match endClimb:
+            case EndPositionRebuilt.L1:
+                score += 10
+            case EndPositionRebuilt.L2:
+                score += 20
+            case EndPositionRebuilt.L3:
+                score += 30
+
+        score -= 5 * minorFouls
+        score -= 15 * majorFouls
+        return score
+    
+    def scoreRobotInMatch(
+            self,
+            matchNumber: int,
+            setNumber: int,
+            compLevel: CompLevel,
+            station: Station,
+            startPos: StartingPosition,
+            preloadFuel: int,
+            autoFuel: int,
+            autoFuelMiss: int,
+            autoClimb: bool,
+            firstShift: bool,
+            transitionFuel: int,
+            transitionFuelMiss: int,
+            shift1Fuel: int,
+            shift1FuelMiss: int,
+            shift2Fuel: int,
+            shift2FuelMiss: int,
+            shift3Fuel: int,
+            shift3FuelMiss: int,
+            shift4Fuel: int,
+            shift4FuelMiss: int,
+            endgameFuel: int,
+            endgameFuelMiss: int,
+            endClimb: EndPositionRebuilt,
+            minorFouls: int,
+            majorFouls: int,
+            comment: str,
+            cannedComments: List[str],
+            scout: str,
+            ) -> bool:
+        """
+        Scores one robot in a match.
+
+        Should change every year.
+
+        Inputs:
+        - self explanitory
+
+        Returns:
+        - Boolean: if the robot was successfully scored
+        """
+        totalFuel: int = autoFuel + transitionFuel + endgameFuel + ((shift1Fuel+shift3Fuel) if firstShift else (shift2Fuel+shift4Fuel))
+        result = matches.update_many(
+            {
+                "matchNumber": matchNumber,
+                "setNumber": setNumber,
+                "compLevel": compLevel.value,
+            },
+            {
+                "$push": {
+                    "results."
+                    + station.value: {
+                        "startPos": startPos.value,
+                        "preloadFuel": preloadFuel,
+                        "autoFuel": autoFuel,
+                        "autoFuelMiss": autoFuelMiss,
+                        "autoClimb": autoClimb,
+                        "firstShift": firstShift,
+                        "transitionFuel": transitionFuel,
+                        "transitionFuelMiss": transitionFuelMiss,
+                        "shift1Fuel": shift1Fuel,
+                        "shift1FuelMiss": shift1FuelMiss,
+                        "shift2Fuel": shift2Fuel,
+                        "shift2FuelMiss": shift2FuelMiss,
+                        "shift3Fuel": shift3Fuel,
+                        "shift3FuelMiss": shift3FuelMiss,
+                        "shift4Fuel": shift4Fuel,
+                        "shift4FuelMiss": shift4FuelMiss,
+                        "endgameFuel": endgameFuel,
+                        "endgameFuelMiss": endgameFuelMiss,
+                        "endClimb": endClimb.value,
+                        "totalFuel": totalFuel,
+                        "minorFouls": minorFouls,
+                        "majorFouls": majorFouls,
+                        "score": self.calculateScore(totalFuel, autoClimb, endClimb, minorFouls, majorFouls),
+                        "comment": comment,
+                        "cannedComments": cannedComments,
+                        "scout": scout,
+                    }
+                }
+            }
+        )
+        if result.matched_count == 0:
+            app.logger.info(  # type: ignore
+                f"Failed to score robot {station.value} for match {matchNumber} by {scout}: Match does not exist."
+            )
+            return False
+        app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")  # type: ignore
+        return True
+    
+    def calculateScoreFromData(self, matchData: dict, team: Station, edit: int = -1) -> int:
+        """
+        Gets a robot's result from the database and scores it.
+
+        Inputs:
+        - matchData (dict): a match dict
+        - team (Station): the station to score
+        - edit (int): which revision to score, defaults to the latest
+
+        Returns:
+        - int: calculated score
+        """
+        results = matchData["results"][team.value][edit]
+        if type(results["score"]) == int:
+            return results["score"]
+        else:
+            app.logger.error(f"Request for score for {team.value} failed.")
+            abort(400)
+
+    def calculateAverageAllianceScore(self, team1: int, team2: int, team3: int, calc=getMeanOfScoringCategory) -> dict | None:
+        """
+        Calculates a hypothetical alliance score of three teams using their average results in each category.
+
+        Should be edited every year.
+
+        Inputs:
+        - team1 (int): team number 1
+        - team2 (int): team number 2
+        - team3 (int): team number 3
+        - calc (function): the static function to use, defaults to mean
+
+        Returns:
+        - dict or none: dict of predicted results, or None if any teams are not found.
+        """
+        team1Listing = getTeam(team1)
+        if not team1Listing:
+            return None
+        team2Listing = getTeam(team2)
+        if not team2Listing:
+            return None
+        team3Listing = getTeam(team3)
+        if not team3Listing:
+            return None
+        
+        team1Data = getTeamResults(team1)
+        team2Data = getTeamResults(team2)
+        team3Data = getTeamResults(team3)
+
+        team1AutoClimb = int(calc(team1Data, "autoClimb") >= 0.5)
+        team2AutoClimb = int(calc(team2Data, "autoClimb") >= 0.5)
+        team3AutoClimb = int(calc(team3Data, "autoClimb") >= 0.5)
+        autoClimbTotal = team1AutoClimb + team2AutoClimb + team3AutoClimb
+
+        team1End = round(calc(team1Data, "endPos"))
+        team2End = round(calc(team2Data, "endPos"))
+        team3End = round(calc(team3Data, "endPos"))
+
+        team1Minors = calc(team1Data, "minorFouls")
+        team2Minors = calc(team2Data, "minorFouls")
+        team3Minors = calc(team3Data, "minorFouls")
+
+        team1Majors = calc(team1Data, "majorFouls")
+        team2Majors = calc(team2Data, "majorFouls")
+        team3Majors = calc(team3Data, "majorFouls")
+        
+        fuel = round(calc(team1Data, "totalFuel")) + round(calc(team2Data, "totalFuel")) + round(calc(team3Data, "totalFuel"))
+
+        score = self.calculateScore(fuel, False, EndPositionRebuilt.NONE, 0, 0)
+
+        score += autoClimbTotal * 15
+        score += (
+            10
+            if team1End == EndPositionRebuilt.L1.value
+            else(
+                20
+                if team1End == EndPositionRebuilt.L2.value
+                else 30 if team1End == EndPositionRebuilt.L3.value else 0
+            )
+        )
+        score += (
+            10
+            if team2End == EndPositionRebuilt.L1.value
+            else(
+                20
+                if team2End == EndPositionRebuilt.L2.value
+                else 30 if team2End == EndPositionRebuilt.L3.value else 0
+            )
+        )
+        score += (
+            10
+            if team3End == EndPositionRebuilt.L1.value
+            else(
+                20
+                if team3End == EndPositionRebuilt.L2.value
+                else 30 if team3End == EndPositionRebuilt.L3.value else 0
+            )
+        )
+    
+        return {
+            "score": score,
+            "autoClimb": autoClimbTotal,
+            "fuelTotal": fuel,
+            "endPos1": team1End,
+            "endPos2": team2End,
+            "endPos3": team3End,
+            "minorFouls": team1Minors + team2Minors + team3Minors,
+            "majorFouls": team1Majors + team2Majors + team3Majors,
+        }
+

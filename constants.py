@@ -41,11 +41,17 @@ class StartingPosition(Enum):
     BOTTOM = 3
 
 
-class EndPosition(Enum):
+class EndPositionReefscape(Enum):
     NONE = 0
     PARK = 1
     SHALLOW = 2
     DEEP = 3
+
+class EndPositionRebuilt(Enum):
+    L1 = 1
+    L2 = 2
+    L3 = 3
+    NONE = 0
 
 
 class CompLevel(Enum):
