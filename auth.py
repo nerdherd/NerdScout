@@ -152,7 +152,7 @@ def applyPasswordChange(id: str) -> bool:
     )
     requestsDB.find_one_and_delete({"_id": idParsed})
     app.logger.info(
-        f"{session["username"]} updated password for {result['data']['username']}."
+        f"{session['username']} updated password for {result['data']['username']}."
     )
     return True
 
@@ -172,6 +172,6 @@ def deletePasswordChange(id: str) -> bool:
     if not result:
         return False
     app.logger.info(
-        f"{session["username"]} deleted password request {id} for {result['data']['username']}."
+        f"{session['username']} deleted password request {id} for {result['data']['username']}."
     )
     return True

@@ -576,9 +576,8 @@ def submitScorePage():
                 setNumber,
                 compLevel,
                 currentRobot,  # str
-                StartingPosition(
-                    int(submission["startPos"])  # int between 1-3 # type: ignore
-                ),
+                submission["startPosX"],
+                submission["startPosY"],
                 submission["preloadFuel"],
                 submission["autoFuel"],
                 submission["autoFuelMiss"],
@@ -648,9 +647,8 @@ def uploadJSON():
                 setNum,
                 compLevel,
                 station,  # str
-                StartingPosition(
-                    int(results["startPos"])  # int between 1-3 # type: ignore
-                ),
+                results["startPosX"],
+                results["startPosY"],
                 results["preloadFuel"],
                 results["autoFuel"],
                 results["autoFuelMiss"],
