@@ -2,6 +2,21 @@ function toggleActive(id){
     document.getElementById(id).classList.toggle("active");
 }
 
+function updateShift(){
+    const firstShift = document.getElementById("firstShift").checked;
+    if (firstShift){
+        document.getElementById("shift1").classList.add("active");
+        document.getElementById("shift3").classList.add("active");
+        document.getElementById("shift2").classList.remove("active");
+        document.getElementById("shift4").classList.remove("active");
+    } else {
+        document.getElementById("shift2").classList.add("active");
+        document.getElementById("shift4").classList.add("active");
+        document.getElementById("shift1").classList.remove("active");
+        document.getElementById("shift3").classList.remove("active");
+    }
+}
+
 function incrementCounter(id,isPositive){
     const curElement = document.getElementById(id);
     if (isPositive) curElement.value++;
