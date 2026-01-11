@@ -61,10 +61,12 @@
         <div>
             
             <div class="sectionDiv">
-                <!-- TODO Fix this -->
+                <div class="startPosDisplay" style="background-image:url({{ url_for('static', filename='images/startpos.png') }})">
+                    <div class="startPosIndicator" style="left:{{result['startPosY']*100}}%;top:{{result['startPosX']*100}}%;"></div>
+                </div>
 
-                {{ result["startPosX"] }}
-                {{ result["startPosY"] }}
+                <!-- {{ result["startPosX"] }}
+                {{ result["startPosY"] }} -->
 
             </div>
 
