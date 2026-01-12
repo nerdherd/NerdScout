@@ -46,31 +46,31 @@
             <p>Do they currently have a camera on their robot? {{data["camera"]}}</p>
             <h3>Auto:</h3>
             <ul>
-                <li class="{{'checked' if data['auto']['leave'] else 'unchecked'}}">They {{ "" if data["auto"]["leave"] else "cannot"}} leave</li>
-                <li class="{{'checked' if data['auto']['algae'] else 'unchecked'}}">They {{ "can" if data["auto"]["algae"] else "cannot"}} remove algae</li>
-                <li class="{{'checked' if (data['auto']['reef'])|any else 'unchecked'}}">Reef:</li>
+                <li class="{{'checked' if data['auto']['auto-fuel'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-fuel"] else "cannot"}} score in the hub</li>
+                <li class="{{'checked' if data['auto']['auto-depot'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} intake from the depot</li>
+                <li class="{{'checked' if data['auto']['auto-outpost'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-outpost"] else "cannot"}} intake from the outpost chute</li>
+                <li class="{{'checked' if data['auto']['auto-neutral'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-neutral"] else "cannot"}} intake from the neutral zone</li>
+                <li class="{{'checked' if data['auto']['climb'] else 'unchecked'}}">Climb:</li>
                 <ul>
-                    {% for canscore in data["auto"]["reef"]%}
-                    <li class="{{'checked' if canscore else 'unchecked'}}">They {{"can" if canscore else "cannot"}} score on L{{loop.index}}</li>
-                    {%endfor%}
+                    {% for n in ("center","side","inside")%}
+                    <li class="{{'checked' if data['auto']['auto-climb1-'+n] else 'unchecked'}}">{{n.capitalize()}}</li>
+                    {% endfor %}
                 </ul>
-                <li class="{{'checked' if data['auto']['processor'] else 'unchecked'}}">They {{"can" if data["auto"]["processor"] else "cannot"}} score on processor</li>
-                <li class="{{'checked' if data['auto']['net'] else 'unchecked'}}">They {{"can" if data["auto"]["net"] else "cannot"}} score on net</li>
             </ul>
             <h3>Tele:</h3>
             <ul>
-                <li class="{{'checked' if data['tele']['algae'] else 'unchecked'}}">They {{ "can" if data["tele"]["algae"] else "cannot"}} remove algae</li>
-                <li class="{{'checked' if (data['tele']['reef'])|any else 'unchecked'}}">Reef:</li>
+                <li class="{{'checked' if data['tele']['tele-fuel'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-fuel"] else "cannot"}} score in the hub</li>
+                <li class="{{'checked' if data['tele']['tele-depot'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-depot"] else "cannot"}} intake from the depot</li>
+                <li class="{{'checked' if data['tele']['tele-outpost'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-outpost"] else "cannot"}} intake from the outpost chute</li>
+                <li class="{{'checked' if data['tele']['tele-neutral'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-neutral"] else "cannot"}} intake from the neutral zone</li>
+                {% for i in range(1,4) %}
+                <li class="{{'checked' if data['climb'+i|string] else 'unchecked'}}">Climb level {{i}}:</li>
                 <ul>
-                    {% for canscore in data["tele"]["reef"]%}
-                    <li class="{{'checked' if canscore else 'unchecked'}}">They {{"can" if canscore else "cannot"}} score on L{{loop.index}}</li>
-                    {%endfor%}
+                    {% for n in ("center","side","inside")%}
+                    <li class="{{'checked' if data['tele']['tele-climb'+i|string+'-'+n] else 'unchecked'}}">{{n.capitalize()}}</li>
+                    {% endfor %}
                 </ul>
-                <li class="{{'checked' if data['tele']['processor'] else 'unchecked'}}">They {{"can" if data["tele"]["processor"] else "cannot"}} score on processor</li>
-                <li class="{{'checked' if data['tele']['net'] else 'unchecked'}}">They {{"can" if data["tele"]["net"] else "cannot"}} score on net</li>
-                <li class="{{'checked' if data['tele']['park'] else 'unchecked'}}">They {{"can" if data["tele"]["parl"] else "cannot"}} park during endgame</li>
-                {% if data['tele']['shallow']%}<li class="checked">They can shallow climb</li>{%endif%}
-                {% if data['tele']['shallow']%}<li class="checked">They can deep climb</li>{%endif%}
+                {% endfor %}
             </ul>
             <p>Main robot role: {{data["role"]}}</p>
             <p>Robot weight: {{data["weight"]}}</p>

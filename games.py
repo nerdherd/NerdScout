@@ -21,6 +21,8 @@ class Game:
         self.teamTableDisplayNames = {}
         self.matchTableDisplayNames = {}
         self.cannedComments = []
+        self.pitScoutAutoCapabilities = tuple()
+        self.pitScoutTeleCapabilities = tuple()
         raise NotImplementedError("Game Superclass __init__ used")
 
     def calculateScore(self) -> int:
@@ -268,24 +270,26 @@ class Reefscape(Game):
             "comment": "Comment",
         }
         self.cannedComments = [
-        "Good Driving",
-        "Bad Driving",
-        "Fast Driving",
-        "Slow Driving",
-        "Removed Algae",
-        "Coral Station During Auto",
-        "Played Defense",
-        "Good Defense",
-        "Bad Defense",
-        "Was Defended",
-        "Multiple Fouls",
-        "Multiple Jams",
-        "Bumpers Off",
-        "Tipped/Stuck",
-        "Died",
-        "No Show",
-        "Bad Descision Making",
+            "Good Driving",
+            "Bad Driving",
+            "Fast Driving",
+            "Slow Driving",
+            "Removed Algae",
+            "Coral Station During Auto",
+            "Played Defense",
+            "Good Defense",
+            "Bad Defense",
+            "Was Defended",
+            "Multiple Fouls",
+            "Multiple Jams",
+            "Bumpers Off",
+            "Tipped/Stuck",
+            "Died",
+            "No Show",
+            "Bad Descision Making",
         ]
+        self.pitScoutAutoCapabilities = tuple()
+        self.pitScoutTeleCapabilities = tuple()
 
     def calculateScore(
         self,
@@ -1007,22 +1011,46 @@ class Rebuilt(Game):
             "cannedComments": "Canned Comments",
             "scout": "Scout",}
         self.cannedComments = [
-        "Good Driving",
-        "Bad Driving",
-        "Fast Driving",
-        "Slow Driving",
-        "Played Defense",
-        "Good Defense",
-        "Bad Defense",
-        "Was Defended",
-        "Multiple Fouls",
-        "Multiple Jams",
-        "Bumpers Off",
-        "Tipped/Stuck",
-        "Died",
-        "No Show",
-        "Bad Descision Making",
+            "Good Driving",
+            "Bad Driving",
+            "Fast Driving",
+            "Slow Driving",
+            "Played Defense",
+            "Good Defense",
+            "Bad Defense",
+            "Was Defended",
+            "Multiple Fouls",
+            "Multiple Jams",
+            "Bumpers Off",
+            "Tipped/Stuck",
+            "Died",
+            "No Show",
+            "Bad Descision Making",
         ]
+        self.pitScoutAutoCapabilities = (
+            ("Score in hub","auto-fuel"),
+            ("Intake from depot","auto-depot"),
+            ("Intake from outpost chute","auto-outpost"),
+            ("Intake from neutral zone","auto-neutral"),
+            ("Climb level 1 in the center","auto-climb1-center"),
+            ("Climb level 1 on the sides","auto-climb1-side"),
+            ("Climb level 1 in the inside","auto-climb1-inside"),
+        )
+        self.pitScoutTeleCapabilities = (
+            ("Score in hub","tele-fuel"),
+            ("Intake from depot","tele-depot"),
+            ("Intake from outpost chute","tele-outpost"),
+            ("Intake from neutral zone","tele-neutral"),
+            ("Climb level 1 in the center","tele-climb1-center"),
+            ("Climb level 1 on the sides","tele-climb1-side"),
+            ("Climb level 1 in the inside","tele-climb1-inside"),
+            ("Climb level 2 in the center","tele-climb2-center"),
+            ("Climb level 2 on the sides","tele-climb2-side"),
+            ("Climb level 2 in the inside","tele-climb2-inside"),
+            ("Climb level 3 in the center","tele-climb3-center"),
+            ("Climb level 3 on the sides","tele-climb3-side"),
+            ("Climb level 3 in the inside","tele-climb3-inside"),
+        )
 
     def calculateScore(self, fuel: int, autoClimb: bool, endClimb: EndPositionRebuilt, minorFouls: int, majorFouls: int) -> int:
         """
