@@ -3,6 +3,7 @@ const mainTable = document.getElementById("main-table");
 
 function updateSort(){
     sortCategory = document.getElementById("sort-category").value;
+    if (sortCategory == "startpos") return;
 
     rowNodes = document.querySelectorAll(".team-row");
 
@@ -17,7 +18,7 @@ function updateSort(){
     rows.sort(function(a,b){
         var aRaw = a.dataset[sortCategory];
         var bRaw = b.dataset[sortCategory];
-        if (sortCategory === "autoleave" || sortCategory === "endpossuccess"){
+        if (aRaw === "True" || aRaw === "False"){
             // true vs false
             if (aRaw === bRaw) return 0;
             if (aRaw === "") return descending ? -1 : 1;
@@ -26,9 +27,6 @@ function updateSort(){
             if (bRaw === "True") return -1;
             return 0;
             // return -1;
-        }
-        if (sortCategory === "comment"){
-            return aRaw.localeCompare(bRaw);
         }
         var aVal = parseFloat(aRaw);
         var bVal = parseFloat(bRaw);
@@ -44,9 +42,14 @@ function updateSort(){
             if (bSplit[0] === "Final") bVal+=20000;
             if (aSplit[0] === "Playoff") aVal+=10000;
             if (bSplit[0] === "Playoff") bVal+=10000;
+
+            if (aVal > bVal) return 1;
+            if (aVal < bVal) return -1;
+            return 0;
         }
         if (isNaN(aVal) || isNaN(bVal)){
             console.log(sortCategory,"null");
+            return aRaw.localeCompare(bRaw);
         }
         if (aVal > bVal) return 1;
         if (aVal < bVal) return -1;
@@ -85,16 +88,22 @@ function download_table_as_csv(isMatches=false,separator = ',') {
                 continue;
             }
 
-            if (cols[j].nodeName==="TH" || isNaN(cols[j].innerText) || isNaN(parseFloat(cols[j].innerText))){
-                // Clean innertext to remove multiple spaces and jumpline (break csv)
-                var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+            if (cols[j].nodeName==="TH"||cols[j].classList.contains("escape")){ //|| isNaN(cols[j].innerText) || isNaN(parseFloat(cols[j].innerText))){
+                var data = cols[j].innerText;
                 // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
                 data = data.replace(/"/g, '""');
+                if ("displayname" in cols[j].dataset) var data = cols[j].dataset.displayname;
+                // Clean innertext to remove multiple spaces and jumpline (break csv)
+                data = data.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ');
                 // Push escaped string
                 row.push('"' + data + '"');
             } else {
-                var data = cols[j].innerText;
-                row.push(data);
+                // if (cols[j].dataset.datas.includes(",")) console.log("tea");
+                let tochecks = cols[j].dataset.datas.split(",");
+                for (const tocheck of tochecks){
+                    var data = rows[i].dataset[tocheck];
+                    row.push(data);
+                }
             }
         }
         csv.push(row.join(separator));

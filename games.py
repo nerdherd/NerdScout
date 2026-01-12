@@ -981,6 +981,7 @@ class Rebuilt(Game):
             "matchNumber": "Match Number",
             "setNumber": "Set Number",
             "compLevel": "Competition Level",
+            "startpos": "Starting Position",
             "preloadFuel": "Preloaded Fuel",
             "autoFuel": "Auto Fuel",
             "autoFuelMiss": "Missed Auto Fuel",

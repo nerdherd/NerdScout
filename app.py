@@ -66,7 +66,7 @@ def createTestMatches():
             addTeam(i, f"{foundationName} Foundation", foundationName)
     for i in range(9991,9996):
         if not getMatch(CompLevel.QM, i, 1):
-            addScheduledMatch(i,1,CompLevel.QM,f"2026test_qm{i}",f"Test Match {i}", 9991,9992,9993,9994,9995,9996)
+            addScheduledMatch(i,1,CompLevel.QM,f"2026test_qm{i}",f"TestMatch {i}", 9991,9992,9993,9994,9995,9996)
     for i in range(9991,9996):
         for team in Station:
             game.scoreRobotInMatch(i,1,CompLevel.QM,team,random.random(),random.random(),int(random.random()*8),int(random.random()*30),int(random.random()*30),random.random()>0.5,random.random()>0.5,int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),int(random.random()*30),EndPositionRebuilt(random.randint(0,3)),int(random.random()*4),int(random.random()**10*10),"abaca",[],"tonnieboy300")
@@ -174,7 +174,7 @@ def teamPage():
     )
 
 
-@app.route("/team/rank")
+@app.route("/strategy/rank")
 def teamRankPage():
     key = request.args.get("category")
     stat = request.args.get("stat")
@@ -200,7 +200,7 @@ def teamRankPage():
     )
 
 
-@app.route("/scoreAlliance")
+@app.route("/strategy/scoreAlliance")
 def scoreAlliancePage():
 
     team1 = None
@@ -453,8 +453,9 @@ def teamDataSummary():
     return data
 
 
-@app.route("/team/table")
+@app.route("/strategy/teamtable")
 def teamTable():
+    return "not implemented"
     stat = request.args.get("stat")
     if not (
         (stat == "mean")
@@ -745,7 +746,7 @@ def adminPage():
     return render_template("auth/admin.html")
 
 
-@app.route("/team/table2")
+@app.route("/strategy/matchTable")
 def matchTable():
     matches = getAllMatches()
     results = []
@@ -770,7 +771,7 @@ def matchTable():
     displayNames = game.matchTableDisplayNames
 
     return render_template(
-        "/strategy/match/table2.html",
+        "/strategy/match/table.html",
         results=results,
         displayNames=displayNames,
         teams=teams,

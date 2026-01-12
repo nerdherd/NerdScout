@@ -76,7 +76,7 @@
 </details>
 
 <select id="sort-category">
-    <option value="team" selected>Team</option>
+    <!-- <option value="team" selected>Team</option> -->
     {% for key in displayNames %}
     <option value="{{key.lower()}}">{{displayNames[key]}}</option>
     {% endfor %}
@@ -90,17 +90,21 @@
 <table id="main-table">
     <tr id="header-row" class="header-row">
         {% for key in displayNames %}
-        <th class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}"><button onclick="setSort('{{key.lower()}}')" class="header-button-{{key.lower()}}">{{displayNames[key]}}</button></th>
+        <th class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}" data-displayname="{{'Starting Position X", "Starting Position Y' if key == 'startpos' else displayNames[key]}}"><button onclick="setSort('{{key.lower()}}')" class="header-button-{{key.lower()}}">{{displayNames[key]}}</button></th>
         {% endfor %}
     </tr>
     {% for match in results %}
-    <tr class="team-row row-{{match['team']}} complevel-{{match['compLevel']}}" data-team="{{match['team']}}" {% for key in displayNames %}data-{{key}}="{{match[key]}}"{% endfor %}>
+    <tr class="team-row row-{{match['team']}} complevel-{{match['compLevel']}}" data-team="{{match['team']}}" {% for key in displayNames %}{% if key == "startpos"%} data-startposx="{{match['startPosX']}}" data-startposy="{{match['startPosY']}}" {% else %} data-{{key}}="{{match[key]}}" {% endif %}{% endfor %}>
         {% for key in displayNames %}
-        <td class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}">
+        <td class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %} {% if key in ('comment', 'cannedComments', 'scout', 'displayName', 'compLevel') %}escape{% endif %}" data-datas="{{'startposx,startposy' if key == 'startpos' else key.lower()}}">
             {% if key == "displayName" %}
             <a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],compLevel=match['compLevel'],setNum=match['setNumber']) }}">{{match[key]}}</a>
+            {% elif key == "startpos" %}
+            <p>{{match["startPosX"]}} {{match["startPosY"]}}</p>
+            {% elif key == "cannedComments" %}
+            <p>{{",".join(match[key])}}</p>
             {% else %}
-            <p>{{(["Blue","Center","Red"])[match[key]-1] if key == "startPos" else (["None","Park","Shallow","Deep"])[match[key]] if key in ("endPos","attemptedEndPos") else match[key]}}</p>
+            <p>{{match[key]}}</p>
             {% endif %}
         </td>
         {% endfor %}
@@ -111,4 +115,7 @@
 <a href="#" onclick="download_table_as_csv(true)">Download as CSV</a>
 {% set previousPage = url_for('strategyPage') %}
 {% include 'backButton.html' %}
+<!-- <script>
+    const displayNames = [{% for key in displayNames %}{% if key == "startpos"%} "startPosX", "startPosY", {% else %} "{{key}}", {% endif %}{% endfor %}];
+</script> -->
 {% endblock %}
