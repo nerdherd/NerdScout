@@ -28,15 +28,24 @@ startPosCanvas.addEventListener("click", (e) => {
     requestAnimationFrame(drawStartPos);
 });
 
-var startPosX = 0.0;
-var startPosY = 0.0;
-var lastX = 100000.0;
-var lastY = 100000.0;
+var startPosX = startPosCanvas.width/2;
+var startPosY = startPosCanvas.height/2;
+var lastX = startPosX;
+var lastY = startPosY;
 function drawStartPos(){
-    let isDifferent = (Math.abs(startPosX-lastX)>3||Math.abs(startPosY-lastY)>3);
+    let dx = Math.abs(startPosX-lastX), dy = Math.abs(startPosY-lastY)
+    let isDifferent = (dx>1||dy>1);
+    let isClose = (dx<10&&dy<10);
     if (isDifferent){
-        lastX = Math.round(0.6*startPosX + 0.4*lastX);
-        lastY = Math.round(0.6*startPosY + 0.4*lastY);
+        if (isClose){
+            if (startPosX>lastX) lastX++;
+            else if (startPosX<lastX) lastX--;
+            if (startPosY>lastY) lastY++;
+            else if (startPosY<lastY) lastY--;
+        } else {
+            lastX = Math.round(0.2*startPosX + 0.8*lastX);
+            lastY = Math.round(0.2*startPosY + 0.8*lastY);
+        }
     } else {
         lastX = startPosX;
         lastY = startPosY; 
@@ -50,6 +59,7 @@ function drawStartPos(){
 
     if (isDifferent) requestAnimationFrame(drawStartPos);
 }
+requestAnimationFrame(drawStartPos);
 
 function toggleActive(id){
     document.getElementById(id).classList.toggle("active");

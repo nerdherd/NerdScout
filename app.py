@@ -387,7 +387,7 @@ def scoutTeam():
 
 
 dontSummarize = frozenset(
-    ["startPos", "endPos", "attemptedEndPos", "cannedComments", "endPosSuccess"]
+    ["startPosX","startPosY", "endPos", "attemptedEndPos", "cannedComments", "endPosSuccess"]
 )
 
 
@@ -455,7 +455,7 @@ def teamDataSummary():
 
 @app.route("/strategy/teamtable")
 def teamTable():
-    return "not implemented"
+    # return "not implemented"
     stat = request.args.get("stat")
     if not (
         (stat == "mean")
@@ -469,6 +469,7 @@ def teamTable():
 
     displayNames = game.teamTableDisplayNames
     data = teamDataSummary()
+    print(data)
     return render_template(
         "strategy/team/table.html",
         displayNames=displayNames,
