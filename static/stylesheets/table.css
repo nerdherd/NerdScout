@@ -74,6 +74,15 @@ td{
     padding-right:4px;
 }
 
+/* TODO: style these */
+td.active {
+    background-color: green;
+}
+
+td.inactive {
+    background-color: red;
+}
+
 
 .startPosDisplay {
     width: calc(317.7px / 3);

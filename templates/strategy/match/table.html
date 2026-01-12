@@ -96,7 +96,7 @@
     {% for match in results %}
     <tr class="team-row row-{{match['team']}} complevel-{{match['compLevel']}}" data-team="{{match['team']}}" {% for key in displayNames %}{% if key == "startpos"%} data-startposx="{{match['startPosX']}}" data-startposy="{{match['startPosY']}}" {% else %} data-{{key}}="{{match[key]}}" {% endif %}{% endfor %}>
         {% for key in displayNames %}
-        <td class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %} {% if key in ('comment', 'cannedComments', 'scout', 'displayName', 'compLevel') %}escape{% endif %}" data-datas="{{'startposx,startposy' if key == 'startpos' else key.lower()}}">
+        <td class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %} {% if key in ('comment', 'cannedComments', 'scout', 'displayName', 'compLevel') %}escape{% endif %}  {% if match['firstShift'] %}{% if '1' in key or '3' in key %} active {% elif '2' in key or '4' in key %} inactive {% endif %}{% else %}{% if '2' in key or '4' in key %} active {% elif '1' in key or '3' in key %} inactive {% endif %}{% endif %}" data-datas="{{'startposx,startposy' if key == 'startpos' else key.lower()}}">
             {% if key == "displayName" %}
             <a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],compLevel=match['compLevel'],setNum=match['setNumber']) }}">{{match[key]}}</a>
             {% elif key == "startpos" %}
