@@ -119,8 +119,8 @@ function submitData(matchNum, compLevel, setNum, robot){
         "endgameFuel": getId("endgameFuel"),
         "endgameFuelMiss": getId("endgameFuelMiss"),
         "attemptedEndPos": getId("attemptedEndPos"),
-        "minorFouls": 1,
-        "majorFouls": 1,  
+        "minorFouls": getId("minorFouls"),
+        "majorFouls": getId("majorFouls"),  
         "comment": getId("comments"),  
         "cannedComments": cannedComments,  
     };

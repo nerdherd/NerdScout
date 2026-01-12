@@ -11,7 +11,7 @@ table {
 
 th, td {
     border: 1px solid white;
-    width: 100px;
+    width: 135px;
     overflow: hidden;
     height: 100%;
     background-color: var(--darker-cell);

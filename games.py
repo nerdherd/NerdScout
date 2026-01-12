@@ -1046,8 +1046,8 @@ class Rebuilt(Game):
             case EndPositionRebuilt.L3:
                 score += 30
 
-        score -= 5 * minorFouls
-        score -= 15 * majorFouls
+        score -= 5 * int(minorFouls)
+        score -= 15 * int(majorFouls)
         return score
     
     def scoreRobotInMatch(
