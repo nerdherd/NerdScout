@@ -100,7 +100,10 @@
             {% if key == "displayName" %}
             <a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],compLevel=match['compLevel'],setNum=match['setNumber']) }}">{{match[key]}}</a>
             {% elif key == "startpos" %}
-            <p>{{match["startPosX"]}} {{match["startPosY"]}}</p>
+            <div class="startPosDisplay" style="background-image:url({{ url_for('static', filename='images/startpos.png') }})">
+                <div class="startPosIndicator" style="left:{{match['startPosY']*100}}%;top:{{match['startPosX']*100}}%;"></div>
+            </div>
+            <!-- <p>{{match["startPosX"]}} {{match["startPosY"]}}</p> -->
             {% elif key == "cannedComments" %}
             <p>{{",".join(match[key])}}</p>
             {% else %}

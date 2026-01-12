@@ -73,3 +73,19 @@ td{
     text-align: right;
     padding-right:4px;
 }
+
+
+.startPosDisplay {
+    width: calc(317.7px / 3);
+    height: calc(158.6px / 3);
+    background-size:cover;
+    position: relative;
+}
+
+.startPosIndicator {
+    position:absolute;
+    width:5px;
+    height:5px;
+    background-color: black;
+    transform: translate(-50%,-50%);
+}
