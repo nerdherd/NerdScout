@@ -197,7 +197,7 @@ def loadScheduleFromTBA(event: str):
     """
     try:
         data = requests.get(
-            f"https://www.thebluealliance.com/api/v3/event/{event}/matches/simple",
+            f"https://www.thebluealliance.com/api/v3/event/{event}/matches",
             headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent": "Nerd Scout"},
         )
         if data.status_code == 404:
@@ -241,6 +241,12 @@ def updateScheduleFromTBA(event: str):
         results = matches.count_documents({"matchKey": match["key"]})
         if results == 0:
             addMatchFromTBA(match)
+        else:
+            if "score_breakdown" in match:
+                matches.update_one({"matchKey": match["key"]},{"$set":{"results.scored":True}})
+                matchInDB = parseResults(matches.find_one({"matchKey": match["key"]}))
+                if (not "scoreBreakdown" in matchInDB["results"]) or (matchInDB["results"]["scoreBreakdown"]["postResultTime"] < match["post_result_time"]):
+                    matches.update_one({"matchKey": match["key"]},{"$set":{"results.postResultTime": match["post_result_time"], "results.actualTime": match["actual_time"], "results.scoreBreakdown": match["score_breakdown"], "results.winningAlliance": match["winning_alliance"]}})
 
 
 def addTeam(number: int, longName: str, shortName: str, comment: list = []):
