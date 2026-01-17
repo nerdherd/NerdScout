@@ -67,9 +67,56 @@ def createTestMatches():
     for i in range(9991,9996):
         if not getMatch(CompLevel.QM, i, 1):
             addScheduledMatch(i,1,CompLevel.QM,f"2026test_qm{i}",f"TestMatch {i}", 9991,9992,9993,9994,9995,9996)
+    randomScoringPeriods = lambda n: [{"time":random.random()*5.0,"scored":random.randint(0,30),"missed":random.randint(0,30)} for _ in range(n)]
     for i in range(9991,9996):
         for team in Station:
-            game.scoreRobotInMatch(i,1,CompLevel.QM,team,random.random(),random.random(),random.randint(0,8),[{"scored":random.randint(0,30),"missed":random.randint(0,30),"time":random.random()}],random.random()>0.5,random.random()>0.5,random.random()>0.5,random.random()>0.5,random.random()>0.5,random.random()>0.5,random.random()>0.5,random.random()>0.5,random.random()>0.5,random.random()>0.5,[{"scored":random.randint(0,30),"missed":random.randint(0,30),"time":random.random()}],[{"scored":random.randint(0,30),"missed":random.randint(0,30),"time":random.random()}],[{"scored":random.randint(0,30),"missed":random.randint(0,30),"time":random.random()}],random.random()>0.5,random.random()>0.5,[{"scored":random.randint(0,30),"missed":random.randint(0,30),"time":random.random()}],EndPositionRebuilt(random.randint(0,3)),random.random()>0.5,random.random()>0.5,random.random()>0.5,random.random()>0.5,random.random()>0.5,random.random()>0.5,random.randint(0,10),random.randint(0,3),"abaca",[],"tonnieboy300")
+            game.scoreRobotInMatch(
+                matchNumber=i,
+                setNumber=1,
+                compLevel=CompLevel.QM,
+                station=team,
+                startPosX=random.random(),
+                startPosY=random.random(),
+                preloadFuel=random.randint(0,8),
+                autoFuel=randomScoringPeriods(random.randint(0,5)),
+                autoDepot=random.random()>0.5,
+                autoBump=random.random()>0.5,
+                autoTrench=random.random()>0.5,
+                autoNeutralIntake=random.random()>0.5,
+                autoAttemptedSecondScore=random.random()>0.5,
+                autoSucceededSecondScore=random.random()>0.5,
+                autoClimbAttempted=random.random()>0.5,
+                autoClimbSuccess=random.random()>0.5,
+                autoOutpostFeed=random.random()>0.5,
+                firstShift=random.random()>0.5,
+                transitionFuel=randomScoringPeriods(random.randint(0,5)),
+                transitionFed=random.random()>0.5,
+                transitionDefense=random.random()>0.5,
+                firstActiveShiftFuel=randomScoringPeriods(random.randint(0,5)),
+                firstActiveShiftFed=random.random()>0.5,
+                firstActiveShiftDefense=random.random()>0.5,
+                secondActiveShiftFuel=randomScoringPeriods(random.randint(0,5)),
+                secondActiveShiftFed=random.random()>0.5,
+                secondActiveShiftDefense=random.random()>0.5,
+                firstInactiveShiftScored=random.random()>0.5,
+                firstInactiveShiftFed=random.random()>0.5,
+                firstInactiveShiftDefense=random.random()>0.5,
+                secondInactiveShiftScored=random.random()>0.5,
+                secondInactiveShiftFed=random.random()>0.5,
+                secondInactiveShiftDefense=random.random()>0.5,
+                endgameFuel=randomScoringPeriods(random.randint(0,5)),
+                endgameFed=random.random()>0.5,
+                endgameDefense=random.random()>0.5,
+                endClimb=EndPositionRebuilt(random.randint(0,3)),
+                outpostIntake=random.random()>0.5,
+                groundIntake=random.random()>0.5,
+                fedToOutpost=random.random()>0.5,
+                minorFouls=random.randint(0,10),
+                majorFouls=random.randint(0,3),
+                comment="abaca",
+                cannedComments=[],
+                scout=random.choice(["hello","hello2","hlelo3","tonnieboy300","mr hello","hello jr","ms hello"])
+            )
     return "ok."
 
 
