@@ -109,14 +109,8 @@ function toggleTimer(){
     }
     timerActive = false;
     let elapsed = (Date.now()-startTime)/1000;
-    // let scored = parseInt(scoredElemenet.value);
-    // let missed = parseInt(missedElemenet.value);
-    // scoringPeriods.push({"time":elapsed,"scored":scored,"missed":missed});
-    // scoredElemenet.value = 0;
-    // missedElemenet.value = 0;
     timer_button.innerText = "Start Timer";
     timer_input.value = elapsed
-    // addScoreToTable(elapsed,scored,missed);
 }
 
 var timer_button = getById("timer-button");
@@ -135,9 +129,16 @@ function addScoreToTable(time,scored,missed){
     scoredEl.innerText=scored;
     let missedEl = document.createElement("td");
     missedEl.innerText=missed;
+    let deleteTableEl = document.createElement("td")
+    let deleteButton = document.createElement("button");
+    deleteButton.innerText = "X";
+    let deleteIndex = scoringPeriods.length-1;
+    deleteButton.onclick = () => {removeScore(deleteIndex)};
+    deleteTableEl.appendChild(deleteButton);
     cur_row.appendChild(timeEl);
     cur_row.appendChild(scoredEl);
     cur_row.appendChild(missedEl);
+    cur_row.appendChild(deleteTableEl);
     score_table.appendChild(cur_row)
 }
 
@@ -145,11 +146,29 @@ function submitScoringPeriod(){
     let scored = parseInt(scoredElemenet.value);
     let missed = parseInt(missedElemenet.value);
     let time = parseFloat(timer_input.value);
+    if (time <= 0.01) {
+        alert("please put more time!");
+        return;
+    }
     scoringPeriods.push({"time":time,"scored":scored,"missed":missed});
     scoredElemenet.value = 0;
     missedElemenet.value = 0;
     timer_input.value = 0;
     addScoreToTable(time,scored,missed);
+}
+
+function addScoresToTable(scores){
+    for (const scoringPeriod of scores){
+        addScoreToTable(scoringPeriod["time"],scoringPeriod["scored"],scoringPeriod["missed"]);
+    }
+}
+
+function removeScore(index){
+    scoringPeriods.splice(index,1);
+    for (const row of score_table.querySelectorAll("tr:not(.headers)")){
+        row.remove();
+    }
+    addScoresToTable(scoringPeriods);
 }
 
 function submitData(matchNum, compLevel, setNum, robot){
