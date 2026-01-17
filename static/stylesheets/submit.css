@@ -38,15 +38,9 @@ body {
     /* justify-content: center; */
 }
 
-.main > div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .counter{
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row;
     align-items: center;
 }
 
@@ -61,7 +55,7 @@ body {
 
 .counter input[type="number"]{
     font-size: 2.5em;
-    width: 1em;
+    width: 2em;
     padding-left: 0.5em;
     border-radius: 0.5em;
 }
@@ -108,15 +102,8 @@ body {
     cursor: pointer;
 }
 
-.sidewaysCounter{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.sidewaysCounter *{
-    scale: 0.75;
-    padding: 0.2em
+#startPosCanvas{
+    width: 318px;
 }
 
 .canned-button {
@@ -140,15 +127,6 @@ body {
     overflow-x: auto;
     width: 100%;
 }
-
-div.active {
-    background-color: rgba(255,255,255,0.1);
-}
-
-#startPosCanvas {
-    
-}
-
 
 .section {
     padding-top: 1em;

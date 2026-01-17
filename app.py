@@ -647,41 +647,57 @@ def submitScorePage():
             abort(400)
         try:
             if not game.scoreRobotInMatch(
-                matchNumber,
-                setNumber,
-                compLevel,
-                currentRobot,  # str
-                submission["startPosX"],
-                submission["startPosY"],
-                submission["preloadFuel"],
-                submission["autoFuel"],
-                submission["autoFuelMiss"],
-                submission["autoClimb"],
-                submission["firstShift"],
-                submission["transitionFuel"],
-                submission["transitionFuelMiss"],
-                submission["shift1Fuel"],
-                submission["shift1FuelMiss"],
-                submission["shift2Fuel"],
-                submission["shift2FuelMiss"],
-                submission["shift3Fuel"],
-                submission["shift3FuelMiss"],
-                submission["shift4Fuel"],
-                submission["shift4FuelMiss"],
-                submission["endgameFuel"],
-                submission["endgameFuelMiss"],
-                EndPositionRebuilt(
+                matchNumber=matchNumber,
+                setNumber=setNumber,
+                compLevel=compLevel,
+                station=currentRobot,  # str
+                startPosX=submission["startPosX"],
+                startPosY=submission["startPosY"],
+                preloadFuel=submission["preloadFuel"],
+                autoFuel=submission["autoFuel"],
+                autoDepot=submission["autoDepot"],
+                autoBump=submission["autoBump"],
+                autoTrench=submission["autoTrench"],
+                autoNeutralIntake=submission["autoNeutralIntake"],
+                autoAttemptedSecondScore=submission["autoAttemptedSecondScore"],
+                autoSucceededSecondScore=submission["autoSucceededSecondScore"],
+                autoClimbAttempted=submission["autoClimbAttempted"],
+                autoClimbSuccess=submission["autoClimbSuccess"],
+                autoOutpostFeed=submission["autoOutpostFeed"],
+                firstShift=submission["firstShift"],
+                transitionFuel=submission["transitionFuel"],
+                transitionFed=submission["transitionFed"],
+                transitionDefense=submission["transitionDefense"],
+                firstActiveShiftFuel=submission["firstActiveShiftFuel"],
+                firstActiveShiftFed=submission["firstActiveShiftFed"],
+                firstActiveShiftDefense=submission["firstActiveShiftDefense"],
+                secondActiveShiftFuel=submission["secondActiveShiftFuel"],
+                secondActiveShiftFed=submission["secondActiveShiftFed"],
+                secondActiveShiftDefense=submission["secondActiveShiftDefense"],
+                firstInactiveShiftScored=submission["firstInactiveShiftScored"],
+                firstInactiveShiftFed=submission["firstInactiveShiftFed"],
+                firstInactiveShiftDefense=submission["firstInactiveShiftDefense"],
+                secondInactiveShiftScored=submission["secondInactiveShiftScored"],
+                secondInactiveShiftFed=submission["secondInactiveShiftFed"],
+                secondInactiveShiftDefense=submission["secondInactiveShiftDefense"],
+                endgameFuel=submission["endgameFuel"],
+                endgameFed=submission["endgameFed"],
+                endgameDefense=submission["endgameDefense"],
+                endClimb=EndPositionRebuilt(
                     int(
                         submission[ # int between 0-3, though should be 2 or 3 # type: ignore
-                            "attemptedEndPos"
+                            "endClimb"
                         ]  
                     )
                 ),
-                submission["minorFouls"],
-                submission["majorFouls"],  # int # type: ignore
-                submission["comment"],  # str # type: ignore
-                submission["cannedComments"],  # array of strs # type: ignore
-                scout,  # str # type: ignore
+                outpostIntake=submission["outpostIntake"],
+                groundIntake=submission["groundIntake"],
+                fedToOutpost=submission["fedToOutpost"],
+                minorFouls=submission["minorFouls"],
+                majorFouls=submission["majorFouls"],
+                comment=submission["comment"],
+                cannedComments=submission["cannedComments"],
+                scout=scout
             ):
                 abort(400)
         except TypeError as err:

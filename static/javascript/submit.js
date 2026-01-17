@@ -80,13 +80,77 @@ function updateShift(){
     }
 }
 
-function incrementCounter(id,isPositive){
+function incrementCounter(id,isPositive,amount=1){
     const curElement = document.getElementById(id);
-    if (isPositive) curElement.value++;
-    else if (curElement.value > 0) curElement.value--;
+    for (let i=0;i<amount;i++){
+        if (isPositive) curElement.value++;
+        else if (curElement.value > 0) curElement.value--
+    }
 }
 
-function getId(id){return document.getElementById(id).value;}
+function getById(id){return document.getElementById(id);}
+function getId(id,isInt=true){
+    let val = getById(id).value;
+    return isInt?parseInt(val):val;
+}
+
+var scoringPeriods = [];
+var timerActive = false;
+var startTime;
+var scoredElemenet = getById("scored"); // speleld wrong
+var missedElemenet = getById("missed");
+function toggleTimer(){
+    if (!timerActive){
+        startTime = Date.now();
+        timerActive = true;
+        requestAnimationFrame(drawTimer);
+        timer_button.innerText = "Stop Timer";
+        return;
+    }
+    timerActive = false;
+    let elapsed = (Date.now()-startTime)/1000;
+    // let scored = parseInt(scoredElemenet.value);
+    // let missed = parseInt(missedElemenet.value);
+    // scoringPeriods.push({"time":elapsed,"scored":scored,"missed":missed});
+    // scoredElemenet.value = 0;
+    // missedElemenet.value = 0;
+    timer_button.innerText = "Start Timer";
+    timer_input.value = elapsed
+    // addScoreToTable(elapsed,scored,missed);
+}
+
+var timer_button = getById("timer-button");
+var timer_input = getById("time");
+function drawTimer(){
+    timer_input.value = (Date.now()-startTime)/1000;
+    if (timerActive) requestAnimationFrame(drawTimer);
+}
+
+var score_table = getById("score-table");
+function addScoreToTable(time,scored,missed){
+    let cur_row = document.createElement("tr");
+    let timeEl = document.createElement("td");
+    timeEl.innerText=time;
+    let scoredEl = document.createElement("td");
+    scoredEl.innerText=scored;
+    let missedEl = document.createElement("td");
+    missedEl.innerText=missed;
+    cur_row.appendChild(timeEl);
+    cur_row.appendChild(scoredEl);
+    cur_row.appendChild(missedEl);
+    score_table.appendChild(cur_row)
+}
+
+function submitScoringPeriod(){
+    let scored = parseInt(scoredElemenet.value);
+    let missed = parseInt(missedElemenet.value);
+    let time = parseFloat(timer_input.value);
+    scoringPeriods.push({"time":time,"scored":scored,"missed":missed});
+    scoredElemenet.value = 0;
+    missedElemenet.value = 0;
+    timer_input.value = 0;
+    addScoreToTable(time,scored,missed);
+}
 
 function submitData(matchNum, compLevel, setNum, robot){
 
@@ -112,26 +176,10 @@ function submitData(matchNum, compLevel, setNum, robot){
         "startPosX": startPosY/startPosCanvas.height,
         "startPosY": startPosX/startPosCanvas.width,
         "preloadFuel": getId("preloadFuel"),
-        "autoFuel": getId("autoFuel"),
-        "autoFuelMiss": getId("autoFuelMiss"),
-        "autoClimb": document.getElementById("autoClimb").checked,
-        "firstShift": document.getElementById("firstShift").checked,
-        "transitionFuel": getId("transitionFuel"),
-        "transitionFuelMiss": getId("transitionFuelMiss"),
-        "shift1Fuel": getId("shift1Fuel"),
-        "shift1FuelMiss": getId("shift1FuelMiss"),
-        "shift2Fuel": getId("shift2Fuel"),
-        "shift2FuelMiss": getId("shift2FuelMiss"),
-        "shift3Fuel": getId("shift3Fuel"),
-        "shift3FuelMiss": getId("shift3FuelMiss"),
-        "shift4Fuel": getId("shift4Fuel"),
-        "shift4FuelMiss": getId("shift4FuelMiss"),
-        "endgameFuel": getId("endgameFuel"),
-        "endgameFuelMiss": getId("endgameFuelMiss"),
-        "attemptedEndPos": getId("attemptedEndPos"),
+        // TODO: add this
         "minorFouls": getId("minorFouls"),
         "majorFouls": getId("majorFouls"),  
-        "comment": getId("comments"),  
+        "comment": getId("comments",false),  
         "cannedComments": cannedComments,  
     };
     data = JSON.stringify(rawData);
