@@ -41,6 +41,8 @@ app.jinja_env.filters["any"] = any
 
 game = Rebuilt(matches, teams)
 
+generatePoints()
+
 
 # Front-end Handlers
 @app.route("/")

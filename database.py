@@ -614,3 +614,37 @@ def parseResults(data):
     - dict or list: parsed results
     """
     return json.loads(json_util.dumps(data))
+
+def generatePoints() -> bool:
+    """
+    Gives accounts a points field if they do not yet.
+
+    Returns:
+    - bool: succeeded
+    """
+    return accounts.update_many({"points": {"$exists":False}},{"$set":{"points": 0}}).acknowledged
+
+def changeAccountPoints(username:str, pointsChange: int) -> bool:
+    """
+    Increments a user's points
+
+    Inputs:
+    - username (str): username of user
+    - pointsChange (int): points to add or subtract
+
+    Returns:
+    - bool: succeeded
+    """
+    return accounts.update_many({"username": username},{"$inc":{"points":pointsChange}}).acknowledged
+
+def changeAllAccountPoints(pointsChange: int) -> bool:
+    """
+    Increments all user's points
+
+    Inputs:
+    - pointsChange (int): points to add or subtract
+
+    Returns:
+    - bool: succeeded
+    """
+    return accounts.update_many({},{"$inc":{"points":pointsChange}}).acknowledged
