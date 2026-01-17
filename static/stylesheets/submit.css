@@ -32,6 +32,38 @@ body {
 
 .main {
     margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* justify-content: center; */
+}
+
+.main > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.counter{
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.counter *{
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+}
+
+.counter label{
+    text-align: center;
+}
+
+.counter input[type="number"]{
+    font-size: 2.5em;
+    width: 1em;
+    padding-left: 0.5em;
+    border-radius: 0.5em;
 }
 
 .minus, .plus {
@@ -40,6 +72,10 @@ body {
     border-radius: 30%;
     font-size: 30px;
     transition: background 0.25s, transform 0.15s;
+}
+
+.minus:active, .plus:active{
+    transform: scale(1.1);
 }
 
 .minus {
@@ -72,9 +108,22 @@ body {
     cursor: pointer;
 }
 
+.sidewaysCounter{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.sidewaysCounter *{
+    scale: 0.75;
+    padding: 0.2em
+}
+
 .canned-button {
+    height: fit-content;
     margin: 0.5em;
     padding: 0.75em;
+    font-size: 1em;
 }
 
 .canned-button.active {
@@ -82,11 +131,81 @@ body {
     
 }
 
+.commentDiv{
+    overflow: hidden;
+}
+
 .cannedComments{
-    flex-wrap: wrap;
-    justify-content: center;
+    height: fit-content;
+    overflow-x: auto;
+    width: 100%;
 }
 
 div.active {
     background-color: rgba(255,255,255,0.1);
+}
+
+#startPosCanvas {
+    
+}
+
+
+.section {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.sectionR {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.section div{
+    margin: 0.5em;
+}
+
+.section h1{
+    margin: 0;
+}
+
+.miss{
+    background-color: rgba(255,0,0,.25);
+}
+
+.spacePairs .counter{
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+
+#attemptedEndPos{
+    margin:0px;
+    /* transform: rotate(-90deg);
+    transform-origin: center;
+    width: 50vh;
+    height: 10vw; */
+    writing-mode: sideways-lr;
+    height: 40vh;
+}
+
+.endPosSect{
+    flex-direction: column-reverse;
+}
+
+#endgame{
+    align-items: flex-start;
+}
+
+.cannedComments{
+    display: flex;
+}
+
+#comments{
+    width: 90%;
+    border-radius: 0.5em;
 }

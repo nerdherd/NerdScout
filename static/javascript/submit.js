@@ -54,7 +54,7 @@ function drawStartPos(){
     startPosCtx.clearRect(0,0,startPosCanvas.width,startPosCanvas.height);
     startPosCtx.beginPath();
     startPosCtx.rect(lastX-15,lastY-15,30,30);
-    startPosCtx.fillStyle = "red";
+    startPosCtx.fillStyle = "gray";
     startPosCtx.fill();
 
     if (isDifferent) requestAnimationFrame(drawStartPos);
