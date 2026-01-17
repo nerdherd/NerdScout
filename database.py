@@ -648,3 +648,23 @@ def changeAllAccountPoints(pointsChange: int) -> bool:
     - bool: succeeded
     """
     return accounts.update_many({},{"$inc":{"points":pointsChange}}).acknowledged
+
+def getPointsRankings() -> list[dict]:
+    """
+    Returns a leaderboard for points.
+
+    Returns:
+    - list[dict]: leaderboard
+    """
+    users = getAllUsers()
+    nonapproved = []
+    # remove sensitive data
+    for i in range(len(users)):
+        if not users[i]["approved"]:
+            nonapproved.append(i)
+        users[i].pop("passwordHash")
+        users[i].pop("approved")
+        users[i].pop("admin")
+    for user in nonapproved:
+        users.pop(user)
+    return sorted(users,key=lambda user: user["points"],reverse=True)

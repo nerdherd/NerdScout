@@ -46,6 +46,7 @@ def newUser(username: str, passwordHash: str) -> bool:
             "passwordHash": passwordHash,
             "approved": False,
             "admin": False,
+            "points": 0,
         }
     )
     app.logger.info(f"New user created: {username} by {request.remote_addr}.")  # type: ignore
