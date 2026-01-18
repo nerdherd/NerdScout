@@ -1,7 +1,9 @@
 from array import array
+from datetime import datetime
 from http.client import HTTPException
 import os
 import re
+from time import time, time_ns
 import filetype
 import urllib.parse
 from flask import (
@@ -674,3 +676,28 @@ def getPointsRankings() -> list[dict]:
     for user in nonapproved:
         users.pop(user)
     return sorted(users,key=lambda user: user["points"],reverse=True)
+
+def createPrediction(user: str, compLevel: CompLevel, matchNumber: int, setNumber: int, forRed: bool) -> None:
+    """
+    Create a new prediction for a user on a given match.
+
+    Inputs:
+    - user (str): username
+    - compLevel (CompLevel): CompLevel of match
+    - matchNumber (int): matchNumber of match
+    - setNumber (int): setNumber of match
+    - forRed (bool): if the prediction is for red alliance winning
+    """
+    if not getUser(user):
+        app.logger.error(f"Couldn't create prediction for {user}: user doesn't exist.")
+        abort(400)
+    matchData = getMatch(compLevel, matchNumber, setNumber)
+    if not matchData:
+        app.logger.error(f"Couldn't create prediction for {compLevel}{matchNumber}_{setNumber}: match doesn't exist.")
+        abort(400)
+    matchData = matchData[0]
+
+    timestamp = datetime.now()
+    accounts.update_one({"username": user}, {"$set": {f"predictions.{matchData['matchKey']}": {"forRed": forRed, "matchComplete": False, "correct": False, "timestamp": timestamp}}})
+    matches.update_one({"matchKey": matchData["matchKey"]},{"$set":{f"predictions.{user}": {"forRed": forRed, "timestamp": timestamp}}})
+    app.logger.info(f"Created prediction for {user} on {compLevel}{matchNumber}_{setNumber}: {'Red' if forRed else 'Blue'} Victory.")
