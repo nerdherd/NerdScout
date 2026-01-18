@@ -677,7 +677,7 @@ def getPointsRankings() -> list[dict]:
         users.pop(user)
     return sorted(users,key=lambda user: user["points"],reverse=True)
 
-def createPrediction(user: str, compLevel: CompLevel, matchNumber: int, setNumber: int, forRed: bool) -> None:
+def createPrediction(user: str, compLevel: CompLevel, matchNumber: int, setNumber: int, forRed: bool, points: int) -> None:
     """
     Create a new prediction for a user on a given match.
 
@@ -687,7 +687,9 @@ def createPrediction(user: str, compLevel: CompLevel, matchNumber: int, setNumbe
     - matchNumber (int): matchNumber of match
     - setNumber (int): setNumber of match
     - forRed (bool): if the prediction is for red alliance winning
+    - points (int): number of points spent
     """
+    timestamp = datetime.now()
     if not getUser(user):
         app.logger.error(f"Couldn't create prediction for {user}: user doesn't exist.")
         abort(400)
@@ -697,7 +699,6 @@ def createPrediction(user: str, compLevel: CompLevel, matchNumber: int, setNumbe
         abort(400)
     matchData = matchData[0]
 
-    timestamp = datetime.now()
-    accounts.update_one({"username": user}, {"$set": {f"predictions.{matchData['matchKey']}": {"forRed": forRed, "matchComplete": False, "correct": False, "timestamp": timestamp}}})
-    matches.update_one({"matchKey": matchData["matchKey"]},{"$set":{f"predictions.{user}": {"forRed": forRed, "timestamp": timestamp}}})
-    app.logger.info(f"Created prediction for {user} on {compLevel}{matchNumber}_{setNumber}: {'Red' if forRed else 'Blue'} Victory.")
+    accounts.update_one({"username": user}, {"$set": {f"predictions.{matchData['matchKey']}": {"forRed": forRed, "points": points,"matchComplete": False, "correct": False, "timestamp": timestamp}}, "$inc":{"points": -points}})
+    matches.update_one({"matchKey": matchData["matchKey"]},{"$set":{f"predictions.{user}": {"forRed": forRed, "points": points, "timestamp": timestamp}}, "$inc": {"prizePool.overall": points, f"prizePool.{'red' if forRed else 'blue'}": points}})
+    app.logger.info(f"Created prediction for {user} on {compLevel}{matchNumber}_{setNumber}: {points} for {'Red' if forRed else 'Blue'} Victory.")
