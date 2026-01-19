@@ -715,3 +715,16 @@ def getPredictionAccounts(matchKey: str):
     - list[dict]: list of dicts of users
     """
     return parseResults(accounts.find({f"predictions.{matchKey}": {"$exists": True}}))
+
+def getPredictionAccountsForAlliance(matchKey: str, forRed: bool):
+    """
+    Returns a list of users who have a prediction for a given match with a given prediction.
+
+    Inputs:
+    - matchKey (str): matchKey for match
+    - forRed (bool): if the user predicts red alliance will win
+
+    Returns:
+    - list[dict]: list of dicts of users
+    """
+    return parseResults(accounts.find({f"predictions.{matchKey}.forRed": forRed}))
