@@ -741,16 +741,21 @@ def payoutPredictions(matchKey: str, forRed: bool):
         bluePool = matchData["prizePool"]["blue"]
     except KeyError:
         bluePool = 0
+    totalPool = matchData["prizePool"]["overall"]
 
-    if (redPool == 0) or (bluePool == 0):
-        payoutRatio = 1
-    else:
-        payoutRatio = redPool/bluePool if forRed else bluePool/redPool
+    winningPool = redPool if forRed else bluePool
     
     accounts.update_many({f"predictions.{matchKey}": {"$exists": True}}, {"$set": {f"predictions.{matchKey}.matchCompelete": True}})
 
+    if winningPool <= 0:
+        app.logger.info(f"Paid 0 for {'red' if forRed else 'blue'} predictions on {matchKey}")
+        return
+
     for user in correctUsers:
-        payout = user["predictions"][matchKey]["points"] * payoutRatio
+        # payout calculation: (bet/total bets for alliance) * total for all bets
+        # = % of red or blue pool * total pool
+        payout = round((user["predictions"][matchKey]["points"]/winningPool) * totalPool)
         accounts.update_one({"username": user["username"]}, {"$inc": {"points": payout}, "$set": {f"predictions.{matchKey}.correct": True}})
+        app.logger.info(f"Paid {payout} to {user['username']}")
     
-    app.logger.info(f"Paid {payoutRatio} for {'red' if forRed else 'blue'} predictions on {matchKey}")
+    app.logger.info(f"Paid out total of {totalPool} in a ratio of 1:{totalPool/winningPool} for {'red' if forRed else 'blue'} predictions on {matchKey}")
