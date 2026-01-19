@@ -728,3 +728,29 @@ def getPredictionAccountsForAlliance(matchKey: str, forRed: bool):
     - list[dict]: list of dicts of users
     """
     return parseResults(accounts.find({f"predictions.{matchKey}.forRed": forRed}))
+
+def payoutPredictions(matchKey: str, forRed: bool):
+    matchData = parseResults(matches.find_one({"matchKey": matchKey}))
+    correctUsers = getPredictionAccountsForAlliance(matchKey, forRed)
+    # incorrectUsers = getPredictionAccountsForAlliance(matchKey, not forRed)
+    try:
+        redPool = matchData["prizePool"]["red"]
+    except KeyError:
+        redPool = 0
+    try:
+        bluePool = matchData["prizePool"]["blue"]
+    except KeyError:
+        bluePool = 0
+
+    if (redPool == 0) or (bluePool == 0):
+        payoutRatio = 1
+    else:
+        payoutRatio = redPool/bluePool if forRed else bluePool/redPool
+    
+    accounts.update_many({f"predictions.{matchKey}": {"$exists": True}}, {"$set": {f"predictions.{matchKey}.matchCompelete": True}})
+
+    for user in correctUsers:
+        payout = user["predictions"][matchKey]["points"] * payoutRatio
+        accounts.update_one({"username": user["username"]}, {"$inc": {"points": payout}, "$set": {f"predictions.{matchKey}.correct": True}})
+    
+    app.logger.info(f"Paid {payoutRatio} for {'red' if forRed else 'blue'} predictions on {matchKey}")
