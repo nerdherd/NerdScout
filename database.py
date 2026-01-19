@@ -703,3 +703,15 @@ def createPrediction(user: str, compLevel: CompLevel, matchNumber: int, setNumbe
     # matches.update_one({"matchKey": matchData["matchKey"]},{"$set":{f"predictions.{user}": {"forRed": forRed, "points": points, "timestamp": timestamp}}, "$inc": {"prizePool.overall": points, f"prizePool.{'red' if forRed else 'blue'}": points}})
     matches.update_one({"matchKey": matchData["matchKey"]},{"$inc": {"prizePool.overall": points, f"prizePool.{'red' if forRed else 'blue'}": points}})
     app.logger.info(f"Created prediction for {user} on {compLevel}{matchNumber}_{setNumber}: {points} for {'Red' if forRed else 'Blue'} Victory.")
+
+def getPredictionAccounts(matchKey: str):
+    """
+    Returns a list of users who have a prediction for a given match.
+
+    Inputs:
+    - matchKey (str): matchKey for match
+
+    Returns:
+    - list[dict]: list of dicts of users
+    """
+    return parseResults(accounts.find({f"predictions.{matchKey}": {"$exists": True}}))
