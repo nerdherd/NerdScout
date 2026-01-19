@@ -233,7 +233,7 @@ def addScheduleFromTBA(event: str):
 
 def updateScheduleFromTBA(event: str):
     """
-    GETs a schedule from TBA, and adds any matches that are not already in the database
+    GETs a schedule from TBA, and adds any matches that are not already in the database. Also saves score breakdowns for completed matches 
 
     Inputs:
     - event (str): event key
@@ -245,10 +245,15 @@ def updateScheduleFromTBA(event: str):
             addMatchFromTBA(match)
         else:
             if "score_breakdown" in match:
-                matches.update_one({"matchKey": match["key"]},{"$set":{"results.scored":True}})
                 matchInDB = parseResults(matches.find_one({"matchKey": match["key"]}))
-                if (not "scoreBreakdown" in matchInDB["results"]) or (matchInDB["results"]["scoreBreakdown"]["postResultTime"] < match["post_result_time"]):
+                if (not "scoreBreakdown" in matchInDB["results"]):
+                    matches.update_one({"matchKey": match["key"]},{"$set":{"results.scored":True, "results.postResultTime": match["post_result_time"], "results.actualTime": match["actual_time"], "results.scoreBreakdown": match["score_breakdown"], "results.winningAlliance": match["winning_alliance"]}})
+                    app.logger.info(f"Saved new score breakdown for {match['key']}; Now paying predictions.")
+                    payoutPredictions(match["key"],match["winning_alliance"] == "red")
+                    continue
+                if (matchInDB["results"]["postResultTime"] < match["post_result_time"]):
                     matches.update_one({"matchKey": match["key"]},{"$set":{"results.postResultTime": match["post_result_time"], "results.actualTime": match["actual_time"], "results.scoreBreakdown": match["score_breakdown"], "results.winningAlliance": match["winning_alliance"]}})
+                    app.logger.info(f"Updated score breakdown for {match['key']}")
 
 
 def addTeam(number: int, longName: str, shortName: str, comment: list = []):
@@ -729,10 +734,21 @@ def getPredictionAccountsForAlliance(matchKey: str, forRed: bool):
     """
     return parseResults(accounts.find({f"predictions.{matchKey}.forRed": forRed}))
 
-def payoutPredictions(matchKey: str, forRed: bool):
+def payoutPredictions(matchKey: str, forRed: bool) -> None:
+    """
+    Pays out predictions on a given match.
+
+    Inputs:
+    - matchKey (str): The match key of the match to pay out
+    - forRed (bool): If red alliance won the match.
+    """
     matchData = parseResults(matches.find_one({"matchKey": matchKey}))
     correctUsers = getPredictionAccountsForAlliance(matchKey, forRed)
-    # incorrectUsers = getPredictionAccountsForAlliance(matchKey, not forRed)
+
+    if not "prizePool" in matchData:
+        app.logger.info(f"No predictions for {matchData['matchKey']}")
+        return
+
     try:
         redPool = matchData["prizePool"]["red"]
     except KeyError:
@@ -748,7 +764,7 @@ def payoutPredictions(matchKey: str, forRed: bool):
     accounts.update_many({f"predictions.{matchKey}": {"$exists": True}}, {"$set": {f"predictions.{matchKey}.matchCompelete": True}})
 
     if winningPool <= 0:
-        app.logger.info(f"Paid 0 for {'red' if forRed else 'blue'} predictions on {matchKey}")
+        app.logger.info(f"Paid out total of 0 in a ratio of 1:infinity for {'red' if forRed else 'blue'} predictions on {matchKey}")
         return
 
     for user in correctUsers:
