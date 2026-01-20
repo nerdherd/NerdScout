@@ -187,3 +187,19 @@ body {
     width: 90%;
     border-radius: 0.5em;
 }
+
+#shift-select button {
+    font-size: 20px;
+}
+
+#shift-select button:hover{
+    cursor: pointer;
+}
+
+#shift-select button.selected{
+    background-color: blue;
+}
+
+.main-input.inactive .active{
+    display:none;
+}

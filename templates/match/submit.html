@@ -39,7 +39,7 @@
         <h1>Pre-Game</h1>
         <label for="startposinput">Starting position</label>
         <img id="startposimg" src="{{ url_for('static', filename='images/startpos.png') }}">
-        <input type="range" min="0" max="1" step="0.0001" id="startposinput">
+        <input type="range" min="0" max="1" step="0.0001" val="0.5" id="startposinput">
         <div class="counter">
             <button class="minus" onclick="incrementCounter('preloadFuel',false)">-</button>
             <input type="number" id="preloadFuel" min="0" max="8" value="0">
@@ -51,7 +51,12 @@
         <label for="firstShift">Did they get first shift?</label>
         <input type="checkbox" id="firstShift" onchange="updateShift()">
     </div>
-    <div class="main-input">
+    <div id="shift-select">
+        {% for n in range(7) %}
+        <button {% if loop.first %}class="selected"{% endif %} data-index="{{n}}" onclick="setScoringPeriod({{n}})">{{ ("Auto","Transition","Shift 1","Shift 2","Shift 3","Shift 4","Endgame")[n] }}</button>
+        {% endfor %}
+    </div>
+    <div class="main-input" id="main-input">
         <div class="active">
             <button id="timer-button" onclick="toggleTimer()">Start timer</button>
             <input type="number" id="time" min="0" value="0">
@@ -74,15 +79,15 @@
                 <button class="plus" onclick="incrementCounter('missed',true,10)">+10</button>
             </div>
             <button onclick="submitScoringPeriod()">Add scoring period</button>
+            <table id="score-table">
+                <tr class="headers">
+                    <th>Time</th>
+                    <th>Scored</th>
+                    <th>Missed</th>
+                    <th>Delete</th>
+                </tr>
+            </table>
         </div>
-        <table id="score-table">
-            <tr class="headers">
-                <th>Time</th>
-                <th>Scored</th>
-                <th>Missed</th>
-                <th>Delete</th>
-            </tr>
-        </table>
     <div>
         <label for="attemptedEndPos">End position:</label>
         <input type="range" min="0" max="3" step="1" value="1" id="attemptedEndPos">

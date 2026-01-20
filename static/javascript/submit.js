@@ -3,18 +3,19 @@ function toggleActive(id){
 }
 
 function updateShift(){
-    const firstShift = document.getElementById("firstShift").checked;
-    if (firstShift){
-        document.getElementById("shift1").classList.add("active");
-        document.getElementById("shift3").classList.add("active");
-        document.getElementById("shift2").classList.remove("active");
-        document.getElementById("shift4").classList.remove("active");
-    } else {
-        document.getElementById("shift2").classList.add("active");
-        document.getElementById("shift4").classList.add("active");
-        document.getElementById("shift1").classList.remove("active");
-        document.getElementById("shift3").classList.remove("active");
-    }
+    // const firstShift = document.getElementById("firstShift").checked;
+    // if (firstShift){
+    //     document.getElementById("shift1").classList.add("active");
+    //     document.getElementById("shift3").classList.add("active");
+    //     document.getElementById("shift2").classList.remove("active");
+    //     document.getElementById("shift4").classList.remove("active");
+    // } else {
+    //     document.getElementById("shift2").classList.add("active");
+    //     document.getElementById("shift4").classList.add("active");
+    //     document.getElementById("shift1").classList.remove("active");
+    //     document.getElementById("shift3").classList.remove("active");
+    // }
+    setScoringPeriod(curScoringPeriod);
 }
 
 function incrementCounter(id,isPositive,amount=1){
@@ -31,7 +32,8 @@ function getId(id,isInt=true){
     return isInt?parseInt(val):val;
 }
 
-var scoringPeriods = [];
+var curScoringPeriod = 0;
+var scoringPeriods = [[],[],[],[],[]];
 var timerActive = false;
 var startTime;
 var scoredElemenet = getById("scored"); // speleld wrong
@@ -69,7 +71,7 @@ function addScoreToTable(time,scored,missed){
     let deleteTableEl = document.createElement("td")
     let deleteButton = document.createElement("button");
     deleteButton.innerText = "X";
-    let deleteIndex = scoringPeriods.length-1;
+    let deleteIndex = scoringPeriods[curScoringPeriod].length-1;
     deleteButton.onclick = () => {removeScore(deleteIndex)};
     deleteTableEl.appendChild(deleteButton);
     cur_row.appendChild(timeEl);
@@ -87,7 +89,7 @@ function submitScoringPeriod(){
         alert("please put more time!");
         return;
     }
-    scoringPeriods.push({"time":time,"scored":scored,"missed":missed});
+    scoringPeriods[curScoringPeriod].push({"time":time,"scored":scored,"missed":missed});
     scoredElemenet.value = 0;
     missedElemenet.value = 0;
     timer_input.value = 0;
@@ -101,11 +103,51 @@ function addScoresToTable(scores){
 }
 
 function removeScore(index){
-    scoringPeriods.splice(index,1);
+    scoringPeriods[curScoringPeriod].splice(index,1);
+    reloadScoringTable();
+}
+
+function switchScoringPeriod(newPeriod){
+    curScoringPeriod=newPeriod;
+    reloadScoringTable();
+}
+
+const firstShiftCheckbox = getById("firstShift");
+const mainInputDiv = getById("main-input");
+function setScoringPeriod(newPeriod){
+    for (const button of document.getElementById("shift-select").querySelectorAll("button")){
+        button.classList.remove("selected");
+        if (button.dataset.index==newPeriod) button.classList.add("selected");
+    }
+    if (newPeriod==0||newPeriod==1||newPeriod==6){
+        mainInputDiv.classList.remove("inactive");
+        switchScoringPeriod(newPeriod);
+        return;
+    }
+    if (firstShiftCheckbox.checked){
+        if (newPeriod==2||newPeriod==4){
+            mainInputDiv.classList.remove("inactive");
+            if (newPeriod==2) switchScoringPeriod(2);
+            if (newPeriod==4) switchScoringPeriod(3);
+            return
+        }
+        mainInputDiv.classList.add("inactive");
+        return;
+    }
+    if (newPeriod==3||newPeriod==5){
+        mainInputDiv.classList.remove("inactive");
+        if (newPeriod==3) switchScoringPeriod(2);
+        if (newPeriod==5) switchScoringPeriod(3);
+        return
+    }
+    mainInputDiv.classList.add("inactive");
+}
+
+function reloadScoringTable(){
     for (const row of score_table.querySelectorAll("tr:not(.headers)")){
         row.remove();
     }
-    addScoresToTable(scoringPeriods);
+    addScoresToTable(scoringPeriods[curScoringPeriod]);
 }
 
 function submitData(matchNum, compLevel, setNum, robot){
