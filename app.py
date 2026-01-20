@@ -75,8 +75,7 @@ def createTestMatches():
                 setNumber=1,
                 compLevel=CompLevel.QM,
                 station=team,
-                startPosX=random.random(),
-                startPosY=random.random(),
+                startPos=random.random(),
                 preloadFuel=random.randint(0,8),
                 autoFuel=randomScoringPeriods(random.randint(0,5)),
                 autoDepot=random.random()>0.5,
@@ -460,7 +459,7 @@ def scoutTeam():
 
 
 dontSummarize = frozenset(
-    ["startPosX","startPosY", "endPos", "attemptedEndPos", "cannedComments", "endPosSuccess"]
+    ["startPos", "endPos", "attemptedEndPos", "cannedComments", "endPosSuccess"]
 )
 
 
@@ -651,8 +650,7 @@ def submitScorePage():
                 setNumber=setNumber,
                 compLevel=compLevel,
                 station=currentRobot,  # str
-                startPosX=submission["startPosX"],
-                startPosY=submission["startPosY"],
+                startPos=submission["startPos"],
                 preloadFuel=submission["preloadFuel"],
                 autoFuel=submission["autoFuel"],
                 autoDepot=submission["autoDepot"],
@@ -738,8 +736,7 @@ def uploadJSON():
                 setNum,
                 compLevel,
                 station,  # str
-                results["startPosX"],
-                results["startPosY"],
+                results["startPos"],
                 results["preloadFuel"],
                 results["autoFuel"],
                 results["autoFuelMiss"],

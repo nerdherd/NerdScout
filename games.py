@@ -1156,8 +1156,7 @@ class Rebuilt(Game):
             setNumber: int,
             compLevel: CompLevel,
             station: Station,
-            startPosX: float,
-            startPosY:float,
+            startPos: float,
             preloadFuel: int,
             autoFuel: list[dict],
             autoDepot: bool,
@@ -1243,8 +1242,7 @@ class Rebuilt(Game):
         totalFuel = autoFuelTotal + transitionFuelTotal + firstActiveShiftFuelTotal +secondActiveShiftFuelTotal + endgameFuelTotal
         totalFuelMissed = autoFuelTotalMissed + transitionFuelTotalMissed + firstActiveShiftFuelTotalMissed+ secondActiveShiftFuelTotalMissed + endgameFuelTotalMissed
         data = {
-            "startPosX": startPosX,
-            "startPosY": startPosY,
+            "startPos":startPos,
             "preloadFuel": preloadFuel,
             "autoFuel": autoFuel,
             "autoFuelTotal": autoFuelTotal,

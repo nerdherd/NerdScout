@@ -1,66 +1,3 @@
-const startPosCanvas = document.getElementById("startPosCanvas");
-const startPosCtx = startPosCanvas.getContext("2d");
-
-function updateMousePos(e) {
-    let rect = startPosCanvas.getBoundingClientRect();
-
-    startPosX = (e.clientX - rect.left) * startPosCanvas.width / rect.width;
-    startPosY = (e.clientY - rect.top) * startPosCanvas.height / rect.height;
-}
-
-var mouseDown = 0;
-document.body.onmousedown = function() { 
-    ++mouseDown;
-}
-document.body.onmouseup = function() {
-    --mouseDown;
-}
-
-startPosCanvas.addEventListener("mousemove", (e) => {
-    if (mouseDown) {
-        updateMousePos(e);
-        requestAnimationFrame(drawStartPos);
-    }
-});
-
-startPosCanvas.addEventListener("click", (e) => {
-    updateMousePos(e);
-    requestAnimationFrame(drawStartPos);
-});
-
-var startPosX = startPosCanvas.width/2;
-var startPosY = startPosCanvas.height/2;
-var lastX = startPosX;
-var lastY = startPosY;
-function drawStartPos(){
-    let dx = Math.abs(startPosX-lastX), dy = Math.abs(startPosY-lastY)
-    let isDifferent = (dx>1||dy>1);
-    let isClose = (dx<10&&dy<10);
-    if (isDifferent){
-        if (isClose){
-            if (startPosX>lastX) lastX++;
-            else if (startPosX<lastX) lastX--;
-            if (startPosY>lastY) lastY++;
-            else if (startPosY<lastY) lastY--;
-        } else {
-            lastX = Math.round(0.2*startPosX + 0.8*lastX);
-            lastY = Math.round(0.2*startPosY + 0.8*lastY);
-        }
-    } else {
-        lastX = startPosX;
-        lastY = startPosY; 
-    }
-
-    startPosCtx.clearRect(0,0,startPosCanvas.width,startPosCanvas.height);
-    startPosCtx.beginPath();
-    startPosCtx.rect(lastX-15,lastY-15,30,30);
-    startPosCtx.fillStyle = "gray";
-    startPosCtx.fill();
-
-    if (isDifferent) requestAnimationFrame(drawStartPos);
-}
-requestAnimationFrame(drawStartPos);
-
 function toggleActive(id){
     document.getElementById(id).classList.toggle("active");
 }
@@ -192,8 +129,7 @@ function submitData(matchNum, compLevel, setNum, robot){
         "compLevel": compLevel,
         "setNum": setNum, 
         "robot": robot,
-        "startPosX": startPosY/startPosCanvas.height,
-        "startPosY": startPosX/startPosCanvas.width,
+        "startPosX": getId("startposinput"),
         "preloadFuel": getId("preloadFuel"),
         // TODO: add this
         "minorFouls": getId("minorFouls"),
