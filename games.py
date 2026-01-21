@@ -1,3 +1,4 @@
+from ast import Tuple
 from constants import *
 from constants import Station, getMeanOfScoringCategory
 from database import *
@@ -128,6 +129,26 @@ class Game:
         - dict: dict of every scoring category with every stat
         """
         raise NotImplementedError("Game Superclass getAllStats used")
+        # return {}
+    
+    def calculateAllianceFromMatches(self, team1: int, match1: list, team2: int, match2: list, team3: int, match3: list) -> dict:
+        """
+        Adds together results for three teams from given match data to predict their performance as an alliance.
+
+        This shouldn't be used; replace this with a game specific function.
+
+        Inputs:
+        - team1 (int): team 1 number
+        - match1 (list): match data for team 1
+        - team2 (int): team 2 number
+        - match2 (list): match data for team 2
+        - team3 (int): team 3 number
+        - match3 (list): match data for team 3
+
+        Returns:
+        - dict: predicted results dict
+        """
+        raise NotImplementedError("Game Superclass calculateAllianceFromMatches used")
         # return {}
 
 
@@ -1558,3 +1579,100 @@ class Rebuilt(Game):
             "minorFouls": getAllStatsForCategory(teamResults,"minorFouls"),
             "majorFouls": getAllStatsForCategory(teamResults,"majorFouls"),
         }
+    
+    def calculateAllianceFromMatches(self, team1: int, match1: list, team2: int, match2: list, team3: int, match3: list, jsonSerializable: bool = False) -> dict:
+        """
+        Adds together results for three teams from given match data to predict their performance as an alliance.
+
+        Inputs:
+        - team1 (int): team 1 number
+        - match1 (list): match data for team 1
+        - team2 (int): team 2 number
+        - match2 (list): match data for team 2
+        - team3 (int): team 3 number
+        - match3 (list): match data for team 3
+        - jsonSerializable (bool): if True, converts EndPositionRebuilt objects in endgameClimbs to int. defaults to False.
+
+        Returns:
+        - dict: predicted results dict
+        """
+        team1Station = None
+        for station, team in match1[0]["teams"].items():
+            if team == team1:
+                team1Station = Station(station)
+        if not team1Station:
+            return {}
+        team2Station = None
+        for station, team in match2[0]["teams"].items():
+            if team == team2:
+                team2Station = Station(station)
+        if not team2Station:
+            return {}
+        team3Station = None
+        for station, team in match3[0]["teams"].items():
+            if team == team3:
+                team3Station = Station(station)
+        if not team3Station:
+            return {}
+        
+        team1Results = match1[0]["results"][team1Station.value]
+        team2Results = match2[0]["results"][team2Station.value]
+        team3Results = match3[0]["results"][team3Station.value]
+
+        autoFuelTotal = team1Results[-1]["autoFuelTotal"] + team2Results[-1]["autoFuelTotal"] + team3Results[-1]["autoFuelTotal"]
+        autoFuelTotalMissed = team1Results[-1]["autoFuelTotalMissed"] + team2Results[-1]["autoFuelTotalMissed"] + team3Results[-1]["autoFuelTotalMissed"]
+
+        transitionFuelTotal = team1Results[-1]["transitionFuelTotal"] + team2Results[-1]["transitionFuelTotal"] + team3Results[-1]["transitionFuelTotal"]
+        transitionFuelTotalMissed = team1Results[-1]["transitionFuelTotalMissed"] + team2Results[-1]["transitionFuelTotalMissed"] + team3Results[-1]["transitionFuelTotalMissed"]
+
+        firstActiveShiftFuelTotal = team1Results[-1]["firstActiveShiftFuelTotal"] + team2Results[-1]["firstActiveShiftFuelTotal"] + team3Results[-1]["firstActiveShiftFuelTotal"]
+        firstActiveShiftFuelTotalMissed = team1Results[-1]["firstActiveShiftFuelTotalMissed"] + team2Results[-1]["firstActiveShiftFuelTotalMissed"] + team3Results[-1]["firstActiveShiftFuelTotalMissed"]
+
+        secondActiveShiftFuelTotal = team1Results[-1]["secondActiveShiftFuelTotal"] + team2Results[-1]["secondActiveShiftFuelTotal"] + team3Results[-1]["secondActiveShiftFuelTotal"]
+        secondActiveShiftFuelTotalMissed = team1Results[-1]["secondActiveShiftFuelTotalMissed"] + team2Results[-1]["secondActiveShiftFuelTotalMissed"] + team3Results[-1]["secondActiveShiftFuelTotalMissed"]
+
+        endgameFuelTotal = team1Results[-1]["endgameFuelTotal"] + team2Results[-1]["endgameFuelTotal"] + team3Results[-1]["endgameFuelTotal"]
+        endgameFuelTotalMissed = team1Results[-1]["endgameFuelTotalMissed"] + team2Results[-1]["endgameFuelTotalMissed"] + team3Results[-1]["endgameFuelTotalMissed"]
+
+        endgameClimbs = [EndPositionRebuilt(team1Results[-1]["endClimb"]),EndPositionRebuilt(team2Results[-1]["endClimb"]), EndPositionRebuilt(team3Results[-1]["endClimb"])]
+
+        autoClimbs = [team1Results[-1]["autoClimbSuccess"], team2Results[-1]["autoClimbSuccess"], team3Results[-1]["autoClimbSuccess"]]
+
+        minorFouls = team1Results[-1]["minorFouls"] + team2Results[-1]["minorFouls"] + team3Results[-1]["minorFouls"]
+        majorFouls = team1Results[-1]["majorFouls"] + team2Results[-1]["majorFouls"] + team3Results[-1]["majorFouls"]
+
+        totalFuel = autoFuelTotal + transitionFuelTotal + firstActiveShiftFuelTotal + secondActiveShiftFuelTotal + endgameFuelTotal
+
+
+
+        score = self.calculateScore(totalFuel, False, EndPositionRebuilt.NONE, minorFouls, majorFouls)
+
+        for climb in autoClimbs:
+            score += 15 if climb else 0
+
+        for climb in endgameClimbs:
+            score += 30 if (climb == EndPositionRebuilt.L3) else 20 if (climb == EndPositionRebuilt.L2) else 10 if (climb == EndPositionRebuilt.L1) else 0
+        
+        if jsonSerializable:
+            for i in range(len(endgameClimbs)):
+                endgameClimbs[i] = endgameClimbs[i].value # type: ignore
+
+        return {
+            "autoFuelTotal": autoFuelTotal,
+            "autoFuelTotalMissed": autoFuelTotalMissed,
+            "transitionFuelTotal": transitionFuelTotal,
+            "transitionFuelTotalMissed": transitionFuelTotalMissed,
+            "firstActiveShiftFuelTotal": firstActiveShiftFuelTotal,
+            "firstActiveShiftFuelTotalMissed": firstActiveShiftFuelTotalMissed,
+            "secondActiveShiftFuelTotal": secondActiveShiftFuelTotal,
+            "secondActiveShiftFuelTotalMissed": secondActiveShiftFuelTotalMissed,
+            "endgameFuelTotal": endgameFuelTotal,
+            "endgameFuelTotalMissed": endgameFuelTotalMissed,
+            "endgameClimbs": endgameClimbs,
+            "autoClimbs": autoClimbs,
+            "minorFouls": minorFouls,
+            "majorFouls": majorFouls,
+            "totalFuel": totalFuel,
+            "score": score,
+        }
+
