@@ -160,6 +160,9 @@ function reloadScoringTable(){
     addScoresToTable(scoringPeriods[curScoringPeriod]);
 }
 
+// get checked
+function gc(id){ return getById(id).checked; }
+
 function submitData(matchNum, compLevel, setNum, robot){
 
     // matchNum = tMatchNum
@@ -181,15 +184,40 @@ function submitData(matchNum, compLevel, setNum, robot){
         "compLevel": compLevel,
         "setNum": setNum, 
         "robot": robot,
-        "startPosX": getId("startposinput"),
+        "startPos": getId("startposinput"),
         "preloadFuel": getId("preloadFuel"),
-        // TODO: add this
+        "autoFuel": scoringPeriods[0],
+        "autoDepot": gc("autoDepot"),
+        "autoBump": gc("autoBump"),
+        "autoTrench": gc("autoTrench"),
+        "autoNeutralIntake": gc("autoNeutralIntake"),
+        "autoAttemptedSecondScore": gc("autoAttemptedSecondScore"),
+        "autoSucceededSecondScore": gc("autoSucceededSecondScore"),
+        "autoClimbAttempted": gc("autoClimbAttempted"),
+        "autoClimbSuccess": gc("autoClimbSuccess"),
+        "autoOutpostFeed": gc("autoOutpostFeed"),
+        "firstShift": gc("firstShift"),
+        "transitionFuel": scoringPeriods[1],
+        "firstActiveShiftFuel": scoringPeriods[2],
+        "secondActiveShiftFuel": scoringPeriods[3],
+        "endgameFuel": scoringPeriods[4],
+        "firstInactiveShiftScored": gc("firstInactiveShiftScored"),
+        "secondInactiveShiftScored": gc("secondInactiveShiftScored"),
+        "endClimb": getId("endClimb"),
+        "outpostIntake": gc("outpostIntake"),
+        "groundIntake": gc("groundIntake"),
+        "fedToOutpost": gc("fedToOutpost"),
         "minorFouls": getId("minorFouls"),
         "majorFouls": getId("majorFouls"),  
         "comment": getId("comments",false),  
         "cannedComments": cannedComments,  
     };
+    for (const name of ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"]){
+        rawData[`${name}Fed`]=gc(`${name}Fed`);
+        rawData[`${name}Defense`]=gc(`${name}Defense`);
+    }
     data = JSON.stringify(rawData);
+    console.log(rawData);
     console.log(data);
     fetch(window.location.href, {
         method: "POST",
@@ -204,5 +232,5 @@ function submitData(matchNum, compLevel, setNum, robot){
         } else{
             alert("There was an error submitting.");
         }
-    });;
+    });
 }

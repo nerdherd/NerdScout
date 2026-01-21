@@ -129,6 +129,12 @@
         {% for n in ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"] %}
         <div class="shift-thing shift-{{n}}">
             <p>shift {{n}}</p>
+            {% if "Inactive" in n%}
+            <div>
+                <label for="{{n}}Scored">Did they score on purpose?</label>
+                <input type="checkbox" id="{{n}}Scored">
+            </div>
+            {% endif %}
             <div>
                 <label for="{{n}}Fed">Did they feed into the alliance side?</label>
                 <input type="checkbox" id="{{n}}Fed">
@@ -139,9 +145,24 @@
             </div>
         </div>
         {% endfor %}
+    </div>
     <div>
-        <label for="attemptedEndPos">End position:</label>
-        <input type="range" min="0" max="3" step="1" value="1" id="attemptedEndPos">
+        <label for="endClimb">End position:</label>
+        <input type="range" min="0" max="3" step="1" value="1" id="endClimb">
+    </div>
+    <div>
+        <div>
+            <label for="outpostIntake">Did they intake from the outpost?</label>
+            <input type="checkbox" id="outpostIntake">
+        </div>
+        <div>
+            <label for="groundIntake">Did they intake from the outpost?</label>
+            <input type="checkbox" id="groundIntake">
+        </div>
+        <div>
+            <label for="fedToOutpost">Did they fedToOutpost?</label>
+            <input type="checkbox" id="fedToOutpost">
+        </div>
     </div>
     <div>
         <label for="minorFouls">Minor fouls</label>
