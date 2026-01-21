@@ -56,7 +56,7 @@
         <button {% if loop.first %}class="selected"{% endif %} data-index="{{n}}" onclick="setScoringPeriod({{n}})">{{ ("Auto","Transition","Shift 1","Shift 2","Shift 3","Shift 4","Endgame")[n] }}</button>
         {% endfor %}
     </div>
-    <div class="main-input" id="main-input">
+    <div class="main-input shift-0" id="main-input">
         <div class="active">
             <button id="timer-button" onclick="toggleTimer()">Start timer</button>
             <input type="number" id="time" min="0" value="0">
@@ -88,6 +88,57 @@
                 </tr>
             </table>
         </div>
+        <div class="shift-thing shift-auto">
+            <div>
+                <label for="autoDepot">Did they intake from the depot?</label>
+                <input type="checkbox" id="autoDepot">
+            </div>
+            <div>
+                <label for="autoBump">Did they drive over the bump?</label>
+                <input type="checkbox" id="autoBump">
+            </div>
+            <div>
+                <label for="autoTrench">Did they drive under the trench?</label>
+                <input type="checkbox" id="autoTrench">
+            </div>
+            <div>
+                <label for="autoNeutralIntake">Do they have a neutral intake?</label>
+                <input type="checkbox" id="autoNeutralIntake">
+            </div>
+            <div>
+                <label for="autoAttemptedSecondScore">Did they attempt to score after intaking more fuel?</label>
+                <input type="checkbox" id="autoAttemptedSecondScore">
+            </div>
+            <div>
+                <label for="autoSucceededSecondScore">Did they succeed?</label>
+                <input type="checkbox" id="autoSucceededSecondScore">
+            </div>
+            <div>
+                <label for="autoClimbAttempted">Did attempt to climb?</label>
+                <input type="checkbox" id="autoClimbAttempted">
+            </div>
+            <div>
+                <label for="autoClimbSuccess">Did they succeed?</label>
+                <input type="checkbox" id="autoClimbSuccess">
+            </div>
+            <div>
+                <label for="autoOutpostFeed">Did they feed from the outpost?</label>
+                <input type="checkbox" id="autoOutpostFeed">
+            </div>
+        </div>
+        {% for n in ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"] %}
+        <div class="shift-thing shift-{{n}}">
+            <p>shift {{n}}</p>
+            <div>
+                <label for="{{n}}Fed">Did they feed into the alliance side?</label>
+                <input type="checkbox" id="{{n}}Fed">
+            </div>
+            <div>
+                <label for="{{n}}Defense">Did they play defense?</label>
+                <input type="checkbox" id="{{n}}Defense">
+            </div>
+        </div>
+        {% endfor %}
     <div>
         <label for="attemptedEndPos">End position:</label>
         <input type="range" min="0" max="3" step="1" value="1" id="attemptedEndPos">

@@ -15,7 +15,7 @@ function updateShift(){
     //     document.getElementById("shift1").classList.remove("active");
     //     document.getElementById("shift3").classList.remove("active");
     // }
-    setScoringPeriod(curScoringPeriod);
+    setScoringPeriod(curSelected);
 }
 
 function incrementCounter(id,isPositive,amount=1){
@@ -33,7 +33,7 @@ function getId(id,isInt=true){
 }
 
 var curScoringPeriod = 0;
-var scoringPeriods = [[],[],[],[],[]];
+var scoringPeriods = [[],[],[],[],[]]; // auto, transition, first active, second active, endgame
 var timerActive = false;
 var startTime;
 var scoredElemenet = getById("scored"); // speleld wrong
@@ -109,19 +109,25 @@ function removeScore(index){
 
 function switchScoringPeriod(newPeriod){
     curScoringPeriod=newPeriod;
+    mainInputDiv.classList.add(`shift-${newPeriod}`);
     reloadScoringTable();
 }
 
+var curSelected=0;
 const firstShiftCheckbox = getById("firstShift");
 const mainInputDiv = getById("main-input");
 function setScoringPeriod(newPeriod){
+    for (let n=0;n<7;n++) {mainInputDiv.classList.remove(`shift-${n}`);mainInputDiv.classList.remove(`shift-i${n}`);}
+    curSelected=newPeriod;
     for (const button of document.getElementById("shift-select").querySelectorAll("button")){
         button.classList.remove("selected");
         if (button.dataset.index==newPeriod) button.classList.add("selected");
     }
     if (newPeriod==0||newPeriod==1||newPeriod==6){
         mainInputDiv.classList.remove("inactive");
-        switchScoringPeriod(newPeriod);
+        mainInputDiv.classList.add(`shift-${newPeriod}`);
+        if (newPeriod==6) switchScoringPeriod(4);
+        else switchScoringPeriod(newPeriod);
         return;
     }
     if (firstShiftCheckbox.checked){
@@ -132,6 +138,8 @@ function setScoringPeriod(newPeriod){
             return
         }
         mainInputDiv.classList.add("inactive");
+        if (newPeriod==3) mainInputDiv.classList.add(`shift-i1`);
+        if (newPeriod==5) mainInputDiv.classList.add(`shift-i2`);
         return;
     }
     if (newPeriod==3||newPeriod==5){
@@ -140,6 +148,8 @@ function setScoringPeriod(newPeriod){
         if (newPeriod==5) switchScoringPeriod(3);
         return
     }
+    if (newPeriod==2) mainInputDiv.classList.add(`shift-i1`);
+    if (newPeriod==4) mainInputDiv.classList.add(`shift-i2`);
     mainInputDiv.classList.add("inactive");
 }
 
