@@ -1564,7 +1564,7 @@ class Rebuilt(Game):
             "preloadFuel": getAllStatsForCategory(teamResults,"preloadFuel"),
             "autoFuelTotal": getAllStatsForCategory(teamResults,"autoFuelTotal"),
             "autoFuelTotalMissed": getAllStatsForCategory(teamResults,"autoFuelTotalMissed"),
-            "autoClimb": getAllStatsForCategory(teamResults,"autoClimb"),
+            "autoClimbAttempted": getAllStatsForCategory(teamResults,"autoClimbAttempted"),
             "firstShift": getAllStatsForCategory(teamResults,"firstShift"),
             "transitionFuelTotal": getAllStatsForCategory(teamResults,"transitionFuelTotal"), #kill
             "transitionFuelTotalMisssed": getAllStatsForCategory(teamResults,"transitionFuelTotalMissed"), #kill

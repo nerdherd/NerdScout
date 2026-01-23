@@ -720,6 +720,7 @@ def submitScorePage():
 
 @app.route("/uploadData", methods=["GET", "POST"])
 def uploadJSON():
+    return "not implemented"
     if request.method == "POST":
         try:
             data: dict = request.json  # type: ignore
