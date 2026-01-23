@@ -149,9 +149,6 @@ def renderMatch():
     if failed or matchNumber == -1 or compLevel == "none" or setNumber == -1:
         return render_template("match/matchSelect.html", matches=sortMatches(getAllMatches()), matchNum=setNumber if (compLevel == CompLevel.PLAYOFF) else matchNumber, compLevel=compLevel if type(compLevel) is str else compLevel.value)  # type: ignore
 
-    # view test match with this link:
-    # http://127.0.0.1:5000/match?matchNum=9999&compLevel=qm&setNum=1
-
     redTeams = []
     blueTeams = []
     matchData = {
@@ -836,7 +833,7 @@ def adminPage():
 
 @app.route("/strategy/matchTable")
 def matchTable():
-    return "not implemented"
+    # return "not implemented"
     matches = getAllMatches()
     results = []
     teams = []
