@@ -61,37 +61,51 @@
         <div>
             
             <div class="sectionDiv">
-                <div class="startPosDisplay" style="background-image:url({{ url_for('static', filename='images/startpos.png') }})">
-                    <div class="startPosIndicator" style="left:{{result['startPosY']*100}}%;top:{{result['startPosX']*100}}%;"></div>
-                </div>
-
-                <!-- {{ result["startPosX"] }}
-                {{ result["startPosY"] }} -->
-
+                <p>startpos</p>
+                {{ result["startPos"] }}
             </div>
 
             <div class="sectionDiv">
                 <h1>Auto</h1>
 
 
-                <div clas="table">
+                <div class="table">
                     <div class="row">
                         <div class="cell cell2"><b>Preload:</b></div>
-                        <div class="cell cell2"><b>Scored:</b></div>
-                        <div class="cell cell2 miss"><b>Missed:</b></div>
+                        <div class="cell cell2"><b>Total Scored:</b></div>
+                        <div class="cell cell2 miss"><b>Total Missed:</b></div>
                     </div>
                     <div class="row">
                         <div class="cell cell2">
                             <p>{{ result["preloadFuel"] }}</p>    
                         </div>
                         <div class="cell cell2">
-                            <p>{{ result["autoFuel"] }}</p>
+                            <p>{{ result["autoFuelTotal"] }}</p>
                         </div>
                         <div class="cell cell2 miss">
-                            <p>{{ result["autoFuelMiss"] }}</p>
+                            <p>{{ result["autoFuelTotalMissed"] }}</p>
                         </div>
                     </div>
                 </div>
+
+                <table class="scoretable">
+                    <tr>
+                        <th>Time</th>
+                        <th>Scored</th>
+                        <th>Missed</th>
+                        <th>Fuel shot per second</th>
+                        <th>Fuel scored per second</th>
+                    </tr>
+                    {% for period in result["autoFuel"] %}
+                    <tr>
+                        <td>{{period["time"]}}</td>
+                        <td>{{period["scored"]}}</td>
+                        <td>{{period["missed"]}}</td>
+                        <td>{{period["fuelShotPerSecond"]}}</td>
+                        <td>{{period["fuelScoredPerSecond"]}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
             </div>
 
             <div class="sectionDiv">
@@ -110,18 +124,37 @@
 
                 <div clas="table">
                     <div class="row">
-                        <div class="cell cell2"><b>Scored:</b></div>
-                        <div class="cell cell2 miss"><b>Missed:</b></div>
+                        <div class="cell cell2"><b>Total Scored:</b></div>
+                        <div class="cell cell2 miss"><b>Total Missed:</b></div>
                     </div>
                     <div class="row">
                         <div class="cell cell2">
-                            <p>{{ result["transitionFuel"] }}</p>    
+                            <p>{{ result["transitionFuelTotal"] }}</p>    
                         </div>
                         <div class="cell cell2 miss">
-                            <p>{{ result["transitionFuelMiss"] }}</p>
+                            <p>{{ result["transitionFuelTotalMissed"] }}</p>
                         </div>
                     </div>
                 </div>
+
+                <table class="scoretable">
+                    <tr>
+                        <th>Time</th>
+                        <th>Scored</th>
+                        <th>Missed</th>
+                        <th>Fuel shot per second</th>
+                        <th>Fuel scored per second</th>
+                    </tr>
+                    {% for period in result["transitionFuel"] %}
+                    <tr>
+                        <td>{{period["time"]}}</td>
+                        <td>{{period["scored"]}}</td>
+                        <td>{{period["missed"]}}</td>
+                        <td>{{period["fuelShotPerSecond"]}}</td>
+                        <td>{{period["fuelScoredPerSecond"]}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
             </div>
 
             <div class="sectionDiv">
@@ -139,111 +172,55 @@
                 <h1> Shifts</h1>
 
                 <div class="row">
-
-                    <div clas="table">
-                        <div class="row">
-                            <div class="cell cell4">
-                                {% if result["firstShift"] %}
-                                <h1>1: Active</h1>
-                                {% else %}
-                                <h1>1: Inactive</h1>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="cell cell2"><b>Scored:</b></div>
-                            <div class="cell cell2 miss"><b>Missed:</b></div>
-                        </div>
-                        <div class="row">
-                            <div class="cell cell2">
-                                <p>{{ result["shift1Fuel"] }}</p>    
-                            </div>
-                            <div class="cell cell2 miss">
-                                <p>{{ result["shift1FuelMiss"] }}</p>
-                            </div>
-                        </div>
+                    <div>
+                        <p>{{ "first" if result["firstShift"] else "second"}} shift</p>
+                        {{result["firstActiveShiftFuelTotal"]}}
+                        {{result["firstActiveShiftFuelTotalMissed"]}}
+                        <table class="scoretable">
+                            <tr>
+                                <th>Time</th>
+                                <th>Scored</th>
+                                <th>Missed</th>
+                                <th>Fuel shot per second</th>
+                                <th>Fuel scored per second</th>
+                            </tr>
+                            {% for period in result["firstActiveShiftFuel"] %}
+                            <tr>
+                                <td>{{period["time"]}}</td>
+                                <td>{{period["scored"]}}</td>
+                                <td>{{period["missed"]}}</td>
+                                <td>{{period["fuelShotPerSecond"]}}</td>
+                                <td>{{period["fuelScoredPerSecond"]}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
                     </div>
+                
 
-                    <div class="cell hidden"></div>
-
-                    <div class="table">
-                        <div class="row">
-                            <div class="cell cell4">
-                                {% if not result["firstShift"] %}
-                                <h1>2: Active</h1>
-                                {% else %}
-                                <h1>2: Inactive</h1>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="cell cell2"><b>Scored:</b></div>
-                            <div class="cell cell2 miss"><b>Missed:</b></div>
-                        </div>
-                        <div class="row">
-                            <div class="cell cell2">
-                                <p>{{ result["shift2Fuel"] }}</p>    
-                            </div>
-                            <div class="cell cell2 miss">
-                                <p>{{ result["shift2FuelMiss"] }}</p>
-                            </div>
-                        </div>
-                    </div>    
-                    
-                    <div class="cell cell2 hidden"></div>
-
-                    <div clas="table">
-                        <div class="row">
-                            <div class="cell cell4">
-                                {% if result["firstShift"] %}
-                                <h1>3: Active</h1>
-                                {% else %}
-                                <h1>3: Inactive</h1>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="cell cell2"><b>Scored:</b></div>
-                            <div class="cell cell2 miss"><b>Missed:</b></div>
-                        </div>
-                        <div class="row">
-                            <div class="cell cell2">
-                                <p>{{ result["shift3Fuel"] }}</p>    
-                            </div>
-                            <div class="cell cell2 miss">
-                                <p>{{ result["shift3FuelMiss"] }}</p>
-                            </div>
-                        </div>
+                    <div>
+                        <p>{{ "third" if result["firstShift"] else "fourth"}} shift</p>
+                        {{result["secondActiveShiftFuelTotal"]}}
+                        {{result["secondActiveShiftFuelTotalMissed"]}}
+                        <table class="scoretable">
+                            <tr>
+                                <th>Time</th>
+                                <th>Scored</th>
+                                <th>Missed</th>
+                                <th>Fuel shot per second</th>
+                                <th>Fuel scored per second</th>
+                            </tr>
+                            {% for period in result["secondActiveShiftFuel"] %}
+                            <tr>
+                                <td>{{period["time"]}}</td>
+                                <td>{{period["scored"]}}</td>
+                                <td>{{period["missed"]}}</td>
+                                <td>{{period["fuelShotPerSecond"]}}</td>
+                                <td>{{period["fuelScoredPerSecond"]}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
                     </div>
-
-                    <div class="cell hidden"></div>
-
-                    <div class="table">
-                        <div class="row">
-                            <div class="cell cell4">
-                                {% if not result["firstShift"] %}
-                                <h1>4: Active</h1>
-                                {% else %}
-                                <h1>4: Inactive</h1>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="cell cell2"><b>Scored:</b></div>
-                            <div class="cell cell2 miss"><b>Missed:</b></div>
-                        </div>
-                        <div class="row">
-                            <div class="cell cell2">
-                                <p>{{ result["shift4Fuel"] }}</p>    
-                            </div>
-                            <div class="cell cell2 miss">
-                                <p>{{ result["shift4FuelMiss"] }}</p>
-                            </div>
-                        </div>
-                    </div>                    
-
                 </div>
-
             </div>
 
             <div class="sectionDiv">
@@ -251,18 +228,37 @@
 
                 <div clas="table">
                     <div class="row">
-                        <div class="cell cell2"><b>Scored:</b></div>
-                        <div class="cell cell2 miss"><b>Missed:</b></div>
+                        <div class="cell cell2"><b>Total Scored:</b></div>
+                        <div class="cell cell2 miss"><b>Total Missed:</b></div>
                     </div>
                     <div class="row">
                         <div class="cell cell2">
-                            <p>{{ result["endgameFuel"] }}</p>    
+                            <p>{{ result["endgameFuelTotal"] }}</p>    
                         </div>
                         <div class="cell cell2 miss">
-                            <p>{{ result["endgameFuelMiss"] }}</p>
+                            <p>{{ result["endgameFuelTotalMissed"] }}</p>
                         </div>
                     </div>
                 </div>
+
+                <table class="scoretable">
+                    <tr>
+                        <th>Time</th>
+                        <th>Scored</th>
+                        <th>Missed</th>
+                        <th>Fuel shot per second</th>
+                        <th>Fuel scored per second</th>
+                    </tr>
+                    {% for period in result["endgameFuel"] %}
+                    <tr>
+                        <td>{{period["time"]}}</td>
+                        <td>{{period["scored"]}}</td>
+                        <td>{{period["missed"]}}</td>
+                        <td>{{period["fuelShotPerSecond"]}}</td>
+                        <td>{{period["fuelScoredPerSecond"]}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
             </div>
 
             <div class="sectionDiv">
