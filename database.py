@@ -338,6 +338,53 @@ def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
         parsedResults = parseResults(results)
     return parsedResults
 
+def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -> bool:
+    """
+    GETs the data for a given match from TBA and adds scoring information to the database.
+    If this is the first time data has been added for the match, predictions are paid out.
+
+    Inputs:
+    - compLevel (CompLevel): the match's compLevel
+    - matchNumber (int): the match's identification number
+    - setNumber (int): the match's set number, usually 1
+
+    Returns:
+    - bool: True if score was updated
+    """
+    matchDataList = getMatch(compLevel, matchNumber, setNumber)
+    if not matchDataList:
+        abort(400)
+    elif len(matchDataList) > 1:
+        app.logger.error(f"Error updating scoring data: multiple matches found for {compLevel.value}{matchNumber}, set {setNumber}.")
+    matchData = matchDataList[0]
+    matchKey = matchData["matchKey"]
+
+    try:
+        TBAdata = requests.get(
+            f"https://www.thebluealliance.com/api/v3/match/{matchKey}",
+            headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent": "Nerd Scout"},
+        )
+        if TBAdata.status_code == 404:
+            abort(400)
+        elif not TBAdata.ok:
+            raise Exception
+        TBAdata = json.loads(TBAdata.text)
+    except:
+        app.logger.error(f"Failed to load data for match {matchKey} from TBA.")
+        abort(500)
+    if "score_breakdown" in TBAdata:
+        if (not "scoreBreakdown" in matchData["results"]):
+            matches.update_one({"matchKey": TBAdata["key"]},{"$set":{"results.scored":True, "results.postResultTime": TBAdata["post_result_time"], "results.actualTime": TBAdata["actual_time"], "results.scoreBreakdown": TBAdata["score_breakdown"], "results.winningAlliance": TBAdata["winning_alliance"]}})
+            app.logger.info(f"Saved new score breakdown for {TBAdata['key']}; Now paying predictions.")
+            payoutPredictions(TBAdata["key"],TBAdata["winning_alliance"] == "red")
+            return True
+        if (matchData["results"]["postResultTime"] < TBAdata["post_result_time"]):
+            matches.update_one({"matchKey": TBAdata["key"]},{"$set":{"results.postResultTime": TBAdata["post_result_time"], "results.actualTime": TBAdata["actual_time"], "results.scoreBreakdown": TBAdata["score_breakdown"], "results.winningAlliance": TBAdata["winning_alliance"]}})
+            app.logger.info(f"Updated score breakdown for {TBAdata['key']}")
+            return True
+    return False
+    
+
 
 def getAllMatches():
     """
