@@ -966,7 +966,7 @@ class Rebuilt(Game):
             "endClimb": "Endgame Climb",
             "outpostIntake": "Intaked from the Outpost",
             "groundIntake": "Intaked from the ground",
-            "fedToOutpost": "fedToOutpost",
+            "fedToOutpost": "Fed to the outpost",
             "totalFuel": "Total Fuel Worth Points",
             "totalFuelMissed": "Total Fuel Missed",
             "minorFouls": "Minor Fouls",
