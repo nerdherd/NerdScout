@@ -507,7 +507,7 @@ def scoutTeam():
 
 
 dontSummarize = frozenset(
-    ["startPos", "endPos", "attemptedEndPos", "cannedComments", "endPosSuccess"]
+    ["startPos", "endPos", "attemptedEndPos", "cannedComments", "endPosSuccess","autoFuel","transitionFuel","firstActiveShiftFuel","secondActiveShiftFuel","endgameFuel"]
 )
 
 
@@ -589,7 +589,7 @@ def teamTable():
 
     displayNames = game.teamTableDisplayNames
     data = teamDataSummary()
-    print(data)
+    print(data[0])
     return render_template(
         "strategy/team/table.html",
         displayNames=displayNames,
