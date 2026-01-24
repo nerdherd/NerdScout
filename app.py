@@ -89,6 +89,7 @@ def createTestMatches():
                 autoClimbAttempted=random.random()>0.5,
                 autoClimbSuccess=random.random()>0.5,
                 autoOutpostFeed=random.random()>0.5,
+                autoFedToOutpost=random.random()>0.5,
                 firstShift=random.random()>0.5,
                 transitionFuel=randomScoringPeriods(random.randint(0,5)),
                 transitionFed=random.random()>0.5,
