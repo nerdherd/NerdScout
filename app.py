@@ -190,6 +190,13 @@ def renderMatch():
     alert = ""
     if "alert" in request.args:
         alert = request.args.get("alert")
+        
+    madePrediction = False
+    if session['username']:
+        peopleWhoPredicted = getPredictionAccounts(results["matchKey"])
+        for person in peopleWhoPredicted:
+            if session['username'] == person["username"]:
+                madePrediction = True
 
     return render_template(
         "match/match.html",
@@ -201,8 +208,27 @@ def renderMatch():
         alert=alert,
         matchNum=matchNumber,
         compLevel=compLevel.value,
-        setNum=setNumber
+        setNum=setNumber,
+        madePrediction=madePrediction
     )
+
+@app.route("/match/nerdPredictSubmitScore", methods=["POST"])
+def createPredictionPage():
+    if request.method == "POST":
+        print("posted")
+        submission = request.json
+        try:
+            compLevel = CompLevel(submission["compLevel"])
+            matchNumber = int(submission["matchNumber"])
+            setNumber = int(submission["setNumber"])
+            forRed = bool(submission["forRed"])
+            points = int(submission["points"])
+        except TypeError as e:
+            print(e)
+            abort(400)
+        createPrediction(session["username"],compLevel,matchNumber,setNumber=setNumber,forRed=forRed,points=points)
+        return "ok"
+    abort(405)
 
 @app.route("/match/updateFromTBA")
 def updateMatchFromTBAPage():

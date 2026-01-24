@@ -679,6 +679,46 @@
 {% endfor %}
 </div>
 
+<div>
+    {% if not madePrediction %}
+    <div>
+        <!-- haven't made a prediction yet -->
+        <button onclick="predictIsRed=true">red</button>
+        <button onclick="predictIsRed=false">blue</button>
+        <input type="number" min="0" id="predictPointsInput">
+        <button onclick="createSubmission()">Make submission</button>
+        <script>
+            var predictIsRed = false;
+            function createSubmission(){
+                rawData = {
+                    "compLevel":"{{compLevel}}",
+                    "matchNumber":{{matchNum}},
+                    "setNumber":{{setNum}},
+                    "forRed":predictIsRed,
+                    "points":parseInt(document.getElementById("predictPointsInput").value)
+                };
+                data = JSON.stringify(rawData);
+                fetch('{{url_for("createPredictionPage")}}', {
+                    method: "POST",
+                    body: data, 
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                }).then(response =>{
+                    if (response.ok){
+                        alert("Succesfully submitted");
+                    } else{
+                        alert("There was an error submitting.");
+                    }
+                });
+            }
+        </script>
+    </div>
+    {% else %}
+    <p>already predicted</p>
+    {% endif %}
+</div>
+
 {% if showAdmin %}
 <div>
     <p>you are an admin</p>
