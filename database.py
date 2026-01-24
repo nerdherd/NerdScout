@@ -822,3 +822,106 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
         app.logger.info(f"Paid {payout} to {user['username']}")
     
     app.logger.info(f"Paid out total of {totalPool} in a ratio of 1:{totalPool/winningPool} for {'red' if forRed else 'blue'} predictions on {matchKey}")
+
+def createPickEms(user: str, m1Red: bool, m2Red: bool, m3Red: bool, m4Red: bool, m5Red: bool, m6Red: bool, m7Red: bool, m8Red: bool, m9Red: bool, m10Red: bool, m11Red: bool, m12Red: bool, m13Red: bool, finalsRed: bool) -> bool:
+    """
+    Creates pickems for a given user on the double elimination, 8 alliance format.
+
+    Inputs:
+    - user (str): username of user
+    - [match]Red: if the user predicts red will win in that match
+
+    Returns:
+    - bool: update acknowledged by MongoDB
+    """
+    # round 1
+    bracket = {
+        "m1": {
+            "red": 1,
+            "blue": 8,
+            "winner": "red" if m1Red else "blue"
+        },
+        "m2": {
+            "red": 4,
+            "blue": 5,
+            "winner": "red" if m2Red else "blue"
+        },
+        "m3": {
+            "red": 2,
+            "blue": 7,
+            "winner": "red" if m3Red else "blue"
+        },
+        "m4": {
+            "red": 3,
+            "blue": 6,
+            "winner": "red" if m4Red else "blue"
+        },
+    }
+    # round 2
+    bracket["m5"] = {
+        "red": bracket["m1"]["blue" if m1Red else "red"],
+        "blue": bracket["m2"]["blue" if m2Red else "red"],
+        "winner": "red" if m5Red else "blue"
+    }
+    bracket["m6"] = {
+        "red": bracket["m3"]["blue" if m3Red else "red"],
+        "blue": bracket["m4"]["blue" if m4Red else "red"],
+        "winner": "red" if m6Red else "blue"
+    }
+    bracket["m7"] = {
+        "red": bracket["m1"][bracket["m1"]["winner"]],
+        "blue": bracket["m2"][bracket["m2"]["winner"]],
+        "winner": "red" if m7Red else "blue"
+    }
+    bracket["m8"] = {
+        "red": bracket["m3"][bracket["m3"]["winner"]],
+        "blue": bracket["m4"][bracket["m4"]["winner"]],
+        "winner": "red" if m8Red else "blue"
+    }
+
+    # round 3
+    bracket["m9"] = {
+        "red": bracket["m7"]["blue" if m7Red else "red"],
+        "blue": bracket["m6"][bracket["m6"]["winner"]],
+        "winner": "red" if m9Red else "blue"
+    }
+    bracket["m10"] = {
+        "red": bracket["m8"]["blue" if m8Red else "red"],
+        "blue": bracket["m5"][bracket["m5"]["winner"]],
+        "winner": "red" if m10Red else "blue"
+    }
+
+    # round 4
+    bracket["m11"] = {
+        "red": bracket["m7"][bracket["m7"]["winner"]],
+        "blue": bracket["m8"][bracket["m8"]["winner"]],
+        "winner": "red" if m11Red else "blue"
+    }
+    bracket["m12"] = {
+        "red": bracket["m10"][bracket["m10"]["winner"]],
+        "blue": bracket["m9"][bracket["m9"]["winner"]],
+        "winner": "red" if m12Red else "blue"
+    }
+
+    # round 5
+    bracket["m13"] = {
+        "red": bracket["m11"]["blue" if m11Red else "red"],
+        "blue": bracket["m12"][bracket["m12"]["winner"]],
+        "winner": "red" if m13Red else "blue"
+    }
+
+    # finals
+    bracket["finals"] = {
+        "red": bracket["m11"][bracket["m11"]["winner"]],
+        "blue": bracket["m13"][bracket["m13"]["winner"]],
+        "winner": "red" if finalsRed else "blue"
+    }
+
+    bracket["winner"] = bracket["finals"][bracket["finals"]["winner"]]
+
+    updateStatus = accounts.update_one({"username": user}, {"$set": {"pickems": bracket}}).acknowledged
+    if updateStatus:
+        app.logger.info(f"Added pickems for {user}.")
+    else:
+        app.logger.error(f"Failed to add pickems for {user}.")
+    return updateStatus
