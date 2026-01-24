@@ -823,12 +823,13 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
     
     app.logger.info(f"Paid out total of {totalPool} in a ratio of 1:{totalPool/winningPool} for {'red' if forRed else 'blue'} predictions on {matchKey}")
 
-def createPickEms(user: str, m1Red: bool, m2Red: bool, m3Red: bool, m4Red: bool, m5Red: bool, m6Red: bool, m7Red: bool, m8Red: bool, m9Red: bool, m10Red: bool, m11Red: bool, m12Red: bool, m13Red: bool, finalsRed: bool) -> bool:
+def createPickEms(user: str, points: int, m1Red: bool, m2Red: bool, m3Red: bool, m4Red: bool, m5Red: bool, m6Red: bool, m7Red: bool, m8Red: bool, m9Red: bool, m10Red: bool, m11Red: bool, m12Red: bool, m13Red: bool, finalsRed: bool) -> bool:
     """
     Creates pickems for a given user on the double elimination, 8 alliance format.
 
     Inputs:
     - user (str): username of user
+    - points (int): the number of points the user is betting
     - [match]Red: if the user predicts red will win in that match
 
     Returns:
@@ -918,8 +919,9 @@ def createPickEms(user: str, m1Red: bool, m2Red: bool, m3Red: bool, m4Red: bool,
     }
 
     bracket["winner"] = bracket["finals"][bracket["finals"]["winner"]]
+    bracket["points"] = points # type: ignore
 
-    updateStatus = accounts.update_one({"username": user}, {"$set": {"pickems": bracket}}).acknowledged
+    updateStatus = accounts.update_one({"username": user}, {"$set": {"pickems": bracket}, "$inc": {"points": -points}}).acknowledged
     if updateStatus:
         app.logger.info(f"Added pickems for {user}.")
     else:
