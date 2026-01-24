@@ -573,6 +573,13 @@ def teamTable():
     )
 
 
+@app.route("/nerdPredict/leaderboard")
+def pointsLeaderboardPage():
+    ranking = getPointsRankings()
+    return render_template("predict/rank.html",ranking=ranking)
+
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     error = None

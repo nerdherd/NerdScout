@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    .user-card{
+        background: var(--darker-navy);
+        padding: 10px;
+        border-radius: 20px;
+        display:flex;
+        flex-direction: row;
+        margin: 10px;
+        width: clamp(300px,90%,500px);
+    }
+
+    .user-card .number{
+        width: 75px;
+    }
+</style>
+{% endblock %}
+
+{% block title %}Points Leaderboard{% endblock %}
+
+{% block content %}
+{% for user in ranking %}
+<div class="user-card">
+    <div class="number">
+        <h1>{{ loop.index }}.</h1>
+    </div>
+    <div class="info">
+        <p><b>{{ user["username" ]}}</b></p>
+        <p>Points: {{ user["points"] }}</p>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

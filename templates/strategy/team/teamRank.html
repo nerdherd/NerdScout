@@ -3,8 +3,21 @@
 {% block title %}Team Ranking{% endblock %}
 
 {% block head %}
-<link rel="preload" href="{{ url_for('static', filename='stylesheets/teamRank.css') }}" as="style">
-<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/teamRank.css') }}">
+<style>
+    .team-card{
+        background: var(--darker-navy);
+        padding: 10px;
+        border-radius: 20px;
+        display:flex;
+        flex-direction: row;
+        margin: 10px;
+        width: clamp(300px,90%,500px);
+    }
+
+    .team-card .number{
+        width: 75px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
