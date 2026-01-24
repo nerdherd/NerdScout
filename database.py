@@ -920,6 +920,7 @@ def createPickEms(user: str, points: int, m1Red: bool, m2Red: bool, m3Red: bool,
 
     bracket["winner"] = bracket["finals"][bracket["finals"]["winner"]]
     bracket["points"] = points # type: ignore
+    bracket["paid"] = False # type: ignore
 
     updateStatus = accounts.update_one({"username": user}, {"$set": {"pickems": bracket}, "$inc": {"points": -points}}).acknowledged
     if updateStatus:
@@ -927,3 +928,104 @@ def createPickEms(user: str, points: int, m1Red: bool, m2Red: bool, m3Red: bool,
     else:
         app.logger.error(f"Failed to add pickems for {user}.")
     return updateStatus
+
+def payPickEms() -> bool:
+    qual1 = getMatch(CompLevel.QM,1,1)[0]
+    updateScheduleFromTBA(qual1["matchKey"].split("_")[0])
+    finals2 = getMatch(CompLevel.F,1,1)[0]
+    if "scoreBreakdown" not in finals2["results"]:
+        app.logger.warning("Failed to pay pickems: finals 2 not scored")
+        return False
+    m1 = getMatch(CompLevel.SF,1,1)[0]
+    m2 = getMatch(CompLevel.SF,1,2)[0]
+    m3 = getMatch(CompLevel.SF,1,3)[0]
+    m4 = getMatch(CompLevel.SF,1,4)[0]
+    m5 = getMatch(CompLevel.SF,1,5)[0]
+    m6 = getMatch(CompLevel.SF,1,6)[0]
+    m7 = getMatch(CompLevel.SF,1,7)[0]
+    m8 = getMatch(CompLevel.SF,1,8)[0]
+    m9 = getMatch(CompLevel.SF,1,9)[0]
+    m10 = getMatch(CompLevel.SF,1,10)[0]
+    m11 = getMatch(CompLevel.SF,1,11)[0]
+    m12 = getMatch(CompLevel.SF,1,12)[0]
+    m13 = getMatch(CompLevel.SF,1,13)[0]
+
+    finals1 = getMatch(CompLevel.F,1,1)[0]
+    finals3 = getMatch(CompLevel.F,1,3)
+    if not finals3:
+        finals3 = {}
+    else:
+        finals3 = finals3[0]
+
+    allMatchResults = {
+        "m1": m1["results"],
+        "m2": m2["results"],
+        "m3": m3["results"],
+        "m4": m4["results"],
+        "m5": m5["results"],
+        "m6": m6["results"],
+        "m7": m7["results"],
+        "m8": m8["results"],
+        "m9": m9["results"],
+        "m10": m10["results"],
+        "m11": m11["results"],
+        "m12": m12["results"],
+        "m13": m13["results"]
+    }
+    round1Picks = ["m1","m2","m3","m4"]
+    round2Picks = ["m5","m6","m7","m8"]
+    round3Picks = ["m9","m10"]
+    round4Picks = ["m11","m12"]
+    round5Picks = ["m13"]
+    finals1Winner = finals1["winningAlliance"]
+    finals2Winner = finals2["winningAlliance"]
+    if "winningAlliance" in finals3:
+        finals3Winner = finals3["winningAlliance"]
+    else:
+        finals3Winner = None
+    
+    if finals1Winner == finals2Winner:
+        finalsWinner = finals1Winner
+    elif not finals3Winner:
+        app.logger.error("Failed to pay out pickems: finals3 winner not found and finals not clinched.")
+        return False
+    else:
+        finalsWinner = finals3Winner
+
+    users = accounts.find({"pickems": {"$exists": True}})
+
+    for user in users:
+        if user["pickems"]["paid"]:
+            continue
+        points = 0
+        userPickems = user["pickems"]
+        pointsSpent = userPickems["points"]
+        
+
+        for pick in round1Picks:
+            if userPickems[pick]["winner"] == allMatchResults[pick]["winningAlliance"]:
+                points += int(pointsSpent * 0.2)
+        for pick in round2Picks:
+            if userPickems[pick]["winner"] == allMatchResults[pick]["winningAlliance"]:
+                points += int(pointsSpent * 0.4)
+        for pick in round3Picks:
+            if userPickems[pick]["winner"] == allMatchResults[pick]["winningAlliance"]:
+                points += int(pointsSpent * 0.6)
+        for pick in round4Picks:
+            if userPickems[pick]["winner"] == allMatchResults[pick]["winningAlliance"]:
+                points += int(pointsSpent * 0.8)
+        for pick in round5Picks:
+            if userPickems[pick]["winner"] == allMatchResults[pick]["winningAlliance"]:
+                points += pointsSpent
+        
+        if userPickems["finals"]["winner"] == finalsWinner:
+            points += int(pointsSpent * 1.2)
+        
+        updateStatus = accounts.update_one({"username": user["username"]}, {"$inc": {"points": points}, "$set": {"pickems.paid": True}}).acknowledged
+        if updateStatus:
+            app.logger.info(f"Paid {points} for {user['username']}'s pickems")
+        else:
+            app.logger.info(f"Failed to pay for {user['username']}'s pickems")
+    return True
+
+
