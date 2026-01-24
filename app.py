@@ -525,7 +525,6 @@ def teamDataSummary():
 @app.route("/strategy/teamtable")
 def teamTable():
     return "not implemented"
-    # return "not implemented"
     stat = request.args.get("stat")
     if not (
         (stat == "mean")
