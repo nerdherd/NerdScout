@@ -678,4 +678,11 @@
 </div>
 {% endfor %}
 </div>
+
+{% if showAdmin %}
+<div>
+    <p>you are an admin</p>
+    <a href="{{url_for('updateMatchFromTBAPage',matchNum=matchNum,compLevel=compLevel,setNum=setNum)}}">update from tba</a>
+</div>
+{% endif %}
 {% endblock %}

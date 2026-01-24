@@ -184,6 +184,12 @@ def renderMatch():
     except (IndexError, AttributeError) as err:
         # IndexError: There isnt a next match
         pass
+    
+    showAdmin = session['username'] and isAdmin(session['username'])
+    
+    alert = ""
+    if "alert" in request.args:
+        alert = request.args.get("alert")
 
     return render_template(
         "match/match.html",
@@ -191,7 +197,23 @@ def renderMatch():
         matchData=matchData,
         results=results,
         nextMatch=nextMatch,
+        showAdmin=showAdmin,
+        alert=alert,
+        matchNum=matchNumber,
+        compLevel=compLevel.value,
+        setNum=setNumber
     )
+
+@app.route("/match/updateFromTBA")
+def updateMatchFromTBAPage():
+    try:
+        matchNumber = int(request.args.get("matchNum"))  # type: ignore
+        compLevel = CompLevel(request.args.get("compLevel"))  # type: ignore
+        setNumber = int(request.args.get("setNum"))  # type: ignore
+    except:
+        abort(400)
+    success = updateMatchFromTBA(compLevel=compLevel,matchNumber=matchNumber,setNumber=setNumber)
+    return redirect(url_for("renderMatch",matchNum=matchNumber,compLevel=compLevel,setNum=setNumber,alert=f"Match updated: {success}"))
 
 
 @app.route("/team")
@@ -893,9 +915,10 @@ adminEndpoints = frozenset(
         "matchTable",
         "resetPasswordsPage",
         "adminPage",
+        "updateMatchFromTBAPage"
     ]
 )  # endpoints that require user be admin
-
+updateMatchFromTBAPage
 
 @app.before_request
 def before_request():
