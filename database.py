@@ -1003,6 +1003,16 @@ def payPickEms() -> bool:
         "m12": m12["teams"]["red1"],
         "m13": m13["teams"]["red1"],
     }
+    allianceDict = {
+        str(allMatchRedCaptains["m1"]): 1,
+        str(allMatchBlueCaptains["m1"]): 8,
+        str(allMatchRedCaptains["m2"]): 4,
+        str(allMatchBlueCaptains["m2"]): 5,
+        str(allMatchRedCaptains["m3"]): 2,
+        str(allMatchBlueCaptains["m3"]): 7,
+        str(allMatchRedCaptains["m4"]): 3,
+        str(allMatchBlueCaptains["m4"]): 6,
+    }
     round1Picks = ["m1","m2","m3","m4"]
     round2Picks = ["m5","m6","m7","m8"]
     round3Picks = ["m9","m10"]
@@ -1037,19 +1047,19 @@ def payPickEms() -> bool:
         
 
         for pick in round1Picks:
-            if userPickems[pick][userPickems[pick]["winner"]] == allMatchRedCaptains[pick] if allMatchResults[pick]["winningAlliance"] == "red" else allMatchBlueCaptains[pick]:
+            if userPickems[pick][userPickems[pick]["winner"]] == allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]:
                 points += int(pointsSpent * 0.2)
         for pick in round2Picks:
-            if userPickems[pick][userPickems[pick]["winner"]] == allMatchRedCaptains[pick] if allMatchResults[pick]["winningAlliance"] == "red" else allMatchBlueCaptains[pick]:
+            if userPickems[pick][userPickems[pick]["winner"]] == allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]:
                 points += int(pointsSpent * 0.4)
         for pick in round3Picks:
-            if userPickems[pick][userPickems[pick]["winner"]] == allMatchRedCaptains[pick] if allMatchResults[pick]["winningAlliance"] == "red" else allMatchBlueCaptains[pick]:
+            if userPickems[pick][userPickems[pick]["winner"]] == allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]:
                 points += int(pointsSpent * 0.6)
         for pick in round4Picks:
-            if userPickems[pick][userPickems[pick]["winner"]] == allMatchRedCaptains[pick] if allMatchResults[pick]["winningAlliance"] == "red" else allMatchBlueCaptains[pick]:
+            if userPickems[pick][userPickems[pick]["winner"]] == allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]:
                 points += int(pointsSpent * 0.8)
         for pick in round5Picks:
-            if userPickems[pick][userPickems[pick]["winner"]] == allMatchRedCaptains[pick] if allMatchResults[pick]["winningAlliance"] == "red" else allMatchBlueCaptains[pick]:
+            if userPickems[pick][userPickems[pick]["winner"]] == allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]:
                 points += pointsSpent
         
         if userPickems["finals"][userPickems["finals"]["winner"]] == finalsRedCaptain if finalsWinner == "red" else finalsBlueCaptain:
