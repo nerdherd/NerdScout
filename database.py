@@ -973,11 +973,44 @@ def payPickEms() -> bool:
         "m12": m12["results"],
         "m13": m13["results"]
     }
+    allMatchBlueCaptains = {
+        "m1": m1["teams"]["blue1"],
+        "m2": m2["teams"]["blue1"],
+        "m3": m3["teams"]["blue1"],
+        "m4": m4["teams"]["blue1"],
+        "m5": m5["teams"]["blue1"],
+        "m6": m6["teams"]["blue1"],
+        "m7": m7["teams"]["blue1"],
+        "m8": m8["teams"]["blue1"],
+        "m9": m9["teams"]["blue1"],
+        "m10": m10["teams"]["blue1"],
+        "m11": m11["teams"]["blue1"],
+        "m12": m12["teams"]["blue1"],
+        "m13": m13["teams"]["blue1"],
+    }
+    allMatchRedCaptains = {
+        "m1": m1["teams"]["red1"],
+        "m2": m2["teams"]["red1"],
+        "m3": m3["teams"]["red1"],
+        "m4": m4["teams"]["red1"],
+        "m5": m5["teams"]["red1"],
+        "m6": m6["teams"]["red1"],
+        "m7": m7["teams"]["red1"],
+        "m8": m8["teams"]["red1"],
+        "m9": m9["teams"]["red1"],
+        "m10": m10["teams"]["red1"],
+        "m11": m11["teams"]["red1"],
+        "m12": m12["teams"]["red1"],
+        "m13": m13["teams"]["red1"],
+    }
     round1Picks = ["m1","m2","m3","m4"]
     round2Picks = ["m5","m6","m7","m8"]
     round3Picks = ["m9","m10"]
     round4Picks = ["m11","m12"]
     round5Picks = ["m13"]
+
+    finalsRedCaptain = finals1["teams"]["red1"]
+    finalsBlueCaptain = finals1["teams"]["blue1"]
     finals1Winner = finals1["winningAlliance"]
     finals2Winner = finals2["winningAlliance"]
     if "winningAlliance" in finals3:
@@ -1004,22 +1037,22 @@ def payPickEms() -> bool:
         
 
         for pick in round1Picks:
-            if userPickems[pick]["winner"] == allMatchResults[pick]["winningAlliance"]:
+            if userPickems[pick][userPickems[pick]["winner"]] == allMatchRedCaptains[pick] if allMatchResults[pick]["winningAlliance"] == "red" else allMatchBlueCaptains[pick]:
                 points += int(pointsSpent * 0.2)
         for pick in round2Picks:
-            if userPickems[pick]["winner"] == allMatchResults[pick]["winningAlliance"]:
+            if userPickems[pick][userPickems[pick]["winner"]] == allMatchRedCaptains[pick] if allMatchResults[pick]["winningAlliance"] == "red" else allMatchBlueCaptains[pick]:
                 points += int(pointsSpent * 0.4)
         for pick in round3Picks:
-            if userPickems[pick]["winner"] == allMatchResults[pick]["winningAlliance"]:
+            if userPickems[pick][userPickems[pick]["winner"]] == allMatchRedCaptains[pick] if allMatchResults[pick]["winningAlliance"] == "red" else allMatchBlueCaptains[pick]:
                 points += int(pointsSpent * 0.6)
         for pick in round4Picks:
-            if userPickems[pick]["winner"] == allMatchResults[pick]["winningAlliance"]:
+            if userPickems[pick][userPickems[pick]["winner"]] == allMatchRedCaptains[pick] if allMatchResults[pick]["winningAlliance"] == "red" else allMatchBlueCaptains[pick]:
                 points += int(pointsSpent * 0.8)
         for pick in round5Picks:
-            if userPickems[pick]["winner"] == allMatchResults[pick]["winningAlliance"]:
+            if userPickems[pick][userPickems[pick]["winner"]] == allMatchRedCaptains[pick] if allMatchResults[pick]["winningAlliance"] == "red" else allMatchBlueCaptains[pick]:
                 points += pointsSpent
         
-        if userPickems["finals"]["winner"] == finalsWinner:
+        if userPickems["finals"][userPickems["finals"]["winner"]] == finalsRedCaptain if finalsWinner == "red" else finalsBlueCaptain:
             points += int(pointsSpent * 1.2)
         
         updateStatus = accounts.update_one({"username": user["username"]}, {"$inc": {"points": points}, "$set": {"pickems.paid": True}}).acknowledged
