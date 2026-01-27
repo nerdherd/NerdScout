@@ -604,8 +604,12 @@ def pointsLeaderboardPage():
     ranking = getPointsRankings()
     return render_template("predict/rank.html",ranking=ranking)
 
-@app.route("/nerdpredict/playoffs")
+@app.route("/nerdpredict/playoffs", methods=["GET", "POST"])
 def pointsPlayoffsPage():
+    if request.method == "POST":
+        redwon = [bool(a) for a in request.json["redwon"].split(",")]
+        print(redwon)
+        return "ok"
     return render_template("predict/playoffs.html",alliances=[[n*3,n*3+1,n*3+2] for n in range(0,8)])
 
 @app.route("/login", methods=["GET", "POST"])

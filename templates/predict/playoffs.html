@@ -98,5 +98,26 @@
         document.getElementById(`m${match}-winner`).innerText = `Alliance ${winnerNumber}: ${winner.join(", ")}`;
         document.getElementById(`m${match}-loser`).innerText = `Alliance ${loserNumber}: ${loser.join(", ")}`;
     }
+    function submit(){
+        rawData = {
+            "redwon":redwon.join(",")
+        }
+        data = JSON.stringify(rawData);
+        console.log(rawData);
+        console.log(data);
+        fetch(window.location.href, {
+            method: "POST",
+            body: data, 
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then(response =>{
+            if (response.ok){
+                alert("Succesfully submitted");
+            } else{
+                alert("There was an error submitting.");
+            }
+        });
+    }
 </script>
 {% endblock %}
