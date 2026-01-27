@@ -610,7 +610,7 @@ def pointsPlayoffsPage():
         rawData = request.json
         if (not rawData) or ("redwon" not in rawData):
             abort(400)
-        redwon = [bool(a) for a in rawData["redwon"].split(",")]
+        redwon = [a=="true" for a in rawData["redwon"].split(",")]
         if len(redwon) != 14:
             abort(400)
         points = 100000 #TODO: actually send points 

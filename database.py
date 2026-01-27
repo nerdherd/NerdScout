@@ -931,6 +931,7 @@ def createPickEms(user: str, points: int, m1Red: bool, m2Red: bool, m3Red: bool,
     return updateStatus
 
 def payPickEms() -> bool:
+    app.logger.info("Starting to pay out pickems")
     qual1 = getMatch(CompLevel.QM,1,1)[0]
     updateScheduleFromTBA(qual1["matchKey"].split("_")[0])
     finals2 = getMatch(CompLevel.F,1,1)[0]
@@ -1021,10 +1022,10 @@ def payPickEms() -> bool:
 
     finalsRedCaptain = finals1["teams"]["red1"]
     finalsBlueCaptain = finals1["teams"]["blue1"]
-    finals1Winner = finals1["winningAlliance"]
-    finals2Winner = finals2["winningAlliance"]
+    finals1Winner = finals1["results"]["winningAlliance"]
+    finals2Winner = finals2["results"]["winningAlliance"]
     if "winningAlliance" in finals3:
-        finals3Winner = finals3["winningAlliance"]
+        finals3Winner = finals3["results"]["winningAlliance"]
     else:
         finals3Winner = None
     
@@ -1047,23 +1048,35 @@ def payPickEms() -> bool:
         
 
         for pick in round1Picks:
-            if userPickems[pick][userPickems[pick]["winner"]] == allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]:
+            realWinningAlliance = allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]
+            if userPickems[pick][userPickems[pick]["winner"]] == realWinningAlliance:
+                app.logger.info(f"Correct pick for {realWinningAlliance} in {pick} for {user['username']}")
                 points += int(pointsSpent * 0.2)
         for pick in round2Picks:
-            if userPickems[pick][userPickems[pick]["winner"]] == allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]:
+            realWinningAlliance = allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]
+            if userPickems[pick][userPickems[pick]["winner"]] == realWinningAlliance:                
+                app.logger.info(f"Correct pick for {realWinningAlliance} in {pick} for {user['username']}")
                 points += int(pointsSpent * 0.4)
         for pick in round3Picks:
-            if userPickems[pick][userPickems[pick]["winner"]] == allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]:
+            realWinningAlliance = allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]
+            if userPickems[pick][userPickems[pick]["winner"]] == realWinningAlliance:
+                app.logger.info(f"Correct pick for {realWinningAlliance} in {pick} for {user['username']}")
                 points += int(pointsSpent * 0.6)
         for pick in round4Picks:
-            if userPickems[pick][userPickems[pick]["winner"]] == allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]:
+            realWinningAlliance = allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]
+            if userPickems[pick][userPickems[pick]["winner"]] == realWinningAlliance:
+                app.logger.info(f"Correct pick for {realWinningAlliance} in {pick} for {user['username']}")
                 points += int(pointsSpent * 0.8)
         for pick in round5Picks:
-            if userPickems[pick][userPickems[pick]["winner"]] == allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]:
+            realWinningAlliance = allianceDict[str(allMatchRedCaptains[pick])] if allMatchResults[pick]["winningAlliance"] == "red" else allianceDict[str(allMatchBlueCaptains[pick])]
+            if userPickems[pick][userPickems[pick]["winner"]] == realWinningAlliance:
+                app.logger.info(f"Correct pick for {realWinningAlliance} in {pick} for {user['username']}")
                 points += pointsSpent
         
-        if userPickems["finals"][userPickems["finals"]["winner"]] == finalsRedCaptain if finalsWinner == "red" else finalsBlueCaptain:
+        realFinalsWinner = allianceDict[str(finalsRedCaptain)] if finalsWinner == "red" else allianceDict[str(finalsBlueCaptain)]
+        if userPickems["winner"] == realFinalsWinner:
             points += int(pointsSpent * 1.2)
+            app.logger.info(f"Correct pick for {realFinalsWinner} in finals for {user['username']}")
         
         updateStatus = accounts.update_one({"username": user["username"]}, {"$inc": {"points": points}, "$set": {"pickems.paid": True}}).acknowledged
         if updateStatus:
