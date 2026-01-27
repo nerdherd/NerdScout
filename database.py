@@ -2,6 +2,7 @@ from array import array
 from datetime import datetime
 from http.client import HTTPException
 import os
+import random
 import re
 from time import time, time_ns
 import filetype
@@ -1028,4 +1029,115 @@ def payPickEms() -> bool:
             app.logger.info(f"Failed to pay for {user['username']}'s pickems")
     return True
 
+def createTestTBABreakdown() -> dict:
+    """
+    Creates a random score breakdown.
+    Game specific.
 
+    Returns:
+    - dict: score breakdown
+    """
+    # this part is game specific. as of january 2026, this is for REBUILT.
+    autoCount = random.randint(0,40)
+    endgameCount = random.randint(0,40)
+    firstShift = random.random() > 0.5
+    shift1Count = random.randint(0,40)
+    shift2Count = random.randint(0,40)
+    shift3Count = random.randint(0,40)
+    shift4Count = random.randint(0,40)
+    transitionCount = random.randint(0,40)
+    scoreBreakdown = {
+        "adjustPoints": random.randint(0,10),
+        "autoTowerPoints": 15 * random.randint(0,3),
+        "autoTowerRobot1": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
+        "autoTowerRobot2": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
+        "autoTowerRobot3": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
+        "endGameTowerPoints": 10 * random.randint(0,9),
+        "endGameTowerRobot1": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
+        "endGameTowerRobot2": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
+        "endGameTowerRobot3": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
+        "energizedAchieved": random.random() > 0.5,
+        "foulPoints": random.randint(0,20),
+        "g206Penalty": random.random() > 0.5,
+        "hubScore":{
+            "autoCount": autoCount,
+            "autoPoints": autoCount,
+            "endgameCount": endgameCount,
+            "endgamePoints": endgameCount,
+            "shift1Count": shift1Count,
+            "shift1Points": shift1Count if firstShift else 0,
+            "shift2Count": shift2Count,
+            "shift2Points": shift2Count if  not firstShift else 0,
+            "shift3Count": shift3Count,
+            "shift3Points": shift3Count if firstShift else 0,
+            "shift4Count": shift4Count,
+            "shift4Points": shift4Count if  not firstShift else 0,
+            "teleopCount": transitionCount + shift1Count + shift2Count + shift3Count + shift4Count + endgameCount,
+            "teleopPoints": transitionCount + (shift1Count if firstShift else shift2Count) + (shift3Count if firstShift else shift4Count) + endgameCount,
+            "totalCount": transitionCount + shift1Count + shift2Count + shift3Count + shift4Count + endgameCount + autoCount,
+            "totalPoints": transitionCount + (shift1Count if firstShift else shift2Count) + (shift3Count if firstShift else shift4Count) + endgameCount + autoCount,
+        },
+        "majorFoulCount": random.randint(0,10),
+        "minorFoulCount": random.randint(0,100),
+        "rp": random.randint(0,6),
+        "superchargedAchieved": random.random() > 0.3,
+        "totalAutoPoints": random.randint(0,100),
+        "totalPoints": random.randint(0,250),
+        "totalTeleopPoints": random.randint(0,150),
+        "totalTowerPoints": (10 * random.randint(0,9)) + (15 * random.randint(0,3)),
+        "traversalAchieved": random.random() > 0.5
+    }
+    
+    return scoreBreakdown
+
+def addTestTBAData(compLevel: CompLevel, matchNumber: int, setNumber: int) -> bool:
+    """
+    adds randomized fake TBA data to the database and pays out predictions.
+
+    Inputs:
+    - compLevel (CompLevel): competition level of match
+    - matchNumber (int): match number
+    - setNumber (int): set number
+
+    Returns:
+    - bool: success
+    """
+    matchDataList = getMatch(compLevel, matchNumber, setNumber)
+    if not matchDataList:
+        abort(400)
+    elif len(matchDataList) > 1:
+        app.logger.error(f"Error updating scoring data: multiple matches found for {compLevel.value}{matchNumber}, set {setNumber}.")
+    matchData = matchDataList[0]
+    matchKey = matchData["matchKey"]
+
+    TBAdata = {
+        "key": matchKey,
+        "comp_level": compLevel.value,
+        "set_number": setNumber,
+        "match_number": matchNumber,
+        "alliances": {"placeholder": '"we dont use this right now" - gold ship'},
+        "winning_alliance": "red" if random.random() > 0.5 else "blue",
+        "event_key": "abaca",
+        "time": int(time()),
+        "actual_time": int(time()) - random.randint(0,120),
+        "predicted_time": int(time()),
+        "post_result_time": int(time()),
+        "score_breakdown": createTestTBABreakdown(),
+        "videos": [
+            {
+                "type": "youtube",
+                "key": "https://youtu.be/AcVp_yl5QZs"
+            },
+        ],
+    }
+    if "score_breakdown" in TBAdata:
+        if (not "scoreBreakdown" in matchData["results"]):
+            matches.update_one({"matchKey": TBAdata["key"]},{"$set":{"results.scored":True, "results.postResultTime": TBAdata["post_result_time"], "results.actualTime": TBAdata["actual_time"], "results.scoreBreakdown": TBAdata["score_breakdown"], "results.winningAlliance": TBAdata["winning_alliance"]}})
+            app.logger.info(f"Saved new score breakdown for {TBAdata['key']}; Now paying predictions.")
+            payoutPredictions(TBAdata["key"],TBAdata["winning_alliance"] == "red")
+            return True
+        if (matchData["results"]["postResultTime"] < TBAdata["post_result_time"]):
+            matches.update_one({"matchKey": TBAdata["key"]},{"$set":{"results.postResultTime": TBAdata["post_result_time"], "results.actualTime": TBAdata["actual_time"], "results.scoreBreakdown": TBAdata["score_breakdown"], "results.winningAlliance": TBAdata["winning_alliance"]}})
+            app.logger.info(f"Updated score breakdown for {TBAdata['key']}")
+            return True
+    return False

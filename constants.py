@@ -46,12 +46,19 @@ class EndPositionReefscape(Enum):
     PARK = 1
     SHALLOW = 2
     DEEP = 3
-
 class EndPositionRebuilt(Enum):
     L1 = 1
     L2 = 2
     L3 = 3
     NONE = 0
+
+FMSEndPositionRebuilt = {
+    "#0": EndPositionRebuilt.L1,
+    "#1": EndPositionRebuilt.L2,
+    "#2": EndPositionRebuilt.L3,
+    "#3": EndPositionRebuilt.NONE,
+}
+    
 
 
 class CompLevel(Enum):
