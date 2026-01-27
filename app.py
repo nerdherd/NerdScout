@@ -599,12 +599,14 @@ def teamTable():
     )
 
 
-@app.route("/nerdPredict/leaderboard")
+@app.route("/nerdpredict/leaderboard")
 def pointsLeaderboardPage():
     ranking = getPointsRankings()
     return render_template("predict/rank.html",ranking=ranking)
 
-
+@app.route("/nerdpredict/playoffs")
+def pointsPlayoffsPage():
+    return render_template("predict/playoffs.html",alliances=[[n*3,n*3+1,n*3+2] for n in range(0,8)])
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

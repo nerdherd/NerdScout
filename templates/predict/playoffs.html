@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    .round div button:first-of-type{
+        background-color: red;
+    }
+    .round div button:last-of-type{
+        background-color: blue;
+    }
+</style>
+{% endblock %}
+
+{% block title %}pick thems{% endblock %}
+
+{% block content %}
+<div id="first" class="round">
+    {% for n in range(1,9,2) %}
+    <div>
+        match {{(n+1)//2}}
+        <button onclick="setRound({{(n+1)//2}},{{alliances[n-1]}},{{alliances[n]}},{{n}},{{n+1}},true)">Alliance {{n}}: {{alliances[n-1]|join(', ')}}</button>
+        <button onclick="setRound({{(n+1)//2}},{{alliances[n]}},{{alliances[n-1]}},{{n+1}},{{n}},false)">Alliance {{n+1}}: {{alliances[n]|join(', ')}}</button>
+    </div>
+    {% endfor %}
+</div>
+<div id="second" class="round">
+    <div>
+        match 5
+        <button onclick="setRound(5,losers[1],losers[2],loserNumbers[1],loserNumbers[2],true)" id="m1-loser"></button>
+        <button onclick="setRound(5,losers[2],losers[1],loserNumbers[2],loserNumbers[1],false)" id="m2-loser"></button>
+    </div>
+    <div>
+        match 6
+        <button onclick="setRound(6,losers[3],losers[4],loserNumbers[3],loserNumbers[4],true)" id="m3-loser"></button>
+        <button onclick="setRound(6,losers[4],losers[3],loserNumbers[4],loserNumbers[3],false)" id="m4-loser"></button>
+    </div>
+    <div>
+        match 7
+        <button onclick="setRound(7,winners[1],winners[2],winnerNumbers[1],winnerNumbers[2],true)" id="m1-winner"></button>
+        <button onclick="setRound(7,winners[2],winners[1],winnerNumbers[2],winnerNumbers[1],false)" id="m2-winner"></button>
+    </div>
+    <div>
+        match 8
+        <button onclick="setRound(8,winners[3],winners[4],winnerNumbers[3],winnerNumbers[4],true)" id="m3-winner"></button>
+        <button onclick="setRound(8,winners[4],winners[3],winnerNumbers[4],winnerNumbers[3],false)" id="m4-winner"></button>
+    </div>
+</div>
+<div id="third" class="round">
+    <div>
+        match 9
+        <button onclick="setRound(9,losers[7],winners[6],loserNumbers[7],winnerNumbers[6],true)" id="m7-loser"></button>
+        <button onclick="setRound(9,winners[6],losers[7],winnerNumbers[6],loserNumbers[7],false)" id="m6-winner"></button>
+    </div>
+    <div>
+        match 10
+        <button onclick="setRound(10,losers[8],winners[5],loserNumbers[8],winnerNumbers[5],true)" id="m8-loser"></button>
+        <button onclick="setRound(10,winners[5],losers[8],winnerNumbers[5],loserNumbers[8],false)" id="m5-winner"></button>
+    </div>
+</div>
+<div id="fourth" class="round">
+    <div>
+        match 11
+        <button onclick="setRound(11,winners[7],winners[8],winnerNumbers[7],winnerNumbers[8],true)" id="m7-winner"></button>
+        <button onclick="setRound(11,winners[8],winners[7],winnerNumbers[8],winnerNumbers[7],false)" id="m8-winner"></button>
+    </div>
+    <div>
+        match 12
+        <button onclick="setRound(12,winners[9],winners[10],winnerNumbers[9],winnerNumbers[10],true)" id="m10-winner"></button>
+        <button onclick="setRound(12,winners[10],winners[9],winnerNumbers[10],winnerNumbers[9],false)" id="m9-winner"></button>
+    </div>
+</div>
+<div id="fifth" class="round">
+    <div>
+        match 13
+        <button onclick="setRound(13,losers[11],winners[12],loserNumbers[11],winnerNumbers[12],true)" id="m11-loser"></button>
+        <button onclick="setRound(13,winners[12],losers[11],winnerNumbers[12],loserNumbers[11],false)" id="m12-winner"></button>
+    </div>
+</div>
+<div id="sixth" class="round">
+    <div>
+        match 14
+        <button id="m11-winner" onclick="redwon[13]=true"></button>
+        <button id="m13-winner" onclick="redwon[13]=false"></button>
+    </div>
+</div>
+<script>
+    var winnerNumbers = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    var winners = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+    var loserNumbers = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    var losers = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+    var redwon = [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false];
+    function setRound(match,winner,loser,winnerNumber,loserNumber,didredwin){
+        redwon[match-1]=didredwin;
+        winners[match] = winner;
+        winnerNumbers[match] = winnerNumber;
+        losers[match] = loser;
+        loserNumbers[match]=loserNumber;
+        document.getElementById(`m${match}-winner`).innerText = `Alliance ${winnerNumber}: ${winner.join(", ")}`;
+        document.getElementById(`m${match}-loser`).innerText = `Alliance ${loserNumber}: ${loser.join(", ")}`;
+    }
+</script>
+{% endblock %}
