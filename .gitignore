@@ -12,3 +12,4 @@
 /schedules/*
 
 /cache/*
+!/cache/README.md
