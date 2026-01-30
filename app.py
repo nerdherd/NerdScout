@@ -119,8 +119,7 @@ def createTestMatches():
                 cannedComments=[],
                 scout=random.choice(["hello","hello2","hlelo3","tonnieboy300","mr hello","hello jr","ms hello"])
             )
-    with open(os.path.join(root, "cache/recentEventKey"), "w") as f:
-        f.write("2026test")
+    writeToCacheFile("2026test","recentEventKey")
     return "ok."
 
 
@@ -410,11 +409,7 @@ def scheduleEventPage():
             abort(400)
         addScheduleFromTBA(event)
         addTeamsFromTBA(event)
-    try:
-        with open(os.path.join(root, "cache/recentEventKey"), "r") as f:
-            eventKey = f.read()
-    except FileNotFoundError:
-        eventKey = ""
+    eventKey = loadFromCacheFile("recentEventKey")
     return render_template("match/schedule/addSchedule.html", eventKey = eventKey)
 
 
@@ -427,11 +422,7 @@ def updateSchedulePage():
         except:
             abort(400)
         updateScheduleFromTBA(event)
-    try:
-        with open(os.path.join(root, "cache/recentEventKey"), "r") as f:
-            eventKey = f.read()
-    except FileNotFoundError:
-        eventKey = ""
+    eventKey = loadFromCacheFile("recentEventKey")
     return render_template("match/schedule/updateSchedule.html", eventKey = eventKey)
 
 

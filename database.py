@@ -44,6 +44,37 @@ accounts = database.accounts
 teams = database.teams
 requestsDB = database.requests
 
+def loadFromCacheFile(file: str, path: str = "cache") -> str:
+    """
+    Loads text data from a cache file.
+
+    Inputs:
+    - file (str): file name
+    - path (str): path to file, defaults to cache
+
+    Returns:
+    - str: file contents
+    """
+    try:
+        with open(os.path.join(root, path, file), "r") as f:
+            data = f.read()
+    except FileNotFoundError:
+        data = ""
+    return data
+
+def writeToCacheFile(text: str, file: str, path:str = "cache") -> None:
+    """
+    Writes text data to a cache file.
+
+    Inputs:
+    - text (str): text to save
+    - file (str): file name
+    - path (str): path to file, defaults to cache
+    """
+    with open(os.path.join(root, path, file), "w") as f:
+        f.write(text)
+        app.logger.info(f"wrote to {path}/{file}")
+
 
 def addScheduledMatch(
     matchNumber: int,
@@ -212,8 +243,7 @@ def loadScheduleFromTBA(event: str):
         app.logger.error(f"Failed to load match data for {event} from TBA.")  # type: ignore
         abort(500)
     # saves the event key to a file for future use
-    with open(os.path.join(root, "cache/recentEventKey"), "w") as f:
-        f.write(event)
+    writeToCacheFile(event,"recentEventKey")
     return data
 
 
@@ -319,6 +349,39 @@ def addTeamsFromTBA(event: str):
             )
             abort(500)
 
+def saveAlliancesFromTBA(event: str):
+    """
+    GETs alliance selection data from TBA and stores it in cache/alliances
+
+    Inputs:
+    - event (str): event key
+    """
+    try:
+        data = requests.get(f"https://www.thebluealliance.com/api/v3/event/{event}/alliances",
+                            headers={"X-TBA-Auth-Key": TBA_KEY, "User-Agent": "Nerd Scout"})
+        data = json.loads(data.text)
+        if "Error" in data:
+            app.logger.error(  # type: ignore
+                f"Failed to load alliance data for {event} from The Blue Alliance. API error: {data['Error']}"
+            )
+            abort(500)
+    except:
+        app.logger.error(  # type: ignore
+            f"Failed to load alliance data for {event} from The Blue Alliance. Network error."
+        )
+        abort(500)
+    saveData = {"rawData": data, "eventKey": event}
+    for alliance in data:
+        # alliance names are in format "Alliance #"
+        saveData[alliance["name"]] = []
+        for team in alliance["picks"]:
+            try:
+                teamNumber = int(team[3:])
+            except ValueError:
+                app.logger.error(f"Failed to extract team number for {team}")
+                continue
+            saveData[alliance["name"]].append(teamNumber)
+    writeToCacheFile(json.dumps(saveData),"alliances")
 
 # This always outputs an array, in case there are multiple matches with the same number
 def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
