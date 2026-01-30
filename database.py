@@ -211,6 +211,9 @@ def loadScheduleFromTBA(event: str):
     except:
         app.logger.error(f"Failed to load match data for {event} from TBA.")  # type: ignore
         abort(500)
+    # saves the event key to a file for future use
+    with open(os.path.join(root, "cache/recentEventKey"), "w") as f:
+        f.write(event)
     return data
 
 

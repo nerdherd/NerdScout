@@ -82,7 +82,6 @@ TBA_KEY = open(os.path.join(root, "secrets/theBlueAlliance"), "r").read()
 # TODO: add all text descriptions for all match types
 compLevelText = {"qm": "Qualifying", "sf": "Playoff", "f": "Final"}
 
-
 def isImage(file):
     """
     Checks if the provided file is an image (png or jpg)

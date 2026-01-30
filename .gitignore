@@ -10,3 +10,5 @@
 *.ds_store
 
 /schedules/*
+
+/cache/*

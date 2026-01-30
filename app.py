@@ -119,6 +119,8 @@ def createTestMatches():
                 cannedComments=[],
                 scout=random.choice(["hello","hello2","hlelo3","tonnieboy300","mr hello","hello jr","ms hello"])
             )
+    with open(os.path.join(root, "cache/recentEventKey"), "w") as f:
+        f.write("2026test")
     return "ok."
 
 
@@ -408,7 +410,12 @@ def scheduleEventPage():
             abort(400)
         addScheduleFromTBA(event)
         addTeamsFromTBA(event)
-    return render_template("match/schedule/addSchedule.html")
+    try:
+        with open(os.path.join(root, "cache/recentEventKey"), "r") as f:
+            eventKey = f.read()
+    except FileNotFoundError:
+        eventKey = ""
+    return render_template("match/schedule/addSchedule.html", eventKey = eventKey)
 
 
 @app.route("/updateSchedule", methods=["GET", "POST"])
@@ -420,7 +427,12 @@ def updateSchedulePage():
         except:
             abort(400)
         updateScheduleFromTBA(event)
-    return render_template("match/schedule/addSchedule.html")
+    try:
+        with open(os.path.join(root, "cache/recentEventKey"), "r") as f:
+            eventKey = f.read()
+    except FileNotFoundError:
+        eventKey = ""
+    return render_template("match/schedule/updateSchedule.html", eventKey = eventKey)
 
 
 @app.route("/team/addTeamImage", methods=["GET", "POST"])
