@@ -11,9 +11,11 @@
 </style>
 {% endblock %}
 
-{% block title %}pick thems{% endblock %}
+{% block title %}NerdPredict Pickems{% endblock %}
 
 {% block content %}
+{% set previousPage = url_for("nerdpredictMain") %}
+{% include 'backButton.html' %}
 <div id="first" class="round">
     {% for n in range(1,9,2) %}
     <div>

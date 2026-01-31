@@ -624,6 +624,10 @@ def pointsPlayoffsPage():
             return "yay!! yippee!"
     return render_template("predict/playoffs.html",alliances=[[n*3,n*3+1,n*3+2] for n in range(0,8)])
 
+@app.route("/nerdpredict")
+def nerdpredictMain():
+    return render_template("predict/index.html")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     error = None
@@ -969,7 +973,6 @@ adminEndpoints = frozenset(
         "updateMatchFromTBAPage"
     ]
 )  # endpoints that require user be admin
-updateMatchFromTBAPage
 
 @app.before_request
 def before_request():

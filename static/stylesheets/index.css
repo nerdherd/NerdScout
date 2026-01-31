@@ -43,3 +43,8 @@ body{
 #aboutLink{
     text-align: center;
 }
+
+#aboutSpacer{
+    width: 2rem;
+    display: inline-block;
+}

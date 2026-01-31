@@ -4,17 +4,16 @@
 <link rel="preload" href="{{ url_for('static', filename='stylesheets/index.css') }}" as="style">
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/index.css') }}">
 {% endblock %}
-
-{% block title %}NerdScout{% endblock %}
+{% block title %}NerdPredict{% endblock %}
 
 {% block content %}
 <div class="mainMenu">
     <header class="menuSection">
         <img id="logo" src="{{ url_for('static', filename='images/logo/logo.svg') }}">
-        <h1>NerdScout</h1>
+        <h1>NerdPredict</h1>
     </header>
-    <a href="{{ url_for('teamPage') }}" class="menuSection">Teams</a>
-    <a href="{{ url_for('renderMatch') }}" class="menuSection">Matches</a>
+    <a href="{{ url_for('pointsLeaderboardPage') }}" class="menuSection">Leaderboard</a>
+    <a href="{{ url_for('pointsPlayoffsPage') }}" class="menuSection">Playoffs Pickems</a>
 </div>
-    <p id="aboutLink"><a href="{{ url_for('aboutPage')}}">About</a><span id="aboutSpacer"></span><a href="{{ url_for('nerdpredictMain')}}">NerdPredict</a></p>
+    <p id="aboutLink"><a href="{{ url_for('index')}}">Back to NerdScout</a></p>
 {% endblock %}

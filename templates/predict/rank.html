@@ -21,6 +21,8 @@
 {% block title %}Points Leaderboard{% endblock %}
 
 {% block content %}
+{% set previousPage = url_for("nerdpredictMain") %}
+{% include 'backButton.html' %}
 {% for user in ranking %}
 <div class="user-card">
     <div class="number">
