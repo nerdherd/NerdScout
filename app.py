@@ -195,7 +195,8 @@ def renderMatch():
     if session['username']:
         userData = getUser(session["username"])
         if userData:
-            madePrediction = results["matchKey"] in userData["predictions"]
+            if "predictions" in userData:
+                madePrediction = results["matchKey"] in userData["predictions"]
             userPoints = userData["points"]
             
 
