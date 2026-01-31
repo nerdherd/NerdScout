@@ -9,7 +9,7 @@ const qfSelect = document.getElementById("qf-select");
 const sfSelect = document.getElementById("sf-select");
 const  fSelect = document.getElementById("f-select");
 
-let params = new URLSearchParams(window.location.search)
+let params = new URLSearchParams(window.location.search);
 
 function updateSearch(){
     let matchInput = matchNumberInput.value;

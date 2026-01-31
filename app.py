@@ -243,7 +243,7 @@ def updateMatchFromTBAPage():
         abort(400)
     # success = addTestTBAData(compLevel=compLevel,matchNumber=matchNumber,setNumber=setNumber)
     success = updateMatchFromTBA(compLevel=compLevel,matchNumber=matchNumber,setNumber=setNumber)
-    return redirect(url_for("renderMatch",matchNum=matchNumber,compLevel=compLevel,setNum=setNumber,alert=f"Match updated: {success}"))
+    return redirect(url_for("renderMatch",matchNum=matchNumber,compLevel=compLevel.value,setNum=setNumber,alert=f"Match updated: {success}"))
 
 
 @app.route("/team")
