@@ -1158,8 +1158,8 @@ def payPickEms() -> bool:
 
 def createTestTBABreakdown() -> dict:
     """
-    Creates a random score breakdown.
-    Game specific.
+    Creates a random score breakdown for one alliance.
+    Game specific, currently for REBUILT.
 
     Returns:
     - dict: score breakdown
@@ -1176,13 +1176,13 @@ def createTestTBABreakdown() -> dict:
     scoreBreakdown = {
         "adjustPoints": random.randint(0,10),
         "autoTowerPoints": 15 * random.randint(0,3),
-        "autoTowerRobot1": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
-        "autoTowerRobot2": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
-        "autoTowerRobot3": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
+        "autoTowerRobot1":f"#{random.randint(0,3)}",
+        "autoTowerRobot2": f"#{random.randint(0,3)}",
+        "autoTowerRobot3": f"#{random.randint(0,3)}",
         "endGameTowerPoints": 10 * random.randint(0,9),
-        "endGameTowerRobot1": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
-        "endGameTowerRobot2": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
-        "endGameTowerRobot3": FMSEndPositionRebuilt[f"#{random.randint(0,3)}"].value,
+        "endGameTowerRobot1": f"#{random.randint(0,3)}",
+        "endGameTowerRobot2": f"#{random.randint(0,3)}",
+        "endGameTowerRobot3": f"#{random.randint(0,3)}",
         "energizedAchieved": random.random() > 0.5,
         "foulPoints": random.randint(0,20),
         "g206Penalty": random.random() > 0.5,
@@ -1249,7 +1249,10 @@ def addTestTBAData(compLevel: CompLevel, matchNumber: int, setNumber: int) -> bo
         "actual_time": int(time()) - random.randint(0,120),
         "predicted_time": int(time()),
         "post_result_time": int(time()),
-        "score_breakdown": createTestTBABreakdown(),
+        "score_breakdown": {
+            "red": createTestTBABreakdown(),
+            "blue": createTestTBABreakdown(),
+            },
         "videos": [
             {
                 "type": "youtube",

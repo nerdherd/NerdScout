@@ -348,6 +348,13 @@ body {
         flex-direction: row;
         flex-grow: 1;
     }
+    #TBAScoreBreakdown{
+        flex-direction: row;
+    }
+    .allianceScoreBreakdown{
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 }
 
 @media (orientation: portrait){
@@ -361,6 +368,13 @@ body {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+    }
+    #TBAScoreBreakdown{
+        flex-direction: column;
+    }
+    .allianceScoreBreakdown{
+        margin-left: 0rem;
+        margin-right: 0rem;
     }
 }
 
@@ -487,5 +501,38 @@ body {
 }
 
 .scoretable tr td{
-    text-align: center  f2nu J$$#;
+    text-align: center;
+}
+
+#TBAScoreBreakdown{
+    display: flex;
+    width:calc(95vw + 1rem);
+    
+}
+
+.allianceScoreBreakdown{
+    width: 100% !important;
+    background-color: #00000000;
+}
+
+#redScoreBreakdown{
+    border: 2px solid var(--red-alliance);
+}
+
+#blueScoreBreakdown{
+    border: 2px solid var(--blue-alliance);
+}
+
+.innerBreakdownCard{
+    border: 1px solid var(--white-accent);
+    width: 100% !important;
+}
+
+.middleScoreBreakdown{
+    width:100% !important;
+}
+
+.scoreBreakdownList{
+    list-style: none;
+    padding:0;
 }

@@ -210,7 +210,9 @@ def renderMatch():
         matchNum=matchNumber,
         compLevel=compLevel.value,
         setNum=setNumber,
-        madePrediction=madePrediction
+        madePrediction=madePrediction,
+        # this is game specific.
+        FMSEndPositionRebuilt = FMSEndPositionRebuilt,
     )
 
 @app.route("/match/nerdPredictSubmitScore", methods=["POST"])

@@ -736,6 +736,89 @@
     {% endif %}
 </div>
 
+{% if "scoreBreakdown" in results["results"] %}
+{% set TBAScoreBreakdown = results["results"]["scoreBreakdown"] %}
+<div id="TBAScoreBreakdown">
+    {% for alliance, scoreBreakdown in TBAScoreBreakdown.items() %}
+    {% set hubScore = scoreBreakdown["hubScore"] %}
+    <div id="{{alliance}}ScoreBreakdown" class="allianceScoreBreakdown card">
+        <ul class="scoreBreakdownList">
+            <li class="scoreBreakdownItem">Score: {{ scoreBreakdown["totalPoints"] }}</li>
+            <li class="scoreBreakdownItem">Hub Points: {{hubScore["totalPoints"]}}</li>
+            <li class="scoreBreakdownItem">Hub Count: {{hubScore["totalCount"]}}</li>
+            <li>
+                <div class="middleScoreBreakdown card">
+                    <h2>Auto</h2>
+                    <ul class="autoScoreBreakdownList">
+                    <li>Total Points: {{scoreBreakdown["totalAutoPoints"]}}</li>
+                        <li><div class="innerBreakdownCard card">
+                            <h3>Tower</h3>
+                            <ul class="innerBreakdownList">
+                                <li>Total Points: {{scoreBreakdown["autoTowerPoints"]}}</li>
+                                <li>Robot 1: {{FMSEndPositionRebuilt[scoreBreakdown["autoTowerRobot1"]]}}</li>
+                                <li>Robot 2: {{FMSEndPositionRebuilt[scoreBreakdown["autoTowerRobot2"]]}}</li>
+                                <li>Robot 3: {{FMSEndPositionRebuilt[scoreBreakdown["autoTowerRobot3"]]}}</li>
+                            </ul>
+                        </div></li>
+                        <li><div class="innerBreakdownCard card">
+                            <h3>Hub</h3>
+                            <ul class="innerBreakdownList">
+                                <li>Points: {{hubScore["autoPoints"]}}</li>
+                                <li>Counted: {{hubScore["autoCount"]}}</li>
+                            </ul>
+                        </div></li>
+                    </ul>
+                </div>
+                <div class="middleScoreBreakdown card">
+                    <h2>Tele-Op</h2>
+                    <ul class="teleopScoreBreakdownList">
+                        <li>Total Points: {{scoreBreakdown["totalTeleopPoints"]}}</li>
+                        <li><div class="innerBreakdownCard card">
+                            <h3>Hub</h3>
+                            <ul class="innerBreakdownList">
+                                <li>Total Points: {{hubScore["teleopPoints"]}}</li>
+                                <li>Total Count: {{hubScore["teleopCount"]}}</li>
+                                <li>Shift 1 Points: {{hubScore["shift1Points"]}}</li>
+                                <li>Shift 1 Count: {{hubScore["shift1Count"]}}</li>
+                                <li>Shift 2 Points: {{hubScore["shift2Points"]}}</li>
+                                <li>Shift 2 Count: {{hubScore["shift2Count"]}}</li>
+                                <li>Shift 3 Points: {{hubScore["shift3Points"]}}</li>
+                                <li>Shift 3 Count: {{hubScore["shift3Count"]}}</li>
+                                <li>Shift 4 Points: {{hubScore["shift4Points"]}}</li>
+                                <li>Shift 4 Count: {{hubScore["shift4Count"]}}</li>
+                                <li>Endgame Points: {{hubScore["endgamePoints"]}}</li>
+                                <li>Endgame Count: {{hubScore["endgameCount"]}}</li>
+                            </ul>
+                        </div></li>
+                        <li><div class="innerBreakdownCard card">
+                            <h3>Tower</h3>
+                            <ul class="innerBreakdownList">
+                                <li>Total Points: {{scoreBreakdown["endGameTowerPoints"]}}</li>
+                                <li>Robot 1: {{FMSEndPositionRebuilt[scoreBreakdown["endGameTowerRobot1"]]}}</li>
+                                <li>Robot 2: {{FMSEndPositionRebuilt[scoreBreakdown["endGameTowerRobot2"]]}}</li>
+                                <li>Robot 3: {{FMSEndPositionRebuilt[scoreBreakdown["endGameTowerRobot3"]]}}</li>
+                            </ul>
+                        </div></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="scoreBreakdownItem">Minor Fouls: {{scoreBreakdown["minorFoulCount"]}}</li>
+            <li class="scoreBreakdownItem">Major Fouls: {{scoreBreakdown["majorFoulCount"]}}</li>
+            <li class="scoreBreakdownItem">Foul Points Recieved(?): {{scoreBreakdown["foulPoints"]}}</li>
+            <li class="scoreBreakdownItem">G206 Penalty: {{scoreBreakdown["g206Penalty"]}}</li>
+            <li class="scoreBreakdownItem">Energized: {{scoreBreakdown["energizedAchieved"]}}</li>
+            <li class="scoreBreakdownItem">Supercharged: {{scoreBreakdown["superchargedAchieved"]}}</li>
+            <li class="scoreBreakdownItem">Traversal: {{scoreBreakdown["traversalAchieved"]}}</li>
+            <li class="scoreBreakdownItem">Ranking Points: {{scoreBreakdown["rp"]}}</li>
+
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+<p>{{ TBAScoreBreakdown["red"] }}</p>
+<p>{{ TBAScoreBreakdown["blue"] }}</p>
+{% endif %}
+
 {% if showAdmin %}
 <div>
     <p>you are an admin</p>
