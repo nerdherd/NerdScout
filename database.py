@@ -809,7 +809,8 @@ def createPrediction(user: str, compLevel: CompLevel, matchNumber: int, setNumbe
     - points (int): number of points spent
     """
     timestamp = datetime.now()
-    if not getUser(user):
+    userData = getUser(user)
+    if not userData:
         app.logger.error(f"Couldn't create prediction for {user}: user doesn't exist.")
         abort(400)
     matchData = getMatch(compLevel, matchNumber, setNumber)
@@ -817,6 +818,10 @@ def createPrediction(user: str, compLevel: CompLevel, matchNumber: int, setNumbe
         app.logger.error(f"Couldn't create prediction for {compLevel}{matchNumber}_{setNumber}: match doesn't exist.")
         abort(400)
     matchData = matchData[0]
+
+    if matchData['matchKey'] in userData['predictions']:
+        app.logger.error(f"Couldn't create prediction for {user} in {compLevel}{matchNumber}_{setNumber}: user already has a prediction.")
+        abort(403)
 
     accounts.update_one({"username": user}, {"$set": {f"predictions.{matchData['matchKey']}": {"forRed": forRed, "points": points,"matchComplete": False, "correct": False, "timestamp": timestamp}}, "$inc":{"points": -points}})
     # matches.update_one({"matchKey": matchData["matchKey"]},{"$set":{f"predictions.{user}": {"forRed": forRed, "points": points, "timestamp": timestamp}}, "$inc": {"prizePool.overall": points, f"prizePool.{'red' if forRed else 'blue'}": points}})
