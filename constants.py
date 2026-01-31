@@ -13,6 +13,7 @@ from flask import (
 )
 import filetype
 import statistics
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 root = os.path.dirname(__file__)
@@ -81,6 +82,10 @@ STAT_CODES = ["mean", "median", "mode", "highest", "lowest"]
 TBA_KEY = open(os.path.join(root, "secrets/theBlueAlliance"), "r").read()
 # TODO: add all text descriptions for all match types
 compLevelText = {"qm": "Qualifying", "sf": "Playoff", "f": "Final"}
+
+class PaymentRequired(HTTPException):
+    code = 402
+    description = 'Payment Required'
 
 def isImage(file):
     """

@@ -701,17 +701,24 @@
         <!-- haven't made a prediction yet -->
         <button onclick="predictIsRed=true">red</button>
         <button onclick="predictIsRed=false">blue</button>
-        <input type="number" min="0" id="predictPointsInput">
+        <input type="number" min="0" max="{{ userPoints }}" id="predictPointsInput">
+        <span>max {{ userPoints }} points</span>
         <button onclick="createSubmission()">Make submission</button>
         <script>
             var predictIsRed = false;
+            const maxPoints = {{userPoints}};
             function createSubmission(){
+                let points = parseInt(document.getElementById("predictPointsInput").value);
+                if (points > maxPoints){
+                    alert("Not enough points.");
+                    return;
+                }
                 rawData = {
                     "compLevel":"{{compLevel}}",
                     "matchNumber":{{matchNum}},
                     "setNumber":{{setNum}},
                     "forRed":predictIsRed,
-                    "points":parseInt(document.getElementById("predictPointsInput").value)
+                    "points": points
                 };
                 data = JSON.stringify(rawData);
                 fetch('{{url_for("createPredictionPage")}}', {
@@ -723,7 +730,10 @@
                 }).then(response =>{
                     if (response.ok){
                         alert("Succesfully submitted");
-                        window.location.reload()
+                        window.location.reload();
+                    } else if (response.status == 402){
+                        alert("Not enough points.");
+                        window.location.reload();
                     } else{
                         alert("There was an error submitting.");
                     }

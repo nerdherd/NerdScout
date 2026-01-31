@@ -1,5 +1,4 @@
 from array import array
-from http.client import HTTPException
 import os
 import re
 import filetype
@@ -194,10 +193,11 @@ def renderMatch():
         
     madePrediction = False
     if session['username']:
-        peopleWhoPredicted = getPredictionAccounts(results["matchKey"])
-        for person in peopleWhoPredicted:
-            if session['username'] == person["username"]:
-                madePrediction = True
+        userData = getUser(session["username"])
+        if userData:
+            madePrediction = results["matchKey"] in userData["predictions"]
+            userPoints = userData["points"]
+            
 
     return render_template(
         "match/match.html",
@@ -211,6 +211,7 @@ def renderMatch():
         compLevel=compLevel.value,
         setNum=setNumber,
         madePrediction=madePrediction,
+        userPoints=userPoints,
         # this is game specific.
         FMSEndPositionRebuilt = FMSEndPositionRebuilt,
     )

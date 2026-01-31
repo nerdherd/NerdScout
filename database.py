@@ -27,6 +27,7 @@ from bson import json_util, ObjectId
 from pymongo import MongoClient
 from enum import Enum
 from typing import List
+from app import PaymentRequired
 from constants import *
 
 # Initalize MongoDB Connection
@@ -813,6 +814,9 @@ def createPrediction(user: str, compLevel: CompLevel, matchNumber: int, setNumbe
     if not userData:
         app.logger.error(f"Couldn't create prediction for {user}: user doesn't exist.")
         abort(400)
+    if userData["points"] < points:
+        app.logger.error(f"Couldn't create prediction for {user}: not enough points")
+        raise PaymentRequired
     matchData = getMatch(compLevel, matchNumber, setNumber)
     if not matchData:
         app.logger.error(f"Couldn't create prediction for {compLevel}{matchNumber}_{setNumber}: match doesn't exist.")
