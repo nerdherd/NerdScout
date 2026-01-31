@@ -740,6 +740,7 @@ def submitScorePage():
                 autoClimbAttempted=submission["autoClimbAttempted"],
                 autoClimbSuccess=submission["autoClimbSuccess"],
                 autoOutpostFeed=submission["autoOutpostFeed"],
+                autoFedToOutpost=submission["autoFedToOutpost"],
                 firstShift=submission["firstShift"],
                 transitionFuel=submission["transitionFuel"],
                 transitionFed=submission["transitionFed"],
