@@ -65,6 +65,22 @@
                 {{ result["startPos"] }}
             </div>
 
+            <div class="testing">
+                <div class="table">
+                    <div class="row">
+                        <div class="cell cell2">2</div>
+                        <div class="cell cell3  ">3</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">1</div>
+                        <div class="cell">1</div>
+                        <div class="cell">1</div>
+                        <div class="cell">1</div>
+                        <div class="cell">1</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="sectionDiv">
                 <h1>Auto</h1>
 
@@ -90,19 +106,19 @@
 
                 <table class="scoretable">
                     <tr>
-                        <th>Time</th>
-                        <th>Scored</th>
-                        <th>Missed</th>
-                        <th>Fuel shot per second</th>
-                        <th>Fuel scored per second</th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg"></th>
                     </tr>
                     {% for period in result["autoFuel"] %}
                     <tr>
-                        <td>{{period["time"]}}</td>
+                        <td>{{period["time"]|round(2)}}</td>
                         <td>{{period["scored"]}}</td>
                         <td>{{period["missed"]}}</td>
-                        <td>{{period["fuelShotPerSecond"]}}</td>
-                        <td>{{period["fuelScoredPerSecond"]}}</td>
+                        <td>{{period["fuelShotPerSecond"]|round(2)}}</td>
+                        <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -529,11 +545,11 @@
 
                 <table class="scoretable">
                     <tr>
-                        <th>Time</th>
-                        <th>Scored</th>
-                        <th>Missed</th>
-                        <th>Fuel shot per second</th>
-                        <th>Fuel scored per second</th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg"></th>
                     </tr>
                     {% for period in result["endgameFuel"] %}
                     <tr>

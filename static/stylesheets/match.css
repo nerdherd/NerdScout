@@ -228,36 +228,37 @@ body {
 }
 
 .cell{
-    outline-offset: -0.125em;
-    width:3em;
-    height: 3em;
+    outline-offset: -0.125%;
+    width:15vw;
+    height: 10vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 0.25em;
-    margin:0.2em;
+    border-radius: 0.25%;
+    margin:1vw;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 0.5em;
 }
 
 .cell2{
-    width: 6.5em;
+    width: 32vw;
 }
 
 .cell3{
-    width: 9.8em;
+    width: 49vw;
 }
 
 .cell4{
-    width:13.2em;
+    width: 60.6vw;
 }
 
 .cell5{
-    width: 17em;
+    width: 76.4vw;
 }
 
 .miss{
@@ -452,10 +453,10 @@ body {
     height: 40px;
 }
 
-img {
+/* img {
     width: 3em;
     padding: 1em;
-}
+} */
 
 .hidden{
     visibility: hidden;
@@ -478,4 +479,13 @@ img {
     height:20px;
     background-color: black;
     transform: translate(-50%,-50%);
+}
+
+.scoretable tr th img{
+    width: 15vw;
+    height: 15vw;
+}
+
+.scoretable tr td{
+    text-align: center  f2nu J$$#;
 }
