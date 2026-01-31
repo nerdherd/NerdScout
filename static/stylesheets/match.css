@@ -229,13 +229,13 @@ body {
 
 .cell{
     outline-offset: -0.125%;
-    width:15vw;
-    height: 10vw;
+    width:50px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 0.25%;
-    margin:1vw;
+    margin:5px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -243,22 +243,23 @@ body {
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     font-size: 0.5em;
+    box-sizing: border-box;
 }
 
 .cell2{
-    width: 32vw;
+    width: 110px;
 }
 
 .cell3{
-    width: 49vw;
+    width: 170px;
 }
 
 .cell4{
-    width: 60.6vw;
+    width: 230px;
 }
 
 .cell5{
-    width: 76.4vw;
+    width: 290px;
 }
 
 .miss{
@@ -496,8 +497,8 @@ body {
 }
 
 .scoretable tr th img{
-    width: 15vw;
-    height: 15vw;
+    width: 50px;
+    height: 50px;
 }
 
 .scoretable tr td{

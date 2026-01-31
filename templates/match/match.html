@@ -78,6 +78,13 @@
                         <div class="cell">1</div>
                         <div class="cell">1</div>
                     </div>
+                    <div class="row">
+                        <div class="cell cell4">4</div>
+                        <div class="cell">1</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell5 cell">5</div>
+                    </div>
                 </div>
             </div>
 
@@ -126,18 +133,17 @@
 
             <div class="sectionDiv">
                 <div class="row">
-                    <h2>Climb Atempted:</h2>
+                    <h2>Climb:</h2>
                     {% if result["autoClimbAttempted"] %}
-                    <img src="static\images\matchDisplay\True.svg">
-                    {% else %}
-                    <img src="static\images\matchDisplay\False.svg">
-                    {% endif %}
-                    <h2>Climb Success:</h2>
                     {% if result["autoClimbSuccess"] %}
-                    <img src="static\images\matchDisplay\True.svg">
+                    <img src="static\images\rebuiltMatchDisplay\True.svg">
                     {% else %}
-                    <img src="static\images\matchDisplay\False.svg">
+                    <img src="static\images\rebuiltMatchDisplay\Mayhaps.svg">
                     {% endif %}
+                    {% else %}
+                    <img src="static\images\rebuiltMatchDisplay\False.svg">
+                    {% endif %}
+                    
                 </div>
             </div>
             <div class="sectionDiv">
@@ -650,7 +656,7 @@
         </div>
     </div>
     {% endfor %}
-    </div>
+    {# </div> #}
     {% else %}
     <p>No data</p>
     <a href="{{ url_for('submitScorePage', team=team['teamNumber'], compLevel=results['compLevel'], matchNumber=results['matchNumber'], setNumber=results['setNumber'], robotStation=color+(loop.index|string)) }}">Scout this team</a>
