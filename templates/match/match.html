@@ -707,6 +707,7 @@
                 }).then(response =>{
                     if (response.ok){
                         alert("Succesfully submitted");
+                        window.location.reload()
                     } else{
                         alert("There was an error submitting.");
                     }
