@@ -239,6 +239,7 @@ def updateMatchFromTBAPage():
         setNumber = int(request.args.get("setNum"))  # type: ignore
     except:
         abort(400)
+    # success = addTestTBAData(compLevel=compLevel,matchNumber=matchNumber,setNumber=setNumber)
     success = updateMatchFromTBA(compLevel=compLevel,matchNumber=matchNumber,setNumber=setNumber)
     return redirect(url_for("renderMatch",matchNum=matchNumber,compLevel=compLevel,setNum=setNumber,alert=f"Match updated: {success}"))
 

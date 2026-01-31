@@ -9,6 +9,8 @@ const qfSelect = document.getElementById("qf-select");
 const sfSelect = document.getElementById("sf-select");
 const  fSelect = document.getElementById("f-select");
 
+let params = new URLSearchParams(window.location.search)
+
 function updateSearch(){
     let matchInput = matchNumberInput.value;
     let matchEmpty = (matchInput === "");
@@ -51,6 +53,13 @@ function updateSearch(){
 }
 
 updateSearch();
+
+window.addEventListener('DOMContentLoaded', function (e) {
+    alertParam = params.get("alert");
+    if (alertParam){
+        this.alert(alertParam);
+    }
+})
 
 for (const inputthing of document.querySelectorAll('input')){
     inputthing.addEventListener('keypress', function (e) {
