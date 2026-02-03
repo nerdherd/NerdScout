@@ -242,7 +242,7 @@ body {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    font-size: 0.5em;
+    font-size: 1em;
     box-sizing: border-box;
 }
 
@@ -536,4 +536,47 @@ body {
 .scoreBreakdownList{
     list-style: none;
     padding:0;
+}
+
+.booleanList{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+}
+
+.booleanItem{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.booleanItem *{
+    margin: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: right;
+}
+
+.booleanItem img{
+    height: 50px;
+}
+
+.shiftRow{
+    width: 100%;
+    height: 50px;
+}
+
+.shiftRow button{
+    width: 25%;
+}
+
+.shiftParent > *{
+    display: none;
+}
+
+.shiftParent.shiftOne .firstShift,
+.shiftParent.shiftTwo .secondShift,
+.shiftParent.shiftThree .thirdShift,
+.shiftParent.shiftFour .fourthShift{
+    display: flex;
 }

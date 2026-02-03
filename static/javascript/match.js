@@ -106,3 +106,16 @@ function set_team(team){
 }
 
 set_team('');
+
+
+const shiftParent = document.getElementById("shiftParent");
+const shifts = new Array("firstShift", "secondShift", "thirdShift", "fourthShift");
+const shiftsParents = new Array("shiftOne", "shiftTwo", "shiftThree", "shiftFour");
+
+function switchShift(shift){    
+    for(let i=0; i<4; i++){
+        shiftParent.classList.remove(shiftsParents.at(i));
+    }
+    shiftParent.classList.remove
+    shiftParent.classList.add(`${shiftsParents.at(shift)}`);
+}
