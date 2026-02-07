@@ -65,29 +65,6 @@
                 {{ result["startPos"] }}
             </div>
 
-            <div class="testing">
-                <div class="table">
-                    <div class="row">
-                        <div class="cell cell2">2</div>
-                        <div class="cell cell3  ">3</div>
-                    </div>
-                    <div class="row">
-                        <div class="cell">1</div>
-                        <div class="cell">1</div>
-                        <div class="cell">1</div>
-                        <div class="cell">1</div>
-                        <div class="cell">1</div>
-                    </div>
-                    <div class="row">
-                        <div class="cell cell4">4</div>
-                        <div class="cell">1</div>
-                    </div>
-                    <div class="row">
-                        <div class="cell5 cell">5</div>
-                    </div>
-                </div>
-            </div>
-
             <div class="sectionDiv">
                 <h1>Auto</h1>
 
@@ -289,11 +266,45 @@
                 </div>
 
                 <div class="row shiftParent" id="shiftParent">
-                     <div class="firstShift">
+                    <div class="firstShift">
                         <p>first shift</p>
                         {% if result["firstShift"] %}
-                        {{result["firstActiveShiftFuelTotal"]}}
-                        {{result["firstActiveShiftFuelTotalMissed"]}}
+                        <div class="booleanList">
+                            <div class="booleanItem">
+                                <h2>Fed:</h2>
+                                {% if result["firstActiveShiftFed"] %}
+                                <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
+                            <div class="booleanItem">
+                                <h2>Defended:</h2>
+                                {% if result["firstActiveShiftDefense"] %}
+                                <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="table">
+                            <div class="row">
+                                <div class="cell cell2">
+                                    <b>Total Scored</b>
+                                </div>
+                                <div class="cell cell2 miss">
+                                    <b>Total Missed</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cell cell2">
+                                    {{result["firstActiveShiftFuelTotal"]}}
+                                </div>
+                                <div class="cell cell2">
+                                    {{result["firstActiveShiftFuelTotalMissed"]}}
+                                </div>
+                            </div>
+                        </div>
                         <table class="scoretable">
                             <tr>
                                 <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
@@ -313,43 +324,36 @@
                             {% endfor %}
                         </table>
                         <div class="row">
-                            <h2>Fed:</h2>
-                            {% if result["firstActiveShiftFed"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            <h2>Defended:</h2>
-                            {% if result["firstActiveShiftDefense"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
+                            
+                            
                         </div>
                         {% else %}
-                            <div class="row">
-                            <p>Scored:</p>
-                            {% if not result["firstInactiveShiftScored"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
-                            <div class="row">
-                            <p>Fed:</p>
-                            {% if not result["firstInactiveShiftFed"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
-                            <div class="row">
-                            <p>Defended:</p>
-                            {% if not result["firstInactiveShiftDefense"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
+                            <div class="booleanList">
+                                <div class="booleanItem">
+                                    <h2>Fed:</h2>
+                                    {% if not result["firstInactiveShiftFed"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
+
+                                <div class="booleanItem">
+                                <h2>Defended:</h2>
+                                    {% if not result["firstInactiveShiftDefense"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
+                                <div class="booleanItem">
+                                    <h2>Scored:</h2>
+                                    {% if not result["firstInactiveShiftScored"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endif %}
                     </div>
@@ -357,8 +361,42 @@
                     <div class="secondShift">
                         <p>second shift</p>
                         {% if not result["firstShift"] %}
-                        {{result["firstActiveShiftFuelTotal"]}}
-                        {{result["firstActiveShiftFuelTotalMissed"]}}
+                        <div class="booleanList">
+                            <div class="booleanItem">
+                                <h2>Fed:</h2>
+                                {% if result["firstActiveShiftFed"] %}
+                                <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
+                            <div class="booleanItem">
+                                <h2>Defended:</h2>
+                                {% if result["firstActiveShiftDefense"] %}
+                                <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="table">
+                            <div class="row">
+                                <div class="cell cell2">
+                                    <b>Total Scored</b>
+                                </div>
+                                <div class="cell cell2 miss">
+                                    <b>Total Missed</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cell cell2">
+                                    {{result["firstActiveShiftFuelTotal"]}}
+                                </div>
+                                <div class="cell cell2">
+                                    {{result["firstActiveShiftFuelTotalMissed"]}}
+                                </div>
+                            </div>
+                        </div>
                         <table class="scoretable">
                             <tr>
                                 <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
@@ -376,54 +414,79 @@
                                 <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
                             </tr>
                             {% endfor %}
-                             </table>
-                            <div class="row">
-                            <h2>Fed:</h2>
-                            {% if result["firstActiveShiftFed"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            <h2>Defended:</h2>
-                            {% if result["firstActiveShiftDefense"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                        </div>
+                        </table>
+                        
+                        
                         {% else %}
-                            <div class="row">
-                            <p>Scored:</p>
-                            {% if not result["firstInactiveShiftScored"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
-                            <div class="row">
-                            <p>Fed:</p>
-                            {% if not result["firstInactiveShiftFed"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
-                            <div class="row">
-                            <p>Defended:</p>
-                            {% if not result["firstInactiveShiftDefense"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
+                            <div class="booleanList">
+                                <div class="booleanItem">
+                                    <h2>Fed:</h2>
+                                    {% if not result["firstInactiveShiftFed"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
+
+                                <div class="booleanItem">
+                                <h2>Defended:</h2>
+                                    {% if not result["firstInactiveShiftDefense"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
+                                <div class="booleanItem">
+                                    <h2>Scored:</h2>
+                                    {% if not result["firstInactiveShiftScored"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endif %}
                     </div>
-                
+
                     <div class="thirdShift">
                         <p>third shift</p>
                         {% if result["firstShift"] %}
-                        {{result["secondActiveShiftFuelTotal"]}}
-                        {{result["secondActiveShiftFuelTotalMissed"]}}
+                        <div class="booleanList">
+                            <div class="booleanItem">
+                                <h2>Fed:</h2>
+                                {% if result["secondActiveShiftFed"] %}
+                                <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
+                            <div class="booleanItem">
+                                <h2>Defended:</h2>
+                                {% if result["secondActiveShiftDefense"] %}
+                                <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="table">
+                            <div class="row">
+                                <div class="cell cell2">
+                                    <b>Total Scored</b>
+                                </div>
+                                <div class="cell cell2 miss">
+                                    <b>Total Missed</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cell cell2">
+                                    {{result["secondActiveShiftFuelTotal"]}}
+                                </div>
+                                <div class="cell cell2">
+                                    {{result["secondActiveShiftFuelTotalMissed"]}}
+                                </div>
+                            </div>
+                        </div>
                         <table class="scoretable">
                             <tr>
                                 <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
@@ -443,43 +506,36 @@
                             {% endfor %}
                         </table>
                         <div class="row">
-                            <h2>Fed:</h2>
-                            {% if result["secondActiveShiftFed"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            <h2>Defended:</h2>
-                            {% if result["secondActiveShiftDefense"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
+                            
+                            
                         </div>
                         {% else %}
-                            <div class="row">
-                            <p>Scored:</p>
-                            {% if not result["secondInactiveShiftScored"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
-                            <div class="row">
-                            <p>Fed:</p>
-                            {% if not result["secondInactiveShiftFed"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
-                            <div class="row">
-                            <p>Defended:</p>
-                            {% if not result["secondInactiveShiftDefense"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
+                            <div class="booleanList">
+                                <div class="booleanItem">
+                                    <h2>Fed:</h2>
+                                    {% if not result["secondInactiveShiftFed"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
+
+                                <div class="booleanItem">
+                                <h2>Defended:</h2>
+                                    {% if not result["secondInactiveShiftDefense"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
+                                <div class="booleanItem">
+                                    <h2>Scored:</h2>
+                                    {% if not result["secondInactiveShiftScored"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endif %}
                     </div>
@@ -487,8 +543,42 @@
                     <div class="fourthShift">
                         <p>fourth shift</p>
                         {% if not result["firstShift"] %}
-                        {{result["secondActiveShiftFuelTotal"]}}
-                        {{result["secondActiveShiftFuelTotalMissed"]}}
+                        <div class="booleanList">
+                            <div class="booleanItem">
+                                <h2>Fed:</h2>
+                                {% if result["secondActiveShiftFed"] %}
+                                <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
+                            <div class="booleanItem">
+                                <h2>Defended:</h2>
+                                {% if result["secondActiveShiftDefense"] %}
+                                <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="table">
+                            <div class="row">
+                                <div class="cell cell2">
+                                    <b>Total Scored</b>
+                                </div>
+                                <div class="cell cell2 miss">
+                                    <b>Total Missed</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cell cell2">
+                                    {{result["secondActiveShiftFuelTotal"]}}
+                                </div>
+                                <div class="cell cell2">
+                                    {{result["secondActiveShiftFuelTotalMissed"]}}
+                                </div>
+                            </div>
+                        </div>
                         <table class="scoretable">
                             <tr>
                                 <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
@@ -506,54 +596,65 @@
                                 <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
                             </tr>
                             {% endfor %}
-                            
                         </table>
-                        <div class="row">
-                            <h2>Fed:</h2>
-                            {% if result["secondActiveShiftFed"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            <h2>Defended:</h2>
-                            {% if result["secondActiveShiftDefense"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                        </div>
+                        
+                        
                         {% else %}
-                            <div class="row">
-                            <p>Scored:</p>
-                            {% if not result["secondInactiveShiftScored"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
-                            <div class="row">
-                            <p>Fed:</p>
-                            {% if not result["secondInactiveShiftFed"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
-                            <div class="row">
-                            <p>Defended:</p>
-                            {% if not result["secondInactiveShiftDefense"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
+                            <div class="booleanList">
+                                <div class="booleanItem">
+                                    <h2>Fed:</h2>
+                                    {% if not result["secondInactiveShiftFed"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
+
+                                <div class="booleanItem">
+                                <h2>Defended:</h2>
+                                    {% if not result["secondInactiveShiftDefense"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
+                                <div class="booleanItem">
+                                    <h2>Scored:</h2>
+                                    {% if not result["secondInactiveShiftScored"] %}
+                                    <img src="static\images\RebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\RebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endif %}
                     </div>
+
                 </div>
             </div>
 
             <div class="sectionDiv">
                 <h1>Endgame</h1>
+
+                <div class="booleanList">
+                
+                    <div class="booleanItem">
+                        <h2>Fed:</h2>
+                        {% if not result["endgameFed"] %}
+                        <img src="static\images\RebuiltMatchDisplay\True.svg">
+                        {% else %}
+                        <img src="static\images\RebuiltMatchDisplay\False.svg">
+                        {% endif %}
+                    </div>
+                    <div class="booleanItem">
+                        <h2>Defended:</h2>
+                        {% if not result["endgameDefense"] %}
+                        <img src="static\images\RebuiltMatchDisplay\True.svg">
+                        {% else %}
+                        <img src="static\images\RebuiltMatchDisplay\False.svg">
+                        {% endif %}
+                    </div>
+                </div>
 
                 <div clas="table">
                     <div class="row">
@@ -589,50 +690,55 @@
                     {% endfor %}
                 </table>
                 <div class="row">
-                    <p>Fed:</p>
-                    {% if not result["endgameFed"] %}
-                    <img src="static\images\RebuiltMatchDisplay\True.svg">
-                    {% else %}
-                    <img src="static\images\RebuiltMatchDisplay\False.svg">
-                    {% endif %}
+                    
                     </div>
                     <div class="row">
-                    <p>Defended:</p>
-                    {% if not result["endgameDefense"] %}
-                    <img src="static\images\RebuiltMatchDisplay\True.svg">
-                    {% else %}
-                    <img src="static\images\RebuiltMatchDisplay\False.svg">
-                    {% endif %}
+                    
                 </div>
             </div>
 
             <div class="sectionDiv">
-                <div class="row">
-                    <div class="row">
-                            <h2>From Outpost:</h2>
-                            {% if not result["outpostIntake"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
-                            <h2>Into Outpost:</h2>
-                            {% if not result["fedToOutpost"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
-                            <div class="row">
-                            <h2>Ground:</h2>
-                            {% if not result["groundIntake"] %}
-                            <img src="static\images\RebuiltMatchDisplay\True.svg">
-                            {% else %}
-                            <img src="static\images\RebuiltMatchDisplay\False.svg">
-                            {% endif %}
-                            </div>
+                <div class="booleanList">
+                    <div class="booleanItem">
+                        <h2>From Outpost:</h2>
+                        {% if not result["outpostIntake"] %}
+                        <img src="static\images\RebuiltMatchDisplay\True.svg">
+                        {% else %}
+                        <img src="static\images\RebuiltMatchDisplay\False.svg">
+                        {% endif %}
+                    </div>
+                    <div class="booleanItem">
+                        <h2>Into Outpost:</h2>
+                        {% if not result["fedToOutpost"] %}
+                        <img src="static\images\RebuiltMatchDisplay\True.svg">
+                        {% else %}
+                        <img src="static\images\RebuiltMatchDisplay\False.svg">
+                        {% endif %}
+                    </div>
+                    <div class="booleanItem">
+                        <h2>Ground:</h2>
+                        {% if not result["groundIntake"] %}
+                        <img src="static\images\RebuiltMatchDisplay\True.svg">
+                        {% else %}
+                        <img src="static\images\RebuiltMatchDisplay\False.svg">
+                        {% endif %}
+                    </div>
                 </div>
-                {{ result["endClimb"]}}
+
+                <div class="table">
+                    <div class="row">
+                        <div class="cell cell2">
+                            <b>Climb</b>
+                        </div>
+                        <div class="cell cell2">
+                            {% if result["endClimb"] == 0 %}
+                            None
+                            {% else %}
+                            L{{ result["endClimb"] }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="sectionDiv">
@@ -677,7 +783,7 @@
         </div>
     </div>
     {% endfor %}
-    {# </div> #}
+    </div>
     {% else %}
     <p>No data</p>
     <a href="{{ url_for('submitScorePage', team=team['teamNumber'], compLevel=results['compLevel'], matchNumber=results['matchNumber'], setNumber=results['setNumber'], robotStation=color+(loop.index|string)) }}">Scout this team</a>

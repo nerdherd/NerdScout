@@ -108,14 +108,16 @@ function set_team(team){
 set_team('');
 
 
-const shiftParent = document.getElementById("shiftParent");
+const shiftParents = document.getElementsByClassName("shiftParent");
 const shifts = new Array("firstShift", "secondShift", "thirdShift", "fourthShift");
 const shiftsParents = new Array("shiftOne", "shiftTwo", "shiftThree", "shiftFour");
 
-function switchShift(shift){    
-    for(let i=0; i<4; i++){
-        shiftParent.classList.remove(shiftsParents.at(i));
+function switchShift(shift){
+    for(var i = 0; i < shiftParents.length; i++){    
+        for(let j=0; j<4; j++){
+            shiftParent[i].classList.remove(shiftsParents.at(j));
+        }
+        shiftParent[i].classList.remove
+        shiftParent[i].classList.add(`${shiftsParents.at(shift)}`);
     }
-    shiftParent.classList.remove
-    shiftParent.classList.add(`${shiftsParents.at(shift)}`);
 }
