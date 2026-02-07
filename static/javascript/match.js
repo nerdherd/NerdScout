@@ -109,15 +109,15 @@ set_team('');
 
 
 const shiftParents = document.getElementsByClassName("shiftParent");
-const shifts = new Array("firstShift", "secondShift", "thirdShift", "fourthShift");
-const shiftsParents = new Array("shiftOne", "shiftTwo", "shiftThree", "shiftFour");
+const shiftCount = shiftParents.length;
+const shifts = ["shiftOne", "shiftTwo", "shiftThree", "shiftFour"];
 
 function switchShift(shift){
-    for(var i = 0; i < shiftParents.length; i++){    
+    for(var i = 0; i < shiftCount; i++){    
         for(let j=0; j<4; j++){
-            shiftParent[i].classList.remove(shiftsParents.at(j));
+            shiftParents[i].classList.remove(shifts[j]);
         }
-        shiftParent[i].classList.remove
-        shiftParent[i].classList.add(`${shiftsParents.at(shift)}`);
+        shiftParents[i].classList.remove
+        shiftParents[i].classList.add(shifts[shift]);
     }
 }
