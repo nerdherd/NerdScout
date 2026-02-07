@@ -34,7 +34,7 @@ body {
     margin-top: 100px;
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
+    align-items: center;
     /* justify-content: center; */
 }
 
@@ -133,6 +133,7 @@ body {
     padding-bottom: 1em;
     display:flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     width: 100%;
 }
@@ -216,4 +217,15 @@ body {
 .main-input.shift-i1 .shift-thing.shift-firstInactiveShift,
 .main-input.shift-i2 .shift-thing.shift-secondInactiveShift{
     display: block;
+}
+
+.field{
+    display: flex;
+    justify-content: left;
+}
+
+.field img{
+    width:31.8px;
+    padding: 0px;
+    margin: 0px;
 }
