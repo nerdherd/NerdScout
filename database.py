@@ -1027,6 +1027,16 @@ def createPickEms(
     Returns:
     - bool: update acknowledged by MongoDB
     """
+    userData = getUser(user)
+    if not userData:
+        abort(400)
+    if not ("points" in userData):
+        app.logger.error(f"Failed to create pickems for {user}: points not found")
+        abort(500)
+    userPoints = userData["points"]
+    if userPoints < points:
+        raise PaymentRequired
+
     # round 1
     bracket = {
         "m1": {

@@ -8,6 +8,95 @@
     .round div button:last-of-type{
         background-color: blue;
     }
+
+    .round {
+        border-radius: 2rem;
+        text-align: center;
+        padding: 0.25rem;
+        padding-bottom: .75rem;
+        background-color: var(--darker-navy);
+        margin:0.25rem;
+        {# box-sizing: border-box; #}
+    }
+
+    .round.active {
+        outline: 1px solid white;
+    }
+    .rounds {
+        display: flex;
+        flex-direction: row;
+        overflow: scroll;
+        width:100vw;
+    }
+    .rounds button {
+        width:200px;
+        box-sizing: border-box;
+        margin-left:2px;
+        margin-right:2px;
+        height:1.5rem;
+    }
+    
+    .selected {
+        border: 1px solid white;
+    }
+
+    #bracketImage{
+        max-width:50vw;
+        min-width: 300px;
+    }
+
+    .minus, .plus {
+        width: 50px;
+        height: 50px;
+        border-radius: 30%;
+        font-size: 30px;
+        transition: background 0.25s, transform 0.15s;
+    }
+
+    .minus:active, .plus:active{
+        transform: scale(1.1);
+    }
+
+    .minus {
+        /* From https://css.glass */
+        background: var(--red-transparent);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px var(--shadow);
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+        border: 1px solid var(--red-opaque);
+    }
+
+    .plus {
+        /* From https://css.glass */
+        background: var(--green-transparent);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px var(--shadow);
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+        border: 1px solid var(--green-opaque);
+    }
+
+    .minus:active,.minus:hover{
+        background: var(--red-opaque);
+        cursor: pointer;
+    }
+
+    .plus:active,.plus:hover{
+        background: var(--green-opaque);
+        cursor: pointer;
+    }
+    .counter{
+        font-size: 2.5em;
+        width: 2em;
+        padding-left: 0.5em;
+        border-radius: 0.5em;
+    }
+    .submit{
+        font-size: 2.5em;
+        padding-left: 0.5em;
+        border-radius: 0.5em;
+    }
 </style>
 {% endblock %}
 
@@ -16,94 +105,182 @@
 {% block content %}
 {% set previousPage = url_for("nerdpredictMain") %}
 {% include 'backButton.html' %}
-<div id="first" class="round">
-    {% for n in range(1,9,2) %}
-    <div>
-        match {{(n+1)//2}}
-        <button onclick="setRound({{(n+1)//2}},{{alliances[n-1]}},{{alliances[n]}},{{n}},{{n+1}},true)">Alliance {{n}}: {{alliances[n-1]|join(', ')}}</button>
-        <button onclick="setRound({{(n+1)//2}},{{alliances[n]}},{{alliances[n-1]}},{{n+1}},{{n}},false)">Alliance {{n+1}}: {{alliances[n]|join(', ')}}</button>
+<div class="rounds" id="rounds">
+    <div id="first" class="round">
+        {% for n in range(1,9,2) %}
+        <div id="match{{(n+1)//2}}">
+            match {{(n+1)//2}}
+            <button onclick="let a = setRound({{(n+1)//2}},{{alliances[n-1]}},{{alliances[n]}},{{n}},{{n+1}},true); setWinner(true,{{(n+1)//2}},a)">Alliance {{n}}: {{alliances[n-1]|join(', ')}}</button>
+            <button onclick="let a = setRound({{(n+1)//2}},{{alliances[n]}},{{alliances[n-1]}},{{n+1}},{{n}},false); setWinner(false,{{(n+1)//2}},a)">Alliance {{n+1}}: {{alliances[n]|join(', ')}}</button>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+    <div id="second" class="round">
+        <div id="match5">
+            match 5
+            <button onclick="let a = setRound(5,losers[1],losers[2],loserNumbers[1],loserNumbers[2],true); setWinner(true,5,a)" id="m1-loser">_</button>
+            <button onclick="let a = setRound(5,losers[2],losers[1],loserNumbers[2],loserNumbers[1],false); setWinner(false,5,a)" id="m2-loser">_</button>
+        </div>
+        <div id="match6">
+            match 6
+            <button onclick="let a = setRound(6,losers[3],losers[4],loserNumbers[3],loserNumbers[4],true); setWinner(true,6,a)" id="m3-loser">_</button>
+            <button onclick="let a = setRound(6,losers[4],losers[3],loserNumbers[4],loserNumbers[3],false); setWinner(false,6,a)" id="m4-loser">_</button>
+        </div>
+        <div id="match7">
+            match 7
+            <button onclick="let a = setRound(7,winners[1],winners[2],winnerNumbers[1],winnerNumbers[2],true); setWinner(true,7,a)" id="m1-winner">_</button>
+            <button onclick="let a = setRound(7,winners[2],winners[1],winnerNumbers[2],winnerNumbers[1],false); setWinner(false,7,a)" id="m2-winner">_</button>
+        </div>
+        <div id="match8">
+            match 8
+            <button onclick="let a = setRound(8,winners[3],winners[4],winnerNumbers[3],winnerNumbers[4],true); setWinner(true,8,a)" id="m3-winner">_</button>
+            <button onclick="let a = setRound(8,winners[4],winners[3],winnerNumbers[4],winnerNumbers[3],false); setWinner(false,8,a)" id="m4-winner">_</button>
+        </div>
+    </div>
+    <div id="third" class="round">
+        <div id="match9">
+            match 9
+            <button onclick="let a = setRound(9,losers[7],winners[6],loserNumbers[7],winnerNumbers[6],true); setWinner(true,9,a)" id="m7-loser">_</button>
+            <button onclick="let a = setRound(9,winners[6],losers[7],winnerNumbers[6],loserNumbers[7],false); setWinner(false,9,a)" id="m6-winner">_</button>
+        </div>
+        <div id="match10">
+            match 10
+            <button onclick="let a = setRound(10,losers[8],winners[5],loserNumbers[8],winnerNumbers[5],true); setWinner(true,10,a)" id="m8-loser">_</button>
+            <button onclick="let a = setRound(10,winners[5],losers[8],winnerNumbers[5],loserNumbers[8],false); setWinner(false,10,a)" id="m5-winner">_</button>
+        </div>
+    </div>
+    <div id="fourth" class="round">
+        <div id="match11">
+            match 11
+            <button onclick="let a = setRound(11,winners[7],winners[8],winnerNumbers[7],winnerNumbers[8],true); setWinner(true,11,a)" id="m7-winner">_</button>
+            <button onclick="let a = setRound(11,winners[8],winners[7],winnerNumbers[8],winnerNumbers[7],false); setWinner(false,11,a)" id="m8-winner">_</button>
+        </div>
+        <div id="match12">
+            match 12
+            <button onclick="let a = setRound(12,winners[9],winners[10],winnerNumbers[9],winnerNumbers[10],true); setWinner(true,12,a)" id="m10-winner">_</button>
+            <button onclick="let a = setRound(12,winners[10],winners[9],winnerNumbers[10],winnerNumbers[9],false); setWinner(false,12,a)" id="m9-winner">_</button>
+        </div>
+    </div>
+    <div id="fifth" class="round">
+        <div id="match13">
+            match 13
+            <button onclick="let a = setRound(13,losers[11],winners[12],loserNumbers[11],winnerNumbers[12],true); setWinner(true,13,a)" id="m11-loser">_</button>
+            <button onclick="let a = setRound(13,winners[12],losers[11],winnerNumbers[12],loserNumbers[11],false); setWinner(false,13,a)" id="m12-winner">_</button>
+        </div>
+    </div>
+    <div id="sixth" class="round">
+        <div id="match14">
+            match 14
+            <button id="m11-winner" onclick="redwon[13]=true; setWinner(true,14,true)">_</button>
+            <button id="m13-winner" onclick="redwon[13]=false; setWinner(false,14,true)">_</button>
+        </div>
+    </div>
 </div>
-<div id="second" class="round">
-    <div>
-        match 5
-        <button onclick="setRound(5,losers[1],losers[2],loserNumbers[1],loserNumbers[2],true)" id="m1-loser"></button>
-        <button onclick="setRound(5,losers[2],losers[1],loserNumbers[2],loserNumbers[1],false)" id="m2-loser"></button>
-    </div>
-    <div>
-        match 6
-        <button onclick="setRound(6,losers[3],losers[4],loserNumbers[3],loserNumbers[4],true)" id="m3-loser"></button>
-        <button onclick="setRound(6,losers[4],losers[3],loserNumbers[4],loserNumbers[3],false)" id="m4-loser"></button>
-    </div>
-    <div>
-        match 7
-        <button onclick="setRound(7,winners[1],winners[2],winnerNumbers[1],winnerNumbers[2],true)" id="m1-winner"></button>
-        <button onclick="setRound(7,winners[2],winners[1],winnerNumbers[2],winnerNumbers[1],false)" id="m2-winner"></button>
-    </div>
-    <div>
-        match 8
-        <button onclick="setRound(8,winners[3],winners[4],winnerNumbers[3],winnerNumbers[4],true)" id="m3-winner"></button>
-        <button onclick="setRound(8,winners[4],winners[3],winnerNumbers[4],winnerNumbers[3],false)" id="m4-winner"></button>
-    </div>
-</div>
-<div id="third" class="round">
-    <div>
-        match 9
-        <button onclick="setRound(9,losers[7],winners[6],loserNumbers[7],winnerNumbers[6],true)" id="m7-loser"></button>
-        <button onclick="setRound(9,winners[6],losers[7],winnerNumbers[6],loserNumbers[7],false)" id="m6-winner"></button>
-    </div>
-    <div>
-        match 10
-        <button onclick="setRound(10,losers[8],winners[5],loserNumbers[8],winnerNumbers[5],true)" id="m8-loser"></button>
-        <button onclick="setRound(10,winners[5],losers[8],winnerNumbers[5],loserNumbers[8],false)" id="m5-winner"></button>
-    </div>
-</div>
-<div id="fourth" class="round">
-    <div>
-        match 11
-        <button onclick="setRound(11,winners[7],winners[8],winnerNumbers[7],winnerNumbers[8],true)" id="m7-winner"></button>
-        <button onclick="setRound(11,winners[8],winners[7],winnerNumbers[8],winnerNumbers[7],false)" id="m8-winner"></button>
-    </div>
-    <div>
-        match 12
-        <button onclick="setRound(12,winners[9],winners[10],winnerNumbers[9],winnerNumbers[10],true)" id="m10-winner"></button>
-        <button onclick="setRound(12,winners[10],winners[9],winnerNumbers[10],winnerNumbers[9],false)" id="m9-winner"></button>
-    </div>
-</div>
-<div id="fifth" class="round">
-    <div>
-        match 13
-        <button onclick="setRound(13,losers[11],winners[12],loserNumbers[11],winnerNumbers[12],true)" id="m11-loser"></button>
-        <button onclick="setRound(13,winners[12],losers[11],winnerNumbers[12],loserNumbers[11],false)" id="m12-winner"></button>
-    </div>
-</div>
-<div id="sixth" class="round">
-    <div>
-        match 14
-        <button id="m11-winner" onclick="redwon[13]=true"></button>
-        <button id="m13-winner" onclick="redwon[13]=false"></button>
-    </div>
-</div>
-<button onclick="submit()">submit</button>
+<button class="minus" onclick="incrementCounter('roundInput',false)">-</button>
+<input type="number" min="1" max="6" step="1" value="1" id="roundInput" class="counter"/>
+<button class="plus" onclick="incrementCounter('roundInput',true)">+</button>
+<br>
+<label for="pointsInput">Points (max {{userPoints}}): </label>
+<input type="number" min="1" max="{{ userPoints }}" step="1" id="pointsInput" placeholder="{{ userPoints }}"/>
+<br>
+<button onclick="submit()" class="submit">submit</button>
+<br>
+<img id="bracketImage" src="{{ url_for('static', filename='images/brackets.png') }}">
 <script>
+    const matchesInRound = [
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,10],
+        [11,12],
+        [13],
+        [14]
+    ]
+    const roundElements = document.querySelectorAll('.round');
+    var curRound = 0;
+    function setEnabled(roundnum){
+        if (roundnum>curRound){
+            for (let i of matchesInRound[curRound]){
+                if (!scored[i]) {
+                    roundInput.value = curRound+1;
+                    alert("Please fully select current round");
+                    return;
+                }
+            }
+        }
+        curRound = roundnum
+        for (let i = 0; i<roundElements.length; i++){
+            let round = roundElements[i];
+            round.classList.remove("active");
+            let buttons = round.querySelectorAll("button");
+            for (const button of buttons) {
+                button.disabled = (roundnum!=i);
+                if (i>roundnum) button.classList.remove("selected");
+            }
+        }
+        roundElements[roundnum].classList.add("active");
+        for (let i = roundnum+1; i<matchesInRound.length; i++){
+            for (let matchNum of matchesInRound[i]){
+                scored[matchNum] = false;
+            }
+        }
+        roundElements[roundnum].scrollIntoView({
+            behavior:"smooth"
+        });
+        
+    }
+
+    const roundInput = document.getElementById("roundInput");
+    roundInput.onchange = () => {
+        setEnabled(roundInput.value-1);
+    }
+
+    var scored = [false,false,false,false,false,false,false,false,false,false,false,false,false,false];
     var winnerNumbers = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     var winners = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
     var loserNumbers = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     var losers = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
     var redwon = [false,false,false,false,false,false,false,false,false,false,false,false,false,false];
     function setRound(match,winner,loser,winnerNumber,loserNumber,didredwin){
+        if (winner.length === 0 || loser.length === 0){
+            alert("Select a winner for previous matches first.");
+            return false;
+        }
         redwon[match-1]=didredwin;
         winners[match] = winner;
         winnerNumbers[match] = winnerNumber;
         losers[match] = loser;
         loserNumbers[match]=loserNumber;
         document.getElementById(`m${match}-winner`).innerText = `Alliance ${winnerNumber}: ${winner.join(", ")}`;
-        document.getElementById(`m${match}-loser`).innerText = `Alliance ${loserNumber}: ${loser.join(", ")}`;
+        let loserMatch = document.getElementById(`m${match}-loser`);
+        if (loserMatch) loserMatch.innerText = `Alliance ${loserNumber}: ${loser.join(", ")}`;
+        return true
     }
+    function setWinner(didredwin, match, doit){
+        scored[match] = true;
+        if (!doit) return
+        const matchEl = document.getElementById(`match${match}`);
+        const buttons = matchEl.querySelectorAll("button");
+        const redEl = buttons[0];
+        const blueEl = buttons[1];
+        if (didredwin){
+            redEl.classList.add("selected")
+            blueEl.classList.remove("selected")
+        } else {
+            redEl.classList.remove("selected")
+            blueEl.classList.add("selected")
+        }
+    }
+
     function submit(){
+        for (let i=1; i<scored.length; i++) if (!scored[i]) {alert("Please select for every match");return;}
+        let points = parseInt(document.getElementById("pointsInput").value);
+        if (isNaN(points)){
+            alert("Points should be a number.")
+            return
+        }
         rawData = {
-            "redwon":redwon.join(",")
+            "redwon":redwon.join(","),
+            "points": points,
         }
         data = JSON.stringify(rawData);
         console.log(rawData);
@@ -117,10 +294,23 @@
         }).then(response =>{
             if (response.ok){
                 alert("Succesfully submitted");
-            } else{
+            } else if (response.status===402){
+                alert("You don't have enough points.")
+            }else{
                 alert("There was an error submitting.");
             }
         });
     }
+    function incrementCounter(id,isPositive,amount=1){
+        const curElement = document.getElementById(id);
+        for (let i=0;i<amount;i++){
+            if (isPositive && curElement.value < 6) curElement.value++;
+            else if (!isPositive && curElement.value > 1) curElement.value--
+        }
+        setEnabled(roundInput.value-1)
+    }
+
+    setEnabled(0);
+    roundInput.value = 1;
 </script>
 {% endblock %}

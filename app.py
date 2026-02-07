@@ -666,6 +666,11 @@ def pointsLeaderboardPage():
 
 @app.route("/nerdpredict/playoffs", methods=["GET", "POST"])
 def pointsPlayoffsPage():
+    userPoints = getUser(session["username"])
+    if userPoints and "points" in userPoints:
+        userPoints = userPoints["points"]
+    else:
+        userPoints = 0
     if request.method == "POST":
         rawData = request.json
         if (not rawData) or ("redwon" not in rawData):
@@ -673,7 +678,12 @@ def pointsPlayoffsPage():
         redwon = [a == "true" for a in rawData["redwon"].split(",")]
         if len(redwon) != 14:
             abort(400)
-        points = 100000  # TODO: actually send points
+        if not ("points" in rawData):
+            abort(400)
+        try:
+            points = int(rawData["points"])
+        except ValueError:
+            abort(400)
         username = str(session.get("username"))
         if not createPickEms(
             username,
@@ -699,6 +709,7 @@ def pointsPlayoffsPage():
     return render_template(
         "predict/playoffs.html",
         alliances=[[n * 3, n * 3 + 1, n * 3 + 2] for n in range(0, 8)],
+        userPoints=userPoints
     )
 
 
