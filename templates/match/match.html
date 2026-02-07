@@ -761,24 +761,28 @@
             </div>
 
             <h3>Comment:</h3>
-            {% if result["comment"] %}
-            {% if result["cannedComments"] %}
-            <ul>
-                {% for cannedComment in result["cannedComments"] %}
-                <li>{{cannedComment}}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            <p>{{ result["comment"] }}</p>
-            {% elif result["cannedComments"] %}
-            <ul>
-                {% for cannedComment in result["cannedComments"] %}
-                <li>{{cannedComment}}</li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>No comment.</p>
-            {% endif %}
+            <div class="sectionDiv">
+                <div class="comments">
+                    {% if result["comment"] %}
+                    {% if result["cannedComments"] %}
+                    <ul>
+                        {% for cannedComment in result["cannedComments"] %}
+                        <li>{{cannedComment}}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <p>{{ result["comment"] }}</p>
+                    {% elif result["cannedComments"] %}
+                    <ul>
+                        {% for cannedComment in result["cannedComments"] %}
+                        <li>{{cannedComment}}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>No comment.</p>
+                    {% endif %}
+                </div>
+            </div>
             
         </div>
     </div>
