@@ -1,4 +1,4 @@
-from ast import Tuple
+from typing import List
 from constants import *
 from constants import Station, getMeanOfScoringCategory
 from database import *
@@ -130,8 +130,16 @@ class Game:
         """
         raise NotImplementedError("Game Superclass getAllStats used")
         # return {}
-    
-    def calculateAllianceFromMatches(self, team1: int, match1: list, team2: int, match2: list, team3: int, match3: list) -> dict:
+
+    def calculateAllianceFromMatches(
+        self,
+        team1: int,
+        match1: list,
+        team2: int,
+        match2: list,
+        team3: int,
+        match3: list,
+    ) -> dict:
         """
         Adds together results for three teams from given match data to predict their performance as an alliance.
 
@@ -917,6 +925,7 @@ class Reefscape(Game):
             "score": getAllStatsForCategory(teamResults, "score"),
         }
 
+
 class Rebuilt(Game):
     def __init__(self, matches: Collection, teams: Collection):
         self.keyDisplayNames = {
@@ -954,11 +963,11 @@ class Rebuilt(Game):
             "secondActiveShiftFed": "Fed Fuel Into Alliance Zone During the Second Active Shift",
             "secondActiveShiftDefense": "Defended During the Second Active Shift",
             "firstInactiveShiftScored": "Scored During First Inactive Shift",
-            "firstInactiveShiftFed" : "Fed Fuel Into Alliance Zone During First Inactive Shift",
-            "firstInactiveShiftDefense" : "Defended During First Inactive Shift",
+            "firstInactiveShiftFed": "Fed Fuel Into Alliance Zone During First Inactive Shift",
+            "firstInactiveShiftDefense": "Defended During First Inactive Shift",
             "secondInactiveShiftScored": "Scored During Second Inactive Shift",
-            "secondInactiveShiftFed" : "Fed Fuel Into Alliance Zone During Second Inactive Shift",
-            "secondInactiveShiftDefense" : "Defended During First Inactive Shift",
+            "secondInactiveShiftFed": "Fed Fuel Into Alliance Zone During Second Inactive Shift",
+            "secondInactiveShiftDefense": "Defended During First Inactive Shift",
             "endgameFuel": "Endgame Fuel",
             "endgameFuelTotal": "Total Endgame Fuel",
             "endgameFuelTotalMissed": "Total Endgame Fuel Missed",
@@ -994,7 +1003,7 @@ class Rebuilt(Game):
         self.teamRankOptions = {
             "Score Impact": "score,0",
             "Preloaded Fuel": "preloadFuel,0",
-            "Auto Fuel Total": "autoFuelTotal,0", # fuel is special :3
+            "Auto Fuel Total": "autoFuelTotal,0",  # fuel is special :3
             "Auto Fuel Missed": "autoFuelMissed,0",
             "Intaked from Depot during Auto": "autoDepot,0",
             "Went over the Bump in Auto": "autoBump,0",
@@ -1005,7 +1014,7 @@ class Rebuilt(Game):
             "Auto L1 Climb Attempted": "autoClimbAttempted,0",
             "Auto L1 Climb Succeeded": "autoClimbSuccess,0",
             "Active in first and third shifts": "firstShift,0",
-            #teleop fuel block
+            # teleop fuel block
             "Transition Shift Fuel Total": "transitionFuelTotal,0",
             "Transition Shift Fuel Missed": "transitionFuelTotalMissed,0",
             "First Active Shift Fuel Total": "firstActiveShiftFuelTotal,0",
@@ -1150,7 +1159,7 @@ class Rebuilt(Game):
             "comment": "Comment",
             "cannedComments": "Canned Comments",
             "scout": "Scout",
-            }
+        }
         self.cannedComments = [
             "Good Driving",
             "Bad Driving",
@@ -1169,31 +1178,38 @@ class Rebuilt(Game):
             "Bad Descision Making",
         ]
         self.pitScoutAutoCapabilities = (
-            ("Score in hub","auto-fuel"),
-            ("Intake from depot","auto-depot"),
-            ("Intake from outpost chute","auto-outpost"),
-            ("Intake from neutral zone","auto-neutral"),
-            ("Climb level 1 in the center","auto-climb1-center"),
-            ("Climb level 1 on the sides","auto-climb1-side"),
-            ("Climb level 1 in the inside","auto-climb1-inside"),
+            ("Score in hub", "auto-fuel"),
+            ("Intake from depot", "auto-depot"),
+            ("Intake from outpost chute", "auto-outpost"),
+            ("Intake from neutral zone", "auto-neutral"),
+            ("Climb level 1 in the center", "auto-climb1-center"),
+            ("Climb level 1 on the sides", "auto-climb1-side"),
+            ("Climb level 1 in the inside", "auto-climb1-inside"),
         )
         self.pitScoutTeleCapabilities = (
-            ("Score in hub","tele-fuel"),
-            ("Intake from depot","tele-depot"),
-            ("Intake from outpost chute","tele-outpost"),
-            ("Intake from neutral zone","tele-neutral"),
-            ("Climb level 1 in the center","tele-climb1-center"),
-            ("Climb level 1 on the sides","tele-climb1-side"),
-            ("Climb level 1 in the inside","tele-climb1-inside"),
-            ("Climb level 2 in the center","tele-climb2-center"),
-            ("Climb level 2 on the sides","tele-climb2-side"),
-            ("Climb level 2 in the inside","tele-climb2-inside"),
-            ("Climb level 3 in the center","tele-climb3-center"),
-            ("Climb level 3 on the sides","tele-climb3-side"),
-            ("Climb level 3 in the inside","tele-climb3-inside"),
+            ("Score in hub", "tele-fuel"),
+            ("Intake from depot", "tele-depot"),
+            ("Intake from outpost chute", "tele-outpost"),
+            ("Intake from neutral zone", "tele-neutral"),
+            ("Climb level 1 in the center", "tele-climb1-center"),
+            ("Climb level 1 on the sides", "tele-climb1-side"),
+            ("Climb level 1 in the inside", "tele-climb1-inside"),
+            ("Climb level 2 in the center", "tele-climb2-center"),
+            ("Climb level 2 on the sides", "tele-climb2-side"),
+            ("Climb level 2 in the inside", "tele-climb2-inside"),
+            ("Climb level 3 in the center", "tele-climb3-center"),
+            ("Climb level 3 on the sides", "tele-climb3-side"),
+            ("Climb level 3 in the inside", "tele-climb3-inside"),
         )
 
-    def calculateScore(self, fuel: int, autoClimb: bool, endClimb: EndPositionRebuilt, minorFouls: int, majorFouls: int) -> int:
+    def calculateScore(
+        self,
+        fuel: int,
+        autoClimb: bool,
+        endClimb: EndPositionRebuilt,
+        minorFouls: int,
+        majorFouls: int,
+    ) -> int:
         """
         Calculate the total score from scouted values.
 
@@ -1206,7 +1222,8 @@ class Rebuilt(Game):
         """
         score = 0
         score += int(fuel)
-        if autoClimb: score += 15
+        if autoClimb:
+            score += 15
         match endClimb:
             case EndPositionRebuilt.L1:
                 score += 10
@@ -1218,58 +1235,58 @@ class Rebuilt(Game):
         score -= 5 * int(minorFouls)
         score -= 15 * int(majorFouls)
         return score
-    
+
     def scoreRobotInMatch(
-            self,
-            matchNumber: int,
-            setNumber: int,
-            compLevel: CompLevel,
-            station: Station,
-            startPos: float,
-            preloadFuel: int,
-            autoFuel: list[dict],
-            autoDepot: bool,
-            autoBump: bool,
-            autoTrench: bool,
-            autoNeutralIntake: bool,
-            autoAttemptedSecondScore: bool,
-            autoSucceededSecondScore: bool,
-            autoClimbAttempted: bool,
-            autoClimbSuccess: bool,
-            autoOutpostFeed: bool,
-            autoFedToOutpost: bool,
-            firstShift: bool,
-            transitionFuel: list[dict],
-            transitionFed: bool,
-            transitionDefense : bool,
-            firstActiveShiftFuel: list[dict],
-            firstActiveShiftFed: bool,
-            firstActiveShiftDefense: bool,
-            secondActiveShiftFuel: list[dict],
-            secondActiveShiftFed: bool,
-            secondActiveShiftDefense: bool,
-            firstInactiveShiftScored: bool,
-            firstInactiveShiftFed: bool,
-            firstInactiveShiftDefense: bool,
-            secondInactiveShiftScored: bool,
-            secondInactiveShiftFed: bool,
-            secondInactiveShiftDefense: bool,
-            endgameFuel: list[dict],
-            endgameFed: bool,
-            endgameDefense: bool,
-            endClimb: EndPositionRebuilt,
-            # playedDefense: bool,
-            # fedToAllianceActive: bool,
-            # fedToAllianceInactive: bool,
-            outpostIntake: bool,
-            groundIntake: bool,
-            fedToOutpost: bool,
-            minorFouls: int,
-            majorFouls: int,
-            comment: str,
-            cannedComments: List[str],
-            scout: str,
-            ) -> bool:
+        self,
+        matchNumber: int,
+        setNumber: int,
+        compLevel: CompLevel,
+        station: Station,
+        startPos: float,
+        preloadFuel: int,
+        autoFuel: list[dict],
+        autoDepot: bool,
+        autoBump: bool,
+        autoTrench: bool,
+        autoNeutralIntake: bool,
+        autoAttemptedSecondScore: bool,
+        autoSucceededSecondScore: bool,
+        autoClimbAttempted: bool,
+        autoClimbSuccess: bool,
+        autoOutpostFeed: bool,
+        autoFedToOutpost: bool,
+        firstShift: bool,
+        transitionFuel: list[dict],
+        transitionFed: bool,
+        transitionDefense: bool,
+        firstActiveShiftFuel: list[dict],
+        firstActiveShiftFed: bool,
+        firstActiveShiftDefense: bool,
+        secondActiveShiftFuel: list[dict],
+        secondActiveShiftFed: bool,
+        secondActiveShiftDefense: bool,
+        firstInactiveShiftScored: bool,
+        firstInactiveShiftFed: bool,
+        firstInactiveShiftDefense: bool,
+        secondInactiveShiftScored: bool,
+        secondInactiveShiftFed: bool,
+        secondInactiveShiftDefense: bool,
+        endgameFuel: list[dict],
+        endgameFed: bool,
+        endgameDefense: bool,
+        endClimb: EndPositionRebuilt,
+        # playedDefense: bool,
+        # fedToAllianceActive: bool,
+        # fedToAllianceInactive: bool,
+        outpostIntake: bool,
+        groundIntake: bool,
+        fedToOutpost: bool,
+        minorFouls: int,
+        majorFouls: int,
+        comment: str,
+        cannedComments: List[str],
+        scout: str,
+    ) -> bool:
         """
         Scores one robot in a match.
 
@@ -1293,7 +1310,7 @@ class Rebuilt(Game):
         secondActiveShiftFuelTotalMissed = 0
         endgameFuelTotal = 0
         endgameFuelTotalMissed = 0
-        
+
         for period in autoFuel:
             autoFuelTotal += period["scored"]
             autoFuelTotalMissed += period["missed"]
@@ -1309,10 +1326,22 @@ class Rebuilt(Game):
         for period in endgameFuel:
             endgameFuelTotal += period["scored"]
             endgameFuelTotalMissed += period["missed"]
-        totalFuel = autoFuelTotal + transitionFuelTotal + firstActiveShiftFuelTotal +secondActiveShiftFuelTotal + endgameFuelTotal
-        totalFuelMissed = autoFuelTotalMissed + transitionFuelTotalMissed + firstActiveShiftFuelTotalMissed+ secondActiveShiftFuelTotalMissed + endgameFuelTotalMissed
+        totalFuel = (
+            autoFuelTotal
+            + transitionFuelTotal
+            + firstActiveShiftFuelTotal
+            + secondActiveShiftFuelTotal
+            + endgameFuelTotal
+        )
+        totalFuelMissed = (
+            autoFuelTotalMissed
+            + transitionFuelTotalMissed
+            + firstActiveShiftFuelTotalMissed
+            + secondActiveShiftFuelTotalMissed
+            + endgameFuelTotalMissed
+        )
         data = {
-            "startPos":startPos,
+            "startPos": startPos,
             "preloadFuel": preloadFuel,
             "autoFuel": autoFuel,
             "autoFuelTotal": autoFuelTotal,
@@ -1344,11 +1373,11 @@ class Rebuilt(Game):
             "secondActiveShiftDefense": secondActiveShiftDefense,
             "secondActiveShiftFuelTotalMissed": secondActiveShiftFuelTotalMissed,
             "firstInactiveShiftScored": firstInactiveShiftScored,
-            "firstInactiveShiftFed" : firstInactiveShiftFed,
-            "firstInactiveShiftDefense" : firstInactiveShiftDefense,
+            "firstInactiveShiftFed": firstInactiveShiftFed,
+            "firstInactiveShiftDefense": firstInactiveShiftDefense,
             "secondInactiveShiftScored": secondInactiveShiftScored,
-            "secondInactiveShiftFed" : secondInactiveShiftFed,
-            "secondInactiveShiftDefense" : secondInactiveShiftDefense,
+            "secondInactiveShiftFed": secondInactiveShiftFed,
+            "secondInactiveShiftDefense": secondInactiveShiftDefense,
             "endgameFuel": endgameFuel,
             "endgameFuelTotal": endgameFuelTotal,
             "endgameFed": endgameFed,
@@ -1365,7 +1394,9 @@ class Rebuilt(Game):
             "totalFuelMissed": totalFuelMissed,
             "minorFouls": minorFouls,
             "majorFouls": majorFouls,
-            "score": self.calculateScore(totalFuel, autoClimbSuccess, endClimb, minorFouls, majorFouls),
+            "score": self.calculateScore(
+                totalFuel, autoClimbSuccess, endClimb, minorFouls, majorFouls
+            ),
             "comment": comment,
             "cannedComments": cannedComments,
             "scout": scout,
@@ -1374,13 +1405,23 @@ class Rebuilt(Game):
         totalShotPerSecond = 0
         totalScoredPerSecond = 0
         totalDataLength = 0
-        for period in ("autoFuel","transitionFuel","firstActiveShiftFuel","secondActiveShiftFuel","endgameFuel"):
+        for period in (
+            "autoFuel",
+            "transitionFuel",
+            "firstActiveShiftFuel",
+            "secondActiveShiftFuel",
+            "endgameFuel",
+        ):
             periodShotPerSecond = 0
             periodScoredPerSecond = 0
             dataLength = len(data[period])
             for i in range(dataLength):
-                data[period][i]["fuelScoredPerSecond"] = data[period][i]["scored"]/data[period][i]["time"]
-                data[period][i]["fuelShotPerSecond"] = (data[period][i] ["scored"]+data[period][i]["missed"])/data[period][i]["time"]
+                data[period][i]["fuelScoredPerSecond"] = (
+                    data[period][i]["scored"] / data[period][i]["time"]
+                )
+                data[period][i]["fuelShotPerSecond"] = (
+                    data[period][i]["scored"] + data[period][i]["missed"]
+                ) / data[period][i]["time"]
 
                 periodShotPerSecond += data[period][i]["fuelShotPerSecond"]
                 periodScoredPerSecond += data[period][i]["fuelScoredPerSecond"]
@@ -1389,13 +1430,14 @@ class Rebuilt(Game):
 
             totalDataLength += dataLength
             dataLength = 1 if dataLength <= 0 else dataLength
-            
-            data[f"{period}AverageShotPerSecond"] = periodShotPerSecond/dataLength
-            data[f"{period}AverageScoredPerSecond"] = periodScoredPerSecond/dataLength
 
-        data[f"totalFuelAverageShotPerSecond"] = totalShotPerSecond/totalDataLength
-        data[f"totalFuelAverageScoredPerSecond"] = totalScoredPerSecond/totalDataLength
+            data[f"{period}AverageShotPerSecond"] = periodShotPerSecond / dataLength
+            data[f"{period}AverageScoredPerSecond"] = periodScoredPerSecond / dataLength
 
+        data[f"totalFuelAverageShotPerSecond"] = totalShotPerSecond / totalDataLength
+        data[f"totalFuelAverageScoredPerSecond"] = (
+            totalScoredPerSecond / totalDataLength
+        )
 
         result = matches.update_many(
             {
@@ -1403,12 +1445,7 @@ class Rebuilt(Game):
                 "setNumber": setNumber,
                 "compLevel": compLevel.value,
             },
-            {
-                "$push": {
-                    "results."
-                    + station.value: data
-                }
-            }
+            {"$push": {"results." + station.value: data}},
         )
         if result.matched_count == 0:
             app.logger.info(  # type: ignore
@@ -1417,8 +1454,10 @@ class Rebuilt(Game):
             return False
         app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")  # type: ignore
         return True
-    
-    def calculateScoreFromData(self, matchData: dict, team: Station, edit: int = -1) -> int:
+
+    def calculateScoreFromData(
+        self, matchData: dict, team: Station, edit: int = -1
+    ) -> int:
         """
         Gets a robot's result from the database and scores it.
 
@@ -1437,7 +1476,9 @@ class Rebuilt(Game):
             app.logger.error(f"Request for score for {team.value} failed.")
             abort(400)
 
-    def calculateAverageAllianceScore(self, team1: int, team2: int, team3: int, calc=getMeanOfScoringCategory) -> dict | None:
+    def calculateAverageAllianceScore(
+        self, team1: int, team2: int, team3: int, calc=getMeanOfScoringCategory
+    ) -> dict | None:
         """
         Calculates a hypothetical alliance score of three teams using their average results in each category.
 
@@ -1461,7 +1502,7 @@ class Rebuilt(Game):
         team3Listing = getTeam(team3)
         if not team3Listing:
             return None
-        
+
         team1Data = getTeamResults(team1)
         team2Data = getTeamResults(team2)
         team3Data = getTeamResults(team3)
@@ -1482,8 +1523,12 @@ class Rebuilt(Game):
         team1Majors = calc(team1Data, "majorFouls")
         team2Majors = calc(team2Data, "majorFouls")
         team3Majors = calc(team3Data, "majorFouls")
-        
-        fuel = round(calc(team1Data, "totalFuel")) + round(calc(team2Data, "totalFuel")) + round(calc(team3Data, "totalFuel"))
+
+        fuel = (
+            round(calc(team1Data, "totalFuel"))
+            + round(calc(team2Data, "totalFuel"))
+            + round(calc(team3Data, "totalFuel"))
+        )
 
         score = self.calculateScore(fuel, False, EndPositionRebuilt.NONE, 0, 0)
 
@@ -1491,7 +1536,7 @@ class Rebuilt(Game):
         score += (
             10
             if team1End == EndPositionRebuilt.L1.value
-            else(
+            else (
                 20
                 if team1End == EndPositionRebuilt.L2.value
                 else 30 if team1End == EndPositionRebuilt.L3.value else 0
@@ -1500,7 +1545,7 @@ class Rebuilt(Game):
         score += (
             10
             if team2End == EndPositionRebuilt.L1.value
-            else(
+            else (
                 20
                 if team2End == EndPositionRebuilt.L2.value
                 else 30 if team2End == EndPositionRebuilt.L3.value else 0
@@ -1509,13 +1554,13 @@ class Rebuilt(Game):
         score += (
             10
             if team3End == EndPositionRebuilt.L1.value
-            else(
+            else (
                 20
                 if team3End == EndPositionRebuilt.L2.value
                 else 30 if team3End == EndPositionRebuilt.L3.value else 0
             )
         )
-    
+
         return {
             "score": score,
             "autoClimb": autoClimbTotal,
@@ -1526,8 +1571,10 @@ class Rebuilt(Game):
             "minorFouls": team1Minors + team2Minors + team3Minors,
             "majorFouls": team1Majors + team2Majors + team3Majors,
         }
-    
-    def calculateMinMaxAllianceScore(self, team1: int, team2: int, team3: int, maximum: bool = True) -> dict | None:
+
+    def calculateMinMaxAllianceScore(
+        self, team1: int, team2: int, team3: int, maximum: bool = True
+    ) -> dict | None:
         """
         Calculates a hypothetical alliance score of three teams using their minimum or maximum results in each category.
 
@@ -1554,7 +1601,7 @@ class Rebuilt(Game):
         team3Listing = getTeam(team3)
         if not team3Listing:
             return None
-        
+
         team1Data = getTeamResults(team1)
         team2Data = getTeamResults(team2)
         team3Data = getTeamResults(team3)
@@ -1576,7 +1623,11 @@ class Rebuilt(Game):
         team2Majors = statistic(team2Data, "majorFouls")["value"]
         team3Majors = statistic(team3Data, "majorFouls")["value"]
 
-        fuel = round(statistic(team1Data, "totalFuel")["value"]) + round(statistic(team2Data, "totalFuel")["value"]) + round(statistic(team3Data, "totalFuel")["value"])
+        fuel = (
+            round(statistic(team1Data, "totalFuel")["value"])
+            + round(statistic(team2Data, "totalFuel")["value"])
+            + round(statistic(team3Data, "totalFuel")["value"])
+        )
 
         score = self.calculateScore(fuel, False, EndPositionRebuilt.NONE, 0, 0)
 
@@ -1584,7 +1635,7 @@ class Rebuilt(Game):
         score += (
             10
             if team1End == EndPositionRebuilt.L1.value
-            else(
+            else (
                 20
                 if team1End == EndPositionRebuilt.L2.value
                 else 30 if team1End == EndPositionRebuilt.L3.value else 0
@@ -1593,7 +1644,7 @@ class Rebuilt(Game):
         score += (
             10
             if team2End == EndPositionRebuilt.L1.value
-            else(
+            else (
                 20
                 if team2End == EndPositionRebuilt.L2.value
                 else 30 if team2End == EndPositionRebuilt.L3.value else 0
@@ -1602,13 +1653,13 @@ class Rebuilt(Game):
         score += (
             10
             if team3End == EndPositionRebuilt.L1.value
-            else(
+            else (
                 20
                 if team3End == EndPositionRebuilt.L2.value
                 else 30 if team3End == EndPositionRebuilt.L3.value else 0
             )
         )
-    
+
         return {
             "score": score,
             "autoClimb": autoClimbTotal,
@@ -1619,7 +1670,7 @@ class Rebuilt(Game):
             "minorFouls": team1Minors + team2Minors + team3Minors,
             "majorFouls": team1Majors + team2Majors + team3Majors,
         }
-    
+
     def getAllStats(self, team: int) -> dict:
         """
         Calculates all stats for every single scoring category.
@@ -1632,39 +1683,90 @@ class Rebuilt(Game):
         """
         teamResults = getTeamResults(team)
         return {
-            "score": getAllStatsForCategory(teamResults,"score"),
-            "preloadFuel": getAllStatsForCategory(teamResults,"preloadFuel"),
-            "autoFuelTotal": getAllStatsForCategory(teamResults,"autoFuelTotal"),
-            "autoFuelTotalMissed": getAllStatsForCategory(teamResults,"autoFuelTotalMissed"),
-            "autoFuelAverageShotPerSecond": getAllStatsForCategory(teamResults,"autoFuelAverageShotPerSecond"),
-            "autoFuelAverageScoredPerSecond": getAllStatsForCategory(teamResults,"autoFuelAverageScoredPerSecond"),
-            "autoClimbAttempted": getAllStatsForCategory(teamResults,"autoClimbAttempted"),
-            "firstShift": getAllStatsForCategory(teamResults,"firstShift"),
-            "transitionFuelTotal": getAllStatsForCategory(teamResults,"transitionFuelTotal"),
-            "transitionFuelTotalMissed": getAllStatsForCategory(teamResults,"transitionFuelTotalMissed"),
-            "transitionFuelAverageShotPerSecond": getAllStatsForCategory(teamResults,"transitionFuelAverageShotPerSecond"),
-            "transitionFuelAverageScoredPerSecond": getAllStatsForCategory(teamResults,"transitionFuelAverageScoredPerSecond"),
-            "firstActiveShiftFuelTotal": getAllStatsForCategory(teamResults,"firstActiveShiftFuelTotal"),
-            "firstActiveShiftFuelTotalMissed": getAllStatsForCategory(teamResults,"firstActiveShiftFuelTotalMissed"),
-            "firstActiveShiftFuelAverageShotPerSecond": getAllStatsForCategory(teamResults,"firstActiveShiftFuelAverageShotPerSecond"),
-            "firstActiveShiftFuelAverageScoredPerSecond": getAllStatsForCategory(teamResults,"firstActiveShiftFuelAverageScoredPerSecond"),
-            "secondActiveShiftFuelTotal": getAllStatsForCategory(teamResults,"secondActiveShiftFuelTotal"),
-            "secondActiveShiftFuelTotalMissed": getAllStatsForCategory(teamResults,"secondActiveShiftFuelTotalMissed"),
-            "secondActiveShiftFuelAverageShotPerSecond": getAllStatsForCategory(teamResults,"secondActiveShiftFuelAverageShotPerSecond"),
-            "secondActiveShiftFuelAverageScoredPerSecond": getAllStatsForCategory(teamResults,"secondActiveShiftFuelAverageScoredPerSecond"),
-            "endgameFuelTotal": getAllStatsForCategory(teamResults,"endgameFuelTotal"),
-            "endgameFuelTotalMissed": getAllStatsForCategory(teamResults,"endgameFuelTotalMissed"),
-            "endgameFuelAverageShotPerSecond": getAllStatsForCategory(teamResults,"endgameFuelAverageShotPerSecond"),
-            "endgameFuelAverageScoredPerSecond": getAllStatsForCategory(teamResults,"endgameFuelAverageScoredPerSecond"),
-            "endClimb": getAllStatsForCategory(teamResults,"endClimb"),
-            "totalFuel": getAllStatsForCategory(teamResults,"totalFuel"),
-            "totalFuelAverageShotPerSecond": getAllStatsForCategory(teamResults,"totalFuelAverageShotPerSecond"),
-            "totalFuelAverageScoredPerSecond": getAllStatsForCategory(teamResults,"totalFuelAverageScoredPerSecond"),
-            "minorFouls": getAllStatsForCategory(teamResults,"minorFouls"),
-            "majorFouls": getAllStatsForCategory(teamResults,"majorFouls"),
+            "score": getAllStatsForCategory(teamResults, "score"),
+            "preloadFuel": getAllStatsForCategory(teamResults, "preloadFuel"),
+            "autoFuelTotal": getAllStatsForCategory(teamResults, "autoFuelTotal"),
+            "autoFuelTotalMissed": getAllStatsForCategory(
+                teamResults, "autoFuelTotalMissed"
+            ),
+            "autoFuelAverageShotPerSecond": getAllStatsForCategory(
+                teamResults, "autoFuelAverageShotPerSecond"
+            ),
+            "autoFuelAverageScoredPerSecond": getAllStatsForCategory(
+                teamResults, "autoFuelAverageScoredPerSecond"
+            ),
+            "autoClimbAttempted": getAllStatsForCategory(
+                teamResults, "autoClimbAttempted"
+            ),
+            "firstShift": getAllStatsForCategory(teamResults, "firstShift"),
+            "transitionFuelTotal": getAllStatsForCategory(
+                teamResults, "transitionFuelTotal"
+            ),
+            "transitionFuelTotalMissed": getAllStatsForCategory(
+                teamResults, "transitionFuelTotalMissed"
+            ),
+            "transitionFuelAverageShotPerSecond": getAllStatsForCategory(
+                teamResults, "transitionFuelAverageShotPerSecond"
+            ),
+            "transitionFuelAverageScoredPerSecond": getAllStatsForCategory(
+                teamResults, "transitionFuelAverageScoredPerSecond"
+            ),
+            "firstActiveShiftFuelTotal": getAllStatsForCategory(
+                teamResults, "firstActiveShiftFuelTotal"
+            ),
+            "firstActiveShiftFuelTotalMissed": getAllStatsForCategory(
+                teamResults, "firstActiveShiftFuelTotalMissed"
+            ),
+            "firstActiveShiftFuelAverageShotPerSecond": getAllStatsForCategory(
+                teamResults, "firstActiveShiftFuelAverageShotPerSecond"
+            ),
+            "firstActiveShiftFuelAverageScoredPerSecond": getAllStatsForCategory(
+                teamResults, "firstActiveShiftFuelAverageScoredPerSecond"
+            ),
+            "secondActiveShiftFuelTotal": getAllStatsForCategory(
+                teamResults, "secondActiveShiftFuelTotal"
+            ),
+            "secondActiveShiftFuelTotalMissed": getAllStatsForCategory(
+                teamResults, "secondActiveShiftFuelTotalMissed"
+            ),
+            "secondActiveShiftFuelAverageShotPerSecond": getAllStatsForCategory(
+                teamResults, "secondActiveShiftFuelAverageShotPerSecond"
+            ),
+            "secondActiveShiftFuelAverageScoredPerSecond": getAllStatsForCategory(
+                teamResults, "secondActiveShiftFuelAverageScoredPerSecond"
+            ),
+            "endgameFuelTotal": getAllStatsForCategory(teamResults, "endgameFuelTotal"),
+            "endgameFuelTotalMissed": getAllStatsForCategory(
+                teamResults, "endgameFuelTotalMissed"
+            ),
+            "endgameFuelAverageShotPerSecond": getAllStatsForCategory(
+                teamResults, "endgameFuelAverageShotPerSecond"
+            ),
+            "endgameFuelAverageScoredPerSecond": getAllStatsForCategory(
+                teamResults, "endgameFuelAverageScoredPerSecond"
+            ),
+            "endClimb": getAllStatsForCategory(teamResults, "endClimb"),
+            "totalFuel": getAllStatsForCategory(teamResults, "totalFuel"),
+            "totalFuelAverageShotPerSecond": getAllStatsForCategory(
+                teamResults, "totalFuelAverageShotPerSecond"
+            ),
+            "totalFuelAverageScoredPerSecond": getAllStatsForCategory(
+                teamResults, "totalFuelAverageScoredPerSecond"
+            ),
+            "minorFouls": getAllStatsForCategory(teamResults, "minorFouls"),
+            "majorFouls": getAllStatsForCategory(teamResults, "majorFouls"),
         }
-    
-    def calculateAllianceFromMatches(self, team1: int, match1: list, team2: int, match2: list, team3: int, match3: list, jsonSerializable: bool = False) -> dict:
+
+    def calculateAllianceFromMatches(
+        self,
+        team1: int,
+        match1: list,
+        team2: int,
+        match2: list,
+        team3: int,
+        match3: list,
+        jsonSerializable: bool = False,
+    ) -> dict:
         """
         Adds together results for three teams from given match data to predict their performance as an alliance.
 
@@ -1698,48 +1800,118 @@ class Rebuilt(Game):
                 team3Station = Station(station)
         if not team3Station:
             return {}
-        
+
         team1Results = match1[0]["results"][team1Station.value]
         team2Results = match2[0]["results"][team2Station.value]
         team3Results = match3[0]["results"][team3Station.value]
 
-        autoFuelTotal = team1Results[-1]["autoFuelTotal"] + team2Results[-1]["autoFuelTotal"] + team3Results[-1]["autoFuelTotal"]
-        autoFuelTotalMissed = team1Results[-1]["autoFuelTotalMissed"] + team2Results[-1]["autoFuelTotalMissed"] + team3Results[-1]["autoFuelTotalMissed"]
+        autoFuelTotal = (
+            team1Results[-1]["autoFuelTotal"]
+            + team2Results[-1]["autoFuelTotal"]
+            + team3Results[-1]["autoFuelTotal"]
+        )
+        autoFuelTotalMissed = (
+            team1Results[-1]["autoFuelTotalMissed"]
+            + team2Results[-1]["autoFuelTotalMissed"]
+            + team3Results[-1]["autoFuelTotalMissed"]
+        )
 
-        transitionFuelTotal = team1Results[-1]["transitionFuelTotal"] + team2Results[-1]["transitionFuelTotal"] + team3Results[-1]["transitionFuelTotal"]
-        transitionFuelTotalMissed = team1Results[-1]["transitionFuelTotalMissed"] + team2Results[-1]["transitionFuelTotalMissed"] + team3Results[-1]["transitionFuelTotalMissed"]
+        transitionFuelTotal = (
+            team1Results[-1]["transitionFuelTotal"]
+            + team2Results[-1]["transitionFuelTotal"]
+            + team3Results[-1]["transitionFuelTotal"]
+        )
+        transitionFuelTotalMissed = (
+            team1Results[-1]["transitionFuelTotalMissed"]
+            + team2Results[-1]["transitionFuelTotalMissed"]
+            + team3Results[-1]["transitionFuelTotalMissed"]
+        )
 
-        firstActiveShiftFuelTotal = team1Results[-1]["firstActiveShiftFuelTotal"] + team2Results[-1]["firstActiveShiftFuelTotal"] + team3Results[-1]["firstActiveShiftFuelTotal"]
-        firstActiveShiftFuelTotalMissed = team1Results[-1]["firstActiveShiftFuelTotalMissed"] + team2Results[-1]["firstActiveShiftFuelTotalMissed"] + team3Results[-1]["firstActiveShiftFuelTotalMissed"]
+        firstActiveShiftFuelTotal = (
+            team1Results[-1]["firstActiveShiftFuelTotal"]
+            + team2Results[-1]["firstActiveShiftFuelTotal"]
+            + team3Results[-1]["firstActiveShiftFuelTotal"]
+        )
+        firstActiveShiftFuelTotalMissed = (
+            team1Results[-1]["firstActiveShiftFuelTotalMissed"]
+            + team2Results[-1]["firstActiveShiftFuelTotalMissed"]
+            + team3Results[-1]["firstActiveShiftFuelTotalMissed"]
+        )
 
-        secondActiveShiftFuelTotal = team1Results[-1]["secondActiveShiftFuelTotal"] + team2Results[-1]["secondActiveShiftFuelTotal"] + team3Results[-1]["secondActiveShiftFuelTotal"]
-        secondActiveShiftFuelTotalMissed = team1Results[-1]["secondActiveShiftFuelTotalMissed"] + team2Results[-1]["secondActiveShiftFuelTotalMissed"] + team3Results[-1]["secondActiveShiftFuelTotalMissed"]
+        secondActiveShiftFuelTotal = (
+            team1Results[-1]["secondActiveShiftFuelTotal"]
+            + team2Results[-1]["secondActiveShiftFuelTotal"]
+            + team3Results[-1]["secondActiveShiftFuelTotal"]
+        )
+        secondActiveShiftFuelTotalMissed = (
+            team1Results[-1]["secondActiveShiftFuelTotalMissed"]
+            + team2Results[-1]["secondActiveShiftFuelTotalMissed"]
+            + team3Results[-1]["secondActiveShiftFuelTotalMissed"]
+        )
 
-        endgameFuelTotal = team1Results[-1]["endgameFuelTotal"] + team2Results[-1]["endgameFuelTotal"] + team3Results[-1]["endgameFuelTotal"]
-        endgameFuelTotalMissed = team1Results[-1]["endgameFuelTotalMissed"] + team2Results[-1]["endgameFuelTotalMissed"] + team3Results[-1]["endgameFuelTotalMissed"]
+        endgameFuelTotal = (
+            team1Results[-1]["endgameFuelTotal"]
+            + team2Results[-1]["endgameFuelTotal"]
+            + team3Results[-1]["endgameFuelTotal"]
+        )
+        endgameFuelTotalMissed = (
+            team1Results[-1]["endgameFuelTotalMissed"]
+            + team2Results[-1]["endgameFuelTotalMissed"]
+            + team3Results[-1]["endgameFuelTotalMissed"]
+        )
 
-        endgameClimbs = [EndPositionRebuilt(team1Results[-1]["endClimb"]),EndPositionRebuilt(team2Results[-1]["endClimb"]), EndPositionRebuilt(team3Results[-1]["endClimb"])]
+        endgameClimbs = [
+            EndPositionRebuilt(team1Results[-1]["endClimb"]),
+            EndPositionRebuilt(team2Results[-1]["endClimb"]),
+            EndPositionRebuilt(team3Results[-1]["endClimb"]),
+        ]
 
-        autoClimbs = [team1Results[-1]["autoClimbSuccess"], team2Results[-1]["autoClimbSuccess"], team3Results[-1]["autoClimbSuccess"]]
+        autoClimbs = [
+            team1Results[-1]["autoClimbSuccess"],
+            team2Results[-1]["autoClimbSuccess"],
+            team3Results[-1]["autoClimbSuccess"],
+        ]
 
-        minorFouls = team1Results[-1]["minorFouls"] + team2Results[-1]["minorFouls"] + team3Results[-1]["minorFouls"]
-        majorFouls = team1Results[-1]["majorFouls"] + team2Results[-1]["majorFouls"] + team3Results[-1]["majorFouls"]
+        minorFouls = (
+            team1Results[-1]["minorFouls"]
+            + team2Results[-1]["minorFouls"]
+            + team3Results[-1]["minorFouls"]
+        )
+        majorFouls = (
+            team1Results[-1]["majorFouls"]
+            + team2Results[-1]["majorFouls"]
+            + team3Results[-1]["majorFouls"]
+        )
 
-        totalFuel = autoFuelTotal + transitionFuelTotal + firstActiveShiftFuelTotal + secondActiveShiftFuelTotal + endgameFuelTotal
+        totalFuel = (
+            autoFuelTotal
+            + transitionFuelTotal
+            + firstActiveShiftFuelTotal
+            + secondActiveShiftFuelTotal
+            + endgameFuelTotal
+        )
 
-
-
-        score = self.calculateScore(totalFuel, False, EndPositionRebuilt.NONE, minorFouls, majorFouls)
+        score = self.calculateScore(
+            totalFuel, False, EndPositionRebuilt.NONE, minorFouls, majorFouls
+        )
 
         for climb in autoClimbs:
             score += 15 if climb else 0
 
         for climb in endgameClimbs:
-            score += 30 if (climb == EndPositionRebuilt.L3) else 20 if (climb == EndPositionRebuilt.L2) else 10 if (climb == EndPositionRebuilt.L1) else 0
-        
+            score += (
+                30
+                if (climb == EndPositionRebuilt.L3)
+                else (
+                    20
+                    if (climb == EndPositionRebuilt.L2)
+                    else 10 if (climb == EndPositionRebuilt.L1) else 0
+                )
+            )
+
         if jsonSerializable:
             for i in range(len(endgameClimbs)):
-                endgameClimbs[i] = endgameClimbs[i].value # type: ignore
+                endgameClimbs[i] = endgameClimbs[i].value  # type: ignore
 
         return {
             "autoFuelTotal": autoFuelTotal,
@@ -1759,4 +1931,3 @@ class Rebuilt(Game):
             "totalFuel": totalFuel,
             "score": score,
         }
-

@@ -1,15 +1,9 @@
 from enum import Enum
 import os
-from typing import List
 from flask import (
     Flask,
     abort,
-    redirect,
-    render_template,
     request,
-    session,
-    url_for,
-    Blueprint,
 )
 import filetype
 import statistics
@@ -47,11 +41,14 @@ class EndPositionReefscape(Enum):
     PARK = 1
     SHALLOW = 2
     DEEP = 3
+
+
 class EndPositionRebuilt(Enum):
     L1 = 1
     L2 = 2
     L3 = 3
     NONE = 0
+
 
 FMSEndPositionRebuilt = {
     "#0": EndPositionRebuilt.L1,
@@ -59,7 +56,6 @@ FMSEndPositionRebuilt = {
     "#2": EndPositionRebuilt.L3,
     "#3": EndPositionRebuilt.NONE,
 }
-    
 
 
 class CompLevel(Enum):
@@ -83,9 +79,11 @@ TBA_KEY = open(os.path.join(root, "secrets/theBlueAlliance"), "r").read()
 # TODO: add all text descriptions for all match types
 compLevelText = {"qm": "Qualifying", "sf": "Playoff", "f": "Final"}
 
+
 class PaymentRequired(HTTPException):
     code = 402
-    description = 'Payment Required'
+    description = "Payment Required"
+
 
 def isImage(file):
     """

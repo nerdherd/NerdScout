@@ -1,29 +1,16 @@
-from array import array
 import os
-import re
-import filetype
-import urllib.parse
 from flask import (
-    Flask,
     abort,
     redirect,
     render_template,
     request,
     session,
     url_for,
-    Blueprint,
 )
-import requests
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
-import certifi
-from werkzeug.security import check_password_hash, generate_password_hash
-import json
+from werkzeug.security import generate_password_hash
 import random
-from bson import json_util, ObjectId
-from pymongo import MongoClient
-from enum import Enum
-from typing import List
 from constants import *
 from database import *
 from auth import *
@@ -52,6 +39,7 @@ def index():
         username = None
     return render_template("index.html", username=username)
 
+
 @app.route("/createTestMatches")
 def createTestMatches():
     foundationNames = (
@@ -60,16 +48,35 @@ def createTestMatches():
         "Super Evil Wevils",
         "Wheler",
         "Mr. Hello's",
-        "John"
+        "John",
     )
-    for i,foundationName in zip(range(9991,9997),foundationNames):
+    for i, foundationName in zip(range(9991, 9997), foundationNames):
         if not getTeam(i):
             addTeam(i, f"{foundationName} Foundation", foundationName)
-    for i in range(9991,9996):
+    for i in range(9991, 9996):
         if not getMatch(CompLevel.QM, i, 1):
-            addScheduledMatch(i,1,CompLevel.QM,f"2026test_qm{i}",f"TestMatch {i}", 9991,9992,9993,9994,9995,9996)
-    randomScoringPeriods = lambda n: [{"time":random.random()*5.0,"scored":random.randint(0,30),"missed":random.randint(0,30)} for _ in range(n)]
-    for i in range(9991,9996):
+            addScheduledMatch(
+                i,
+                1,
+                CompLevel.QM,
+                f"2026test_qm{i}",
+                f"TestMatch {i}",
+                9991,
+                9992,
+                9993,
+                9994,
+                9995,
+                9996,
+            )
+    randomScoringPeriods = lambda n: [
+        {
+            "time": random.random() * 5.0,
+            "scored": random.randint(0, 30),
+            "missed": random.randint(0, 30),
+        }
+        for _ in range(n)
+    ]
+    for i in range(9991, 9996):
         for team in Station:
             game.scoreRobotInMatch(
                 matchNumber=i,
@@ -77,48 +84,58 @@ def createTestMatches():
                 compLevel=CompLevel.QM,
                 station=team,
                 startPos=random.random(),
-                preloadFuel=random.randint(0,8),
-                autoFuel=randomScoringPeriods(random.randint(0,5)),
-                autoDepot=random.random()>0.5,
-                autoBump=random.random()>0.5,
-                autoTrench=random.random()>0.5,
-                autoNeutralIntake=random.random()>0.5,
-                autoAttemptedSecondScore=random.random()>0.5,
-                autoSucceededSecondScore=random.random()>0.5,
-                autoClimbAttempted=random.random()>0.5,
-                autoClimbSuccess=random.random()>0.5,
-                autoOutpostFeed=random.random()>0.5,
-                autoFedToOutpost=random.random()>0.5,
-                firstShift=random.random()>0.5,
-                transitionFuel=randomScoringPeriods(random.randint(0,5)),
-                transitionFed=random.random()>0.5,
-                transitionDefense=random.random()>0.5,
-                firstActiveShiftFuel=randomScoringPeriods(random.randint(0,5)),
-                firstActiveShiftFed=random.random()>0.5,
-                firstActiveShiftDefense=random.random()>0.5,
-                secondActiveShiftFuel=randomScoringPeriods(random.randint(0,5)),
-                secondActiveShiftFed=random.random()>0.5,
-                secondActiveShiftDefense=random.random()>0.5,
-                firstInactiveShiftScored=random.random()>0.5,
-                firstInactiveShiftFed=random.random()>0.5,
-                firstInactiveShiftDefense=random.random()>0.5,
-                secondInactiveShiftScored=random.random()>0.5,
-                secondInactiveShiftFed=random.random()>0.5,
-                secondInactiveShiftDefense=random.random()>0.5,
-                endgameFuel=randomScoringPeriods(random.randint(0,5)),
-                endgameFed=random.random()>0.5,
-                endgameDefense=random.random()>0.5,
-                endClimb=EndPositionRebuilt(random.randint(0,3)),
-                outpostIntake=random.random()>0.5,
-                groundIntake=random.random()>0.5,
-                fedToOutpost=random.random()>0.5,
-                minorFouls=random.randint(0,10),
-                majorFouls=random.randint(0,3),
+                preloadFuel=random.randint(0, 8),
+                autoFuel=randomScoringPeriods(random.randint(0, 5)),
+                autoDepot=random.random() > 0.5,
+                autoBump=random.random() > 0.5,
+                autoTrench=random.random() > 0.5,
+                autoNeutralIntake=random.random() > 0.5,
+                autoAttemptedSecondScore=random.random() > 0.5,
+                autoSucceededSecondScore=random.random() > 0.5,
+                autoClimbAttempted=random.random() > 0.5,
+                autoClimbSuccess=random.random() > 0.5,
+                autoOutpostFeed=random.random() > 0.5,
+                autoFedToOutpost=random.random() > 0.5,
+                firstShift=random.random() > 0.5,
+                transitionFuel=randomScoringPeriods(random.randint(0, 5)),
+                transitionFed=random.random() > 0.5,
+                transitionDefense=random.random() > 0.5,
+                firstActiveShiftFuel=randomScoringPeriods(random.randint(0, 5)),
+                firstActiveShiftFed=random.random() > 0.5,
+                firstActiveShiftDefense=random.random() > 0.5,
+                secondActiveShiftFuel=randomScoringPeriods(random.randint(0, 5)),
+                secondActiveShiftFed=random.random() > 0.5,
+                secondActiveShiftDefense=random.random() > 0.5,
+                firstInactiveShiftScored=random.random() > 0.5,
+                firstInactiveShiftFed=random.random() > 0.5,
+                firstInactiveShiftDefense=random.random() > 0.5,
+                secondInactiveShiftScored=random.random() > 0.5,
+                secondInactiveShiftFed=random.random() > 0.5,
+                secondInactiveShiftDefense=random.random() > 0.5,
+                endgameFuel=randomScoringPeriods(random.randint(0, 5)),
+                endgameFed=random.random() > 0.5,
+                endgameDefense=random.random() > 0.5,
+                endClimb=EndPositionRebuilt(random.randint(0, 3)),
+                outpostIntake=random.random() > 0.5,
+                groundIntake=random.random() > 0.5,
+                fedToOutpost=random.random() > 0.5,
+                minorFouls=random.randint(0, 10),
+                majorFouls=random.randint(0, 3),
                 comment="abaca",
                 cannedComments=[],
-                scout=random.choice(["hello","hello2","hlelo3","tonnieboy300","mr hello","hello jr","ms hello"])
+                scout=random.choice(
+                    [
+                        "hello",
+                        "hello2",
+                        "hlelo3",
+                        "tonnieboy300",
+                        "mr hello",
+                        "hello jr",
+                        "ms hello",
+                    ]
+                ),
             )
-    writeToCacheFile("2026test","recentEventKey")
+    writeToCacheFile("2026test", "recentEventKey")
     return "ok."
 
 
@@ -184,21 +201,20 @@ def renderMatch():
     except (IndexError, AttributeError) as err:
         # IndexError: There isnt a next match
         pass
-    
-    showAdmin = session['username'] and isAdmin(session['username'])
-    
+
+    showAdmin = session["username"] and isAdmin(session["username"])
+
     alert = ""
     if "alert" in request.args:
         alert = request.args.get("alert")
-        
+
     madePrediction = False
-    if session['username']:
+    if session["username"]:
         userData = getUser(session["username"])
         if userData:
             if "predictions" in userData:
                 madePrediction = results["matchKey"] in userData["predictions"]
             userPoints = userData["points"]
-            
 
     return render_template(
         "match/match.html",
@@ -214,8 +230,9 @@ def renderMatch():
         madePrediction=madePrediction,
         userPoints=userPoints,
         # this is game specific.
-        FMSEndPositionRebuilt = FMSEndPositionRebuilt,
+        FMSEndPositionRebuilt=FMSEndPositionRebuilt,
     )
+
 
 @app.route("/match/nerdPredictSubmitScore", methods=["POST"])
 def createPredictionPage():
@@ -231,9 +248,17 @@ def createPredictionPage():
         except TypeError as e:
             print(e)
             abort(400)
-        createPrediction(session["username"],compLevel,matchNumber,setNumber=setNumber,forRed=forRed,points=points)
+        createPrediction(
+            session["username"],
+            compLevel,
+            matchNumber,
+            setNumber=setNumber,
+            forRed=forRed,
+            points=points,
+        )
         return "ok"
     abort(405)
+
 
 @app.route("/match/updateFromTBA")
 def updateMatchFromTBAPage():
@@ -244,8 +269,18 @@ def updateMatchFromTBAPage():
     except:
         abort(400)
     # success = addTestTBAData(compLevel=compLevel,matchNumber=matchNumber,setNumber=setNumber)
-    success = updateMatchFromTBA(compLevel=compLevel,matchNumber=matchNumber,setNumber=setNumber)
-    return redirect(url_for("renderMatch",matchNum=matchNumber,compLevel=compLevel.value,setNum=setNumber,alert=f"Match updated: {success}"))
+    success = updateMatchFromTBA(
+        compLevel=compLevel, matchNumber=matchNumber, setNumber=setNumber
+    )
+    return redirect(
+        url_for(
+            "renderMatch",
+            matchNum=matchNumber,
+            compLevel=compLevel.value,
+            setNum=setNumber,
+            alert=f"Match updated: {success}",
+        )
+    )
 
 
 @app.route("/team")
@@ -271,8 +306,8 @@ def teamPage():
         matches=sortMatches(matches),
         stats=stats,
         keyDisplayNames=game.keyDisplayNames,
-        autoCapabilities=game.pitScoutAutoCapabilities, 
-        teleCapabilities=game.pitScoutTeleCapabilities
+        autoCapabilities=game.pitScoutAutoCapabilities,
+        teleCapabilities=game.pitScoutTeleCapabilities,
     )
 
 
@@ -415,7 +450,7 @@ def scheduleEventPage():
         addScheduleFromTBA(event)
         addTeamsFromTBA(event)
     eventKey = loadFromCacheFile("recentEventKey")
-    return render_template("match/schedule/addSchedule.html", eventKey = eventKey)
+    return render_template("match/schedule/addSchedule.html", eventKey=eventKey)
 
 
 @app.route("/updateSchedule", methods=["GET", "POST"])
@@ -428,7 +463,7 @@ def updateSchedulePage():
             abort(400)
         updateScheduleFromTBA(event)
     eventKey = loadFromCacheFile("recentEventKey")
-    return render_template("match/schedule/updateSchedule.html", eventKey = eventKey)
+    return render_template("match/schedule/updateSchedule.html", eventKey=eventKey)
 
 
 @app.route("/team/addTeamImage", methods=["GET", "POST"])
@@ -511,11 +546,27 @@ def scoutTeam():
     #     ("Climb level 3 on the sides","tele-climb3-side"),
     #     ("Climb level 3 in the inside","tele-climb3-inside"),
     # )
-    return render_template("team/pitScout.html", team=team, autoCapabilities=game.pitScoutAutoCapabilities, teleCapabilities=game.pitScoutTeleCapabilities)
+    return render_template(
+        "team/pitScout.html",
+        team=team,
+        autoCapabilities=game.pitScoutAutoCapabilities,
+        teleCapabilities=game.pitScoutTeleCapabilities,
+    )
 
 
 dontSummarize = frozenset(
-    ["startPos", "endPos", "attemptedEndPos", "cannedComments", "endPosSuccess","autoFuel","transitionFuel","firstActiveShiftFuel","secondActiveShiftFuel","endgameFuel"]
+    [
+        "startPos",
+        "endPos",
+        "attemptedEndPos",
+        "cannedComments",
+        "endPosSuccess",
+        "autoFuel",
+        "transitionFuel",
+        "firstActiveShiftFuel",
+        "secondActiveShiftFuel",
+        "endgameFuel",
+    ]
 )
 
 
@@ -610,7 +661,8 @@ def teamTable():
 @app.route("/nerdpredict/leaderboard")
 def pointsLeaderboardPage():
     ranking = getPointsRankings()
-    return render_template("predict/rank.html",ranking=ranking)
+    return render_template("predict/rank.html", ranking=ranking)
+
 
 @app.route("/nerdpredict/playoffs", methods=["GET", "POST"])
 def pointsPlayoffsPage():
@@ -618,20 +670,42 @@ def pointsPlayoffsPage():
         rawData = request.json
         if (not rawData) or ("redwon" not in rawData):
             abort(400)
-        redwon = [a=="true" for a in rawData["redwon"].split(",")]
+        redwon = [a == "true" for a in rawData["redwon"].split(",")]
         if len(redwon) != 14:
             abort(400)
-        points = 100000 #TODO: actually send points 
+        points = 100000  # TODO: actually send points
         username = str(session.get("username"))
-        if not createPickEms(username,points,redwon[0],redwon[1],redwon[2],redwon[3],redwon[4],redwon[5],redwon[6],redwon[7],redwon[8],redwon[9],redwon[10],redwon[11],redwon[12],redwon[13]):
+        if not createPickEms(
+            username,
+            points,
+            redwon[0],
+            redwon[1],
+            redwon[2],
+            redwon[3],
+            redwon[4],
+            redwon[5],
+            redwon[6],
+            redwon[7],
+            redwon[8],
+            redwon[9],
+            redwon[10],
+            redwon[11],
+            redwon[12],
+            redwon[13],
+        ):
             abort(500)
         else:
             return "yay!! yippee!"
-    return render_template("predict/playoffs.html",alliances=[[n*3,n*3+1,n*3+2] for n in range(0,8)])
+    return render_template(
+        "predict/playoffs.html",
+        alliances=[[n * 3, n * 3 + 1, n * 3 + 2] for n in range(0, 8)],
+    )
+
 
 @app.route("/nerdpredict")
 def nerdpredictMain():
     return render_template("predict/index.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -766,9 +840,9 @@ def submitScorePage():
                 endgameDefense=submission["endgameDefense"],
                 endClimb=EndPositionRebuilt(
                     int(
-                        submission[ # int between 0-3, though should be 2 or 3 # type: ignore
+                        submission[  # int between 0-3, though should be 2 or 3 # type: ignore
                             "endClimb"
-                        ]  
+                        ]
                     )
                 ),
                 outpostIntake=submission["outpostIntake"],
@@ -778,7 +852,7 @@ def submitScorePage():
                 majorFouls=submission["majorFouls"],
                 comment=submission["comment"],
                 cannedComments=submission["cannedComments"],
-                scout=scout
+                scout=scout,
             ):
                 abort(400)
         except TypeError as err:
@@ -840,9 +914,9 @@ def uploadJSON():
                 results["endgameFuelMiss"],
                 EndPositionRebuilt(
                     int(
-                        results[ # int between 0-3, though should be 2 or 3 # type: ignore
+                        results[  # int between 0-3, though should be 2 or 3 # type: ignore
                             "attemptedEndPos"
-                        ]  
+                        ]
                     )
                 ),
                 results["minorFouls"],
@@ -976,9 +1050,10 @@ adminEndpoints = frozenset(
         "matchTable",
         "resetPasswordsPage",
         "adminPage",
-        "updateMatchFromTBAPage"
+        "updateMatchFromTBAPage",
     ]
 )  # endpoints that require user be admin
+
 
 @app.before_request
 def before_request():
