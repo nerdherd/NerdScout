@@ -833,18 +833,18 @@
 </div>
 
 <div>
-    {% if (not madePrediction) and "predictionData" in results and "points_difference" in results["predictionData"] and "winner" in results["predictionData"]%}
+    {% if (not madePrediction) and "predictionData" in results and (results["compLevel"] == "qm") and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"])%}
     {% set apiDifference = results["predictionData"]["points_difference"]%}
     {% set apiWinner = results["predictionData"]["winner"] %}
     <div>
         <!-- haven't made a prediction yet -->
-        <p>Current Prediction powered by Statbotics: {{apiWinner | capitalize}} wins by {{apiDifference}} points.</p>
+        <p>Current Prediction powered by Statbotics: {{apiWinner | capitalize}} wins by {{apiDifference | round(2)}} points.</p>
         {% if apiWinner == "red" %}
-        <button onclick="predictIsRed=true; difference={{apiDifference}}">Red wins by {{apiDifference}}</button>
-        <button onclick="predictIsRed=false; difference=0">Red wins by less than {{apiDifference}} or loses.</button>
+        <button onclick="predictIsRed=true; difference={{apiDifference | round(2)}}">Red wins by {{apiDifference | round(2)}}</button>
+        <button onclick="predictIsRed=false; difference=0">Red wins by less than {{apiDifference | round(2)}} or loses.</button>
         {% else %}
-        <button onclick="predictIsRed=true; difference=0">Blue wins by less than {{apiDifference}} or loses.</button>
-        <button onclick="predictIsRed=false; difference={{apiDifference}}">Blue wins by {{apiDifference}}</button>
+        <button onclick="predictIsRed=true; difference=0">Blue wins by less than {{apiDifference | round(2)}} or loses.</button>
+        <button onclick="predictIsRed=false; difference={{apiDifference | round(2)}}">Blue wins by {{apiDifference | round(2)}}</button>
         {% endif %}
         <input type="number" min="0" max="{{ userPoints }}" id="predictPointsInput">
         <span>max {{ userPoints }} points</span>
@@ -895,6 +895,11 @@
     </div>
     {% elif madePrediction %}
     <p>already predicted</p>
+    {% elif (not results["compLevel"] == "qm") and ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
+    {% set apiDifference = results["predictionData"]["points_difference"]%}
+    {% set apiWinner = results["predictionData"]["winner"] %}
+    <p>Current Prediction powered by Statbotics: {{apiWinner | capitalize}} wins by {{apiDifference | round(2)}} points.</p>
+    <p>Make your playoffs predictions at <a href="{{ url_for('pointsPlayoffsPage') }}">NerdPredict Pickems</a>.</p>
     {% else %}
     <p>Please wait for data to be added for predictions.</p>
     {% endif %}

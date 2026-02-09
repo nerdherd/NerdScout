@@ -1003,6 +1003,11 @@ def createPrediction(
             f"Couldn't create prediction for {user} in {compLevel.value}{matchNumber}_{setNumber}: Statbotics data not found."
         )
         abort(500)
+    if not matchData["compLevel"] == CompLevel.QM.value:
+        app.logger.error(
+            f"Couldn't create prediction for {user} in {compLevel.value}{matchNumber}_{setNumber}: match isn't a qual."
+        )
+        abort(400)
     predictedWinner = matchData["predictionData"]["winner"]
     if ((predictedWinner == "red") if forRed else (predictedWinner == "blue")) and (matchData["predictionData"]["points_difference"] != difference):
         app.logger.error(
