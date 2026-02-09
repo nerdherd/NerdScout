@@ -1416,12 +1416,20 @@ class Rebuilt(Game):
             periodScoredPerSecond = 0
             dataLength = len(data[period])
             for i in range(dataLength):
-                data[period][i]["fuelScoredPerSecond"] = (
-                    data[period][i]["scored"] / data[period][i]["time"]
-                )
-                data[period][i]["fuelShotPerSecond"] = (
-                    data[period][i]["scored"] + data[period][i]["missed"]
-                ) / data[period][i]["time"]
+                try:
+                    data[period][i]["fuelScoredPerSecond"] = (
+                        data[period][i]["scored"] / data[period][i]["time"]
+                    )
+                except ZeroDivisionError:
+                    data[period][i]["fuelScoredPerSecond"] = 0
+                    app.logger.warning(f"NaN calculated for fuelScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+                try:
+                    data[period][i]["fuelShotPerSecond"] = (
+                        data[period][i]["scored"] + data[period][i]["missed"]
+                    ) / data[period][i]["time"]
+                except ZeroDivisionError:
+                    data[period][i]["fuelShotPerSecond"] = 0
+                    app.logger.warning(f"NaN calculated for fuelShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
 
                 periodShotPerSecond += data[period][i]["fuelShotPerSecond"]
                 periodScoredPerSecond += data[period][i]["fuelScoredPerSecond"]
@@ -1431,13 +1439,29 @@ class Rebuilt(Game):
             totalDataLength += dataLength
             dataLength = 1 if dataLength <= 0 else dataLength
 
-            data[f"{period}AverageShotPerSecond"] = periodShotPerSecond / dataLength
-            data[f"{period}AverageScoredPerSecond"] = periodScoredPerSecond / dataLength
+            try:
+                data[f"{period}AverageShotPerSecond"] = periodShotPerSecond / dataLength
+            except ZeroDivisionError:
+                    data[f"{period}AverageShotPerSecond"] = 0
+                    app.logger.warning(f"NaN calculated for {period}AverageShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+            try:
+                data[f"{period}AverageScoredPerSecond"] = periodScoredPerSecond / dataLength
+            except ZeroDivisionError:
+                data[f"{period}AverageScoredPerSecond"] = 0
+                app.logger.warning(f"NaN calculated for {period}AverageScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
 
-        data[f"totalFuelAverageShotPerSecond"] = totalShotPerSecond / totalDataLength
-        data[f"totalFuelAverageScoredPerSecond"] = (
-            totalScoredPerSecond / totalDataLength
-        )
+        try:
+            data[f"totalFuelAverageShotPerSecond"] = totalShotPerSecond / totalDataLength
+        except ZeroDivisionError:
+            data[f"totalFuelAverageShotPerSecond"] = 0
+            app.logger.warning(f"NaN calculated for totalFuelAverageShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+        try:
+            data[f"totalFuelAverageScoredPerSecond"] = (
+                totalScoredPerSecond / totalDataLength
+            )
+        except ZeroDivisionError:
+            data[f"totalFuelAverageScoredPerSecond"] = 0
+            app.logger.warning(f"NaN calculated for totalFuelAverageScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
 
         result = matches.update_many(
             {
