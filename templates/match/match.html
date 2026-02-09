@@ -868,9 +868,11 @@
                     if (response.ok){
                         alert("Succesfully submitted");
                         window.location.reload();
-                    } else if (response.status == 402){
+                    } else if (response.status === 402){
                         alert("Not enough points.");
                         window.location.reload();
+                    } else if (response.status === 401){
+                        alert("Match already scored.")
                     } else{
                         alert("There was an error submitting.");
                     }

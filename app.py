@@ -33,6 +33,7 @@ generatePoints()
 # Front-end Handlers
 @app.route("/")
 def index():
+    print(getUser("tonnieboy300"))
     if "username" in session:
         username = session["username"]
     else:

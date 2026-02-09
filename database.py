@@ -861,7 +861,7 @@ def createPrediction(
     - forRed (bool): if the prediction is for red alliance winning
     - points (int): number of points spent
     """
-    timestamp = datetime.now()
+    timestamp = int(time())
     userData = getUser(user)
     if not userData:
         app.logger.error(f"Couldn't create prediction for {user}: user doesn't exist.")
@@ -872,14 +872,19 @@ def createPrediction(
     matchData = getMatch(compLevel, matchNumber, setNumber)
     if not matchData:
         app.logger.error(
-            f"Couldn't create prediction for {compLevel}{matchNumber}_{setNumber}: match doesn't exist."
+            f"Couldn't create prediction for {compLevel.value}{matchNumber}_{setNumber}: match doesn't exist."
         )
         abort(400)
     matchData = matchData[0]
+    if "scoreBreakdown" in matchData["results"]:
+        app.logger.error(
+            f"Couldn't create prediction for {user} in {compLevel.value}{matchNumber}_{setNumber}: match already scored."
+        )
+        abort(401)
 
     if matchData["matchKey"] in userData["predictions"]:
         app.logger.error(
-            f"Couldn't create prediction for {user} in {compLevel}{matchNumber}_{setNumber}: user already has a prediction."
+            f"Couldn't create prediction for {user} in {compLevel.value}{matchNumber}_{setNumber}: user already has a prediction."
         )
         abort(403)
 
@@ -977,8 +982,17 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
             f"Paid out total of 0 in a ratio of 1:infinity for {'red' if forRed else 'blue'} predictions on {matchKey}"
         )
         return
+    
+    matchStartTime:int = matchData["results"]["actualTime"]
+    invalidBets:int = 0
 
     for user in correctUsers:
+        userBetTime = user["predictions"][matchKey]["timestamp"]
+        if userBetTime > matchStartTime:
+            app.logger.info(f"Didn't pay {user['username']}; bet after match start.")
+            invalidBets += user["predictions"][matchKey]["points"]
+            continue
+
         # payout calculation: (bet/total bets for alliance) * total for all bets
         # = % of red or blue pool * total pool
         payout = round(
@@ -994,7 +1008,7 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
         app.logger.info(f"Paid {payout} to {user['username']}")
 
     app.logger.info(
-        f"Paid out total of {totalPool} in a ratio of 1:{totalPool/winningPool} for {'red' if forRed else 'blue'} predictions on {matchKey}"
+        f"Paid out total of {totalPool-invalidBets} in a ratio of 1:{totalPool/winningPool} for {'red' if forRed else 'blue'} predictions on {matchKey}"
     )
 
 
