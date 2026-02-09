@@ -71,6 +71,7 @@ function addScoreToTable(time,scored,missed){
     let deleteTableEl = document.createElement("td")
     let deleteButton = document.createElement("button");
     deleteButton.innerText = "X";
+    deleteButton.classList.add("removeButton")
     let deleteIndex = scoringPeriods[curScoringPeriod].length-1;
     deleteButton.onclick = () => {removeScore(deleteIndex)};
     deleteTableEl.appendChild(deleteButton);
@@ -235,3 +236,26 @@ function submitData(matchNum, compLevel, setNum, robot){
         }
     });
 }
+
+const preGame = getById("preGame");
+const game = getById("game");
+const postGame = getById("postGame");
+
+function showPreGame(){
+    preGame.style.display = 'flex';
+    game.style.display = 'none';
+    postGame.style.display = 'none';
+}
+
+function showGame(){
+    preGame.style.display = 'none';
+    game.style.display = 'flex';
+    postGame.style.display = 'none';
+}
+
+function showPostGame(){
+    preGame.style.display = 'none';
+    game.style.display = 'none';
+    postGame.style.display = 'flex';
+}
+ 

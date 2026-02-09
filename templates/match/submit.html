@@ -35,184 +35,211 @@
 
 <div class="main">
 
-    <div class="section">
+    
+    <div class="column" id="preGame">
         <h1>Pre-Game</h1>
-        <label for="startposinput">Starting position</label>
-        <div class="field">
-            {% for n in range(10)%}
-            <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ ('Red' if 'red' in rbtStat else 'Blue') +'/(' + (n+1)|string + ').png')}}">
-            {% endfor %}
-        </div>
-        <input type="range" min="0" max="9" step="1" val="5" id="startposinput" oninput="moveImage()">
-        <div class="counter">
-            <button class="minus" onclick="incrementCounter('preloadFuel',false)">-</button>
-            <input type="number" id="preloadFuel" min="0" max="8" value="0">
-            <button class="plus" onclick="incrementCounter('preloadFuel',true)">+</button>
-            <label for="preloadFuel">Preload fuel</label>
-        </div>
-    </div>
-    <div>
-        <label for="firstShift">Did they get first shift?</label>
-        <input type="checkbox" id="firstShift" onchange="updateShift()">
-    </div>
-    <div id="shift-select">
-        {% for n in range(7) %}
-        <button {% if loop.first %}class="selected"{% endif %} data-index="{{n}}" onclick="setScoringPeriod({{n}})">{{ ("Auto","Transition","Shift 1","Shift 2","Shift 3","Shift 4","Endgame")[n] }}</button>
-        {% endfor %}
-    </div>
-    <div class="main-input shift-0" id="main-input">
-        <div class="active">
-            <button id="timer-button" onclick="toggleTimer()">Start timer</button>
-            <input type="number" id="time" min="0" value="0">
-            <div class="counter">
-                <button class="minus" onclick="incrementCounter('scored',false,10)">-10</button>
-                <button class="minus" onclick="incrementCounter('scored',false,5)">-5</button>
-                <button class="minus" onclick="incrementCounter('scored',false)">-1</button>
-                <input type="number" id="scored" min="0" value="0">
-                <button class="plus" onclick="incrementCounter('scored',true)">+1</button>
-                <button class="plus" onclick="incrementCounter('scored',true,5)">+5</button>
-                <button class="plus" onclick="incrementCounter('scored',true,10)">+10</button>
+        
+        <div class="row">
+            <div class="column">
+                <label for="startposinput">Starting position</label>
+                <div class="field">
+                    {% for n in range(10)%}
+                    <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ ('Red' if 'red' in rbtStat else 'Blue') +'/(' + (n+1)|string + ').png')}}">
+                    {% endfor %}
+                </div>
+            <input type="range" min="0" max="9" step="1" val="5" id="startposinput" oninput="moveImage()">
             </div>
-            <div class="counter">
-                <button class="minus" onclick="incrementCounter('missed',false,10)">-10</button>
-                <button class="minus" onclick="incrementCounter('missed',false,5)">-5</button>
-                <button class="minus" onclick="incrementCounter('missed',false)">-1</button>
-                <input type="number" id="missed" min="0" value="0">
-                <button class="plus" onclick="incrementCounter('missed',true)">+1</button>
-                <button class="plus" onclick="incrementCounter('missed',true,5)">+5</button>
-                <button class="plus" onclick="incrementCounter('missed',true,10)">+10</button>
-            </div>
-            <button onclick="submitScoringPeriod()">Add scoring period</button>
-            <table id="score-table">
-                <tr class="headers">
-                    <th>Time</th>
-                    <th>Scored</th>
-                    <th>Missed</th>
-                    <th>Delete</th>
-                </tr>
-            </table>
-        </div>
-        <div class="shift-thing shift-auto">
-            <div>
-                <label for="autoDepot">Did they intake from the depot?</label>
-                <input type="checkbox" id="autoDepot">
-            </div>
-            <div>
-                <label for="autoBump">Did they drive over the bump?</label>
-                <input type="checkbox" id="autoBump">
-            </div>
-            <div>
-                <label for="autoTrench">Did they drive under the trench?</label>
-                <input type="checkbox" id="autoTrench">
-            </div>
-            <div>
-                <label for="autoNeutralIntake">Do they have intake in the neutral zone?</label>
-                <input type="checkbox" id="autoNeutralIntake">
-            </div>
-            <div>
-                <label for="autoAttemptedSecondScore">Did they attempt to score after intaking more fuel?</label>
-                <input type="checkbox" id="autoAttemptedSecondScore">
-            </div>
-            <div>
-                <label for="autoSucceededSecondScore">Did they succeed?</label>
-                <input type="checkbox" id="autoSucceededSecondScore">
-            </div>
-            <div>
-                <label for="autoClimbAttempted">Did attempt to climb?</label>
-                <input type="checkbox" id="autoClimbAttempted">
-            </div>
-            <div>
-                <label for="autoClimbSuccess">Did they succeed?</label>
-                <input type="checkbox" id="autoClimbSuccess">
-            </div>
-            <div>
-                <label for="autoOutpostFeed">Did they feed from the outpost?</label>
-                <input type="checkbox" id="autoOutpostFeed">
-            </div>
-            <div>
-                <label for="autoFedToOutpost">Did they feed into the outpost?</label>
-                <input type="checkbox" id="autoFedToOutpost">
-            </div>
-        </div>
-        {% for n in ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"] %}
-        <div class="shift-thing shift-{{n}}">
-            <p>shift {{n}}</p>
-            {% if "Inactive" in n%}
-            <div>
-                <label for="{{n}}Scored">Did they score on purpose?</label>
-                <input type="checkbox" id="{{n}}Scored">
-            </div>
-            {% endif %}
-            <div>
-                <label for="{{n}}Fed">Did they feed into the alliance side?</label>
-                <input type="checkbox" id="{{n}}Fed">
-            </div>
-            <div>
-                <label for="{{n}}Defense">Did they play defense?</label>
-                <input type="checkbox" id="{{n}}Defense">
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <div>
-        <label for="endClimb">End position:</label>
-        <input type="range" min="0" max="3" step="1" value="1" id="endClimb">
-    </div>
-    <div>
-        <div>
-            <label for="outpostIntake">Did they intake from the outpost?</label>
-            <input type="checkbox" id="outpostIntake">
-        </div>
-        <div>
-            <label for="groundIntake">Did they intake from the outpost?</label>
-            <input type="checkbox" id="groundIntake">
-        </div>
-        <div>
-            <label for="fedToOutpost">Did they feed to the outpost?</label>
-            <input type="checkbox" id="fedToOutpost">
-        </div>
-    </div>
-    <div>
-        <label for="minorFouls">Minor fouls</label>
-        <div class="counter">
-            <button class="minus" onclick="incrementCounter('minorFouls',false)">-</button>
-            <input type="number" id="minorFouls" min="0" value="0">
-            <button class="plus" onclick="incrementCounter('minorFouls',true)">+</button>
-        </div>
-        <label for="majorFouls">Major fouls</label>
-        <div class="counter">
-            <button class="minus" onclick="incrementCounter('majorFouls',false)">-</button>
-            <input type="number" id="majorFouls" min="0" value="0">
-            <button class="plus" onclick="incrementCounter('majorFouls',true)">+</button>
-        </div>
-    </div>
-    <div>
-        <p>Comments</p>
-        <div class="cannedComments">
-            {% for cannedComment in cannedComments%}
-            <button data-text="{{cannedComment}}" id="canned-{{cannedComment}}" onclick="toggleActive('canned-{{cannedComment}}')" class="canned-button">{{cannedComment}}</button>
-            {% endfor %}
-        </div>
-        <textarea id="comments" placeholder="Write comments here..."></textarea>
-    </div>
-    <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
 
-    <div clas="sectionR">
-        <div class="counter">
-            <div class="sidewaysCounter">
+        </div>
+        <div class="row">
+
+            <div class="counter">
+                <div class="row">
+                    <button class="minus" onclick="incrementCounter('preloadFuel',false)">-</button>
+                    <input type="number" id="preloadFuel" min="0" max="8" value="0">
+                    <button class="plus" onclick="incrementCounter('preloadFuel',true)">+</button>
+                    <button class="gameTime" onclick="showGame()">Game Start</button>
+                </div>
+                <label for="preloadFuel">Preload fuel</label>
+            </div>
+
+            <div>
+                
+            </div>
+        </div>
+
+    </div>
+    
+    <div id="game" class="column">
+        <div id="shift-select">
+            <button onClick="showPreGame()">Pregame</button>
+            {% for n in range(7) %}
+            <button {% if loop.first %}class="selected"{% endif %} data-index="{{n}}" onclick="setScoringPeriod({{n}})">{{ ("Auto","Transition","Shift 1","Shift 2","Shift 3","Shift 4","Endgame")[n] }}</button>
+            {% endfor %}
+            <button onClick="showPostGame()">Post-game</button>
+        </div>
+        <div class="main-input shift-0" id="main-input">
+            <div class="active">
+                <button id="timer-button" onclick="toggleTimer()">Start timer</button>
+                <input type="number" id="time" min="0" value="0">
+                <div class="counter specialCounter">
+                    <button class="minus" onclick="incrementCounter('scored',false,10)">-10</button>
+                    <button class="minus" onclick="incrementCounter('scored',false,5)">-5</button>
+                    <button class="minus" onclick="incrementCounter('scored',false)">-1</button>
+                    <input type="number" id="scored" min="0" value="0">
+                    <button class="plus" onclick="incrementCounter('scored',true)">+1</button>
+                    <button class="plus" onclick="incrementCounter('scored',true,5)">+5</button>
+                    <button class="plus" onclick="incrementCounter('scored',true,10)">+10</button>
+                </div>
+                <div class="counter specialCounter">
+                    <button class="minus" onclick="incrementCounter('missed',false,10)">-10</button>
+                    <button class="minus" onclick="incrementCounter('missed',false,5)">-5</button>
+                    <button class="minus" onclick="incrementCounter('missed',false)">-1</button>
+                    <input class="wrong" type="number" id="missed" min="0" value="0">
+                    <button class="plus" onclick="incrementCounter('missed',true)">+1</button>
+                    <button class="plus" onclick="incrementCounter('missed',true,5)">+5</button>
+                    <button class="plus" onclick="incrementCounter('missed',true,10)">+10</button>
+                </div>
+                <button onclick="submitScoringPeriod()">Add scoring period</button>
+                <table id="score-table">
+                    <tr class="headers">
+                        <th><img width="50px" height="50px" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Time.svg') }}"></th>
+                        <th><img width="50px" height="50px" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Scored.svg') }}"></th>
+                        <th><img width="50px" height="50px" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Missed.svg') }}"></th>
+                    </tr>
+                </table>
+            </div>
+            <div class="shift-thing shift-auto">
+                <div>
+                    <label for="autoDepot">Did they intake from the depot?</label>
+                    <input type="checkbox" id="autoDepot">
+                </div>
+                <div>
+                    <label for="autoBump">Did they drive over the bump?</label>
+                    <input type="checkbox" id="autoBump">
+                </div>
+                <div>
+                    <label for="autoTrench">Did they drive under the trench?</label>
+                    <input type="checkbox" id="autoTrench">
+                </div>
+                <div>
+                    <label for="autoNeutralIntake">Do they have intake in the neutral zone?</label>
+                    <input type="checkbox" id="autoNeutralIntake">
+                </div>
+                <div>
+                    <label for="autoAttemptedSecondScore">Did they attempt to score after intaking more fuel?</label>
+                    <input type="checkbox" id="autoAttemptedSecondScore">
+                </div>
+                <div>
+                    <label for="autoSucceededSecondScore">Did they succeed?</label>
+                    <input type="checkbox" id="autoSucceededSecondScore">
+                </div>
+                <div>
+                    <label for="autoClimbAttempted">Did attempt to climb?</label>
+                    <input type="checkbox" id="autoClimbAttempted">
+                </div>
+                <div>
+                    <label for="autoClimbSuccess">Did they succeed?</label>
+                    <input type="checkbox" id="autoClimbSuccess">
+                </div>
+                <div>
+                    <label for="autoOutpostFeed">Did they feed from the outpost?</label>
+                    <input type="checkbox" id="autoOutpostFeed">
+                </div>
+                <div>
+                    <label for="autoFedToOutpost">Did they feed into the outpost?</label>
+                    <input type="checkbox" id="autoFedToOutpost">
+                </div>
+            </div>
+            {% for n in ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"] %}
+            <div class="shift-thing shift-{{n}}">
+                <p>shift {{n}}</p>
+                {% if "Inactive" in n%}
+                <div>
+                    <label for="{{n}}Scored">Did they score on purpose?</label>
+                    <input type="checkbox" id="{{n}}Scored">
+                </div>
+                {% endif %}
+                <div>
+                    <label for="{{n}}Fed">Did they feed into the alliance side?</label>
+                    <input type="checkbox" id="{{n}}Fed">
+                </div>
+                <div>
+                    <label for="{{n}}Defense">Did they play defense?</label>
+                    <input type="checkbox" id="{{n}}Defense">
+                </div>
+                {% if "transition"==n %}
+                <div>
+                    <label for="firstShift">Did they get first shift?</label>
+                    <input type="checkbox" id="firstShift" onchange="updateShift()">
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="postGame">
+        <div>
+            <label for="endClimb">End position:</label>
+            <input type="range" min="0" max="3" step="1" value="1" id="endClimb">
+        </div>
+        <div>
+            <div>
+                <label for="outpostIntake">Did they intake from the outpost?</label>
+                <input type="checkbox" id="outpostIntake">
+            </div>
+            <div>
+                <label for="groundIntake">Did they intake from the outpost?</label>
+                <input type="checkbox" id="groundIntake">
+            </div>
+            <div>
+                <label for="fedToOutpost">Did they feed to the outpost?</label>
+                <input type="checkbox" id="fedToOutpost">
+            </div>
+        </div>
+        <div>
+            <label for="minorFouls">Minor fouls</label>
+            <div class="counter">
                 <button class="minus" onclick="incrementCounter('minorFouls',false)">-</button>
                 <input type="number" id="minorFouls" min="0" value="0">
                 <button class="plus" onclick="incrementCounter('minorFouls',true)">+</button>
             </div>
-                <label for="minorFouls">Minor fouls</label>
-        </div>
-        <div class="counter">
-            <div class="sidewaysCounter">
+            <label for="majorFouls">Major fouls</label>
+            <div class="counter">
                 <button class="minus" onclick="incrementCounter('majorFouls',false)">-</button>
                 <input type="number" id="majorFouls" min="0" value="0">
                 <button class="plus" onclick="incrementCounter('majorFouls',true)">+</button>
             </div>
-            <label for="majorFouls">Major fouls</label>
+        </div>
+        <div>
+            <p>Comments</p>
+            <div class="cannedComments">
+                {% for cannedComment in cannedComments%}
+                <button data-text="{{cannedComment}}" id="canned-{{cannedComment}}" onclick="toggleActive('canned-{{cannedComment}}')" class="canned-button">{{cannedComment}}</button>
+                {% endfor %}
+            </div>
+            <textarea id="comments" placeholder="Write comments here..."></textarea>
+        </div>
+        <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
+
+        <div clas="sectionR">
+            <div class="counter">
+                <div class="sidewaysCounter">
+                    <button class="minus" onclick="incrementCounter('minorFouls',false)">-</button>
+                    <input type="number" id="minorFouls" min="0" value="0">
+                    <button class="plus" onclick="incrementCounter('minorFouls',true)">+</button>
+                </div>
+                    <label for="minorFouls">Minor fouls</label>
+            </div>
+            <div class="counter">
+                <div class="sidewaysCounter">
+                    <button class="minus" onclick="incrementCounter('majorFouls',false)">-</button>
+                    <input type="number" id="majorFouls" min="0" value="0">
+                    <button class="plus" onclick="incrementCounter('majorFouls',true)">+</button>
+                </div>
+                <label for="majorFouls">Major fouls</label>
+            </div>
         </div>
     </div>
 </div>
