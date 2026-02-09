@@ -711,9 +711,18 @@ def pointsPlayoffsPage():
             return "yay!! yippee!"
     return render_template(
         "predict/playoffs.html",
+        isAdmin=isAdmin(session['username']),
         alliances=[[n * 3, n * 3 + 1, n * 3 + 2] for n in range(0, 8)],
-        userPoints=userPoints
+        userPoints=userPoints,
     )
+
+@app.route("/nerdpredict/playoffs/pay", methods=["POST"])
+def finishPlayoffsPage():
+    status = payPickEms()
+    if status:
+        return "good"
+    else:
+        return "bad", 400
 
 
 @app.route("/nerdpredict")
@@ -1065,6 +1074,7 @@ adminEndpoints = frozenset(
         "resetPasswordsPage",
         "adminPage",
         "updateMatchFromTBAPage",
+        "finishPlayoffsPage",
     ]
 )  # endpoints that require user be admin
 

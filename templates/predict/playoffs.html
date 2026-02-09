@@ -184,6 +184,9 @@
 <input type="number" min="1" max="{{ userPoints }}" step="1" id="pointsInput" placeholder="{{ userPoints }}"/>
 <br>
 <button onclick="submit()" class="submit">submit</button>
+{% if isAdmin %}
+<p>you are an admin.</p> <button onclick="payOut()" class="submit">pay out</button>
+{% endif %}
 <br>
 <img id="bracketImage" src="{{ url_for('static', filename='images/brackets.png') }}">
 <script>
@@ -309,6 +312,22 @@
         }
         setEnabled(roundInput.value-1)
     }
+
+    {% if isAdmin %}
+    function payOut(){
+        fetch("{{ url_for('finishPlayoffsPage')}}",{
+            method:"POST"
+        }).then(response =>{
+            if (response.ok){
+                alert("Paid successfully!");
+            } else if (response.status === 401){
+                alert("Pickems already paid.");
+            } else {
+                alert("error");
+            }
+        });
+    }
+    {% endif %}
 
     setEnabled(0);
     roundInput.value = 1;

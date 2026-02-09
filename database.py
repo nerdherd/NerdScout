@@ -1279,6 +1279,11 @@ def payPickEms() -> bool:
     if "scoreBreakdown" not in finals2["results"]:
         app.logger.warning("Failed to pay pickems: finals 2 not scored")
         return False
+    finals1 = getMatch(CompLevel.F, 1, 1)[0]
+    if "pickemsComplete" in finals1:
+        app.logger.error("Didn't pay out pickems: pickems already paid.")
+        abort(401)
+
     m1 = getMatch(CompLevel.SF, 1, 1)[0]
     m2 = getMatch(CompLevel.SF, 1, 2)[0]
     m3 = getMatch(CompLevel.SF, 1, 3)[0]
@@ -1293,7 +1298,7 @@ def payPickEms() -> bool:
     m12 = getMatch(CompLevel.SF, 1, 12)[0]
     m13 = getMatch(CompLevel.SF, 1, 13)[0]
 
-    finals1 = getMatch(CompLevel.F, 1, 1)[0]
+    
     finals3 = getMatch(CompLevel.F, 1, 3)
     if not finals3:
         finals3 = {}
@@ -1464,6 +1469,7 @@ def payPickEms() -> bool:
             app.logger.info(f"Paid {points} for {user['username']}'s pickems")
         else:
             app.logger.info(f"Failed to pay for {user['username']}'s pickems")
+    matches.update_one({"matchKey": finals1["matchKey"]}, {"$set": {"pickemsComplete": True}})
     return True
 
 
