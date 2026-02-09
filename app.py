@@ -33,7 +33,6 @@ generatePoints()
 # Front-end Handlers
 @app.route("/")
 def index():
-    print(getUser("tonnieboy300"))
     if "username" in session:
         username = session["username"]
     else:
@@ -245,6 +244,7 @@ def createPredictionPage():
             matchNumber = int(submission["matchNumber"])
             setNumber = int(submission["setNumber"])
             forRed = bool(submission["forRed"])
+            difference = float(submission["difference"])
             points = int(submission["points"])
         except TypeError as e:
             print(e)
@@ -255,6 +255,7 @@ def createPredictionPage():
             matchNumber,
             setNumber=setNumber,
             forRed=forRed,
+            difference=difference,
             points=points,
         )
         return "ok"
@@ -273,6 +274,7 @@ def updateMatchFromTBAPage():
     success = updateMatchFromTBA(
         compLevel=compLevel, matchNumber=matchNumber, setNumber=setNumber
     )
+    updateAllStatboticsPredictions()
     return redirect(
         url_for(
             "renderMatch",

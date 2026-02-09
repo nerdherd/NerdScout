@@ -833,16 +833,25 @@
 </div>
 
 <div>
-    {% if not madePrediction %}
+    {% if (not madePrediction) and "predictionData" in results and "points_difference" in results["predictionData"] and "winner" in results["predictionData"]%}
+    {% set apiDifference = results["predictionData"]["points_difference"]%}
+    {% set apiWinner = results["predictionData"]["winner"] %}
     <div>
         <!-- haven't made a prediction yet -->
-        <button onclick="predictIsRed=true">red</button>
-        <button onclick="predictIsRed=false">blue</button>
+        <p>Current Prediction powered by Statbotics: {{apiWinner | capitalize}} wins by {{apiDifference}} points.</p>
+        {% if apiWinner == "red" %}
+        <button onclick="predictIsRed=true; difference={{apiDifference}}">Red wins by {{apiDifference}}</button>
+        <button onclick="predictIsRed=false; difference=0">Red wins by less than {{apiDifference}} or loses.</button>
+        {% else %}
+        <button onclick="predictIsRed=true; difference=0">Blue wins by less than {{apiDifference}} or loses.</button>
+        <button onclick="predictIsRed=false; difference={{apiDifference}}">Blue wins by {{apiDifference}}</button>
+        {% endif %}
         <input type="number" min="0" max="{{ userPoints }}" id="predictPointsInput">
         <span>max {{ userPoints }} points</span>
         <button onclick="createSubmission()">Make submission</button>
         <script>
             var predictIsRed = false;
+            var difference = 0
             const maxPoints = {{userPoints}};
             function createSubmission(){
                 let points = parseInt(document.getElementById("predictPointsInput").value);
@@ -855,6 +864,7 @@
                     "matchNumber":{{matchNum}},
                     "setNumber":{{setNum}},
                     "forRed":predictIsRed,
+                    "difference": difference,
                     "points": points
                 };
                 data = JSON.stringify(rawData);
@@ -873,15 +883,20 @@
                         window.location.reload();
                     } else if (response.status === 401){
                         alert("Match already scored.")
-                    } else{
+                    } else if (response.status === 409){
+                        alert("Statbotics data is old, refreshing now.");
+                        window.location.reload();
+                    }   else {
                         alert("There was an error submitting.");
                     }
                 });
             }
         </script>
     </div>
-    {% else %}
+    {% elif madePrediction %}
     <p>already predicted</p>
+    {% else %}
+    <p>Please wait for data to be added for predictions.</p>
     {% endif %}
 </div>
 

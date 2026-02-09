@@ -60,6 +60,119 @@ def writeToCacheFile(text: str, file: str, path: str = "cache") -> None:
         f.write(text)
         app.logger.info(f"wrote to {path}/{file}")
 
+def getStatboticsPrediction(matchKey: str) -> dict:
+    """
+    GETs the Statbotics prediction for a given match.
+
+    Inputs:
+    - matchKey (str): match key from TBA
+
+    Returns:
+    - dict: raw data from "pred" from Statbotics
+    """
+    try:
+        data = requests.get(
+            f"https://api.statbotics.io/v3/match/{matchKey}",
+            headers={"User-Agent": "Nerd Scout"},
+        )
+        if data.status_code == 404:
+            abort(400)
+        elif not data.ok:
+            raise Exception
+        data = json.loads(data.text)
+    except:
+        app.logger.error(f"Failed to load match data for {matchKey} from Statbotics.")  # type: ignore
+        abort(500)
+    return data["pred"]
+
+def getStatboticsPredictions(eventKey: str) -> list:
+    """
+    GETs the Statbotics prediction for a given event.
+
+    Inputs:
+    - eventKey (str): event key from TBA
+
+    Returns:
+    - list: raw data from from Statbotics
+    """
+    try:
+        data = requests.get(
+            f"https://api.statbotics.io/v3/matches?event={eventKey}",
+            headers={"User-Agent": "Nerd Scout"},
+        )
+        if data.status_code == 404:
+            abort(400)
+        elif not data.ok:
+            raise Exception
+        data = json.loads(data.text)
+    except:
+        app.logger.error(f"Failed to load event data for {eventKey} from Statbotics.")  # type: ignore
+        abort(500)
+    return data
+
+def addTestPredictionToDatabase(matchKey: str) -> bool:
+    """
+    Creates a mock Statbotics prediction for a given match and 
+    writes it to predictionData in the database.
+
+    Inputs:
+    - matchKey (str): match key from TBA
+
+    Returns:
+    - bool: success
+    """
+    blueScore = random.random() * 100
+    redScore = random.random() * 100
+    data = {
+        "winner": "red" if redScore > blueScore else "blue",
+        "red_win_prob": random.random(),
+        "red_score": redScore,
+        "blue_score": blueScore,
+    }
+    pointsDifference = abs(data["red_score"] - data["blue_score"])
+    data["points_difference"] = pointsDifference
+    return matches.update_one({"matchKey": matchKey}, {"$set": {"predictionData": data}}).acknowledged
+
+def addStatboticsPredictionToDatabase(matchKey: str) -> bool:
+    """
+    GETs the Statbotics prediction for a given match and 
+    writes it to predictionData in the database.
+
+    Inputs:
+    - matchKey (str): match key from TBA
+
+    Returns:
+    - bool: success
+    """
+    data = getStatboticsPrediction(matchKey)
+    pointsDifference = abs(data["red_score"] - data["blue_score"])
+    data["points_difference"] = pointsDifference
+    return matches.update_one({"matchKey": matchKey}, {"$set": {"predictionData": data}}).acknowledged
+
+def updateAllStatboticsPredictions(eventKey: str|None = None) -> None:
+    """
+    GETs the Statbotics prediction for a given event and
+    writes it to predictionData in the database.
+
+    Inputs:
+    - eventKey (str|None): event key from TBA, defaults to None which uses the cached key
+    """
+    if not eventKey:
+        eventKey = loadFromCacheFile("recentEventKey")
+    if not eventKey:
+        app.logger.error("Failed to update Statbotics predictions: no event key found")
+        abort(500)
+    data = getStatboticsPredictions(eventKey)
+    databaseData = getAllMatches()
+    for match in data:
+        matchInDatabase = any(d["matchKey"] == match["key"] for d in databaseData)
+        if matchInDatabase:
+            pointsDifference = abs(match["pred"]["red_score"] - match["pred"]["blue_score"])
+            match["pred"]["points_difference"] = pointsDifference
+            matches.update_one({"matchKey": match["key"]}, {"$set": {"predictionData": match["pred"]}})
+        else:
+            app.logger.warning(f"Failed to update Statbotics prediction for {match['key']}: match not in database.")
+
 
 def addScheduledMatch(
     matchNumber: int,
@@ -247,6 +360,7 @@ def addScheduleFromTBA(event: str):
     data = loadScheduleFromTBA(event)
     for match in data:
         addMatchFromTBA(match)
+    updateAllStatboticsPredictions(event)
     return "ok"
 
 
@@ -296,6 +410,7 @@ def updateScheduleFromTBA(event: str):
                         },
                     )
                     app.logger.info(f"Updated score breakdown for {match['key']}")
+    updateAllStatboticsPredictions(event)
 
 
 def addTeam(number: int, longName: str, shortName: str, comment: list = []):
@@ -848,6 +963,7 @@ def createPrediction(
     matchNumber: int,
     setNumber: int,
     forRed: bool,
+    difference: float,
     points: int,
 ) -> None:
     """
@@ -859,6 +975,7 @@ def createPrediction(
     - matchNumber (int): matchNumber of match
     - setNumber (int): setNumber of match
     - forRed (bool): if the prediction is for red alliance winning
+    - difference (int): points deficit as reported by frontend, should be same as database
     - points (int): number of points spent
     """
     timestamp = int(time())
@@ -881,6 +998,20 @@ def createPrediction(
             f"Couldn't create prediction for {user} in {compLevel.value}{matchNumber}_{setNumber}: match already scored."
         )
         abort(401)
+    if not "predictionData" in matchData:
+        app.logger.error(
+            f"Couldn't create prediction for {user} in {compLevel.value}{matchNumber}_{setNumber}: Statbotics data not found."
+        )
+        abort(500)
+    predictedWinner = matchData["predictionData"]["winner"]
+    if ((predictedWinner == "red") if forRed else (predictedWinner == "blue")) and (matchData["predictionData"]["points_difference"] != difference):
+        app.logger.error(
+            f"Couldn't create prediction for {user} in {compLevel.value}{matchNumber}_{setNumber}: Requested difference different than stored difference."
+        )
+        abort(409)
+    # if the Statbotics predicted winner is different than the user prediction's winner
+    if ((predictedWinner == "blue") if forRed else (predictedWinner == "red")):
+        difference = 0
 
     if matchData["matchKey"] in userData["predictions"]:
         app.logger.error(
@@ -897,6 +1028,7 @@ def createPrediction(
                     "points": points,
                     "matchComplete": False,
                     "correct": False,
+                    "difference": difference,
                     "timestamp": timestamp,
                 }
             },
@@ -954,44 +1086,35 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
     - forRed (bool): If red alliance won the match.
     """
     matchData = parseResults(matches.find_one({"matchKey": matchKey}))
-    correctUsers = getPredictionAccountsForAlliance(matchKey, forRed)
+    correctUsersRaw = getPredictionAccountsForAlliance(matchKey, forRed)
 
     if not "prizePool" in matchData:
         app.logger.info(f"No predictions for {matchData['matchKey']}")
         return
 
-    try:
-        redPool = matchData["prizePool"]["red"]
-    except KeyError:
-        redPool = 0
-    try:
-        bluePool = matchData["prizePool"]["blue"]
-    except KeyError:
-        bluePool = 0
-    totalPool = matchData["prizePool"]["overall"]
-
-    winningPool = redPool if forRed else bluePool
-
     accounts.update_many(
         {f"predictions.{matchKey}": {"$exists": True}},
         {"$set": {f"predictions.{matchKey}.matchCompelete": True}},
     )
+    
+    matchStartTime:int = matchData["results"]["actualTime"]
+    scoreDifference = abs(matchData["results"]["scoreBreakdown"]["red"]["totalPoints"] - matchData["results"]["scoreBreakdown"]["blue"]["totalPoints"])
+    app.logger.info(f"{'Red' if forRed else 'Blue'} wins by a difference of {scoreDifference}")
+    totalPool = matchData["prizePool"]["overall"]
+    correctUsers = []
+    winningPool = 0
+    for user in correctUsersRaw:
+        if (user["predictions"][matchKey]["forRed"] == forRed) and (user["predictions"][matchKey]["difference"] <= scoreDifference) and (user["predictions"][matchKey]["timestamp"] <= matchStartTime):
+            correctUsers.append(user)
+            winningPool += user["predictions"][matchKey]["points"]
 
     if winningPool <= 0:
         app.logger.info(
             f"Paid out total of 0 in a ratio of 1:infinity for {'red' if forRed else 'blue'} predictions on {matchKey}"
         )
         return
-    
-    matchStartTime:int = matchData["results"]["actualTime"]
-    invalidBets:int = 0
 
     for user in correctUsers:
-        userBetTime = user["predictions"][matchKey]["timestamp"]
-        if userBetTime > matchStartTime:
-            app.logger.info(f"Didn't pay {user['username']}; bet after match start.")
-            invalidBets += user["predictions"][matchKey]["points"]
-            continue
 
         # payout calculation: (bet/total bets for alliance) * total for all bets
         # = % of red or blue pool * total pool
@@ -1008,7 +1131,7 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
         app.logger.info(f"Paid {payout} to {user['username']}")
 
     app.logger.info(
-        f"Paid out total of {totalPool-invalidBets} in a ratio of 1:{totalPool/winningPool} for {'red' if forRed else 'blue'} predictions on {matchKey}"
+        f"Paid out total of {totalPool} in a ratio of 1:{totalPool/winningPool} for {'red' if forRed else 'blue'} predictions on {matchKey}"
     )
 
 
