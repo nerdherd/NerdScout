@@ -58,7 +58,7 @@
                     <button class="minus" onclick="incrementCounter('preloadFuel',false)">-</button>
                     <input type="number" id="preloadFuel" min="0" max="8" value="0">
                     <button class="plus" onclick="incrementCounter('preloadFuel',true)">+</button>
-                    <button class="gameTime" onclick="showGame()">Game Start</button>
+                    <button class="gameTime" onclick="showGame()"><b>GAME START</b></button>
                 </div>
                 <label for="preloadFuel">Preload fuel</label>
             </div>
@@ -95,7 +95,7 @@
                     <button class="minus" onclick="incrementCounter('missed',false,10)">-10</button>
                     <button class="minus" onclick="incrementCounter('missed',false,5)">-5</button>
                     <button class="minus" onclick="incrementCounter('missed',false)">-1</button>
-                    <input class="wrong" type="number" id="missed" min="0" value="0">
+                    <input class="miss" type="number" id="missed" min="0" value="0">
                     <button class="plus" onclick="incrementCounter('missed',true)">+1</button>
                     <button class="plus" onclick="incrementCounter('missed',true,5)">+5</button>
                     <button class="plus" onclick="incrementCounter('missed',true,10)">+10</button>
@@ -110,70 +110,121 @@
                 </table>
             </div>
             <div class="shift-thing shift-auto">
-                <div>
-                    <label for="autoDepot">Did they intake from the depot?</label>
-                    <input type="checkbox" id="autoDepot">
+                <div class="row">
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Depot Intake</p>
+                            <input type="checkbox" id="autoDepot">
+                        </div>
+                    </label>
+
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Over Bump</p>
+                            <input type="checkbox" id="autoBump">
+                        </div>
+                    </label>
+                    
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Under Trench</p>
+                            <input type="checkbox" id="autoTrench">
+                        </div>
+                    </label>
                 </div>
-                <div>
-                    <label for="autoBump">Did they drive over the bump?</label>
-                    <input type="checkbox" id="autoBump">
+                <div class="row">
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Neutral Zone Intake</p>
+                            <input type="checkbox" id="autoNeutralIntake">
+                        </div>
+                    </label>
+                
+            
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Scored AFTER Intaking</p>
+                            <input type="checkbox" id="autoAttemptedSecondScore">
+                        </div>
+                    </label>
+
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Score Success</p>
+                            <input type="checkbox" id="autoSucceededSecondScore">
+                        </div>
+                    </label>
                 </div>
-                <div>
-                    <label for="autoTrench">Did they drive under the trench?</label>
-                    <input type="checkbox" id="autoTrench">
+                
+                <div class="row">
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Climb attempt</p>
+                            <input type="checkbox" id="autoClimbAttempted">
+                        </div>
+                    </label>
+                
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Climb success</p>
+                            <input type="checkbox" id="autoClimbSuccess">
+                        </div>
+                    </label>
+
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Feed FROM outpost</p>
+                            <input type="checkbox" id="autoOutpostFeed">
+                        </div>
+                    </label>
                 </div>
-                <div>
-                    <label for="autoNeutralIntake">Do they have intake in the neutral zone?</label>
-                    <input type="checkbox" id="autoNeutralIntake">
+                
+                <div class="row">
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Feed INTO outpost</p>
+                            <input type="checkbox" id="autoFedToOutpost">
+                        </div>
+                    </label>
                 </div>
-                <div>
-                    <label for="autoAttemptedSecondScore">Did they attempt to score after intaking more fuel?</label>
-                    <input type="checkbox" id="autoAttemptedSecondScore">
-                </div>
-                <div>
-                    <label for="autoSucceededSecondScore">Did they succeed?</label>
-                    <input type="checkbox" id="autoSucceededSecondScore">
-                </div>
-                <div>
-                    <label for="autoClimbAttempted">Did attempt to climb?</label>
-                    <input type="checkbox" id="autoClimbAttempted">
-                </div>
-                <div>
-                    <label for="autoClimbSuccess">Did they succeed?</label>
-                    <input type="checkbox" id="autoClimbSuccess">
-                </div>
-                <div>
-                    <label for="autoOutpostFeed">Did they feed from the outpost?</label>
-                    <input type="checkbox" id="autoOutpostFeed">
-                </div>
-                <div>
-                    <label for="autoFedToOutpost">Did they feed into the outpost?</label>
-                    <input type="checkbox" id="autoFedToOutpost">
-                </div>
+
             </div>
             {% for n in ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"] %}
             <div class="shift-thing shift-{{n}}">
                 <p>shift {{n}}</p>
+                <div class="row">
                 {% if "Inactive" in n%}
-                <div>
-                    <label for="{{n}}Scored">Did they score on purpose?</label>
-                    <input type="checkbox" id="{{n}}Scored">
-                </div>
-                {% endif %}
-                <div>
-                    <label for="{{n}}Fed">Did they feed into the alliance side?</label>
-                    <input type="checkbox" id="{{n}}Fed">
-                </div>
-                <div>
-                    <label for="{{n}}Defense">Did they play defense?</label>
-                    <input type="checkbox" id="{{n}}Defense">
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Scored on purpose</p>
+                            <input type="checkbox" id="{{n}}Scored">
+                        </div>
+                    </label>
+                    {% endif %}
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Fed</p>
+                            <input type="checkbox" id="{{n}}Fed">
+                        </div>
+                    </label>
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Played Defense</p>
+                            <input type="checkbox" id="{{n}}Defense">
+                        </div>
+                    </label>
                 </div>
                 {% if "transition"==n %}
-                <div>
-                    <label for="firstShift">Did they get first shift?</label>
-                    <input type="checkbox" id="firstShift" onchange="updateShift()">
-                </div>
+                    <div class="row">
+                        <label class="toggle-btn-wrapper">
+                            <div class="toggle-btn">
+                                <b>Won first Shift?</b>
+                                <input type="checkbox" id="firstShift">
+                            </div>
+                        </label>
+                    </div>
                 {% endif %}
+                
             </div>
             {% endfor %}
         </div>
@@ -181,37 +232,33 @@
 
     <div id="postGame">
         <div>
-            <label for="endClimb">End position:</label>
-            <input type="range" min="0" max="3" step="1" value="1" id="endClimb">
+            <button onclick="showGame()"> < Back</button>
         </div>
-        <div>
-            <div>
-                <label for="outpostIntake">Did they intake from the outpost?</label>
-                <input type="checkbox" id="outpostIntake">
-            </div>
-            <div>
-                <label for="groundIntake">Did they intake from the outpost?</label>
-                <input type="checkbox" id="groundIntake">
-            </div>
-            <div>
-                <label for="fedToOutpost">Did they feed to the outpost?</label>
-                <input type="checkbox" id="fedToOutpost">
-            </div>
+        <div class="column">
+            <label for="endClimb" id="endPosText">End position:</label>
+            <input type="range" min="0" max="3" step="1" value="1" id="endClimb" oninput="changeText()">
         </div>
-        <div>
-            <label for="minorFouls">Minor fouls</label>
-            <div class="counter">
-                <button class="minus" onclick="incrementCounter('minorFouls',false)">-</button>
-                <input type="number" id="minorFouls" min="0" value="0">
-                <button class="plus" onclick="incrementCounter('minorFouls',true)">+</button>
-            </div>
-            <label for="majorFouls">Major fouls</label>
-            <div class="counter">
-                <button class="minus" onclick="incrementCounter('majorFouls',false)">-</button>
-                <input type="number" id="majorFouls" min="0" value="0">
-                <button class="plus" onclick="incrementCounter('majorFouls',true)">+</button>
-            </div>
+        <div class="row">
+            <label class="toggle-btn-wrapper">
+                <div class="toggle-btn">
+                    <p>Intake from outpost</p>
+                    <input type="checkbox" id="outpostIntake">
+                </div>
+            </label>
+            <label class="toggle-btn-wrapper">
+                <div class="toggle-btn">
+                    <p>Intake from ground</p>
+                    <input type="checkbox" id="groundIntake">
+                </div>
+            </label>
+            <label class="toggle-btn-wrapper">
+                <div class="toggle-btn">
+                    <p>Feed INTO outpost</p>
+                    <input type="checkbox" id="fedToOutpost">
+                </div>
+            </label>
         </div>
+    
         <div>
             <p>Comments</p>
             <div class="cannedComments">
@@ -223,25 +270,28 @@
         </div>
         <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
 
-        <div clas="sectionR">
-            <div class="counter">
-                <div class="sidewaysCounter">
-                    <button class="minus" onclick="incrementCounter('minorFouls',false)">-</button>
-                    <input type="number" id="minorFouls" min="0" value="0">
-                    <button class="plus" onclick="incrementCounter('minorFouls',true)">+</button>
-                </div>
-                    <label for="minorFouls">Minor fouls</label>
+        
+    </div>
+
+    <div class="row fouls">
+        <div class="column">
+            <label for="minorFouls">Minor fouls</label>
+            <div class="counter row">
+                <button class="minus" onclick="incrementCounter('minorFouls',false)">-</button>
+                <input type="number" id="minorFouls" min="0" value="0">
+                <button class="plus" onclick="incrementCounter('minorFouls',true)">+</button>
             </div>
-            <div class="counter">
-                <div class="sidewaysCounter">
-                    <button class="minus" onclick="incrementCounter('majorFouls',false)">-</button>
-                    <input type="number" id="majorFouls" min="0" value="0">
-                    <button class="plus" onclick="incrementCounter('majorFouls',true)">+</button>
-                </div>
-                <label for="majorFouls">Major fouls</label>
+        </div>
+        <div class="column">
+            <label for="majorFouls">Major fouls</label>
+            <div class="counter row">
+                <button class="minus" onclick="incrementCounter('majorFouls',false)">-</button>
+                <input type="number" id="majorFouls" min="0" value="0">
+                <button class="plus" onclick="incrementCounter('majorFouls',true)">+</button>
             </div>
         </div>
     </div>
+
 </div>
 
 <script>

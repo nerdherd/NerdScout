@@ -171,8 +171,8 @@ body {
     transform-origin: center;
     width: 50vh;
     height: 10vw; */
-    writing-mode: sideways-lr;
-    height: 40vh;
+    /* writing-mode: sideways-lr; */
+    /* height: 40vh; */
 }
 
 .endPosSect{
@@ -190,6 +190,13 @@ body {
 #comments{
     width: 90%;
     border-radius: 0.5em;
+}
+
+#shift-select{
+    display: flex;
+    overflow-x: auto;
+    height: fit-content;
+    width: 97vw;
 }
 
 #shift-select button {
@@ -282,18 +289,104 @@ h1{
 }
 
 .specialCounter input[type="number"]{
-    width: 50px
+    width: 40px;
+    font-size: 20px;
+    margin: 2px;
 }
 
 .specialCounter .plus, .specialCounter .minus{
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    margin: 2px;
 } 
 
 .removeButton{
     background-color: var(--red-opaque);
 }
 
-#postGame{
+#preGame{
+    display: flex;
     flex-direction: column;
+}
+
+#game{
+    display: none;
+    flex-direction: column;
+}
+
+#postGame{
+    display: none;
+    flex-direction: column;
+}
+
+.fouls *{
+    margin: 2px;
+}
+
+.fouls .counter .plus, .fouls .counter .minus{
+    height: 40px;
+    width: 40px;
+    border-radius: 15px;
+    font-size: 20px;
+}
+
+.fouls .counter input[type="number"]{
+    height: 40px;
+    width: 40px;
+    border-radius: 15px;
+    font-size: 20px;
+}
+
+.toggle-btn{
+    display: flex;
+    width: 75px;
+    height: 75px;
+    border-radius: 5px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    /* From https://css.glass */
+    background: rgba(16, 27, 54, 0.53);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 2px solid rgba(6, 16, 40, 0.59);
+    margin: 6px;
+    transition: background 0.25s, transform 0.15s;
+}
+
+.toggle-btn input[type="checkbox"]{
+    display: none;
+}
+
+.toggle-btn:has(input[type="checkbox"]:checked){
+    border: 2px solid rgba(255, 255, 255, 1);
+    background: rgba(6, 16, 40, 1);
+    color: var(--anthony-wheeler-bwoo)
+}
+
+.toggle-btn:has(input[type="checkbox"]:not(:checked)){
+    border: 2px solid rgba(6, 16, 40, 0.59);
+    background: rgba(6, 16, 40, 0.53);
+    color: var(--white)
+}
+
+.toggle-btn:hover .toggle-btn:active{
+    background: rgba(6, 16, 40, 1);
+}
+
+.toggle-btn:active{
+    transform: scale(1.1);
+}
+
+.toggle-btn-wrapper{
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+}
+
+.toggle-btn p{
+    text-align: center;
 }

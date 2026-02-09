@@ -20,10 +20,13 @@ function updateShift(){
 
 function incrementCounter(id,isPositive,amount=1){
     const curElement = document.getElementById(id);
+    console.log(curElement.value)
     for (let i=0;i<amount;i++){
         if (isPositive) curElement.value++;
         else if (curElement.value > 0) curElement.value--
     }
+    console.log(curElement.value)
+    console.log("Ran")
 }
 
 function getById(id){return document.getElementById(id);}
@@ -95,6 +98,11 @@ function submitScoringPeriod(){
     missedElemenet.value = 0;
     timer_input.value = 0;
     addScoreToTable(time,scored,missed);
+    // Stop timer when submitting data
+    timerActive = false;
+    let elapsed = (Date.now()-startTime)/1000;
+    timer_button.innerText = "Start Timer";
+    timer_input.value = elapsed
 }
 
 function addScoresToTable(scores){
@@ -122,7 +130,12 @@ function setScoringPeriod(newPeriod){
     curSelected=newPeriod;
     for (const button of document.getElementById("shift-select").querySelectorAll("button")){
         button.classList.remove("selected");
-        if (button.dataset.index==newPeriod) button.classList.add("selected");
+        if (button.dataset.index==newPeriod){
+            button.classList.add("selected");
+            button.scrollIntoView({
+                behavior:'smooth', 
+                inline:'center'});
+        } 
     }
     if (newPeriod==0||newPeriod==1||newPeriod==6){
         mainInputDiv.classList.remove("inactive");
@@ -258,4 +271,13 @@ function showPostGame(){
     game.style.display = 'none';
     postGame.style.display = 'flex';
 }
- 
+
+const endGameText = getById('endPosText');
+const climbPos = ["Ground", "Level 1", "Level 2", "Level 3"]
+
+function changeText(){
+    const val = getId('endClimb');
+    let template = "End position: ";
+    endGameText.textContent = template.concat(climbPos[val]);
+}
+
