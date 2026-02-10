@@ -20,13 +20,11 @@ function updateShift(){
 
 function incrementCounter(id,isPositive,amount=1){
     const curElement = document.getElementById(id);
-    console.log(curElement.value)
     for (let i=0;i<amount;i++){
         if (isPositive) curElement.value++;
         else if (curElement.value > 0) curElement.value--
     }
-    console.log(curElement.value)
-    console.log("Ran")
+    console.log("Ran");
 }
 
 function getById(id){return document.getElementById(id);}
@@ -38,6 +36,7 @@ function getId(id,isInt=true){
 var curScoringPeriod = 0;
 var scoringPeriods = [[],[],[],[],[]]; // auto, transition, first active, second active, endgame
 var timerActive = false;
+var resetTimer = false;
 var startTime;
 var scoredElemenet = getById("scored"); // speleld wrong
 var missedElemenet = getById("missed");
@@ -59,6 +58,10 @@ var timer_button = getById("timer-button");
 var timer_input = getById("time");
 function drawTimer(){
     timer_input.value = (Date.now()-startTime)/1000;
+    if (resetTimer) {
+        resetTimer = false;
+        timer_input.value = 0;
+    }
     if (timerActive) requestAnimationFrame(drawTimer);
 }
 
@@ -100,9 +103,9 @@ function submitScoringPeriod(){
     addScoreToTable(time,scored,missed);
     // Stop timer when submitting data
     timerActive = false;
-    let elapsed = (Date.now()-startTime)/1000;
     timer_button.innerText = "Start Timer";
-    timer_input.value = elapsed
+    timer_input.value = 0;
+    resetTimer = true;
 }
 
 function addScoresToTable(scores){
@@ -280,4 +283,4 @@ function changeText(){
     let template = "End position: ";
     endGameText.textContent = template.concat(climbPos[val]);
 }
-
+changeText();
