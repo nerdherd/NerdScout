@@ -964,6 +964,7 @@ def createPrediction(
     setNumber: int,
     forRed: bool,
     difference: float,
+    statsForRed: bool,
     points: int,
 ) -> None:
     """
@@ -1014,9 +1015,6 @@ def createPrediction(
             f"Couldn't create prediction for {user} in {compLevel.value}{matchNumber}_{setNumber}: Requested difference different than stored difference."
         )
         abort(409)
-    # if the Statbotics predicted winner is different than the user prediction's winner
-    if ((predictedWinner == "blue") if forRed else (predictedWinner == "red")):
-        difference = 0
 
     if matchData["matchKey"] in userData["predictions"]:
         app.logger.error(
@@ -1034,6 +1032,7 @@ def createPrediction(
                     "matchComplete": False,
                     "correct": False,
                     "difference": difference,
+                    "statsForRed": statsForRed,
                     "timestamp": timestamp,
                 }
             },
@@ -1092,6 +1091,7 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
     """
     matchData = parseResults(matches.find_one({"matchKey": matchKey}))
     correctUsersRaw = getPredictionAccountsForAlliance(matchKey, forRed)
+    incorrecUsersRaw = getPredictionAccountsForAlliance(matchKey,not forRed)
 
     if not "prizePool" in matchData:
         app.logger.info(f"No predictions for {matchData['matchKey']}")
@@ -1109,9 +1109,18 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
     correctUsers = []
     winningPool = 0
     for user in correctUsersRaw:
+        # if guessed correct alliance, score difference is greater than predicted, and submitted before match start
         if (user["predictions"][matchKey]["forRed"] == forRed) and (user["predictions"][matchKey]["difference"] <= scoreDifference) and (user["predictions"][matchKey]["timestamp"] <= matchStartTime):
             correctUsers.append(user)
             winningPool += user["predictions"][matchKey]["points"]
+            app.logger.info(f"{user['username']} predicted correctly: Correct Alliance Winner")
+    for user in incorrecUsersRaw:
+        # if guessed incorrect alliance (or guessed favorite wouldn't win by the given difference), the Statbotics
+        # favorite won, score difference is less than predicted, and submitted before match start
+        if (user["predictions"][matchKey]["forRed"] != forRed) and (user["predictions"][matchKey]["statsForRed"] == forRed) and (user["predictions"][matchKey]["difference"] > scoreDifference) and (user["predictions"][matchKey]["timestamp"] <= matchStartTime):
+            correctUsers.append(user)
+            winningPool += user["predictions"][matchKey]["points"]
+            app.logger.info(f"{user['username']} predicted correctly: Below Predicted Difference")
 
     if winningPool <= 0:
         app.logger.info(

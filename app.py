@@ -245,6 +245,7 @@ def createPredictionPage():
             setNumber = int(submission["setNumber"])
             forRed = bool(submission["forRed"])
             difference = float(submission["difference"])
+            statsForRed = bool(submission["statsForRed"])
             points = int(submission["points"])
         except TypeError as e:
             print(e)
@@ -256,6 +257,7 @@ def createPredictionPage():
             setNumber=setNumber,
             forRed=forRed,
             difference=difference,
+            statsForRed=statsForRed,
             points=points,
         )
         return "ok"

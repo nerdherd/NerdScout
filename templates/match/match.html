@@ -840,11 +840,11 @@
         <!-- haven't made a prediction yet -->
         <p>Current Prediction powered by Statbotics: {{apiWinner | capitalize}} wins by {{apiDifference | round(2)}} points.</p>
         {% if apiWinner == "red" %}
-        <button onclick="predictIsRed=true; difference={{apiDifference | round(2)}}">Red wins by {{apiDifference | round(2)}} or more.</button>
-        <button onclick="predictIsRed=false; difference=0">Red wins by less than {{apiDifference | round(2)}} or loses.</button>
+        <button onclick="predictIsRed=true; difference={{apiDifference)}}">Red wins by {{apiDifference | round(2)}} or more.</button>
+        <button onclick="predictIsRed=false; difference={{apiDifference}}">Red wins by less than {{apiDifference | round(2)}} or loses.</button>
         {% else %}
-        <button onclick="predictIsRed=true; difference=0">Blue wins by less than {{apiDifference | round(2)}} or loses.</button>
-        <button onclick="predictIsRed=false; difference={{apiDifference | round(2)}}">Blue wins by {{apiDifference | round(2)}} or more</button>
+        <button onclick="predictIsRed=true; difference={{apiDifference}}">Blue wins by less than {{apiDifference | round(2)}} or loses.</button>
+        <button onclick="predictIsRed=false; difference={{apiDifference}}">Blue wins by {{apiDifference | round(2)}} or more</button>
         {% endif %}
         <input type="number" min="0" max="{{ userPoints }}" id="predictPointsInput">
         <span>max {{ userPoints }} points</span>
@@ -865,7 +865,8 @@
                     "setNumber":{{setNum}},
                     "forRed":predictIsRed,
                     "difference": difference,
-                    "points": points
+                    "statsForRed": {{"true" if apiWinner == "red" else "false"}},
+                    "points": points,
                 };
                 data = JSON.stringify(rawData);
                 fetch('{{url_for("createPredictionPage")}}', {
