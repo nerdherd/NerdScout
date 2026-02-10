@@ -43,6 +43,7 @@
             <div class="column">
                 <label for="startposinput">Starting position</label>
                 <div class="field">
+                    <div id="fieldHighlight"></div>
                     {% for n in range(10)%}
                     <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ ('Red' if 'red' in rbtStat else 'Blue') +'/(' + (n+1)|string + ').png')}}">
                     {% endfor %}
@@ -296,12 +297,15 @@
 
 <script>
     const slider = document.getElementById("startposinput")
-    const images = document.getElementsByClassName("fieldImg");
+    //const images = document.getElementsByClassName("fieldImg");
+    const fieldHighlight = document.getElementById("fieldHighlight");
     function moveImage(){
-        for(var i = 0; i < images.length; i++){
+        /*for(var i = 0; i < images.length; i++){
             var sliderVal = slider.value;
             images[i].src = "{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/')}}" + ((i==sliderVal) ? 'True' : 'False') + "/Red/(" + (i+1) + ").png";
-        }
+        }*/
+        var sliderVal = slider.value;
+        fieldHighlight.style.left = (sliderVal*10)+"%";
     }
 </script>
 

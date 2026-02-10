@@ -232,6 +232,15 @@ body {
 .field{
     display: flex;
     justify-content: left;
+    position: relative;
+}
+
+#fieldHighlight {
+    width: 31.8px;
+    height: 193.3px;
+    background-color: rgb(255,255,0,0.2);
+    position: absolute;
+    z-index: 100;
 }
 
 .field img{
