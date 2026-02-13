@@ -922,10 +922,25 @@ def changeAccountPoints(username: str, pointsChange: int) -> bool:
         {"username": username}, {"$inc": {"points": pointsChange}}
     ).acknowledged
 
+def setAccountPoints(username: str, pointsSet: int) -> bool:
+    """
+    Sets a user's points
+
+    Inputs:
+    - username (str): username of user
+    - pointsChange (int): point value to set
+
+    Returns:
+    - bool: succeeded
+    """
+    return accounts.update_many(
+        {"username": username}, {"$set": {"points": pointsSet}}
+    ).acknowledged
+
 
 def changeAllAccountPoints(pointsChange: int) -> bool:
     """
-    Increments all user's points
+    Increments all users' points
 
     Inputs:
     - pointsChange (int): points to add or subtract
@@ -934,6 +949,18 @@ def changeAllAccountPoints(pointsChange: int) -> bool:
     - bool: succeeded
     """
     return accounts.update_many({}, {"$inc": {"points": pointsChange}}).acknowledged
+
+def setAllAccountPoints(pointsSet: int) -> bool:
+    """
+    Sets all users' points
+
+    Inputs:
+    - pointsSet (int): points value to set
+
+    Returns:
+    - bool: succeeded
+    """
+    return accounts.update_many({}, {"$set": {"points": pointsSet}}).acknowledged
 
 
 def getPointsRankings() -> list[dict]:
