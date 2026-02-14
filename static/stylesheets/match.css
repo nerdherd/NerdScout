@@ -595,3 +595,84 @@ body {
 .comments *{
     margin: 0px;
 }
+
+#poweredByStatbotics{
+    font-size:.85rem;
+    font-weight:normal;
+}
+
+h2, h3{
+    text-align: center;
+    
+    margin-left:0;
+    margin-right:0;
+    margin-bottom:0;
+}
+
+h2{
+    margin-top: .75rem;
+    font-size:1.75rem;
+}
+h3{
+    font-size: 1.5rem;
+    margin-top: .5rem;
+    line-height: 1.25rem;
+}
+
+#statboticsPrediction{
+    font-size:1.25rem;
+    text-align: center;
+    margin-left:0;
+    margin-right:0;
+    margin-bottom:1rem;
+    margin-top: .5rem;
+}
+
+.redText{
+    color: var(--red-alliance);
+    font-weight: bold;
+}
+
+.blueText{
+    color: var(--blue-alliance);
+    font-weight: bold;
+}
+
+.predictionCard{
+    text-align: center;
+    width:100%;
+}
+
+.predictionCard input, .predictionCard button{
+    background-color: var(--nerd-herd-navy);
+    padding:5px;
+    flex-shrink: 1;
+    box-sizing: border-box;
+}
+
+.predictionSelection{
+    margin-bottom:.2rem;
+    width:100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+#predictPointsInput{
+    width:100%;
+    margin-bottom:5px;
+}
+
+.predictionSelection button{
+    margin-left:7px;
+    width:100%
+}
+
+#submissionButton{
+    width:100%;
+    margin-top:5px;
+}
+
+.predictionsNotOpenMessage{
+    text-align: center;
+}

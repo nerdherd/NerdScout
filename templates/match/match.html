@@ -832,31 +832,54 @@
 {% endfor %}
 </div>
 
-<div>
+<div class="card">
+<h2>NerdPredict</h2>
     {% if (not madePrediction) and "predictionData" in results and (results["compLevel"] == "qm") and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"])%}
     {% set apiDifference = results["predictionData"]["points_difference"]%}
     {% set apiWinner = results["predictionData"]["winner"] %}
     <div>
         <!-- haven't made a prediction yet -->
-        <p>Current Prediction powered by Statbotics: {{apiWinner | capitalize}} wins by {{apiDifference | round(2)}} points.</p>
-        {% if apiWinner == "red" %}
-        <button onclick="predictIsRed=true; difference={{apiDifference}}">Red wins by {{apiDifference | round(2)}} or more.</button>
-        <button onclick="predictIsRed=false; difference={{apiDifference}}">Red wins by less than {{apiDifference | round(2)}} or loses.</button>
-        {% else %}
-        <button onclick="predictIsRed=true; difference={{apiDifference}}">Blue wins by less than {{apiDifference | round(2)}} or loses.</button>
-        <button onclick="predictIsRed=false; difference={{apiDifference}}">Blue wins by {{apiDifference | round(2)}} or more</button>
-        {% endif %}
-        <input type="number" min="0" max="{{ userPoints }}" id="predictPointsInput">
-        <span>max {{ userPoints }} points</span>
-        <button onclick="createSubmission()">Make submission</button>
+        <h3>Current Prediction <br><span id="poweredByStatbotics">powered by Statbotics</span></h3>
+        <p id="statboticsPrediction"><span class="{{apiWinner}}Text">{{apiWinner | capitalize}}</span> wins by {{apiDifference | round(2)}} points</p>
+        <div class="predictionCard">
+            <div class="predictionSelection">
+                {% if apiWinner == "red" %}
+                <button onclick="selectButton(true); difference={{apiDifference}}" id="trueButton">Red wins by {{apiDifference | round(2)}} or more.</button>
+                <button onclick="selectButton(false); difference={{apiDifference}}" id="falseButton">Red wins by less than {{apiDifference | round(2)}} or loses.</button>
+                {% else %}
+                <button onclick="selectButton(true); difference={{apiDifference}}" id="trueButton">Blue wins by less than {{apiDifference | round(2)}} or loses.</button>
+                <button onclick="selectButton(false); difference={{apiDifference}}" id="falseButton">Blue wins by {{apiDifference | round(2)}} or more</button>
+                {% endif %}
+            </div>
+            <input type="number" min="0" max="{{ userPoints }}" id="predictPointsInput">
+            <br>
+            <span id="maxPointsDisplay">max {{ userPoints }} points</span>
+            <br>
+            <button onclick="createSubmission()" id="submissionButton">Make submission</button>
+        </div>
         <script>
-            var predictIsRed = false;
+            var predictIsRed = null;
             var difference = 0
             const maxPoints = {{userPoints}};
+
+            function selectButton(red){
+                predictIsRed = red;
+                if (red){
+                    document.getElementById("trueButton").style = "outline:white solid 1px; background-color: var(--red-alliance);";
+                    document.getElementById("falseButton").style = ";";
+                } else{
+                    document.getElementById("falseButton").style = "outline:white solid 1px; background-color: var(--blue-alliance);";
+                    document.getElementById("trueButton").style = ";";
+                }
+            }
             function createSubmission(){
                 let points = parseInt(document.getElementById("predictPointsInput").value);
                 if (points > maxPoints){
                     alert("Not enough points.");
+                    return;
+                }
+                if (predictIsRed === null){
+                    alert("Choose an outcome.");
                     return;
                 }
                 rawData = {
@@ -894,15 +917,20 @@
             }
         </script>
     </div>
-    {% elif madePrediction %}
-    <p>already predicted</p>
+    {% elif madePrediction  and ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
+    {% set apiDifference = results["predictionData"]["points_difference"]%}
+    {% set apiWinner = results["predictionData"]["winner"] %}
+    <h3>Current Prediction <br><span id="poweredByStatbotics">powered by Statbotics</span></h3>
+    <p id="statboticsPrediction"><span class="{{apiWinner}}Text">{{apiWinner | capitalize}}</span> wins by {{apiDifference | round(2)}} points</p>
+    <p class="predictionsNotOpenMessage">You have already predicted.</p>
     {% elif (not results["compLevel"] == "qm") and ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
     {% set apiDifference = results["predictionData"]["points_difference"]%}
     {% set apiWinner = results["predictionData"]["winner"] %}
-    <p>Current Prediction powered by Statbotics: {{apiWinner | capitalize}} wins by {{apiDifference | round(2)}} points.</p>
-    <p>Make your playoffs predictions at <a href="{{ url_for('pointsPlayoffsPage') }}">NerdPredict Pickems</a>.</p>
+    <h3>Current Prediction <br><span id="poweredByStatbotics">powered by Statbotics</span></h3>
+    <p id="statboticsPrediction"><span class="{{apiWinner}}Text">{{apiWinner | capitalize}}</span> wins by {{apiDifference | round(2)}} points</p>
+    <p class="predictionsNotOpenMessage">Make your playoffs predictions at <a href="{{ url_for('pointsPlayoffsPage') }}">NerdPredict Pickems</a>.</p>
     {% else %}
-    <p>Please wait for data to be added for predictions.</p>
+    <p class="predictionsNotOpenMessage">Please wait for data to be added for predictions.</p>
     {% endif %}
 </div>
 
