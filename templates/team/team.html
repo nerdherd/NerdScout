@@ -12,9 +12,9 @@
 {% block content %}
 {% set previousPage = url_for("teamPage") %}
 {% include 'backButton.html' %}
-<div class="card">
+<div class="card" style="position: relative;">
 <h1>Team {{ team["number"] }}</h1>
-
+<img src="https://www.thebluealliance.com/avatar/2026/frc{{team['number']}}.png" id="avatar" onerror="this.onerror=null; this.style='display:none;'">
 <h2>{{ team["shortName"] }}</h2>
 <p class="teamLong">{{ team["longName"] }}</p>
 

@@ -283,7 +283,7 @@ def updateMatchFromTBAPage():
             matchNum=matchNumber,
             compLevel=compLevel.value,
             setNum=setNumber,
-            alert=f"Match updated: {success}",
+            alert="Successfully updated match!" if success else "Failed to update match. Please report this.",
         )
     )
 
@@ -671,9 +671,9 @@ def pointsLeaderboardPage():
 
 @app.route("/nerdpredict/playoffs", methods=["GET", "POST"])
 def pointsPlayoffsPage():
-    userPoints = getUser(session["username"])
-    if userPoints and "points" in userPoints:
-        userPoints = userPoints["points"]
+    userData = getUser(session["username"])
+    if userData and "points" in userData:
+        userPoints = userData["points"]
     else:
         userPoints = 0
     if request.method == "POST":
@@ -727,6 +727,7 @@ def pointsPlayoffsPage():
         isAdmin=isAdmin(session['username']),
         alliances=alliances,
         userPoints=userPoints,
+        userData=userData,
     )
 
 @app.route("/nerdpredict/playoffs/pay", methods=["POST"])

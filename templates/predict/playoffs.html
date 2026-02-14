@@ -180,10 +180,14 @@
 <input type="number" min="1" max="6" step="1" value="1" id="roundInput" class="counter"/>
 <button class="plus" onclick="incrementCounter('roundInput',true)">+</button>
 <br>
+{% if not "pickems" in userData %}
 <label for="pointsInput">Points (max {{userPoints}}): </label>
 <input type="number" min="1" max="{{ userPoints }}" step="1" id="pointsInput" placeholder="{{ userPoints }}"/>
 <br>
 <button onclick="submit()" class="submit">submit</button>
+{% else %}
+<p>You already completed pickems.</p>
+{% endif %}
 {% if isAdmin %}
 <p>you are an admin.</p> <button onclick="payOut()" class="submit">pay out</button>
 {% endif %}

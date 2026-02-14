@@ -602,6 +602,8 @@ def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -
             )
             app.logger.info(f"Updated score breakdown for {TBAdata['key']}")
             return True
+        else:
+            app.logger.warning(f"Could't update {TBAdata['key']}: recieved data has {'same' if matchData["results"]["postResultTime"] == TBAdata["post_result_time"] else 'older'} timestamp.")
     return False
 
 
@@ -1211,6 +1213,9 @@ def createPickEms(
     if not ("points" in userData):
         app.logger.error(f"Failed to create pickems for {user}: points not found")
         abort(500)
+    if ("pickems" in userData):
+        app.logger.error(f"Failed to create pickems for {user}: user already has pickems")
+        abort(401)
     userPoints = userData["points"]
     if userPoints < points:
         raise PaymentRequired

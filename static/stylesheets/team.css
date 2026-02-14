@@ -115,3 +115,11 @@ li.checked::marker {
         margin-left:2.5vw !important;
     }
 }
+
+#avatar{
+    height: 50px;
+    image-rendering: pixelated;
+    position: absolute;
+    right:1rem;
+    top:1.75rem;
+}

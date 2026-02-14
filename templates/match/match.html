@@ -1040,14 +1040,14 @@
     </div>
     {% endfor %}
 </div>
-<p>{{ TBAScoreBreakdown["red"] }}</p>
-<p>{{ TBAScoreBreakdown["blue"] }}</p>
+{# <p>{{ TBAScoreBreakdown["red"] }}</p>
+<p>{{ TBAScoreBreakdown["blue"] }}</p> #}
 {% endif %}
 
 {% if showAdmin %}
-<div>
-    <p>you are an admin</p>
-    <a href="{{url_for('updateMatchFromTBAPage',matchNum=matchNum,compLevel=compLevel,setNum=setNum)}}">update from tba</a>
+<div id="adminDiv" class="card">
+    <p>You are an admin.</p>
+    <a href="{{url_for('updateMatchFromTBAPage',matchNum=matchNum,compLevel=compLevel,setNum=setNum)}}">Update match results and pay out</a>
 </div>
 {% endif %}
 
