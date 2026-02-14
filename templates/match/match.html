@@ -840,7 +840,7 @@
         <!-- haven't made a prediction yet -->
         <p>Current Prediction powered by Statbotics: {{apiWinner | capitalize}} wins by {{apiDifference | round(2)}} points.</p>
         {% if apiWinner == "red" %}
-        <button onclick="predictIsRed=true; difference={{apiDifference)}}">Red wins by {{apiDifference | round(2)}} or more.</button>
+        <button onclick="predictIsRed=true; difference={{apiDifference}}">Red wins by {{apiDifference | round(2)}} or more.</button>
         <button onclick="predictIsRed=false; difference={{apiDifference}}">Red wins by less than {{apiDifference | round(2)}} or loses.</button>
         {% else %}
         <button onclick="predictIsRed=true; difference={{apiDifference}}">Blue wins by less than {{apiDifference | round(2)}} or loses.</button>
