@@ -834,7 +834,7 @@
 
 <div class="card">
 <h2>NerdPredict</h2>
-    {% if (not madePrediction) and "predictionData" in results and (results["compLevel"] == "qm") and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"])%}
+    {% if (not madePrediction) and "predictionData" in results and (results["compLevel"] == "qm") and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) and not ("scoreBreakdown" in results["results"]) %}
     {% set apiDifference = results["predictionData"]["points_difference"]%}
     {% set apiWinner = results["predictionData"]["winner"] %}
     <div>
@@ -917,6 +917,33 @@
             }
         </script>
     </div>
+    {% elif ("scoreBreakdown" in results["results"])%}
+        {% if ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
+        {% set apiDifference = results["predictionData"]["points_difference"]%}
+        {% set apiWinner = results["predictionData"]["winner"] %}
+        <h3>Current Prediction <br><span id="poweredByStatbotics">powered by Statbotics</span></h3>
+        <p id="statboticsPrediction"><span class="{{apiWinner}}Text">{{apiWinner | capitalize}}</span> wins by {{apiDifference | round(2)}} points</p>
+        {% endif %}
+    <h3>Result</h3>
+    {% set trueWinner = results["results"]['winningAlliance']%}
+    {% if trueWinner == "red"%}
+        {% set trueLoser = "blue"%}
+    {% else %}
+        {% set trueLoser = "red" %}
+    {% endif %}
+    {% set trueDifference = results["results"]["scoreBreakdown"][trueWinner]["totalPoints"] - results["results"]["scoreBreakdown"][trueLoser]["totalPoints"] %}
+    <p id="trueResult"><span class="{{trueWinner}}Text">{{trueWinner | capitalize}}</span> wins by {{trueDifference}} points</p>
+    <p id="resultDifference">
+    {% if trueWinner == apiWinner %}
+    {% set predDifference = trueDifference - (apiDifference | round(2)) %}
+    {% if predDifference < 0 %}-{% else %}+{% endif %}{{ predDifference }}
+    {% else %}
+    {% set predDifference = trueDifference + (apiDifference | round(2)) %}
+    -{{ predDifference }}
+    {% endif %}
+     from prediction
+    </p>
+    <p class="predictionsNotOpenMessage">This match has been scored.</p>
     {% elif madePrediction  and ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
     {% set apiDifference = results["predictionData"]["points_difference"]%}
     {% set apiWinner = results["predictionData"]["winner"] %}

@@ -596,9 +596,15 @@ body {
     margin: 0px;
 }
 
-#poweredByStatbotics{
+#poweredByStatbotics, #resultDifference{
     font-size:.85rem;
     font-weight:normal;
+}
+
+#resultDifference{
+    text-align: center;
+    width:100%;
+    margin:0;
 }
 
 h2, h3{
@@ -619,13 +625,18 @@ h3{
     line-height: 1.25rem;
 }
 
-#statboticsPrediction{
+#statboticsPrediction, #trueResult{
     font-size:1.25rem;
     text-align: center;
     margin-left:0;
     margin-right:0;
     margin-bottom:1rem;
     margin-top: .5rem;
+}
+
+#trueResult{
+    font-weight:bold;
+    margin-bottom:0;
 }
 
 .redText{
