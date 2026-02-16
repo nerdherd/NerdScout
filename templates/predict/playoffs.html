@@ -110,75 +110,75 @@
         {% for n in range(1,9,2) %}
         <div id="match{{(n+1)//2}}">
             match {{(n+1)//2}}
-            <button onclick="let a = setRound({{(n+1)//2}},{{alliances[n-1]}},{{alliances[n]}},{{n}},{{n+1}},true); setWinner(true,{{(n+1)//2}},a)">Alliance {{n}}: {{alliances[n-1]|join(', ')}}</button>
-            <button onclick="let a = setRound({{(n+1)//2}},{{alliances[n]}},{{alliances[n-1]}},{{n+1}},{{n}},false); setWinner(false,{{(n+1)//2}},a)">Alliance {{n+1}}: {{alliances[n]|join(', ')}}</button>
+            <button onclick="let a = setRound({{(n+1)//2}},{{alliances[n-1]}},{{alliances[n]}},{{n}},{{n+1}},true); setWinner(true,{{(n+1)//2}},a)" class="m{{(n+1)//2}}_red matchButton">Alliance {{n}}: {{alliances[n-1]|join(', ')}}</button>
+            <button onclick="let a = setRound({{(n+1)//2}},{{alliances[n]}},{{alliances[n-1]}},{{n+1}},{{n}},false); setWinner(false,{{(n+1)//2}},a)" class="m{{(n+1)//2}}_blue matchButton">Alliance {{n+1}}: {{alliances[n]|join(', ')}}</button>
         </div>
         {% endfor %}
     </div>
     <div id="second" class="round">
         <div id="match5">
             match 5
-            <button onclick="let a = setRound(5,losers[1],losers[2],loserNumbers[1],loserNumbers[2],true); setWinner(true,5,a)" id="m1-loser">_</button>
-            <button onclick="let a = setRound(5,losers[2],losers[1],loserNumbers[2],loserNumbers[1],false); setWinner(false,5,a)" id="m2-loser">_</button>
+            <button onclick="let a = setRound(5,losers[1],losers[2],loserNumbers[1],loserNumbers[2],true); setWinner(true,5,a)" id="m1-loser" class="m5_red matchButton">_</button>
+            <button onclick="let a = setRound(5,losers[2],losers[1],loserNumbers[2],loserNumbers[1],false); setWinner(false,5,a)" id="m2-loser" class="m5_blue matchButton">_</button>
         </div>
         <div id="match6">
             match 6
-            <button onclick="let a = setRound(6,losers[3],losers[4],loserNumbers[3],loserNumbers[4],true); setWinner(true,6,a)" id="m3-loser">_</button>
-            <button onclick="let a = setRound(6,losers[4],losers[3],loserNumbers[4],loserNumbers[3],false); setWinner(false,6,a)" id="m4-loser">_</button>
+            <button onclick="let a = setRound(6,losers[3],losers[4],loserNumbers[3],loserNumbers[4],true); setWinner(true,6,a)" id="m3-loser" class="m6_red matchButton">_</button>
+            <button onclick="let a = setRound(6,losers[4],losers[3],loserNumbers[4],loserNumbers[3],false); setWinner(false,6,a)" id="m4-loser" class="m6_blue matchButton">_</button>
         </div>
         <div id="match7">
             match 7
-            <button onclick="let a = setRound(7,winners[1],winners[2],winnerNumbers[1],winnerNumbers[2],true); setWinner(true,7,a)" id="m1-winner">_</button>
-            <button onclick="let a = setRound(7,winners[2],winners[1],winnerNumbers[2],winnerNumbers[1],false); setWinner(false,7,a)" id="m2-winner">_</button>
+            <button onclick="let a = setRound(7,winners[1],winners[2],winnerNumbers[1],winnerNumbers[2],true); setWinner(true,7,a)" id="m1-winner" class="m7_red matchButton">_</button>
+            <button onclick="let a = setRound(7,winners[2],winners[1],winnerNumbers[2],winnerNumbers[1],false); setWinner(false,7,a)" id="m2-winner" class="m7_blue matchButton">_</button>
         </div>
         <div id="match8">
             match 8
-            <button onclick="let a = setRound(8,winners[3],winners[4],winnerNumbers[3],winnerNumbers[4],true); setWinner(true,8,a)" id="m3-winner">_</button>
-            <button onclick="let a = setRound(8,winners[4],winners[3],winnerNumbers[4],winnerNumbers[3],false); setWinner(false,8,a)" id="m4-winner">_</button>
+            <button onclick="let a = setRound(8,winners[3],winners[4],winnerNumbers[3],winnerNumbers[4],true); setWinner(true,8,a)" id="m3-winner" class="m8_red matchButton">_</button>
+            <button onclick="let a = setRound(8,winners[4],winners[3],winnerNumbers[4],winnerNumbers[3],false); setWinner(false,8,a)" id="m4-winner" class="m8_blue matchButton">_</button>
         </div>
     </div>
     <div id="third" class="round">
         <div id="match9">
             match 9
-            <button onclick="let a = setRound(9,losers[7],winners[6],loserNumbers[7],winnerNumbers[6],true); setWinner(true,9,a)" id="m7-loser">_</button>
-            <button onclick="let a = setRound(9,winners[6],losers[7],winnerNumbers[6],loserNumbers[7],false); setWinner(false,9,a)" id="m6-winner">_</button>
+            <button onclick="let a = setRound(9,losers[7],winners[6],loserNumbers[7],winnerNumbers[6],true); setWinner(true,9,a)" id="m7-loser" class="m9_red matchButton">_</button>
+            <button onclick="let a = setRound(9,winners[6],losers[7],winnerNumbers[6],loserNumbers[7],false); setWinner(false,9,a)" id="m6-winner" class="m9_blue matchButton">_</button>
         </div>
         <div id="match10">
             match 10
-            <button onclick="let a = setRound(10,losers[8],winners[5],loserNumbers[8],winnerNumbers[5],true); setWinner(true,10,a)" id="m8-loser">_</button>
-            <button onclick="let a = setRound(10,winners[5],losers[8],winnerNumbers[5],loserNumbers[8],false); setWinner(false,10,a)" id="m5-winner">_</button>
+            <button onclick="let a = setRound(10,losers[8],winners[5],loserNumbers[8],winnerNumbers[5],true); setWinner(true,10,a)" id="m8-loser" class="m10_red matchButton">_</button>
+            <button onclick="let a = setRound(10,winners[5],losers[8],winnerNumbers[5],loserNumbers[8],false); setWinner(false,10,a)" id="m5-winner" class="m10_blue matchButton">_</button>
         </div>
     </div>
     <div id="fourth" class="round">
         <div id="match11">
             match 11
-            <button onclick="let a = setRound(11,winners[7],winners[8],winnerNumbers[7],winnerNumbers[8],true); setWinner(true,11,a)" id="m7-winner">_</button>
-            <button onclick="let a = setRound(11,winners[8],winners[7],winnerNumbers[8],winnerNumbers[7],false); setWinner(false,11,a)" id="m8-winner">_</button>
+            <button onclick="let a = setRound(11,winners[7],winners[8],winnerNumbers[7],winnerNumbers[8],true); setWinner(true,11,a)" id="m7-winner" class="m11_red matchButton">_</button>
+            <button onclick="let a = setRound(11,winners[8],winners[7],winnerNumbers[8],winnerNumbers[7],false); setWinner(false,11,a)" id="m8-winner" class="m11_blue matchButton">_</button>
         </div>
         <div id="match12">
             match 12
-            <button onclick="let a = setRound(12,winners[9],winners[10],winnerNumbers[9],winnerNumbers[10],true); setWinner(true,12,a)" id="m10-winner">_</button>
-            <button onclick="let a = setRound(12,winners[10],winners[9],winnerNumbers[10],winnerNumbers[9],false); setWinner(false,12,a)" id="m9-winner">_</button>
+            <button onclick="let a = setRound(12,winners[9],winners[10],winnerNumbers[9],winnerNumbers[10],true); setWinner(true,12,a)" id="m10-winner" class="m12_red matchButton">_</button>
+            <button onclick="let a = setRound(12,winners[10],winners[9],winnerNumbers[10],winnerNumbers[9],false); setWinner(false,12,a)" id="m9-winner" class="m12_blue matchButton">_</button>
         </div>
     </div>
     <div id="fifth" class="round">
         <div id="match13">
             match 13
-            <button onclick="let a = setRound(13,losers[11],winners[12],loserNumbers[11],winnerNumbers[12],true); setWinner(true,13,a)" id="m11-loser">_</button>
-            <button onclick="let a = setRound(13,winners[12],losers[11],winnerNumbers[12],loserNumbers[11],false); setWinner(false,13,a)" id="m12-winner">_</button>
+            <button onclick="let a = setRound(13,losers[11],winners[12],loserNumbers[11],winnerNumbers[12],true); setWinner(true,13,a)" id="m11-loser" class="m13_red matchButton">_</button>
+            <button onclick="let a = setRound(13,winners[12],losers[11],winnerNumbers[12],loserNumbers[11],false); setWinner(false,13,a)" id="m12-winner" class="m13_blue matchButton">_</button>
         </div>
     </div>
     <div id="sixth" class="round">
         <div id="match14">
             match 14
-            <button id="m11-winner" onclick="redwon[13]=true; setWinner(true,14,true)">_</button>
-            <button id="m13-winner" onclick="redwon[13]=false; setWinner(false,14,true)">_</button>
+            <button id="m11-winner" onclick="redwon[13]=true; setWinner(true,14,true)" class="m14_red matchButton">_</button>
+            <button id="m13-winner" onclick="redwon[13]=false; setWinner(false,14,true)" class="m14_blue matchButton">_</button>
         </div>
     </div>
 </div>
-<button class="minus" onclick="incrementCounter('roundInput',false)">-</button>
-<input type="number" min="1" max="6" step="1" value="1" id="roundInput" class="counter"/>
-<button class="plus" onclick="incrementCounter('roundInput',true)">+</button>
+<button class="minus" onclick="incrementCounter('roundInput',false)" {% if "pickems" in userData %}style="display:none;"{% endif %}>-</button>
+<input type="number" min="1" max="6" step="1" value="1" id="roundInput" class="counter" {% if "pickems" in userData %}style="display:none;"{% endif %}/>
+<button class="plus" onclick="incrementCounter('roundInput',true)" {% if "pickems" in userData %}style="display:none;"{% endif %}>+</button>
 <br>
 {% if not "pickems" in userData %}
 <label for="pointsInput">Points (max {{userPoints}}): </label>
@@ -335,5 +335,43 @@
 
     setEnabled(0);
     roundInput.value = 1;
+
+    {% if "pickems" in userData%}
+    let userPickemsRaw = {{ userData["pickems"] | tojson }}
+    let userPickems = []
+
+    function compare(a, b) {
+        return a["match"] - b["match"];
+    }
+
+    for (let [key, value] of Object.entries(userPickemsRaw)) {
+        if (key[0] !== "m" && key !== "finals") continue;
+        if (key === "finals"){
+            value["match"] = 14;
+        } else{
+            value["match"] = parseInt(key.slice(1));
+        }
+        userPickems.push(value);
+    }
+    userPickems.sort(compare);
+    console.log(userPickems);
+
+    for (const index in userPickems){
+        let match = userPickems[index]
+        let buttonElement = document.getElementsByClassName(`m${match["match"]}_${match["winner"]}`)[0];
+        buttonElement.removeAttribute("disabled");
+        buttonElement.click();
+        buttonElement.setAttribute("disabled","");
+    }
+
+    let allButtons = Array.from(document.getElementsByClassName("matchButton"));
+    console.log(allButtons);
+    for (const index in allButtons){
+        let buttonElement = allButtons[index];
+        buttonElement.setAttribute("disabled","");
+    }
+    
+    roundElements[0].classList.remove("active");
+    {% endif %}
 </script>
 {% endblock %}
