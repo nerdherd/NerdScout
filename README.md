@@ -1,5 +1,15 @@
-# NerdScout
-The scouting app of Nerd Herd 687.
+<h1 style="width:100%;text-align:center;" alt="A pair of binoculars with a propeller hat."><img src="./static/images/logo/logo.svg" height="100" /><br> NerdScout</h1>
+<p style="width:100%;text-align:center;">The scouting app of Nerd Herd 687.</p>
+
+## About
+
+NerdScout is a scouting app for the *FIRST* Robotics Competition, aiding in data collection during matches. Scouts watch matches and use NerdScout to record what a robot did during a match, from scoring to defense to fouls. 
+
+Pit scouting is also included, allowing scouts to ask prewritten questions to teams and input their answers into the app.
+
+NerdScout then aggregates this data into tables for analytical use during Alliance Selection, along with providing stats for each team in many areas.
+
+NerdScout also incorporates NerdPredict, a game where team members predict match results in order to gain the most points.
 
 ## Setup
 
@@ -7,38 +17,38 @@ The scouting app of Nerd Herd 687.
 
 #### MongoDB Community Edition
 
-Download [MongoDB Community Edition](https://www.mongodb.com/try/download/community)
+MongoDB Community Edition is the self hosted version of MongoDB, helpful for development.
 
-Make sure you have MongoDB Compass installed, as well as the path to the mongod.exe (install for compass and all needed EXEs are within the download)
+1. Download [MongoDB Community Edition](https://www.mongodb.com/try/download/community)
 
-Create a folder to store the database (you can just create a folder `database` in the repository folder)
+2. (optional) Install [MongoDB Compass](https://www.mongodb.com/try/download/compass), the GUI explorer for MongoDB. The installer is usually included with MongoDB Community Edition.
+
+3. Create a folder to store the database. This can be anywhere, but `/database` is ignored by git in this repo.
+
+4. Start the database
 
 To start the database on Windows:
 ```powershell
-\path\to\exe\mongod.exe --dbpath \path\to\database
+\path\to\exe\mongod.exe --dbpath "\path\to\database"
 ```
 
 or on Mac:
 
 ```bash
-/path/to/executable/mongod --dbpath /path/to/database
+/path/to/executable/mongod --dbpath "/path/to/database"
 ```
 
-Open compass and create a connection (the default URI should be correct)
+5. (optional) Open Compass and create a connection (the default URI should be correct)
 
-Once you verify it works, create the file "mongoDB" in the secrets folder and paste in the URI
+6. Once you verify it works, create the file `mongoDB` in the `secrets` directory and paste in the URI
 
 #### Atlas and Other Hosting
 
-Place your MongoDB connection string in `mongoDB` and Compass, either beginning in `mongodb://` or `mongodb+srv://`. For more information, visit the [MongoDB Documentation](https://www.mongodb.com/docs/manual/reference/connection-string/).
-
-Note: You only have to set up the secret key and compass connetion the first time.
+Place your MongoDB connection string in `secrets/mongoDB` and Compass, either beginning in `mongodb://` or `mongodb+srv://`. For more information, visit the [MongoDB Documentation](https://www.mongodb.com/docs/manual/reference/connection-string/).
 
 ### Secret key setup
 
-Create a file `secretKey` in the secrets folder and put whatever text you want in there. This acts as the key for all of the encryption.
-
-Note: You only have to set up the secret key the first time.
+Create a file `secretKey` in the `secrets` directory with whatever text you want. This acts as the key for all of the encryption. Do not change this, unless you are resetting the database.
 
 ### The Blue Alliance setup
 
@@ -46,9 +56,7 @@ If you don't already have one, create a [The Blue Alliance](https://www.thebluea
 
 Under account, scroll to Read API Keys and create a new key.
 
-Create a new file `theBlueAlliance` in the secrets folder and paste in the key.
-
-Note: You only have to set up the API key the first time.
+Create a new file `theBlueAlliance` in the `secrets` directory and paste in the key.
 
 ### Python setup
 
@@ -56,18 +64,17 @@ Make sure you have Python 3 installed.
 
 Create a terminal in the directory NerdScout is located in. Then, make a virtual environment and activate it.
 
-For Mac:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
 For Windows:
 
 ```powershell
 py -m venv .venv
 .venv\Scripts\activate
+```
+For Mac:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
 Now install the required packages.
@@ -82,7 +89,7 @@ You can deactivate the virtual environment with the deactivate keyword.
 deactivate
 ```
 
-Note: You only have to create the virtual environment and install the requirements the first time.
+The next time you want to run NerdScout, simply run the activation script.
 
 ## Running
 
@@ -104,3 +111,5 @@ flask run --debug
 ```
 
 This should open a development server and display an IP Address. Navigate to this IP address to view NerdScout.
+
+The server included with Flask is **not** meant for production use. There are many options for running WSGI (Web Server Gateway Interface) servers suitable for production. Check out the [Flask documentation](https://flask.palletsprojects.com/en/stable/deploying/) for more information.
