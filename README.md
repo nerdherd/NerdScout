@@ -38,17 +38,21 @@ or on Mac:
 /path/to/executable/mongod --dbpath "/path/to/database"
 ```
 
-5. (optional) Open Compass and create a connection (the default URI should be correct)
+5. (optional) Open Compass and create a connection. By default, if you're running locally, your connection string should be `mongodb://localhost:27017`
 
-6. Once you verify it works, create the file `mongoDB` in the `secrets` directory and paste in the URI
+6. Once you verify it works, create the file `mongoDB` in the `secrets` directory and paste in you connection string. Again, it is `mongodb://localhost:27017` by default.
+
+> Unless you change how you're hosting MongoDB, you shouldn't have to change your connection string.
 
 #### Atlas and Other Hosting
 
 Place your MongoDB connection string in `secrets/mongoDB` and Compass, either beginning in `mongodb://` or `mongodb+srv://`. For more information, visit the [MongoDB Documentation](https://www.mongodb.com/docs/manual/reference/connection-string/).
 
+> Unless you change how you're hosting MongoDB, you shouldn't have to change your connection string.
+
 ### Secret key setup
 
-Create a file `secretKey` in the `secrets` directory with whatever text you want. This acts as the key for all of the encryption. Do not change this, unless you are resetting the database.
+Create a file `secretKey` in the `secrets` directory with whatever text you want. This acts as the key for all of the encryption. Once you've set it, do not change it, unless you are resetting the database.
 
 ### The Blue Alliance setup
 
@@ -58,9 +62,11 @@ Under account, scroll to Read API Keys and create a new key.
 
 Create a new file `theBlueAlliance` in the `secrets` directory and paste in the key.
 
+> Unless you delete it or your account with The Blue Alliance, you shouldn't have to change API key.
+
 ### Python setup
 
-Make sure you have Python 3 installed.
+Make sure you have Python 3 installed. If you don't have it, check out ["Properly Installying Python" from The Hitchhiker's Guide to Python](https://docs.python-guide.org/starting/installation/) for more information.
 
 Create a terminal in the directory NerdScout is located in. Then, make a virtual environment and activate it.
 
@@ -77,10 +83,16 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Now install the required packages.
+Now install the required packages. On Windows:
+
+```powershell
+py -m pip install -r requirements.txt
+```
+
+and on Mac:
 
 ```bash
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 You can deactivate the virtual environment with the deactivate keyword.
@@ -89,7 +101,16 @@ You can deactivate the virtual environment with the deactivate keyword.
 deactivate
 ```
 
-The next time you want to run NerdScout, simply run the activation script.
+The next time you want to run NerdScout, simply run the activation script. On Windows:
+
+```powershell
+.venv\Scripts\activate
+```
+
+On Mac:
+```bash
+source .venv/bin/activate
+```
 
 ## Running
 
