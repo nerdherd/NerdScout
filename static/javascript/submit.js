@@ -129,7 +129,10 @@ var curSelected=0;
 const firstShiftCheckbox = getById("firstShift");
 const mainInputDiv = getById("main-input");
 function setScoringPeriod(newPeriod){
+    console.log(newPeriod);
     for (let n=0;n<7;n++) {mainInputDiv.classList.remove(`shift-${n}`);mainInputDiv.classList.remove(`shift-i${n}`);}
+    mainInputDiv.classList.remove(`shift-pregame`);
+    mainInputDiv.classList.remove(`shift-postgame`);
     curSelected=newPeriod;
     for (const button of document.getElementById("shift-select").querySelectorAll("button")){
         button.classList.remove("selected");
@@ -140,6 +143,19 @@ function setScoringPeriod(newPeriod){
                 inline:'center'});
         } 
     }
+    if (newPeriod==-1){
+        mainInputDiv.classList.add(`shift-pregame`);
+        mainInputDiv.classList.add("inactive");
+        curScoringPeriod=newPeriod;
+        return;
+    }
+    if (newPeriod==7){
+        mainInputDiv.classList.add(`shift-postgame`);
+        mainInputDiv.classList.add("inactive");
+        curScoringPeriod=newPeriod;
+        return;
+    }
+
     if (newPeriod==0||newPeriod==1||newPeriod==6){
         mainInputDiv.classList.remove("inactive");
         mainInputDiv.classList.add(`shift-${newPeriod}`);

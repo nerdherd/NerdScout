@@ -225,7 +225,9 @@ body {
 .main-input.shift-3 .shift-thing.shift-secondActiveShift,
 .main-input.shift-6 .shift-thing.shift-endgame,
 .main-input.shift-i1 .shift-thing.shift-firstInactiveShift,
-.main-input.shift-i2 .shift-thing.shift-secondInactiveShift{
+.main-input.shift-i2 .shift-thing.shift-secondInactiveShift,
+.main-input.shift-pregame .shift-thing.shift-pregame,
+.main-input.shift-postgame .shift-thing.shift-postgame{
     display: block;
 }
 
