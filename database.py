@@ -173,7 +173,7 @@ def updateAllStatboticsPredictions(eventKey: str|None = None) -> None:
             pointsDifference = abs(match["pred"]["red_score"] - match["pred"]["blue_score"])
             match["pred"]["points_difference"] = pointsDifference
             matches.update_one({"matchKey": match["key"]}, {"$set": {"predictionData": match["pred"]}})
-            app.logger.info(f"Loaded prediction for {match["key"]}")
+            app.logger.info(f"Loaded prediction for {match['key']}")
         else:
             app.logger.warning(f"Failed to update Statbotics prediction for {match['key']}: match not in database.")
 
