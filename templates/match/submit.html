@@ -188,7 +188,11 @@
                     {# change this into a switch #}
                     <div class="column">
                         <h2>Won first shift?</h2>
-                        <div class="row">
+                        <label class="switch">
+                            <input type="checkbox" id="firstShift"/>
+                            <span></span>
+                        </label>
+                        {# <div class="row">
                             <div class="toggle-btn toggleShift">
                                 <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Scored.svg')}}">
                                 <input type="checkbox" id="wonFirstShift">
@@ -197,17 +201,17 @@
                                 <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Missed.svg')}}">
                                 <input type="checkbox" id="lostFirstShift">
                             </div>
-                        </div>
+                        </div> #}
                     </div>
 
-                    <div class="row">
+                    {# <div class="row">
                         <label class="toggle-btn-wrapper">
                             <div class="toggle-btn">
                                 <b>Won first Shift?</b>
                                 <input type="checkbox" id="firstShift">
                             </div>
                         </label>
-                    </div>
+                    </div> #}
                 {% endif %}
                 
             </div>
