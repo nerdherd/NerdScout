@@ -920,7 +920,7 @@ def generatePoints() -> bool:
     - bool: succeeded
     """
     return accounts.update_many(
-        {"points": {"$exists": False}}, {"$set": {"points": 0}}
+        {"points": {"$exists": False}}, {"$set": {"points": 100}}
     ).acknowledged
 
 
