@@ -936,10 +936,10 @@
     <p id="resultDifference">
     {% if trueWinner == apiWinner %}
     {% set predDifference = trueDifference - (apiDifference | round(2)) %}
-    {% if predDifference < 0 %}-{% else %}+{% endif %}{{ predDifference }}
+    {% if predDifference < 0 %}-{% else %}+{% endif %}{{ predDifference | abs }}
     {% else %}
     {% set predDifference = trueDifference + (apiDifference | round(2)) %}
-    -{{ predDifference }}
+    -{{ predDifference | abs }}
     {% endif %}
      from prediction
     </p>

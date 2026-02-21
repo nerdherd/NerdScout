@@ -1636,21 +1636,26 @@ def addTestTBAData(compLevel: CompLevel, matchNumber: int, setNumber: int) -> bo
     matchData = matchDataList[0]
     matchKey = matchData["matchKey"]
 
+    redBreakdown = createTestTBABreakdown()
+    blueBreakdown = createTestTBABreakdown()
+
+    winner = "red" if redBreakdown["totalPoints"] > blueBreakdown["totalPoints"] else "blue"
+
     TBAdata = {
         "key": matchKey,
         "comp_level": compLevel.value,
         "set_number": setNumber,
         "match_number": matchNumber,
         "alliances": {"placeholder": '"we dont use this right now" - gold ship'},
-        "winning_alliance": "red" if random.random() > 0.5 else "blue",
+        "winning_alliance": winner,
         "event_key": "abaca",
         "time": int(time()),
         "actual_time": int(time()) - random.randint(0, 120),
         "predicted_time": int(time()),
         "post_result_time": int(time()),
         "score_breakdown": {
-            "red": createTestTBABreakdown(),
-            "blue": createTestTBABreakdown(),
+            "red": redBreakdown,
+            "blue": blueBreakdown,
         },
         "videos": [
             {"type": "youtube", "key": "https://youtu.be/AcVp_yl5QZs"},

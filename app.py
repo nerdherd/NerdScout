@@ -68,6 +68,8 @@ def createTestMatches():
                 9995,
                 9996,
             )
+            addTestTBAData(CompLevel.QM,i,1)
+            addTestPredictionToDatabase(f"2026test_qm{i}")
     randomScoringPeriods = lambda n: [
         {
             "time": random.random() * 5.0,
