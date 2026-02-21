@@ -157,6 +157,7 @@ def updateAllStatboticsPredictions(eventKey: str|None = None) -> None:
     Inputs:
     - eventKey (str|None): event key from TBA, defaults to None which uses the cached key
     """
+    app.logger.info("Now starting to load Statbotics data.")
     if not eventKey:
         eventKey = loadFromCacheFile("recentEventKey")
     if not eventKey:
@@ -164,12 +165,15 @@ def updateAllStatboticsPredictions(eventKey: str|None = None) -> None:
         abort(500)
     data = getStatboticsPredictions(eventKey)
     databaseData = getAllMatches()
+    if not data:
+        app.logger.error(f"Statbotics returned no data for {eventKey}")
     for match in data:
         matchInDatabase = any(d["matchKey"] == match["key"] for d in databaseData)
         if matchInDatabase:
             pointsDifference = abs(match["pred"]["red_score"] - match["pred"]["blue_score"])
             match["pred"]["points_difference"] = pointsDifference
             matches.update_one({"matchKey": match["key"]}, {"$set": {"predictionData": match["pred"]}})
+            app.logger.info(f"Loaded prediction for {match["key"]}")
         else:
             app.logger.warning(f"Failed to update Statbotics prediction for {match['key']}: match not in database.")
 
@@ -378,6 +382,9 @@ def updateScheduleFromTBA(event: str):
             addMatchFromTBA(match)
         else:
             if "score_breakdown" in match:
+                if not match["score_breakdown"]:
+                    app.logger.info(f"Score breakdown for {match['key']} is null, skipping")
+                    continue
                 matchInDB = parseResults(matches.find_one({"matchKey": match["key"]}))
                 if not "scoreBreakdown" in matchInDB["results"]:
                     matches.update_one(
@@ -411,6 +418,7 @@ def updateScheduleFromTBA(event: str):
                     )
                     app.logger.info(f"Updated score breakdown for {match['key']}")
     updateAllStatboticsPredictions(event)
+    saveAlliancesFromTBA(event)
 
 
 def addTeam(number: int, longName: str, shortName: str, comment: list = []):
@@ -473,7 +481,7 @@ def addTeamsFromTBA(event: str):
             abort(500)
 
 
-def saveAlliancesFromTBA(event: str):
+def saveAlliancesFromTBA(event: str = loadFromCacheFile("recentEventKey")):
     """
     GETs alliance selection data from TBA and stores it in cache/alliances
 
@@ -533,7 +541,7 @@ def getMatch(compLevel: CompLevel, matchNumber: int, setNumber: int):
     return parsedResults
 
 
-def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -> bool:
+def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -> tuple[bool,str]:
     """
     GETs the data for a given match from TBA and adds scoring information to the database.
     If this is the first time data has been added for the match, predictions are paid out.
@@ -556,6 +564,8 @@ def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -
     matchData = matchDataList[0]
     matchKey = matchData["matchKey"]
 
+    errorString = "Please report this. (This error has not been accounted for.)"
+
     try:
         TBAdata = requests.get(
             f"https://www.thebluealliance.com/api/v3/match/{matchKey}",
@@ -570,6 +580,9 @@ def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -
         app.logger.error(f"Failed to load data for match {matchKey} from TBA.")
         abort(500)
     if "score_breakdown" in TBAdata:
+        if not TBAdata["score_breakdown"]:
+            errorString = f"Couldn't update {TBAdata['key']}: recieved data is null"
+            return (False, errorString)
         if not "scoreBreakdown" in matchData["results"]:
             matches.update_one(
                 {"matchKey": TBAdata["key"]},
@@ -587,7 +600,7 @@ def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -
                 f"Saved new score breakdown for {TBAdata['key']}; Now paying predictions."
             )
             payoutPredictions(TBAdata["key"], TBAdata["winning_alliance"] == "red")
-            return True
+            return (True,"")
         if matchData["results"]["postResultTime"] < TBAdata["post_result_time"]:
             matches.update_one(
                 {"matchKey": TBAdata["key"]},
@@ -601,10 +614,11 @@ def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -
                 },
             )
             app.logger.info(f"Updated score breakdown for {TBAdata['key']}")
-            return True
+            return (True,"")
         else:
-            app.logger.warning(f"Could't update {TBAdata['key']}: recieved data has {'same' if matchData['results']['postResultTime'] == TBAdata['post_result_time'] else 'older'} timestamp.")
-    return False
+            errorString = f"Couldn't update {TBAdata['key']}: recieved data has {'same' if matchData['results']['postResultTime'] == TBAdata['post_result_time'] else 'older'} timestamp."
+            app.logger.warning(errorString)
+    return (False,errorString)
 
 
 def getAllMatches():

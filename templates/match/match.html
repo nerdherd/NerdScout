@@ -933,6 +933,7 @@
     {% endif %}
     {% set trueDifference = results["results"]["scoreBreakdown"][trueWinner]["totalPoints"] - results["results"]["scoreBreakdown"][trueLoser]["totalPoints"] %}
     <p id="trueResult"><span class="{{trueWinner}}Text">{{trueWinner | capitalize}}</span> wins by {{trueDifference}} points</p>
+    {% if ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
     <p id="resultDifference">
     {% if trueWinner == apiWinner %}
     {% set predDifference = trueDifference - (apiDifference | round(2)) %}
@@ -943,6 +944,7 @@
     {% endif %}
      from prediction
     </p>
+    {% endif %}
     <p class="predictionsNotOpenMessage">This match has been scored.</p>
     {% elif madePrediction  and ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
     {% set apiDifference = results["predictionData"]["points_difference"]%}
@@ -980,9 +982,9 @@
                             <h3>Tower</h3>
                             <ul class="innerBreakdownList">
                                 <li>Total Points: {{scoreBreakdown["autoTowerPoints"]}}</li>
-                                <li>Robot 1: {{FMSEndPositionRebuilt[scoreBreakdown["autoTowerRobot1"]]}}</li>
-                                <li>Robot 2: {{FMSEndPositionRebuilt[scoreBreakdown["autoTowerRobot2"]]}}</li>
-                                <li>Robot 3: {{FMSEndPositionRebuilt[scoreBreakdown["autoTowerRobot3"]]}}</li>
+                                <li>Robot 1: L{{FMSEndPositionRebuilt[scoreBreakdown["autoTowerRobot1"]].value}}</li>
+                                <li>Robot 2: L{{FMSEndPositionRebuilt[scoreBreakdown["autoTowerRobot2"]].value}}</li>
+                                <li>Robot 3: L{{FMSEndPositionRebuilt[scoreBreakdown["autoTowerRobot3"]].value}}</li>
                             </ul>
                         </div></li>
                         <li><div class="innerBreakdownCard card">
@@ -1019,9 +1021,9 @@
                             <h3>Tower</h3>
                             <ul class="innerBreakdownList">
                                 <li>Total Points: {{scoreBreakdown["endGameTowerPoints"]}}</li>
-                                <li>Robot 1: {{FMSEndPositionRebuilt[scoreBreakdown["endGameTowerRobot1"]]}}</li>
-                                <li>Robot 2: {{FMSEndPositionRebuilt[scoreBreakdown["endGameTowerRobot2"]]}}</li>
-                                <li>Robot 3: {{FMSEndPositionRebuilt[scoreBreakdown["endGameTowerRobot3"]]}}</li>
+                                <li>Robot 1: L{{FMSEndPositionRebuilt[scoreBreakdown["endGameTowerRobot1"]].value}}</li>
+                                <li>Robot 2: L{{FMSEndPositionRebuilt[scoreBreakdown["endGameTowerRobot2"]].value}}</li>
+                                <li>Robot 3: L{{FMSEndPositionRebuilt[scoreBreakdown["endGameTowerRobot3"]].value}}</li>
                             </ul>
                         </div></li>
                     </ul>

@@ -276,17 +276,20 @@ def updateMatchFromTBAPage():
     except:
         abort(400)
     # success = addTestTBAData(compLevel=compLevel,matchNumber=matchNumber,setNumber=setNumber)
-    success = updateMatchFromTBA(
+    result = updateMatchFromTBA(
         compLevel=compLevel, matchNumber=matchNumber, setNumber=setNumber
     )
     updateAllStatboticsPredictions()
+    saveAlliancesFromTBA()
+    if compLevel == CompLevel.SF or compLevel == CompLevel.F:
+        updateScheduleFromTBA(loadFromCacheFile("recentEventKey"))
     return redirect(
         url_for(
             "renderMatch",
             matchNum=matchNumber,
             compLevel=compLevel.value,
             setNum=setNumber,
-            alert="Successfully updated match!" if success else "Failed to update match. Please report this.",
+            alert="Successfully updated match!" if result[0] else f"Failed to update match. {result[1]}",
         )
     )
 

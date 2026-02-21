@@ -51,10 +51,10 @@ class EndPositionRebuilt(Enum):
 
 
 FMSEndPositionRebuilt = {
-    "#0": EndPositionRebuilt.L1,
-    "#1": EndPositionRebuilt.L2,
-    "#2": EndPositionRebuilt.L3,
-    "#3": EndPositionRebuilt.NONE,
+    "Level1": EndPositionRebuilt.L1,
+    "Level2": EndPositionRebuilt.L2,
+    "Level3": EndPositionRebuilt.L3,
+    "None": EndPositionRebuilt.NONE,
 }
 
 
