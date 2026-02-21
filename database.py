@@ -1143,7 +1143,7 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
 
     accounts.update_many(
         {f"predictions.{matchKey}": {"$exists": True}},
-        {"$set": {f"predictions.{matchKey}.matchCompelete": True}},
+        {"$set": {f"predictions.{matchKey}.matchComplete": True}},
     )
     
     matchStartTime:int = matchData["results"]["actualTime"]
