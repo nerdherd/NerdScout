@@ -34,8 +34,13 @@
         {% for pitScout in team["pitScout"]%}
         {% set data = pitScout['data'] %}
         <div class="pit-scout pit-{{loop.index}} hidden">
-            <p>Drivebase: {{data["drivebase"]}}</p>
-            <p>Languages: </p>
+            <p>Drivebase:</p>
+            <ul>
+                {% if data["drivebase"]["swerve"] %}<li>Swerve</li>{% endif %}
+                {% if data["drivebase"]["tank"] %}<li>Tank</li>{% endif %}
+                {% if data["drivebase"]["other"] %}<li>{{data["languages"]["other"]}}</li>{% endif %}
+            </ul>
+            <p>Languages:</p>
             <ul>
                 {% if data["languages"]["java"] %}<li>Java</li>{% endif %}
                 {% if data["languages"]["c++"] %}<li>C++</li>{% endif %}
@@ -43,16 +48,29 @@
                 {% if data["languages"]["labview"] %}<li>LabView</li>{% endif %}
                 {% if data["languages"]["other"] %}<li>{{data["languages"]["other"]}}</li>{% endif %}
             </ul>
+            <p>Bumpers situation:</p>
+            <ul>
+                {% if data["bumpers"]["open"] %}<li>Open</li>{% endif %}
+                {% if data["bumpers"]["closed"] %}<li>Closed</li>{% endif %}
+            </ul>
+            <p>Shooting situation:</p>
+            <ul>
+                {% if data["shootside"]["shooting-same"] %}<li>Same side as intake</li>{% endif %}
+                {% if data["shootside"]["shooting-opposite"] %}<li>Opposite side of intake</li>{% endif %}
+            </ul>
             <p>Do they currently have a camera on their robot? {{data["camera"]}}</p>
             <h3>Auto:</h3>
             <ul>
-                <li class="{{'checked' if data['auto']['auto-fuel'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-fuel"] else "cannot"}} score in the hub</li>
+                <li class="{{'checked' if data['auto']['auto-fuel-preload'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-fuel"] else "cannot"}} score preloaded fuel in the hub</li>
+                <li class="{{'checked' if data['auto']['auto-fuel'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-fuel"] else "cannot"}} score extra fuel after intaking in the hub</li>
+                <li class="{{'checked' if data['auto']['auto-bump'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} travel over the bump</li>
+                <li class="{{'checked' if data['auto']['auto-trench'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} travel under the trench</li>
                 <li class="{{'checked' if data['auto']['auto-depot'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} intake from the depot</li>
                 <li class="{{'checked' if data['auto']['auto-outpost'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-outpost"] else "cannot"}} intake from the outpost chute</li>
                 <li class="{{'checked' if data['auto']['auto-neutral'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-neutral"] else "cannot"}} intake from the neutral zone</li>
                 <li class="{{'checked' if data['auto']['climb'] else 'unchecked'}}">Climb:</li>
                 <ul>
-                    {% for n in ("center","side","inside")%}
+                    {% for n in ("center","side")%}
                     <li class="{{'checked' if data['auto']['auto-climb1-'+n] else 'unchecked'}}">{{n.capitalize()}}</li>
                     {% endfor %}
                 </ul>
@@ -61,18 +79,26 @@
             <ul>
                 <li class="{{'checked' if data['tele']['tele-fuel'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-fuel"] else "cannot"}} score in the hub</li>
                 <li class="{{'checked' if data['tele']['tele-depot'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-depot"] else "cannot"}} intake from the depot</li>
+                <li class="{{'checked' if data['tele']['tele-bump'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} travel over the bump</li>
+                <li class="{{'checked' if data['tele']['tele-trench'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} travel under the trench</li>
                 <li class="{{'checked' if data['tele']['tele-outpost'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-outpost"] else "cannot"}} intake from the outpost chute</li>
                 <li class="{{'checked' if data['tele']['tele-neutral'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-neutral"] else "cannot"}} intake from the neutral zone</li>
+            </ul>
+            <h3>Climb:</h3>
+            <ul>
+                <li class="{{'unchecked' if data['climb']['tele-climb-none'] else 'checked'}}">They {{"cannot" if data["climb"]["tele-climb-none"] else "can"}} climb</li>
+                <li class="checked">Time to climb: {{data['climb']['climb-time']}}</li>
                 {% for i in range(1,4) %}
                 <li class="{{'checked' if data['climb'+i|string] else 'unchecked'}}">Climb level {{i}}:</li>
                 <ul>
-                    {% for n in ("center","side","inside")%}
-                    <li class="{{'checked' if data['tele']['tele-climb'+i|string+'-'+n] else 'unchecked'}}">{{n.capitalize()}}</li>
+                    {% for n in ("center","side")%}
+                    <li class="{{'checked' if data['climb']['tele-climb'+i|string+'-'+n] else 'unchecked'}}">{{n.capitalize()}}</li>
                     {% endfor %}
                 </ul>
                 {% endfor %}
             </ul>
-            <p>Main robot role: {{data["role"]}}</p>
+            <p>How much fuel can the hold and score at a time? {{data["hold"]}}</p>
+            <p>How many cycles do they usually get per game? {{data["cycles"]}}</p>
             <p>Robot weight: {{data["weight"]}}</p>
             <p>Pit organization: {{data["organization"]}}</p>
             {% if data['special'] %}

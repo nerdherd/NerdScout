@@ -1182,28 +1182,32 @@ class Rebuilt(Game):
             "Bad Descision Making",
         ]
         self.pitScoutAutoCapabilities = (
-            ("Score in hub", "auto-fuel"),
+            ("Score preloaded fuel in hub", "auto-fuel-preload"),
+            ("Score intaked fuel", "auto-fuel"),
+            ("Move over bump","auto-bump"),
+            ("Move under trench","auto-trench"),
             ("Intake from depot", "auto-depot"),
             ("Intake from outpost chute", "auto-outpost"),
             ("Intake from neutral zone", "auto-neutral"),
             ("Climb level 1 in the center", "auto-climb1-center"),
             ("Climb level 1 on the sides", "auto-climb1-side"),
-            ("Climb level 1 in the inside", "auto-climb1-inside"),
         )
         self.pitScoutTeleCapabilities = (
             ("Score in hub", "tele-fuel"),
+            ("Move over bump","tele-bump"),
+            ("Move under trench","tele-trench"),
             ("Intake from depot", "tele-depot"),
             ("Intake from outpost chute", "tele-outpost"),
             ("Intake from neutral zone", "tele-neutral"),
+        )
+        self.pitScoutClimbingCapabilities = (
+            ("No climb","tele-climb-none"),
             ("Climb level 1 in the center", "tele-climb1-center"),
             ("Climb level 1 on the sides", "tele-climb1-side"),
-            ("Climb level 1 in the inside", "tele-climb1-inside"),
             ("Climb level 2 in the center", "tele-climb2-center"),
             ("Climb level 2 on the sides", "tele-climb2-side"),
-            ("Climb level 2 in the inside", "tele-climb2-inside"),
             ("Climb level 3 in the center", "tele-climb3-center"),
             ("Climb level 3 on the sides", "tele-climb3-side"),
-            ("Climb level 3 in the inside", "tele-climb3-inside"),
         )
 
     def calculateScore(

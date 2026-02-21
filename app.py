@@ -314,6 +314,7 @@ def teamPage():
         keyDisplayNames=game.keyDisplayNames,
         autoCapabilities=game.pitScoutAutoCapabilities,
         teleCapabilities=game.pitScoutTeleCapabilities,
+        climbCapabilities=game.pitScoutClimbingCapabilities
     )
 
 
@@ -557,6 +558,7 @@ def scoutTeam():
         team=team,
         autoCapabilities=game.pitScoutAutoCapabilities,
         teleCapabilities=game.pitScoutTeleCapabilities,
+        climbCapabilities=game.pitScoutClimbingCapabilities
     )
 
 

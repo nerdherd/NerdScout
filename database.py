@@ -603,7 +603,7 @@ def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -
             app.logger.info(f"Updated score breakdown for {TBAdata['key']}")
             return True
         else:
-            app.logger.warning(f"Could't update {TBAdata['key']}: recieved data has {'same' if matchData["results"]["postResultTime"] == TBAdata["post_result_time"] else 'older'} timestamp.")
+            app.logger.warning(f"Could't update {TBAdata['key']}: recieved data has {'same' if matchData['results']['postResultTime'] == TBAdata['post_result_time'] else 'older'} timestamp.")
     return False
 
 

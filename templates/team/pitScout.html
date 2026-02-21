@@ -16,10 +16,46 @@
         <label for="team">Team Number:</label>
         <input type="number" id="team" name="team" {% if team %}value="{{team}}"{%endif%}/>
     </div>
-
     <div class="card">
-        <label for="drivebase">What drivebase do they use?</label>
-        <input type="text" id="drivebase" name="drivebase"/>
+        <label for="battery">How many batteries/battery chargers do they have?</label>
+        <input type="text" id="battery" name="battery"/>
+    </div>
+    <div class="card">
+        <p>What of their bumpers?</p>
+        <div>
+            <div>
+                <input type="checkbox" id="bumper-closed" name="bumper-closed"> <label for="bumper-closed">Closed</label>
+            </div>
+            <div>
+                <input type="checkbox" id="bumper-open" name="bumper-open"> <label for="bumper-open">Open</label>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <p>What of their shooting side?</p>
+        <div>
+            <div>
+                <input type="checkbox" id="shooting-same" name="shooting-same"> <label for="shooting-same">Shooting on same as intake</label>
+            </div>
+            <div>
+                <input type="checkbox" id="shooting-opposite" name="shooting-opposite"> <label for="shooting-opposite">Shooting on opposite as intake</label>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <p>What drivebase do they use?</p>
+        <div>
+            <div>
+                <input type="checkbox" id="drivetrain-swerve" name="drivetrain-swerve"> <label for="drivetrain-swerve">Swerve</label>
+            </div>
+            <div>
+                <input type="checkbox" id="drivetrain-tank" name="drivetrain-tank"> <label for="drivetrain-tank">Tank</label>
+            </div>
+            <div>
+                <input type="checkbox" id="drivetrain-other" name="drivetrain-other" onclick="showOtherInput1()"> <label for="drivetrain-other">Other</label><br>
+                <input type="text" id="drivetrain-other-input" style="display:none;">
+            </div>
+        </div>
     </div>
     <div class="card">
         <p>What programming language(s) do they use?</p>
@@ -37,18 +73,14 @@
                 <input type="checkbox" id="language-labview" name="language-labview"> <label for="language-labview">LabView</label>
             </div>
             <div>
-                <input type="checkbox" id="language-other" name="language-other" onclick="showOtherInput()"> <label for="language-labview">Other</label><br>
+                <input type="checkbox" id="language-other" name="language-other" onclick="showOtherInput2()"> <label for="language-other">Other</label><br>
                 <input type="text" id="language-other-input" style="display:none;">
             </div>
         </div>
     </div>
     <div class="card">
-        <label for="camera">Do they CURRENTLY have a camera on their robot? If so, describe:</label>
+        <label for="camera">Do they CURRENTLY have a camera on their robot? If so, what for? Do they have auto aim?</label><br>
         <input type="text" id="camera" name="camera">
-    </div>
-    <div class="card">
-        <label for="preload">How much fuel can they preload before the match? </label><br>
-        <input type="number" id="preload" name="preload" min="0" max="8"/>
     </div>
     <div class="card">
         <p>What can they realistically do during auto?</p>
@@ -71,16 +103,26 @@
         </div>
     </div>
     <div class="card">
+        <p>climb</p>
+        <div>
+            {% for capability in climbCapabilities %}
+            <div>
+                <input type="checkbox" id="{{capability[1]}}" name="{{capability[1]}}"> <label for="{{capability[1]}}">{{capability[0]}}</label>
+            </div>
+            {% endfor %}
+        </div>
+        <div>
+            <label for="climb-time">How long does their climb usually take?</label><br>
+            <input type="text" id="climb-time" name="climb-time"/>
+        </div>
+    </div>
+    <div class="card">
         <label for="hold">How much fuel can they intake and hold at a time? </label><br>
         <input type="number" id="hold" name="hold" min="0"/>
     </div>
     <div class="card">
-        <label for="time">What is their average cycle time? </label><br>
-        <input type="text" id="time" name="time"/>
-    </div>
-    <div class="card">
-        <label for="role">What role does their robot serve? </label><br>
-        <input type="text" id="role" name="role"/>
+        <label for="cycles">How many cycles do they usually get per game?</label><br>
+        <input type="text" id="cycles" name="cycles"/>
     </div>
     <div class="card">
         <label for="weight">What is their robot weight (without batteries and bumpers) (lbs)? </label><br>
@@ -89,6 +131,10 @@
     <div class="card"> 
         <label for="special">Anything special we should know about their robot? </label><br>
         <input type="text" id="special" name="special"/>
+    </div>
+    <div class="card">
+        <label for="experience">How experienced are their drivers?</label><br>
+        <input type="text" id="experience" name="experience"/>
     </div>
     <div class="card">
         <label for="organize">Observe for yourself and don't ask a question: how organized is their pit? </label><br>
@@ -116,16 +162,27 @@
         return value;
     }
 
-    var otherInputBox = document.getElementById("language-other-input");
-    var otherCheck = document.getElementById("language-other");
+    const otherInput1Box = document.getElementById("drivetrain-other-input");
+    const otherCheck1 = document.getElementById("drivetrain-other");
 
-    function showOtherInput(){
-        console.log(otherCheck.checked);
-        if (otherCheck.checked){
-            otherInputBox.style = "display:inline;";
+    const otherInput2Box = document.getElementById("language-other-input");
+    const otherCheck2 = document.getElementById("language-other");
+
+    function showOtherInput1(){
+        if (otherCheck1.checked){
+            otherInput1Box.style = "display:inline;";
         } else{
-            otherInputBox.style = "display:none";
-            otherInputBox.value = "";
+            otherInput1Box.style = "display:none";
+            otherInput1Box.value = "";
+        }
+    }
+
+    function showOtherInput2(){
+        if (otherCheck2.checked){
+            otherInput2Box.style = "display:inline;";
+        } else{
+            otherInput2Box.style = "display:none";
+            otherInput2Box.value = "";
         }
     }
 
@@ -140,7 +197,20 @@
         console.log(team);
 
         let rawData = {
-            "drivebase": getValue("drivebase"),
+            "battery": getValue("battery"),
+            "drivebase": {
+                "swerve": getCheckbox("drivetrain-swerve"),
+                "tank": getCheckbox("drivetrain-tank"),
+                "other": getValue("drivetrain-other-input",false)
+            },
+            "bumpers": {
+                "closed": getCheckbox("bumper-closed"),
+                "open": getCheckbox("bumper-open"),
+            },
+            "shootside": {
+                "shooting-same": getCheckbox("shooting-same"),
+                "shooting-opposite": getCheckbox("shooting-opposite"),
+            },
             "languages": {
                 "java": getCheckbox("language-java"),
                 "c++": getCheckbox("language-cpp"),
@@ -149,7 +219,6 @@
                 "other": getValue("language-other-input",false)
             },
             "camera": getValue("camera"),
-            "preload": getValue("preload"),
             "auto": {
                 {% for capability in autoCapabilities %}
                 "{{capability[1]}}":getCheckbox("{{capability[1]}}"),
@@ -161,15 +230,20 @@
                 "{{capability[1]}}":getCheckbox("{{capability[1]}}"),
                 {% endfor %}
             },
+            "climb": {
+                {% for capability in climbCapabilities %}
+                "{{capability[1]}}":getCheckbox("{{capability[1]}}"),
+                {% endfor %}
+                "climb-time": getValue("climb-time")
+            },
             "hold":getValue("hold"),
-            "time":getValue("time"),
-            "role":getValue("role"),
+            "cycles":getValue("cycles"),
             "weight":getValue("weight"),
             "special":getValue("special",false),
             "organization":getValue("organize"),
             "comment":getValue("comment",false),
             {% for i in range(1,4)%}
-            "climb{{i}}":{% for n in ('center','side','inside') %}getCheckbox("tele-climb{{i}}-{{n}}")||{% endfor %}false,
+            "climb{{i}}":{% for n in ('center','side') %}getCheckbox("tele-climb{{i}}-{{n}}")||{% endfor %}false,
             {% endfor %}
         }
 
