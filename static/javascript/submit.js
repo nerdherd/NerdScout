@@ -57,10 +57,10 @@ function toggleTimer(){
 var timer_button = getById("timer-button");
 var timer_input = getById("time");
 function drawTimer(){
-    timer_input.value = (Date.now()-startTime)/1000;
+    timer_button.innerText = "Stop Timer \n " + (Date.now()-startTime)/1000;
     if (resetTimer) {
         resetTimer = false;
-        timer_input.value = 0;
+        timer_input.innerText = "Start Timer \n " + 0;
     }
     if (timerActive) requestAnimationFrame(drawTimer);
 }
@@ -103,7 +103,7 @@ function submitScoringPeriod(){
     addScoreToTable(time,scored,missed);
     // Stop timer when submitting data
     timerActive = false;
-    timer_button.innerText = "Start Timer";
+    timer_button.innerText = "Start Timer\n0";
     timer_input.value = 0;
     resetTimer = true;
 }
@@ -134,13 +134,23 @@ function setScoringPeriod(newPeriod){
     mainInputDiv.classList.remove(`shift-pregame`);
     mainInputDiv.classList.remove(`shift-postgame`);
     curSelected=newPeriod;
-    for (const button of document.getElementById("shift-select").querySelectorAll("button")){
+    for (const button of document.getElementById("shift-select2").querySelectorAll("button")){
         button.classList.remove("selected");
         if (button.dataset.index==newPeriod){
             button.classList.add("selected");
             button.scrollIntoView({
                 behavior:'smooth', 
                 inline:'center'});
+        } 
+    }
+    for (const button of document.getElementById("shift-select").querySelectorAll("button")){
+        button.classList.remove("selected");
+        if (button.dataset.index==newPeriod){
+            button.classList.add("selected");
+            button.scrollIntoView({
+                behavior:'smooth', 
+                inline:'center',
+                block:'end'});
         } 
     }
     if (newPeriod==-1){
@@ -185,6 +195,8 @@ function setScoringPeriod(newPeriod){
     if (newPeriod==4) mainInputDiv.classList.add(`shift-i2`);
     mainInputDiv.classList.add("inactive");
 }
+
+setScoringPeriod(-1)
 
 function reloadScoringTable(){
     for (const row of score_table.querySelectorAll("tr:not(.headers)")){
@@ -269,27 +281,27 @@ function submitData(matchNum, compLevel, setNum, robot){
     });
 }
 
-const preGame = getById("preGame");
-const game = getById("game");
-const postGame = getById("postGame");
+// const preGame = getById("preGame");
+// const game = getById("game");
+// const postGame = getById("postGame");
 
-function showPreGame(){
-    preGame.style.display = 'flex';
-    game.style.display = 'none';
-    postGame.style.display = 'none';
-}
+// function showPreGame(){
+//     preGame.style.display = 'flex';
+//     game.style.display = 'none';
+//     postGame.style.display = 'none';
+// }
 
-function showGame(){
-    preGame.style.display = 'none';
-    game.style.display = 'flex';
-    postGame.style.display = 'none';
-}
+// function showGame(){
+//     preGame.style.display = 'none';
+//     game.style.display = 'flex';
+//     postGame.style.display = 'none';
+// }
 
-function showPostGame(){
-    preGame.style.display = 'none';
-    game.style.display = 'none';
-    postGame.style.display = 'flex';
-}
+// function showPostGame(){
+//     preGame.style.display = 'none';
+//     game.style.display = 'none';
+//     postGame.style.display = 'flex';
+// }
 
 const endGameText = getById('endPosText');
 const climbPos = ["Ground", "Level 1", "Level 2", "Level 3"]

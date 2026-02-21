@@ -36,52 +36,19 @@
 <div class="main">
 
     {# TODO: Make this a shift #}
-    <div class="column" id="preGame">
-        <h1>Pre-Game</h1>
-        
-        <div class="row">
-            <div class="column">
-                <label for="startposinput">Starting position</label>
-                <div class="field">
-                    <div id="fieldHighlight"></div>
-                    {% for n in range(10)%}
-                    <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ ('Red' if 'red' in rbtStat else 'Blue') +'/(' + (n+1)|string + ').png')}}">
-                    {% endfor %}
-                </div>
-            <input type="range" min="0" max="9" step="1" val="5" id="startposinput" oninput="moveImage()">
-            </div>
-
-        </div>
-        <div class="row">
-
-            <div class="counter">
-                <div class="row">
-                    <button class="minus" onclick="incrementCounter('preloadFuel',false)">-</button>
-                    <input type="number" id="preloadFuel" min="0" max="8" value="0">
-                    <button class="plus" onclick="incrementCounter('preloadFuel',true)">+</button>
-                    <button class="gameTime" onclick="showGame()"><b>GAME START</b></button>
-                </div>
-                <label for="preloadFuel">Preload fuel</label>
-            </div>
-
-            <div>
-                
-            </div>
-        </div>
-
-    </div>
+    
     
     <div id="game" class="column">
         <div id="shift-select">
-            <button onClick="showPreGame()">Pregame</button>
             {% for n in range(-1,8) %}
             <button {% if loop.first %}class="selected"{% endif %} data-index="{{n}}" onclick="setScoringPeriod({{n}})">{{ ("Pregame","Auto","Transition","Shift 1","Shift 2","Shift 3","Shift 4","Endgame","Postgame")[n+1] }}</button>
             {% endfor %}
-            <button onClick="showPostGame()">Post-game</button>
         </div>
         <div class="main-input shift-0" id="main-input">
             <div class="active">
-                <button id="timer-button" onclick="toggleTimer()">Start timer</button>
+                <div class="row">
+                    <button id="timer-button" onclick="toggleTimer()">Start timer</button>
+                </div>
                 <input type="number" id="time" min="0" value="0">
                 <div class="counter specialCounter">
                     <button class="minus" onclick="incrementCounter('scored',false,10)">-10</button>
@@ -101,7 +68,9 @@
                     <button class="plus" onclick="incrementCounter('missed',true,5)">+5</button>
                     <button class="plus" onclick="incrementCounter('missed',true,10)">+10</button>
                 </div>
-                <button onclick="submitScoringPeriod()">Add scoring period</button>
+                <div class="row">
+                    <button class="addSP" onclick="submitScoringPeriod()">Add scoring period</button>
+                </div>
                 <table id="score-table">
                     <tr class="headers">
                         <th><img width="50px" height="50px" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Time.svg') }}"></th>
@@ -216,6 +185,21 @@
                     </label>
                 </div>
                 {% if "transition"==n %}
+                    {# change this into a switch #}
+                    <div class="column">
+                        <h2>Won first shift?</h2>
+                        <div class="row">
+                            <div class="toggle-btn toggleShift">
+                                <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Scored.svg')}}">
+                                <input type="checkbox" id="wonFirstShift">
+                            </div>
+                            <div class="toggle-btn toggleShift">
+                                <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Missed.svg')}}">
+                                <input type="checkbox" id="lostFirstShift">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <label class="toggle-btn-wrapper">
                             <div class="toggle-btn">
@@ -229,74 +213,104 @@
             </div>
             {% endfor %}
             <div class="shift-thing shift-pregame">
-                <p>pregame stuff</p>
+                <div class="column">
+                    <h1>Pre-Game</h1>
+                    
+                    <div class="row">
+                        <div class="column">
+                            <label for="startposinput">Starting position</label>
+                            <div class="field">
+                                <div id="fieldHighlight"></div>
+                                {% for n in range(10)%}
+                                <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ ('Red' if 'red' in rbtStat else 'Blue') +'/(' + (n+1)|string + ').png')}}">
+                                {% endfor %}
+                            </div>
+                        <input type="range" min="0" max="9" step="1" val="5" id="startposinput" oninput="moveImage()">
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+                        <div class="counter">
+                            <div class="row">
+                                <button class="minus" onclick="incrementCounter('preloadFuel',false)">-</button>
+                                <input type="number" id="preloadFuel" min="0" max="8" value="0">
+                                <button class="plus" onclick="incrementCounter('preloadFuel',true)">+</button>
+                            </div>
+                            <label for="preloadFuel">Preload fuel</label>
+                        </div>
+
+                        <div>
+                            
+                        </div>
+                    </div>
+
+                </div>
             </div>
             <div class="shift-thing shift-postgame">
-                <p>postgame stuff</p>
+                <div class="column">
+                    <label for="endClimb" id="endPosText">End position:</label>
+                    <input type="range" min="0" max="3" step="1" value="1" id="endClimb" oninput="changeText()">
+                </div>
+                <div class="row">
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Intake from outpost</p>
+                            <input type="checkbox" id="outpostIntake">
+                        </div>
+                    </label>
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Intake from ground</p>
+                            <input type="checkbox" id="groundIntake">
+                        </div>
+                    </label>
+                    <label class="toggle-btn-wrapper">
+                        <div class="toggle-btn">
+                            <p>Feed INTO outpost</p>
+                            <input type="checkbox" id="fedToOutpost">
+                        </div>
+                    </label>
+                </div>
+
+                <div>
+                    <p>Comments</p>
+                    <div class="cannedComments">
+                        {% for cannedComment in cannedComments%}
+                        <button data-text="{{cannedComment}}" id="canned-{{cannedComment}}" onclick="toggleActive('canned-{{cannedComment}}')" class="canned-button">{{cannedComment}}</button>
+                        {% endfor %}
+                    </div>
+                    <textarea id="comments" placeholder="Write comments here..."></textarea>
+                </div>
+                <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
             </div>
         </div>
     </div>
 
-    {# TODO: Make this a shift #}
-    <div id="postGame">
-        <div>
-            <button onclick="showGame()"> < Back</button>
-        </div>
-        <div class="column">
-            <label for="endClimb" id="endPosText">End position:</label>
-            <input type="range" min="0" max="3" step="1" value="1" id="endClimb" oninput="changeText()">
-        </div>
+
+    <div class="row fouls column">
         <div class="row">
-            <label class="toggle-btn-wrapper">
-                <div class="toggle-btn">
-                    <p>Intake from outpost</p>
-                    <input type="checkbox" id="outpostIntake">
+            <div class="column">
+                <label for="minorFouls">Minor fouls</label>
+                <div class="counter row">
+                    <button class="minus" onclick="incrementCounter('minorFouls',false)">-</button>
+                    <input type="number" id="minorFouls" min="0" value="0">
+                    <button class="plus" onclick="incrementCounter('minorFouls',true)">+</button>
                 </div>
-            </label>
-            <label class="toggle-btn-wrapper">
-                <div class="toggle-btn">
-                    <p>Intake from ground</p>
-                    <input type="checkbox" id="groundIntake">
-                </div>
-            </label>
-            <label class="toggle-btn-wrapper">
-                <div class="toggle-btn">
-                    <p>Feed INTO outpost</p>
-                    <input type="checkbox" id="fedToOutpost">
-                </div>
-            </label>
-        </div>
-    
-        <div>
-            <p>Comments</p>
-            <div class="cannedComments">
-                {% for cannedComment in cannedComments%}
-                <button data-text="{{cannedComment}}" id="canned-{{cannedComment}}" onclick="toggleActive('canned-{{cannedComment}}')" class="canned-button">{{cannedComment}}</button>
-                {% endfor %}
             </div>
-            <textarea id="comments" placeholder="Write comments here..."></textarea>
-        </div>
-        <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
-
-        
-    </div>
-
-    <div class="row fouls">
-        <div class="column">
-            <label for="minorFouls">Minor fouls</label>
-            <div class="counter row">
-                <button class="minus" onclick="incrementCounter('minorFouls',false)">-</button>
-                <input type="number" id="minorFouls" min="0" value="0">
-                <button class="plus" onclick="incrementCounter('minorFouls',true)">+</button>
+            <div class="column">
+                <label for="majorFouls">Major fouls</label>
+                <div class="counter row">
+                    <button class="minus" onclick="incrementCounter('majorFouls',false)">-</button>
+                    <input type="number" id="majorFouls" min="0" value="0">
+                    <button class="plus" onclick="incrementCounter('majorFouls',true)">+</button>
+                </div>
             </div>
         </div>
-        <div class="column">
-            <label for="majorFouls">Major fouls</label>
-            <div class="counter row">
-                <button class="minus" onclick="incrementCounter('majorFouls',false)">-</button>
-                <input type="number" id="majorFouls" min="0" value="0">
-                <button class="plus" onclick="incrementCounter('majorFouls',true)">+</button>
-            </div>
+        <div id="shift-select2">
+            {% for n in range(-1,8) %}
+            <button {% if loop.first %}class="selected"{% endif %} data-index="{{n}}" onclick="setScoringPeriod({{n}})">{{ ("Pregame","Auto","Transition","Shift 1","Shift 2","Shift 3","Shift 4","Endgame","Postgame")[n+1] }}</button>
+            {% endfor %}
         </div>
     </div>
 

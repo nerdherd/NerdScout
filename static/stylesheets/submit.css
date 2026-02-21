@@ -197,6 +197,7 @@ body {
     overflow-x: auto;
     height: fit-content;
     width: 97vw;
+    padding: 4px;
 }
 
 #shift-select button {
@@ -208,6 +209,25 @@ body {
 }
 
 #shift-select button.selected{
+    background-color: blue;
+}
+
+#shift-select2{
+    display: flex;
+    overflow-x: auto;
+    height: fit-content;
+    width: 97vw;
+}
+
+#shift-select2 button {
+    font-size: 20px;
+}
+
+#shift-select2 button:hover{
+    cursor: pointer;
+}
+
+#shift-select2 button.selected{
     background-color: blue;
 }
 
@@ -269,6 +289,22 @@ h1{
     margin: 0px;
 }
 
+button{
+    /* From https://css.glass */
+    background: rgba(33, 47, 82, 0.75);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(33, 47, 82, 0.3);
+    transition: background 0.25s, transform 0.15s;
+}
+
+button:active{
+    background: rgba(33, 47, 82, 100);
+    transform: scale(1.1);
+}
+
 .gameTime{
     height: 50px;
     width: 50px;
@@ -314,22 +350,7 @@ h1{
 
 .removeButton{
     background-color: var(--red-opaque);
-}
-
-#preGame{
-    display: flex;
-    flex-direction: column;
-}
-
-#game{
-    display: none;
-    flex-direction: column;
-}
-
-#postGame{
-    display: none;
-    flex-direction: column;
-}
+} 
 
 .fouls *{
     margin: 2px;
@@ -358,12 +379,12 @@ h1{
     align-items: center;
     justify-content: center;
     /* From https://css.glass */
-    background: rgba(16, 27, 54, 0.53);
+    background: rgba(33, 47, 82, 0.75);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    border: 2px solid rgba(6, 16, 40, 0.59);
+    border: 1px solid rgba(33, 47, 82, 0.3);
     margin: 6px;
     transition: background 0.25s, transform 0.15s;
 }
@@ -374,13 +395,19 @@ h1{
 
 .toggle-btn:has(input[type="checkbox"]:checked){
     border: 2px solid rgba(255, 255, 255, 1);
-    background: rgba(6, 16, 40, 1);
+    background: rgba(33, 47, 82, 0.75);
     color: var(--anthony-wheeler-bwoo)
 }
 
 .toggle-btn:has(input[type="checkbox"]:not(:checked)){
     border: 2px solid rgba(6, 16, 40, 0.59);
-    background: rgba(6, 16, 40, 0.53);
+    background: rgba(33, 47, 82, 0.75);
+    color: var(--white)
+}
+
+.toggleShift:has(input[type="checkbox"]:not(:checked)){
+    border: 2px solid rgba(6, 16, 40, 0.59);
+    background: rgba(33, 47, 82, 0.75);
     color: var(--white)
 }
 
@@ -400,4 +427,23 @@ h1{
 
 .toggle-btn p{
     text-align: center;
+}
+
+.toggle-btn img{
+    height: 90%;
+    width: 90%;
+}
+
+#time{
+    display: none;
+}
+
+#timer-button{
+    width: 95vw;
+    height: 50px;
+}
+
+.addSP{
+    width: 95vw;
+    height: 50px;
 }
