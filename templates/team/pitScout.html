@@ -21,7 +21,7 @@
         <input type="text" id="battery" name="battery"/>
     </div>
     <div class="card">
-        <p>What of their bumpers?</p>
+        <p>Are their bumpers open or closed?</p>
         <div>
             <div>
                 <input type="checkbox" id="bumper-closed" name="bumper-closed"> <label for="bumper-closed">Closed</label>
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="card">
-        <p>What of their shooting side?</p>
+        <p>What side do they shoot out of?</p>
         <div>
             <div>
                 <input type="checkbox" id="shooting-same" name="shooting-same"> <label for="shooting-same">Shooting on same as intake</label>
@@ -223,7 +223,7 @@
                 {% for capability in autoCapabilities %}
                 "{{capability[1]}}":getCheckbox("{{capability[1]}}"),
                 {% endfor %}
-                "climb":{% for n in ('center','side','inside') %}getCheckbox("auto-climb1-{{n}}")||{% endfor %}false
+                "climb":{% for n in ('center','side') %}getCheckbox("auto-climb1-{{n}}")||{% endfor %}false
             },
             "tele": {
                 {% for capability in teleCapabilities %}
