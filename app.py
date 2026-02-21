@@ -116,6 +116,7 @@ def createTestMatches():
                 endgameFed=random.random() > 0.5,
                 endgameDefense=random.random() > 0.5,
                 endClimb=EndPositionRebuilt(random.randint(0, 3)),
+                endClimbAttempted=EndPositionRebuilt(random.randint(0, 3)),
                 outpostIntake=random.random() > 0.5,
                 groundIntake=random.random() > 0.5,
                 fedToOutpost=random.random() > 0.5,
@@ -879,6 +880,13 @@ def submitScorePage():
                     int(
                         submission[  # int between 0-3, though should be 2 or 3 # type: ignore
                             "endClimb"
+                        ]
+                    )
+                ),
+                endClimbAttempted=EndPositionRebuilt(
+                    int(
+                        submission[  # int between 0-3, though should be 2 or 3 # type: ignore
+                            "endClimbAttempted"
                         ]
                     )
                 ),
