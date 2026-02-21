@@ -61,10 +61,10 @@
             <p>Do they currently have a camera on their robot? {{data["camera"]}}</p>
             <h3>Auto:</h3>
             <ul>
-                <li class="{{'checked' if data['auto']['auto-fuel-preload'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-fuel"] else "cannot"}} score preloaded fuel in the hub</li>
+                <li class="{{'checked' if data['auto']['auto-fuel-preload'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-fuel-preload"] else "cannot"}} score preloaded fuel in the hub</li>
                 <li class="{{'checked' if data['auto']['auto-fuel'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-fuel"] else "cannot"}} score extra fuel after intaking in the hub</li>
-                <li class="{{'checked' if data['auto']['auto-bump'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} travel over the bump</li>
-                <li class="{{'checked' if data['auto']['auto-trench'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} travel under the trench</li>
+                <li class="{{'checked' if data['auto']['auto-bump'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-bump"] else "cannot"}} travel over the bump</li>
+                <li class="{{'checked' if data['auto']['auto-trench'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-trench"] else "cannot"}} travel under the trench</li>
                 <li class="{{'checked' if data['auto']['auto-depot'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} intake from the depot</li>
                 <li class="{{'checked' if data['auto']['auto-outpost'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-outpost"] else "cannot"}} intake from the outpost chute</li>
                 <li class="{{'checked' if data['auto']['auto-neutral'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-neutral"] else "cannot"}} intake from the neutral zone</li>
@@ -79,8 +79,8 @@
             <ul>
                 <li class="{{'checked' if data['tele']['tele-fuel'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-fuel"] else "cannot"}} score in the hub</li>
                 <li class="{{'checked' if data['tele']['tele-depot'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-depot"] else "cannot"}} intake from the depot</li>
-                <li class="{{'checked' if data['tele']['tele-bump'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} travel over the bump</li>
-                <li class="{{'checked' if data['tele']['tele-trench'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} travel under the trench</li>
+                <li class="{{'checked' if data['tele']['tele-bump'] else 'unchecked'}}">They {{ "can" if data["auto"]["tele-bump"] else "cannot"}} travel over the bump</li>
+                <li class="{{'checked' if data['tele']['tele-trench'] else 'unchecked'}}">They {{ "can" if data["auto"]["tele-trench"] else "cannot"}} travel under the trench</li>
                 <li class="{{'checked' if data['tele']['tele-outpost'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-outpost"] else "cannot"}} intake from the outpost chute</li>
                 <li class="{{'checked' if data['tele']['tele-neutral'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-neutral"] else "cannot"}} intake from the neutral zone</li>
             </ul>
