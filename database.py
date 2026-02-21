@@ -825,6 +825,21 @@ def isAdmin(username: str):
     """
     return parseResults(accounts.find_one({"username": username}))["admin"]
 
+def isDbAdmin(username: str):
+    """
+    Checks if a user is a dbAdmin
+
+    Inputs:
+    - username (str): the username of the user
+
+    Returns:
+    - bool: if the provided user is an dbAdmin
+    """
+    result = parseResults(accounts.find_one({"username": username}))
+    if "dbAdmin" in result:
+        return result["dbAdmin"]
+    return False
+
 
 def getUser(username: str):
     """

@@ -203,7 +203,7 @@ def renderMatch():
         # IndexError: There isnt a next match
         pass
 
-    showAdmin = session["username"] and isAdmin(session["username"])
+    showAdmin = session["username"] and isDbAdmin(session["username"])
 
     alert = ""
     if "alert" in request.args:
@@ -727,7 +727,7 @@ def pointsPlayoffsPage():
         alliances.append(alliance)
     return render_template(
         "predict/playoffs.html",
-        isAdmin=isAdmin(session['username']),
+        isAdmin=isDbAdmin(session['username']),
         alliances=alliances,
         userPoints=userPoints,
         userData=userData,
@@ -1097,10 +1097,15 @@ adminEndpoints = frozenset(
         "matchTable",
         "resetPasswordsPage",
         "adminPage",
+    ]
+)  # endpoints that require user be admin
+
+dbAdminEndpoints = frozenset(
+    [
         "updateMatchFromTBAPage",
         "finishPlayoffsPage",
     ]
-)  # endpoints that require user be admin
+)  # endpoints that require user be dbAdmin
 
 
 @app.before_request
@@ -1112,6 +1117,12 @@ def before_request():
     if request.endpoint in adminEndpoints and not isAdmin(session["username"]):
         app.logger.warning(
             f"User {session['username']} attempted to access {request.endpoint} without admin"
+        )
+        abort(403)
+
+    if request.endpoint in dbAdminEndpoints and not isDbAdmin(session["username"]):
+        app.logger.warning(
+            f"User {session['username']} attempted to access {request.endpoint} without dbAdmin"
         )
         abort(403)
 
