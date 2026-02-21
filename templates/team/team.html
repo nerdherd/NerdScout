@@ -71,7 +71,7 @@
                 <li class="{{'checked' if data['auto']['climb'] else 'unchecked'}}">Climb:</li>
                 <ul>
                     {% for n in ("center","side")%}
-                    <li class="{{'checked' if data['auto']['auto-climb1-'+n] else 'unchecked'}}">{{n.capitalize()}}</li>
+                    <li class="{{'checked' if data['auto']['auto-climb1-'+n] else 'unchecked'}}">{{n.capitalize()}}: {{'Yes' if data['auto']['auto-climb1-'+n] else 'No'}}</li>
                     {% endfor %}
                 </ul>
             </ul>
@@ -92,7 +92,7 @@
                 <li class="{{'checked' if data['climb'+i|string] else 'unchecked'}}">Climb level {{i}}:</li>
                 <ul>
                     {% for n in ("center","side")%}
-                    <li class="{{'checked' if data['climb']['tele-climb'+i|string+'-'+n] else 'unchecked'}}">{{n.capitalize()}}</li>
+                    <li class="{{'checked' if data['climb']['tele-climb'+i|string+'-'+n] else 'unchecked'}}">{{n.capitalize()}}: {{'Yes' if data['climb']['tele-climb'+i|string+'-'+n] else 'No'}}</li>
                     {% endfor %}
                 </ul>
                 {% endfor %}
