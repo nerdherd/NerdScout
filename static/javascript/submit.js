@@ -219,11 +219,17 @@ const errorMsg = getById("winnerNotPicked")
 const attemptSlider = getById("attemptEndDiv")
 const climbFailCheck = getById("climbFail")
 
+var endFail = false;
+
 function attemptEnd(){
-    if(climbFailCheck.checked){
+    endFail = climbFailCheck.checked;
+    if(endFail){
         attemptSlider.style.display = "flex";
     }else{
         attemptSlider.style.display = "none";
+        const val = getId('attemptedEndClimb');
+        document.getElementById('endClimb').value = val;
+        endGameText.textContent = "Actual End Position: ".concat(climbPos[val]);
     }
 }
 
@@ -367,5 +373,9 @@ function endChangeText(){
     const val = getId('attemptedEndClimb');
     let template = "Attempted End position: ";
     attemptEndGameText.textContent = template.concat(climbPos[val]);
+    if (!endFail){
+        document.getElementById('endClimb').value = val;
+        endGameText.textContent = "Actual End Position: ".concat(climbPos[val]);
+    }
 }
 changeText();

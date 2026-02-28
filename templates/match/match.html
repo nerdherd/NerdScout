@@ -331,7 +331,7 @@
                             <div class="booleanList">
                                 <div class="booleanItem">
                                     <h2>Fed:</h2>
-                                    {% if not result["firstInactiveShiftFed"] %}
+                                    {% if result["firstInactiveShiftFed"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -340,7 +340,7 @@
 
                                 <div class="booleanItem">
                                 <h2>Defended:</h2>
-                                    {% if not result["firstInactiveShiftDefense"] %}
+                                    {% if result["firstInactiveShiftDefense"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -348,7 +348,7 @@
                                 </div>
                                 <div class="booleanItem">
                                     <h2>Scored:</h2>
-                                    {% if not result["firstInactiveShiftScored"] %}
+                                    {% if result["firstInactiveShiftScored"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -421,7 +421,7 @@
                             <div class="booleanList">
                                 <div class="booleanItem">
                                     <h2>Fed:</h2>
-                                    {% if not result["firstInactiveShiftFed"] %}
+                                    {% if result["firstInactiveShiftFed"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -430,7 +430,7 @@
 
                                 <div class="booleanItem">
                                 <h2>Defended:</h2>
-                                    {% if not result["firstInactiveShiftDefense"] %}
+                                    {% if result["firstInactiveShiftDefense"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -438,7 +438,7 @@
                                 </div>
                                 <div class="booleanItem">
                                     <h2>Scored:</h2>
-                                    {% if not result["firstInactiveShiftScored"] %}
+                                    {% if result["firstInactiveShiftScored"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -513,7 +513,7 @@
                             <div class="booleanList">
                                 <div class="booleanItem">
                                     <h2>Fed:</h2>
-                                    {% if not result["secondInactiveShiftFed"] %}
+                                    {% if result["secondInactiveShiftFed"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -522,7 +522,7 @@
 
                                 <div class="booleanItem">
                                 <h2>Defended:</h2>
-                                    {% if not result["secondInactiveShiftDefense"] %}
+                                    {% if result["secondInactiveShiftDefense"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -530,7 +530,7 @@
                                 </div>
                                 <div class="booleanItem">
                                     <h2>Scored:</h2>
-                                    {% if not result["secondInactiveShiftScored"] %}
+                                    {% if result["secondInactiveShiftScored"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -603,7 +603,7 @@
                             <div class="booleanList">
                                 <div class="booleanItem">
                                     <h2>Fed:</h2>
-                                    {% if not result["secondInactiveShiftFed"] %}
+                                    {% if result["secondInactiveShiftFed"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -612,7 +612,7 @@
 
                                 <div class="booleanItem">
                                 <h2>Defended:</h2>
-                                    {% if not result["secondInactiveShiftDefense"] %}
+                                    {% if result["secondInactiveShiftDefense"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -620,7 +620,7 @@
                                 </div>
                                 <div class="booleanItem">
                                     <h2>Scored:</h2>
-                                    {% if not result["secondInactiveShiftScored"] %}
+                                    {% if result["secondInactiveShiftScored"] %}
                                     <img src="static\images\RebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -640,7 +640,7 @@
                 
                     <div class="booleanItem">
                         <h2>Fed:</h2>
-                        {% if not result["endgameFed"] %}
+                        {% if result["endgameFed"] %}
                         <img src="static\images\RebuiltMatchDisplay\True.svg">
                         {% else %}
                         <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -648,7 +648,7 @@
                     </div>
                     <div class="booleanItem">
                         <h2>Defended:</h2>
-                        {% if not result["endgameDefense"] %}
+                        {% if result["endgameDefense"] %}
                         <img src="static\images\RebuiltMatchDisplay\True.svg">
                         {% else %}
                         <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -701,7 +701,7 @@
                 <div class="booleanList">
                     <div class="booleanItem">
                         <h2>From Outpost:</h2>
-                        {% if not result["outpostIntake"] %}
+                        {% if result["outpostIntake"] %}
                         <img src="static\images\RebuiltMatchDisplay\True.svg">
                         {% else %}
                         <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -709,7 +709,7 @@
                     </div>
                     <div class="booleanItem">
                         <h2>Into Outpost:</h2>
-                        {% if not result["fedToOutpost"] %}
+                        {% if result["fedToOutpost"] %}
                         <img src="static\images\RebuiltMatchDisplay\True.svg">
                         {% else %}
                         <img src="static\images\RebuiltMatchDisplay\False.svg">
@@ -717,7 +717,7 @@
                     </div>
                     <div class="booleanItem">
                         <h2>Ground:</h2>
-                        {% if not result["groundIntake"] %}
+                        {% if result["groundIntake"] %}
                         <img src="static\images\RebuiltMatchDisplay\True.svg">
                         {% else %}
                         <img src="static\images\RebuiltMatchDisplay\False.svg">
