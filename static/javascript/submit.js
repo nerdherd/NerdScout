@@ -125,11 +125,18 @@ function switchScoringPeriod(newPeriod){
     reloadScoringTable();
 }
 
+var weWon = false;
+var wonTouched = false;
+
 var curSelected=0;
 const firstShiftCheckbox = getById("firstShift");
 const mainInputDiv = getById("main-input");
 function setScoringPeriod(newPeriod){
     console.log(newPeriod);
+    if(newPeriod >= 2 && !wonTouched){
+        alert("PLEASE PICK A SHIFT WINNER");
+        return;
+    }
     for (let n=0;n<7;n++) {mainInputDiv.classList.remove(`shift-${n}`);mainInputDiv.classList.remove(`shift-i${n}`);}
     mainInputDiv.classList.remove(`shift-pregame`);
     mainInputDiv.classList.remove(`shift-postgame`);
@@ -173,7 +180,7 @@ function setScoringPeriod(newPeriod){
         else switchScoringPeriod(newPeriod);
         return;
     }
-    if (firstShiftCheckbox.checked){
+    if (!weWon){
         if (newPeriod==2||newPeriod==4){
             mainInputDiv.classList.remove("inactive");
             if (newPeriod==2) switchScoringPeriod(2);
@@ -204,6 +211,40 @@ function reloadScoringTable(){
     }
     addScoresToTable(scoringPeriods[curScoringPeriod]);
 }
+
+const redWinCheck = getById("redFirstShift")
+const blueWinCheck = getById("blueFirstShift")
+const errorMsg = getById("winnerNotPicked")
+
+
+
+function redTeamWon(color){
+    if(color=="Red"){
+        weWon = true;
+    } else {
+        weWon = false;
+    }
+    wonTouched = true;
+    errorMsg.style.display = "none";
+    redWinCheck.disabled = true;
+    blueWinCheck.disabled = false;
+    blueWinCheck.checked = false;
+}
+
+function blueTeamWon(color){
+    if(color=="Blue"){
+        weWon = true;
+    } else {
+        weWon = false;
+    }
+    wonTouched = true;
+    errorMsg.style.display = "none";
+    blueWinCheck.disabled = true;
+    redWinCheck.disabled = false;
+    redWinCheck.checked = false;
+}
+
+
 
 // get checked
 function gc(id){ return getById(id).checked; }
@@ -242,7 +283,7 @@ function submitData(matchNum, compLevel, setNum, robot){
         "autoClimbSuccess": gc("autoClimbSuccess"),
         "autoOutpostFeed": gc("autoOutpostFeed"),
         "autoFedToOutpost": gc("autoFedToOutpost"),
-        "firstShift": gc("firstShift"),
+        "firstShift": weWon,
         "transitionFuel": scoringPeriods[1],
         "firstActiveShiftFuel": scoringPeriods[2],
         "secondActiveShiftFuel": scoringPeriods[3],

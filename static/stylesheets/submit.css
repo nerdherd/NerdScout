@@ -302,7 +302,7 @@ button{
 
 button:active{
     background: rgba(33, 47, 82, 100);
-    transform: scale(1.1);
+    transform: scale(1.01);
 }
 
 .gameTime{
@@ -405,11 +405,11 @@ button:active{
     color: var(--white)
 }
 
-.toggleShift:has(input[type="checkbox"]:not(:checked)){
+/* .toggleShift:has(input[type="checkbox"]:not(:checked)){
     border: 2px solid rgba(6, 16, 40, 0.59);
     background: rgba(33, 47, 82, 0.75);
     color: var(--white)
-}
+} */
 
 .toggle-btn:hover .toggle-btn:active{
     background: rgba(6, 16, 40, 1);
@@ -446,4 +446,8 @@ button:active{
 .addSP{
     width: 95vw;
     height: 50px;
+}
+
+.error{
+    color:red;
 }

@@ -71,13 +71,15 @@
                 <div class="row">
                     <button class="addSP" onclick="submitScoringPeriod()">Add scoring period</button>
                 </div>
-                <table id="score-table">
-                    <tr class="headers">
-                        <th><img width="50px" height="50px" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Time.svg') }}"></th>
-                        <th><img width="50px" height="50px" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Scored.svg') }}"></th>
-                        <th><img width="50px" height="50px" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Missed.svg') }}"></th>
-                    </tr>
-                </table>
+                <div class="row">
+                    <table id="score-table">
+                        <tr class="headers">
+                            <th><img width="50px" height="50px" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Time.svg') }}"></th>
+                            <th><img width="50px" height="50px" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Scored.svg') }}"></th>
+                            <th><img width="50px" height="50px" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Missed.svg') }}"></th>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="shift-thing shift-auto">
                 <div class="row">
@@ -161,7 +163,7 @@
             </div>
             {% for n in ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"] %}
             <div class="shift-thing shift-{{n}}">
-                <p>shift {{n}}</p>
+                {# <p>shift {{n}}</p> #}
                 <div class="row">
                 {% if "Inactive" in n%}
                     <label class="toggle-btn-wrapper">
@@ -187,21 +189,23 @@
                 {% if "transition"==n %}
                     {# change this into a switch #}
                     <div class="column">
-                        <h2>Won first shift?</h2>
-                        <label class="switch">
-                            <input type="checkbox" id="firstShift"/>
-                            <span></span>
-                        </label>
-                        {# <div class="row">
-                            <div class="toggle-btn toggleShift">
-                                <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Scored.svg')}}">
-                                <input type="checkbox" id="wonFirstShift">
-                            </div>
-                            <div class="toggle-btn toggleShift">
-                                <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Missed.svg')}}">
-                                <input type="checkbox" id="lostFirstShift">
-                            </div>
-                        </div> #}
+                        <h2>First Shift Winner</h2>
+                        <h2 class="error" id="winnerNotPicked"> PLEASE PICK A WINNER </h2>
+                        
+                        <div class="row">
+                            <label class="toggle-btn-wrapper">
+                                <div class="toggle-btn toggleShift" id="redWinner">
+                                    <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/RedWin.svg')}}">
+                                    <input type="checkbox" id="redFirstShift" onclick="redTeamWon('{{'Red' if 'red' in rbtStat else 'Blue'}}')">
+                                </div>
+                            </label>
+                            <label class="toggle-btn-wrapper">
+                                <div class="toggle-btn toggleShift" id="blueWinner">
+                                    <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/BlueWin.svg')}}">
+                                    <input type="checkbox" id="blueFirstShift" onclick="blueTeamWon('{{'Red' if 'red' in rbtStat else 'Blue'}}')">
+                                </div>
+                            </label>
+                        </div>
                     </div>
 
                     {# <div class="row">
