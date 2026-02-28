@@ -71,7 +71,7 @@ function moveImage(imageId, sliderVal){
                         <div class="field">
                             <div id="fieldHighlight-{{ color }}-{{ team['teamNumber'] }}-{{ loop.index }}" class="fieldHighlight"></div>
                             {% for n in range(10)%}
-                            <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ ('Red' if 'red' in rbtStat else 'Blue') +'/(' + (n+1)|string + ').png')}}">
+                            <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ (color) +'/(' + (n+1)|string + ').png')}}">
                             {% endfor %}
                         </div>
                         <script>
@@ -1070,14 +1070,23 @@ function moveImage(imageId, sliderVal){
                     </ul>
                 </div>
             </li>
-            <li class="scoreBreakdownItem">Minor Fouls: {{scoreBreakdown["minorFoulCount"]}}</li>
-            <li class="scoreBreakdownItem">Major Fouls: {{scoreBreakdown["majorFoulCount"]}}</li>
-            <li class="scoreBreakdownItem">Foul Points Recieved(?): {{scoreBreakdown["foulPoints"]}}</li>
-            <li class="scoreBreakdownItem">G206 Penalty: {{scoreBreakdown["g206Penalty"]}}</li>
-            <li class="scoreBreakdownItem">Energized: {{scoreBreakdown["energizedAchieved"]}}</li>
-            <li class="scoreBreakdownItem">Supercharged: {{scoreBreakdown["superchargedAchieved"]}}</li>
-            <li class="scoreBreakdownItem">Traversal: {{scoreBreakdown["traversalAchieved"]}}</li>
-            <li class="scoreBreakdownItem">Ranking Points: {{scoreBreakdown["rp"]}}</li>
+            <li><div class="middleScoreBreakdown card">
+            <h2>Fouls</h2>
+            <ul>    
+                <li class="scoreBreakdownItem">Minor Fouls: {{scoreBreakdown["minorFoulCount"]}}</li>
+                <li class="scoreBreakdownItem">Major Fouls: {{scoreBreakdown["majorFoulCount"]}}</li>
+                <li class="scoreBreakdownItem">Foul Points Recieved: {{scoreBreakdown["foulPoints"]}}</li>
+                <li class="scoreBreakdownItem">G206 Penalty: {{scoreBreakdown["g206Penalty"]}}</li>
+            </ul></div></li>
+            <li><div class="middleScoreBreakdown card">
+            <h2>Ranking Points</h2>
+            <ul>    
+                <li class="scoreBreakdownItem">Energized: {{scoreBreakdown["energizedAchieved"]}}</li>
+                <li class="scoreBreakdownItem">Supercharged: {{scoreBreakdown["superchargedAchieved"]}}</li>
+                <li class="scoreBreakdownItem">Traversal: {{scoreBreakdown["traversalAchieved"]}}</li>
+                <li class="scoreBreakdownItem">Total Ranking Points: {{scoreBreakdown["rp"]}}</li>
+            </ul></div></li>
+            
 
         </ul>
     </div>
