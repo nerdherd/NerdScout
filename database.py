@@ -1345,6 +1345,27 @@ def createPickEms(
         app.logger.error(f"Failed to add pickems for {user}.")
     return updateStatus
 
+def determineAlliance(allianceDict:dict, teamNumbers: list) -> int:
+    """
+    Takes in the allianceDict from payPickEms() and a list
+    of teams, and returns alliance number
+
+    Inputs:
+    - allianceDict: allianceDict from payPickEms()
+    - teamNumbers: A list of team numbers on an alliance
+
+    Returns:
+    - int: alliance number, or 0 if not found
+    """
+    winner = 0
+    for team in teamNumbers:
+        for captains, allianceNumber in allianceDict.items():
+            for captain in captains:
+                if team == captain:
+                    winner = allianceNumber
+    return winner;
+
+
 
 def payPickEms() -> bool:
     app.logger.info("Starting to pay out pickems")
@@ -1396,44 +1417,44 @@ def payPickEms() -> bool:
         "m13": m13["results"],
     }
     allMatchBlueCaptains = {
-        "m1": m1["teams"]["blue1"],
-        "m2": m2["teams"]["blue1"],
-        "m3": m3["teams"]["blue1"],
-        "m4": m4["teams"]["blue1"],
-        "m5": m5["teams"]["blue1"],
-        "m6": m6["teams"]["blue1"],
-        "m7": m7["teams"]["blue1"],
-        "m8": m8["teams"]["blue1"],
-        "m9": m9["teams"]["blue1"],
-        "m10": m10["teams"]["blue1"],
-        "m11": m11["teams"]["blue1"],
-        "m12": m12["teams"]["blue1"],
-        "m13": m13["teams"]["blue1"],
+        "m1": [m1["teams"]["blue1"],m1["teams"]["blue2"],m1["teams"]["blue3"]],
+        "m2": [m2["teams"]["blue1"],m2["teams"]["blue2"],m2["teams"]["blue3"]],
+        "m3": [m3["teams"]["blue1"],m3["teams"]["blue2"],m3["teams"]["blue3"]],
+        "m4": [m4["teams"]["blue1"],m4["teams"]["blue2"],m4["teams"]["blue3"]],
+        "m5": [m5["teams"]["blue1"],m5["teams"]["blue2"],m5["teams"]["blue3"]],
+        "m6": [m6["teams"]["blue1"],m6["teams"]["blue2"],m6["teams"]["blue3"]],
+        "m7": [m7["teams"]["blue1"],m7["teams"]["blue2"],m7["teams"]["blue3"]],
+        "m8": [m8["teams"]["blue1"],m8["teams"]["blue2"],m8["teams"]["blue3"]],
+        "m9": [m9["teams"]["blue1"],m9["teams"]["blue2"],m9["teams"]["blue3"]],
+        "m10": [m10["teams"]["blue1"],m10["teams"]["blue2"],m10["teams"]["blue3"]],
+        "m11": [m11["teams"]["blue1"],m11["teams"]["blue2"],m11["teams"]["blue3"]],
+        "m12": [m12["teams"]["blue1"],m12["teams"]["blue2"],m12["teams"]["blue3"]],
+        "m13": [m13["teams"]["blue1"],m13["teams"]["blue2"],m13["teams"]["blue3"]],
     }
     allMatchRedCaptains = {
-        "m1": m1["teams"]["red1"],
-        "m2": m2["teams"]["red1"],
-        "m3": m3["teams"]["red1"],
-        "m4": m4["teams"]["red1"],
-        "m5": m5["teams"]["red1"],
-        "m6": m6["teams"]["red1"],
-        "m7": m7["teams"]["red1"],
-        "m8": m8["teams"]["red1"],
-        "m9": m9["teams"]["red1"],
-        "m10": m10["teams"]["red1"],
-        "m11": m11["teams"]["red1"],
-        "m12": m12["teams"]["red1"],
-        "m13": m13["teams"]["red1"],
+        "m1": [m1["teams"]["red1"],m1["teams"]["red2"],m1["teams"]["red3"]],
+        "m2": [m2["teams"]["red1"],m2["teams"]["red2"],m2["teams"]["red3"]],
+        "m3": [m3["teams"]["red1"],m3["teams"]["red2"],m3["teams"]["red3"]],
+        "m4": [m4["teams"]["red1"],m4["teams"]["red2"],m4["teams"]["red3"]],
+        "m5": [m5["teams"]["red1"],m5["teams"]["red2"],m5["teams"]["red3"]],
+        "m6": [m6["teams"]["red1"],m6["teams"]["red2"],m6["teams"]["red3"]],
+        "m7": [m7["teams"]["red1"],m7["teams"]["red2"],m7["teams"]["red3"]],
+        "m8": [m8["teams"]["red1"],m8["teams"]["red2"],m8["teams"]["red3"]],
+        "m9": [m9["teams"]["red1"],m9["teams"]["red2"],m9["teams"]["red3"]],
+        "m10": [m10["teams"]["red1"],m10["teams"]["red2"],m10["teams"]["red3"]],
+        "m11": [m11["teams"]["red1"],m11["teams"]["red2"],m11["teams"]["red3"]],
+        "m12": [m12["teams"]["red1"],m12["teams"]["red2"],m12["teams"]["red3"]],
+        "m13": [m13["teams"]["red1"],m13["teams"]["red2"],m13["teams"]["red3"]],
     }
     allianceDict = {
-        str(allMatchRedCaptains["m1"]): 1,
-        str(allMatchBlueCaptains["m1"]): 8,
-        str(allMatchRedCaptains["m2"]): 4,
-        str(allMatchBlueCaptains["m2"]): 5,
-        str(allMatchRedCaptains["m3"]): 2,
-        str(allMatchBlueCaptains["m3"]): 7,
-        str(allMatchRedCaptains["m4"]): 3,
-        str(allMatchBlueCaptains["m4"]): 6,
+        tuple(allMatchRedCaptains["m1"]): 1,
+        tuple(allMatchBlueCaptains["m1"]): 8,
+        tuple(allMatchRedCaptains["m2"]): 4,
+        tuple(allMatchBlueCaptains["m2"]): 5,
+        tuple(allMatchRedCaptains["m3"]): 2,
+        tuple(allMatchBlueCaptains["m3"]): 7,
+        tuple(allMatchRedCaptains["m4"]): 3,
+        tuple(allMatchBlueCaptains["m4"]): 6,
     }
     round1Picks = ["m1", "m2", "m3", "m4"]
     round2Picks = ["m5", "m6", "m7", "m8"]
@@ -1441,8 +1462,8 @@ def payPickEms() -> bool:
     round4Picks = ["m11", "m12"]
     round5Picks = ["m13"]
 
-    finalsRedCaptain = finals1["teams"]["red1"]
-    finalsBlueCaptain = finals1["teams"]["blue1"]
+    finalsRedCaptain = [finals1["teams"]["red1"],finals1["teams"]["red2"],finals1["teams"]["red3"]]
+    finalsBlueCaptain = [finals1["teams"]["blue1"],finals1["teams"]["blue2"],finals1["teams"]["blue3"]]
     finals1Winner = finals1["results"]["winningAlliance"]
     finals2Winner = finals2["results"]["winningAlliance"]
     if "winningAlliance" in finals3:
@@ -1471,9 +1492,9 @@ def payPickEms() -> bool:
 
         for pick in round1Picks:
             realWinningAlliance = (
-                allianceDict[str(allMatchRedCaptains[pick])]
+                determineAlliance(allianceDict,allMatchRedCaptains[pick])
                 if allMatchResults[pick]["winningAlliance"] == "red"
-                else allianceDict[str(allMatchBlueCaptains[pick])]
+                else determineAlliance(allianceDict,allMatchBlueCaptains[pick])
             )
             if userPickems[pick][userPickems[pick]["winner"]] == realWinningAlliance:
                 app.logger.info(
@@ -1482,9 +1503,9 @@ def payPickEms() -> bool:
                 points += int(pointsSpent * 0.2)
         for pick in round2Picks:
             realWinningAlliance = (
-                allianceDict[str(allMatchRedCaptains[pick])]
+                determineAlliance(allianceDict,allMatchRedCaptains[pick])
                 if allMatchResults[pick]["winningAlliance"] == "red"
-                else allianceDict[str(allMatchBlueCaptains[pick])]
+                else determineAlliance(allianceDict,allMatchBlueCaptains[pick])
             )
             if userPickems[pick][userPickems[pick]["winner"]] == realWinningAlliance:
                 app.logger.info(
@@ -1493,9 +1514,9 @@ def payPickEms() -> bool:
                 points += int(pointsSpent * 0.4)
         for pick in round3Picks:
             realWinningAlliance = (
-                allianceDict[str(allMatchRedCaptains[pick])]
+                determineAlliance(allianceDict,allMatchRedCaptains[pick])
                 if allMatchResults[pick]["winningAlliance"] == "red"
-                else allianceDict[str(allMatchBlueCaptains[pick])]
+                else determineAlliance(allianceDict,allMatchBlueCaptains[pick])
             )
             if userPickems[pick][userPickems[pick]["winner"]] == realWinningAlliance:
                 app.logger.info(
@@ -1504,9 +1525,9 @@ def payPickEms() -> bool:
                 points += int(pointsSpent * 0.6)
         for pick in round4Picks:
             realWinningAlliance = (
-                allianceDict[str(allMatchRedCaptains[pick])]
+                determineAlliance(allianceDict,allMatchRedCaptains[pick])
                 if allMatchResults[pick]["winningAlliance"] == "red"
-                else allianceDict[str(allMatchBlueCaptains[pick])]
+                else determineAlliance(allianceDict,allMatchBlueCaptains[pick])
             )
             if userPickems[pick][userPickems[pick]["winner"]] == realWinningAlliance:
                 app.logger.info(
@@ -1515,9 +1536,9 @@ def payPickEms() -> bool:
                 points += int(pointsSpent * 0.8)
         for pick in round5Picks:
             realWinningAlliance = (
-                allianceDict[str(allMatchRedCaptains[pick])]
+                determineAlliance(allianceDict,allMatchRedCaptains[pick])
                 if allMatchResults[pick]["winningAlliance"] == "red"
-                else allianceDict[str(allMatchBlueCaptains[pick])]
+                else determineAlliance(allianceDict,allMatchBlueCaptains[pick])
             )
             if userPickems[pick][userPickems[pick]["winner"]] == realWinningAlliance:
                 app.logger.info(
@@ -1526,10 +1547,10 @@ def payPickEms() -> bool:
                 points += pointsSpent
 
         realFinalsWinner = (
-            allianceDict[str(finalsRedCaptain)]
-            if finalsWinner == "red"
-            else allianceDict[str(finalsBlueCaptain)]
-        )
+                determineAlliance(allianceDict,finalsRedCaptain)
+                if allMatchResults[pick]["winningAlliance"] == "red"
+                else determineAlliance(allianceDict,finalsBlueCaptain)
+            )
         if userPickems["winner"] == realFinalsWinner:
             points += int(pointsSpent * 1.2)
             app.logger.info(

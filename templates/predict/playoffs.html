@@ -107,13 +107,26 @@
 {% include 'backButton.html' %}
 <div class="rounds" id="rounds">
     <div id="first" class="round">
-        {% for n in range(1,9,2) %}
-        <div id="match{{(n+1)//2}}">
-            match {{(n+1)//2}}
-            <button onclick="let a = setRound({{(n+1)//2}},{{alliances[n-1]}},{{alliances[n]}},{{n}},{{n+1}},true); setWinner(true,{{(n+1)//2}},a)" class="m{{(n+1)//2}}_red matchButton">Alliance {{n}}: {{alliances[n-1]|join(', ')}}</button>
-            <button onclick="let a = setRound({{(n+1)//2}},{{alliances[n]}},{{alliances[n-1]}},{{n+1}},{{n}},false); setWinner(false,{{(n+1)//2}},a)" class="m{{(n+1)//2}}_blue matchButton">Alliance {{n+1}}: {{alliances[n]|join(', ')}}</button>
+        <div id="match1">
+            match 1
+            <button onclick="let a = setRound(1,{{alliances[0]}},{{alliances[0]}},1,8,true); setWinner(true,1,a)" class="m1_red matchButton">Alliance 1: {{alliances[0]|join(', ')}}</button>
+            <button onclick="let a = setRound(1,{{alliances[7]}},{{alliances[7]}},8,1,false); setWinner(false,1,a)" class="m1_blue matchButton">Alliance 8: {{alliances[7]|join(', ')}}</button>
         </div>
-        {% endfor %}
+        <div id="match2">
+            match 2
+            <button onclick="let a = setRound(2,{{alliances[3]}},{{alliances[3]}},4,5,true); setWinner(true,2,a)" class="m2_red matchButton">Alliance 4: {{alliances[3]|join(', ')}}</button>
+            <button onclick="let a = setRound(2,{{alliances[4]}},{{alliances[4]}},5,4,false); setWinner(false,2,a)" class="m2_blue matchButton">Alliance 5: {{alliances[4]|join(', ')}}</button>
+        </div>
+        <div id="match3">
+            match 3
+            <button onclick="let a = setRound(3,{{alliances[1]}},{{alliances[6]}},2,7,true); setWinner(true,3,a)" class="m3_red matchButton">Alliance 2: {{alliances[1]|join(', ')}}</button>
+            <button onclick="let a = setRound(3,{{alliances[6]}},{{alliances[1]}},7,2,false); setWinner(false,3,a)" class="m3_blue matchButton">Alliance 7: {{alliances[6]|join(', ')}}</button>
+        </div>
+        <div id="match4">
+            match 4
+            <button onclick="let a = setRound(4,{{alliances[2]}},{{alliances[5]}},3,6,true); setWinner(true,4,a)" class="m4_red matchButton">Alliance 3: {{alliances[2]|join(', ')}}</button>
+            <button onclick="let a = setRound(4,{{alliances[5]}},{{alliances[2]}},6,3,false); setWinner(false,4,a)" class="m4_blue matchButton">Alliance 6: {{alliances[5]|join(', ')}}</button>
+        </div>
     </div>
     <div id="second" class="round">
         <div id="match5">
@@ -157,8 +170,8 @@
         </div>
         <div id="match12">
             match 12
-            <button onclick="let a = setRound(12,winners[9],winners[10],winnerNumbers[9],winnerNumbers[10],true); setWinner(true,12,a)" id="m10-winner" class="m12_red matchButton">_</button>
-            <button onclick="let a = setRound(12,winners[10],winners[9],winnerNumbers[10],winnerNumbers[9],false); setWinner(false,12,a)" id="m9-winner" class="m12_blue matchButton">_</button>
+            <button onclick="let a = setRound(12,winners[10],winners[9],winnerNumbers[10],winnerNumbers[9],true); setWinner(true,12,a)" id="m10-winner" class="m12_red matchButton">_</button>
+            <button onclick="let a = setRound(12,winners[9],winners[10],winnerNumbers[9],winnerNumbers[10],false); setWinner(false,12,a)" id="m9-winner" class="m12_blue matchButton">_</button>
         </div>
     </div>
     <div id="fifth" class="round">
@@ -301,6 +314,7 @@
         }).then(response =>{
             if (response.ok){
                 alert("Succesfully submitted");
+                window.location.reload();
             } else if (response.status===402){
                 alert("You don't have enough points.")
             }else{
