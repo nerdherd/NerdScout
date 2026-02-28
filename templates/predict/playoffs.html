@@ -110,13 +110,13 @@
     <div id="first" class="round">
         <div id="match1">
             match 1
-            <button onclick="let a = setRound(1,{{alliances[0]}},{{alliances[0]}},1,8,true); setWinner(true,1,a)" class="m1_red matchButton">Alliance 1: {{alliances[0]|join(', ')}}</button>
-            <button onclick="let a = setRound(1,{{alliances[7]}},{{alliances[7]}},8,1,false); setWinner(false,1,a)" class="m1_blue matchButton">Alliance 8: {{alliances[7]|join(', ')}}</button>
+            <button onclick="let a = setRound(1,{{alliances[0]}},{{alliances[7]}},1,8,true); setWinner(true,1,a)" class="m1_red matchButton">Alliance 1: {{alliances[0]|join(', ')}}</button>
+            <button onclick="let a = setRound(1,{{alliances[7]}},{{alliances[0]}},8,1,false); setWinner(false,1,a)" class="m1_blue matchButton">Alliance 8: {{alliances[7]|join(', ')}}</button>
         </div>
         <div id="match2">
             match 2
-            <button onclick="let a = setRound(2,{{alliances[3]}},{{alliances[3]}},4,5,true); setWinner(true,2,a)" class="m2_red matchButton">Alliance 4: {{alliances[3]|join(', ')}}</button>
-            <button onclick="let a = setRound(2,{{alliances[4]}},{{alliances[4]}},5,4,false); setWinner(false,2,a)" class="m2_blue matchButton">Alliance 5: {{alliances[4]|join(', ')}}</button>
+            <button onclick="let a = setRound(2,{{alliances[3]}},{{alliances[4]}},4,5,true); setWinner(true,2,a)" class="m2_red matchButton">Alliance 4: {{alliances[3]|join(', ')}}</button>
+            <button onclick="let a = setRound(2,{{alliances[4]}},{{alliances[3]}},5,4,false); setWinner(false,2,a)" class="m2_blue matchButton">Alliance 5: {{alliances[4]|join(', ')}}</button>
         </div>
         <div id="match3">
             match 3
