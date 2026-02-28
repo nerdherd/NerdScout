@@ -257,14 +257,14 @@
             </div>
             <div class="shift-thing shift-postgame">
                 <div class="column">
-                    <label for="endClimb" id="EndPosText">Actual End position:</label>
+                    <label for="attemptedEndClimb" id="AttemptEndPosText">Attempted End position:</label>
                     <div class="row">
                         <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Grnd.svg')}}">
                         <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L1.svg')}}">
                         <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L2.svg')}}">
                         <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L3.svg')}}">
                     </div>
-                    <input type="range" min="0" max="3" step="1" value="1" id="endClimb" oninput="accChangeText()">
+                    <input type="range" min="0" max="3" step="1" value="1" id="attemptedEndClimb" oninput="endChangeText()">
                 </div>
                 <div class="row">
                     <label class="toggle-btn-wrapper">
@@ -275,14 +275,14 @@
                     </label>
                 </div>
                 <div class="column" id="attemptEndDiv">
-                    <label for="endClimb" id="AttemptEndPosText">Attempted End position:</label>
+                    <label for="endClimb" id="EndPosText">Actual End position:</label>
                     <div class="row">
                         <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Grnd.svg')}}">
                         <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L1.svg')}}">
                         <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L2.svg')}}">
                         <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L3.svg')}}">
                     </div>
-                    <input type="range" min="0" max="3" step="1" value="1" id="attemptedEndClimb" oninput="endChangeText()">
+                    <input type="range" min="0" max="3" step="1" value="1" id="endClimb" oninput="accChangeText()">
                 </div>
                 <div class="row">
                     <label class="toggle-btn-wrapper">
