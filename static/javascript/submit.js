@@ -283,7 +283,7 @@ function submitData(matchNum, compLevel, setNum, robot){
         "autoClimbSuccess": gc("autoClimbSuccess"),
         "autoOutpostFeed": gc("autoOutpostFeed"),
         "autoFedToOutpost": gc("autoFedToOutpost"),
-        "firstShift": weWon,
+        "firstShift": !weWon,
         "transitionFuel": scoringPeriods[1],
         "firstActiveShiftFuel": scoringPeriods[2],
         "secondActiveShiftFuel": scoringPeriods[3],
