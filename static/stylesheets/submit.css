@@ -470,3 +470,17 @@ button:active{
 #attemptEndDiv{
     display: none;
 }
+
+.endPosImages{
+    width:100%;
+    justify-content: space-between;
+}
+#comments{
+    width:100%;
+}
+
+.submitButton{
+    width:100%;
+    font-size:2rem;
+    margin-top:5px;
+}
