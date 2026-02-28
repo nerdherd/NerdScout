@@ -385,6 +385,24 @@ body {
     justify-content: center;
 }
 
+#matchName {
+    margin:0;
+}
+
+.field{
+    display: flex;
+    justify-content: left;
+    position: relative;
+}
+
+.fieldHighlight {
+    width: 10%;
+    height: 100%;
+    background-color: rgb(255,255,0,0.2);
+    position: absolute;
+    z-index: 100;
+}
+
 
 .score-breakdown {
     display:flex;

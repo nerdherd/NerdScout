@@ -4,9 +4,15 @@
 <script src="{{ url_for('static', filename='javascript/match.js') }}" defer></script>
 <link rel="preload" href="{{ url_for('static', filename='stylesheets/match.css') }}" as="style">
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/match.css') }}">
+<script>
+function moveImage(imageId, sliderVal){
+    document.getElementById(imageId).style.left = ((sliderVal)*10)+"%";
+}
+</script>
+
 {% endblock %}
 
-{% block title %}Match Viewer{% endblock %}
+{% block title %}NerdScout Match Viewer: {{ results["displayName"] }}{% endblock %}
 
 {% block content %}
 {% set previousPage = url_for("renderMatch") %}
@@ -61,6 +67,17 @@
         <div>
             
             <div class="sectionDiv">
+                <div class="column">
+                        <div class="field">
+                            <div id="fieldHighlight-{{ color }}-{{ team['teamNumber'] }}-{{ loop.index }}" class="fieldHighlight"></div>
+                            {% for n in range(10)%}
+                            <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ ('Red' if 'red' in rbtStat else 'Blue') +'/(' + (n+1)|string + ').png')}}">
+                            {% endfor %}
+                        </div>
+                        <script>
+                        moveImage("fieldHighlight-{{ color }}-{{ team['teamNumber'] }}-{{ loop.index }}",{{ result["startPos"] }});
+                        </script>
+                </div>
                 <p>startpos</p>
                 {{ result["startPos"] }}
             </div>
@@ -90,11 +107,11 @@
 
                 <table class="scoretable">
                     <tr>
-                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shots per second"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                     </tr>
                     {% for period in result["autoFuel"] %}
                     <tr>
@@ -106,6 +123,9 @@
                     </tr>
                     {% endfor %}
                 </table>
+                {% if not result["autoFuel"] %}
+                    <p>No Data</p>
+                {% endif %}
             </div>
 
             <div class="sectionDiv">
@@ -209,11 +229,11 @@
 
                 <table class="scoretable">
                     <tr>
-                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                     </tr>
                     {% for period in result["transitionFuel"] %}
                     <tr>
@@ -225,6 +245,9 @@
                     </tr>
                     {% endfor %}
                 </table>
+                {% if not result["transitionFuel"] %}
+                    <p>No Data</p>
+                {% endif %}
 
                 <div class="row">
                     <div class="booleanItem">
@@ -307,11 +330,11 @@
                         </div>
                         <table class="scoretable">
                             <tr>
-                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                             </tr>
                             {% for period in result["firstActiveShiftFuel"] %}
                             <tr>
@@ -323,6 +346,9 @@
                             </tr>
                             {% endfor %}
                         </table>
+                        {% if not result["firstActiveShiftFuel"] %}
+                            <p>No Data</p>
+                        {% endif %}
                         <div class="row">
                             
                             
@@ -399,11 +425,11 @@
                         </div>
                         <table class="scoretable">
                             <tr>
-                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                             </tr>
                             {% for period in result["firstActiveShiftFuel"] %}
                             <tr>
@@ -415,6 +441,9 @@
                             </tr>
                             {% endfor %}
                         </table>
+                        {% if not result["firstActiveShiftFuel"] %}
+                            <p>No Data</p>
+                        {% endif %}
                         
                         
                         {% else %}
@@ -489,11 +518,11 @@
                         </div>
                         <table class="scoretable">
                             <tr>
-                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Shot"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                             </tr>
                             {% for period in result["secondActiveShiftFuel"] %}
                             <tr>
@@ -505,6 +534,9 @@
                             </tr>
                             {% endfor %}
                         </table>
+                        {% if not result["secondActiveShiftFuel"] %}
+                            <p>No Data</p>
+                        {% endif %}
                         <div class="row">
                             
                             
@@ -581,11 +613,11 @@
                         </div>
                         <table class="scoretable">
                             <tr>
-                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
+                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                             </tr>
                             {% for period in result["secondActiveShiftFuel"] %}
                             <tr>
@@ -597,7 +629,9 @@
                             </tr>
                             {% endfor %}
                         </table>
-                        
+                        {% if not result["secondActiveShiftFuel"] %}
+                            <p>No Data</p>
+                        {% endif %}
                         
                         {% else %}
                             <div class="booleanList">
@@ -673,11 +707,11 @@
 
                 <table class="scoretable">
                     <tr>
-                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
+                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                     </tr>
                     {% for period in result["endgameFuel"] %}
                     <tr>
@@ -689,6 +723,9 @@
                     </tr>
                     {% endfor %}
                 </table>
+                {% if not result["endgameFuel"] %}
+                    <p>No Data</p>
+                {% endif %}
                 <div class="row">
                     
                     </div>
@@ -800,7 +837,10 @@
 <!-- {% if loop.index == 1 %}<div class="spacer"></div>{% endif %} -->
 {% endfor %}
 
-<div id="remove"><p>Press on one of the teams to see their results</p></div>
+<div id="remove">
+    <p>Press on one of the teams to see their results</p>
+</div>
+    <h1 id="matchName">{{ results["displayName"] }}</h1>
 <div class="score-breakdown" id="score-breakdown">
 <p>Score breakdown</p>
 <div class="score-div colorless">
@@ -966,7 +1006,8 @@
 {% if "scoreBreakdown" in results["results"] %}
 {% set TBAScoreBreakdown = results["results"]["scoreBreakdown"] %}
 <div id="TBAScoreBreakdown">
-    {% for alliance, scoreBreakdown in TBAScoreBreakdown.items() %}
+    {% set sortedBreakdown = {"red":TBAScoreBreakdown["red"], "blue":TBAScoreBreakdown["blue"]} %}    
+    {% for alliance, scoreBreakdown in sortedBreakdown.items() %}
     {% set hubScore = scoreBreakdown["hubScore"] %}
     <div id="{{alliance}}ScoreBreakdown" class="allianceScoreBreakdown card">
         <ul class="scoreBreakdownList">
