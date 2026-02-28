@@ -105,6 +105,7 @@
 {% block content %}
 {% set previousPage = url_for("nerdpredictMain") %}
 {% include 'backButton.html' %}
+{% if alliances %}
 <div class="rounds" id="rounds">
     <div id="first" class="round">
         <div id="match1">
@@ -205,6 +206,10 @@
 <p>you are an admin.</p> <button onclick="payOut()" class="submit">pay out</button>
 {% endif %}
 <br>
+{# if no alliances yet, or if data is old #}
+{% else %}
+<p>Alliances are not available for this event yet.</p>
+{% endif %}
 <img id="bracketImage" src="{{ url_for('static', filename='images/brackets.png') }}">
 <script>
     const matchesInRound = [
