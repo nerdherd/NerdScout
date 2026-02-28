@@ -1547,6 +1547,16 @@ def payPickEms() -> bool:
     matches.update_one({"matchKey": finals1["matchKey"]}, {"$set": {"pickemsComplete": True}})
     return True
 
+def randomLevelFMS() -> str:
+    """
+    Returns a random FMS climb level.
+    """
+    levelInt = random.randint(0,3)
+    if levelInt == 0:
+        return "None"
+    else:
+        return f"Level{levelInt}"
+
 
 def createTestTBABreakdown() -> dict:
     """
@@ -1568,13 +1578,13 @@ def createTestTBABreakdown() -> dict:
     scoreBreakdown = {
         "adjustPoints": random.randint(0, 10),
         "autoTowerPoints": 15 * random.randint(0, 3),
-        "autoTowerRobot1": f"#{random.randint(0,3)}",
-        "autoTowerRobot2": f"#{random.randint(0,3)}",
-        "autoTowerRobot3": f"#{random.randint(0,3)}",
+        "autoTowerRobot1": randomLevelFMS(),
+        "autoTowerRobot2": randomLevelFMS(),
+        "autoTowerRobot3": randomLevelFMS(),
         "endGameTowerPoints": 10 * random.randint(0, 9),
-        "endGameTowerRobot1": f"#{random.randint(0,3)}",
-        "endGameTowerRobot2": f"#{random.randint(0,3)}",
-        "endGameTowerRobot3": f"#{random.randint(0,3)}",
+        "endGameTowerRobot1": randomLevelFMS(),
+        "endGameTowerRobot2": randomLevelFMS(),
+        "endGameTowerRobot3": randomLevelFMS(),
         "energizedAchieved": random.random() > 0.5,
         "foulPoints": random.randint(0, 20),
         "g206Penalty": random.random() > 0.5,
