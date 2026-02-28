@@ -216,7 +216,16 @@ const redWinCheck = getById("redFirstShift")
 const blueWinCheck = getById("blueFirstShift")
 const errorMsg = getById("winnerNotPicked")
 
+const attemptSlider = getById("attemptEndDiv")
+const climbFailCheck = getById("climbFail")
 
+function attemptEnd(){
+    if(climbFailCheck.checked){
+        attemptSlider.style.display = "flex";
+    }else{
+        attemptSlider.style.display = "none";
+    }
+}
 
 function redTeamWon(color){
     if(color=="Red"){
