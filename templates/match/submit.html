@@ -257,12 +257,12 @@
             </div>
             <div class="shift-thing shift-postgame">
                 <div class="column">
-                    <label for="endClimb" id="endPosText">Attempt End position:</label>
-                    <input type="range" min="0" max="3" step="1" value="1" id="endClimb" oninput="changeText()">
+                    <label for="endClimb" id="EndPosText">Actual End position:</label>
+                    <input type="range" min="0" max="3" step="1" value="1" id="endClimb" oninput="accChangeText()">
                 </div>
                 <div class="column">
-                    <label for="endClimb" id="endPosText">Actual End position:</label>
-                    <input type="range" min="0" max="3" step="1" value="1" id="endClimb" oninput="changeText()">
+                    <label for="endClimb" id="AttemptEndPosText">Attempted End position:</label>
+                    <input type="range" min="0" max="3" step="1" value="1" id="attemptedEndClimb" oninput="endChangeText()">
                 </div>
                 <div class="row">
                     <label class="toggle-btn-wrapper">

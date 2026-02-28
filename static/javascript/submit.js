@@ -291,6 +291,7 @@ function submitData(matchNum, compLevel, setNum, robot){
         "firstInactiveShiftScored": gc("firstInactiveShiftScored"),
         "secondInactiveShiftScored": gc("secondInactiveShiftScored"),
         "endClimb": getId("endClimb"),
+        "endClimbAttempted": getId("attemptedEndClimb"),
         "outpostIntake": gc("outpostIntake"),
         "groundIntake": gc("groundIntake"),
         "fedToOutpost": gc("fedToOutpost"),
@@ -344,12 +345,18 @@ function submitData(matchNum, compLevel, setNum, robot){
 //     postGame.style.display = 'flex';
 // }
 
-const endGameText = getById('endPosText');
+const endGameText = getById('EndPosText');
+const attemptEndGameText = getById('AttemptEndPosText');
 const climbPos = ["Ground", "Level 1", "Level 2", "Level 3"]
 
-function changeText(){
+function accChangeText(){
     const val = getId('endClimb');
-    let template = "End position: ";
+    let template = "Actual End position: ";
     endGameText.textContent = template.concat(climbPos[val]);
+}
+function endChangeText(){
+    const val = getId('attemptedEndClimb');
+    let template = "Attempted End position: ";
+    attemptEndGameText.textContent = template.concat(climbPos[val]);
 }
 changeText();
