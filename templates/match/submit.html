@@ -243,7 +243,7 @@
                             <div class="row">
                                 <button class="minus" onclick="incrementCounter('preloadFuel',false)">-</button>
                                 <input type="number" id="preloadFuel" min="0" max="8" value="0">
-                                <button class="plus" onclick="incrementCounter('preloadFuel',true)">+</button>
+                                <button class="plus" onclick="if (document.getElementById('preloadFuel').value < 8){incrementCounter('preloadFuel',true)}">+</button>
                             </div>
                             <label for="preloadFuel">Preload fuel</label>
                         </div>

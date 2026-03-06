@@ -977,10 +977,10 @@ function moveImage(imageId, sliderVal){
     <p id="resultDifference">
     {% if trueWinner == apiWinner %}
     {% set predDifference = trueDifference - (apiDifference | round(2)) %}
-    {% if predDifference < 0 %}-{% else %}+{% endif %}{{ predDifference | abs }}
+    {% if predDifference < 0 %}-{% else %}+{% endif %}{{ predDifference | abs | round(2)}}
     {% else %}
     {% set predDifference = trueDifference + (apiDifference | round(2)) %}
-    -{{ predDifference | abs }}
+    -{{ predDifference | abs | round(2)}}
     {% endif %}
      from prediction
     </p>

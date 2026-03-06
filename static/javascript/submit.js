@@ -40,7 +40,9 @@ var resetTimer = false;
 var startTime;
 var scoredElemenet = getById("scored"); // speleld wrong
 var missedElemenet = getById("missed");
+var elapsed = 0;
 function toggleTimer(){
+    elapsed = (Date.now()-startTime)/1000;
     if (!timerActive){
         startTime = Date.now();
         timerActive = true;
@@ -49,9 +51,7 @@ function toggleTimer(){
         return;
     }
     timerActive = false;
-    let elapsed = (Date.now()-startTime)/1000;
     timer_button.innerText = "Start Timer";
-    timer_input.value = elapsed
 }
 
 var timer_button = getById("timer-button");
@@ -60,7 +60,7 @@ function drawTimer(){
     timer_button.innerText = "Stop Timer \n " + (Date.now()-startTime)/1000;
     if (resetTimer) {
         resetTimer = false;
-        timer_input.innerText = "Start Timer \n " + 0;
+        timer_button.innerText = "Start Timer \n " + 0;
     }
     if (timerActive) requestAnimationFrame(drawTimer);
 }
@@ -89,9 +89,12 @@ function addScoreToTable(time,scored,missed){
 }
 
 function submitScoringPeriod(){
+    if (timerActive){
+        toggleTimer();
+    }
     let scored = parseInt(scoredElemenet.value);
     let missed = parseInt(missedElemenet.value);
-    let time = parseFloat(timer_input.value);
+    let time = elapsed;
     if (time <= 0.01) {
         alert("please put more time!");
         return;
@@ -99,13 +102,12 @@ function submitScoringPeriod(){
     scoringPeriods[curScoringPeriod].push({"time":time,"scored":scored,"missed":missed});
     scoredElemenet.value = 0;
     missedElemenet.value = 0;
-    timer_input.value = 0;
     addScoreToTable(time,scored,missed);
-    // Stop timer when submitting data
+    
     timerActive = false;
     timer_button.innerText = "Start Timer\n0";
-    timer_input.value = 0;
     resetTimer = true;
+    elapsed = 0;
 }
 
 function addScoresToTable(scores){

@@ -1740,3 +1740,9 @@ def addTestTBAData(compLevel: CompLevel, matchNumber: int, setNumber: int) -> bo
             app.logger.info(f"Updated score breakdown for {TBAdata['key']}")
             return True
     return False
+
+def clearPickems():
+    """
+    Deletes all user pickems.
+    """
+    accounts.update_many({},{"$unset": {"pickems":1}})

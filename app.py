@@ -279,8 +279,9 @@ def updateMatchFromTBAPage():
     result = updateMatchFromTBA(
         compLevel=compLevel, matchNumber=matchNumber, setNumber=setNumber
     )
-    updateAllStatboticsPredictions()
-    saveAlliancesFromTBA()
+    if result[0]:
+        updateAllStatboticsPredictions()
+        saveAlliancesFromTBA()
     if compLevel == CompLevel.SF or compLevel == CompLevel.F:
         updateScheduleFromTBA(loadFromCacheFile("recentEventKey"))
     return redirect(
@@ -1081,6 +1082,11 @@ def matchTable():
         teams=teams,
     )
 
+@app.route("/clearAllPickems")
+def clearPickemsPage():
+    clearPickems()
+    return "yeag"
+
 
 @app.route("/about")
 def aboutPage():
@@ -1115,6 +1121,7 @@ dbAdminEndpoints = frozenset(
     [
         "updateMatchFromTBAPage",
         "finishPlayoffsPage",
+        "clearPickemsPage",
     ]
 )  # endpoints that require user be dbAdmin
 
