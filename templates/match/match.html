@@ -89,13 +89,21 @@ function moveImage(imageId, sliderVal){
                 <div class="table">
                     <div class="row">
                         <div class="cell cell2"><b>Preload:</b></div>
-                        <div class="cell cell2"><b>Total Scored:</b></div>
-                        <div class="cell cell2 miss"><b>Total Missed:</b></div>
+                        
                     </div>
                     <div class="row">
                         <div class="cell cell2">
                             <p>{{ result["preloadFuel"] }}</p>    
                         </div>
+                        
+                    </div>
+                </div>
+                <div class="table">
+                    <div class="row">
+                        <div class="cell cell2"><b>Total Scored:</b></div>
+                        <div class="cell cell2 miss"><b>Total Missed:</b></div>
+                    </div>
+                    <div class="row">
                         <div class="cell cell2">
                             <p>{{ result["autoFuelTotal"] }}</p>
                         </div>
@@ -103,6 +111,7 @@ function moveImage(imageId, sliderVal){
                             <p>{{ result["autoFuelTotalMissed"] }}</p>
                         </div>
                     </div>
+                    
                 </div>
 
                 <table class="scoretable">
@@ -292,7 +301,6 @@ function moveImage(imageId, sliderVal){
 
                 <div class="row shiftParent" id="shiftParent">
                     <div class="firstShift">
-                        <p>first shift</p>
                         {% if result["firstShift"] %}
                         <div class="booleanList">
                             <div class="booleanItem">
@@ -387,7 +395,6 @@ function moveImage(imageId, sliderVal){
                     </div>
 
                     <div class="secondShift">
-                        <p>second shift</p>
                         {% if not result["firstShift"] %}
                         <div class="booleanList">
                             <div class="booleanItem">
@@ -480,7 +487,6 @@ function moveImage(imageId, sliderVal){
                     </div>
 
                     <div class="thirdShift">
-                        <p>third shift</p>
                         {% if result["firstShift"] %}
                         <div class="booleanList">
                             <div class="booleanItem">
@@ -575,7 +581,6 @@ function moveImage(imageId, sliderVal){
                     </div>
 
                     <div class="fourthShift">
-                        <p>fourth shift</p>
                         {% if not result["firstShift"] %}
                         <div class="booleanList">
                             <div class="booleanItem">
