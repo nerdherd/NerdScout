@@ -727,16 +727,19 @@ def pointsPlayoffsPage():
     except:
         allianceData = None
     alliances = []
-    if allianceData != None:
-        # this assumes that the names are "Alliance x", where x is an int
-        # technically TBA could use any string as names
-        for i in range(1,9):
-            alliance = allianceData[f"Alliance {i}"]
-            # sometimes an alliance has four members
-            # this will be bad at worlds, where four members is standard
-            if len(alliance) > 3:
-                alliance = alliance[:3]
-            alliances.append(alliance)
+    if (allianceData != None) and (allianceData["rawData"] != None):
+        try:
+            # this assumes that the names are "Alliance x", where x is an int
+            # technically TBA could use any string as names
+            for i in range(1,9):
+                alliance = allianceData[f"Alliance {i}"]
+                # sometimes an alliance has four members
+                # this will be bad at worlds, where four members is standard
+                if len(alliance) > 3:
+                    alliance = alliance[:3]
+                alliances.append(alliance)
+        except:
+            alliances = []
     return render_template(
         "predict/playoffs.html",
         isAdmin=isDbAdmin(session['username']),
