@@ -9,42 +9,25 @@
 {% endblock %}
 
 {% block content %}
-<h1>Team Data Table by {{ stat|capitalize }}</h1>
-<details>
-    <summary>Instructions</summary>
-    <ul>
-        <li>Use the table settings dropdown to select specific columns to show</li>
-        <li>Use the dropdowns to sort the table by any scoring category</li>
-        <li>Alternatively click on the header of any column to sort by it</li>
-    </ul>
-</details>
-<details>
-    <summary>Table Settings</summary>
-    <div id="column-select">
-        {% for key in displayNames %}
-        <div><input type="checkbox" data-value="{{key.lower()}}" id="checkbox-{{key.lower()}}" name="checkbox-{{key.lower()}}" checked><label for="checkbox-{{key.lower()}}">{{displayNames[key]}}</label></div>
-        {% endfor %}
-        <button onclick="setColumns()">Apply</button>
-    </div>
-</details>
+<h1>Team Data Table</h1>
 
+<a href="javascript:download_table_as_csv()">download as csv</a>
+<br>
 <select id="sort-category">
-    <option value="team" selected>Team</option>
+    <!-- <option value="team" selected>Team</option> -->
     {% for key in displayNames %}
     <option value="{{key.lower()}}">{{displayNames[key]}}</option>
     {% endfor %}
 </select>
-
 <select id="sort-input">
     <option value="ascending">Ascending</option>
     <option value="descending">Descending</option>
 </select>
-<button onclick="updateSort()">sort</button>
-<table id="main-table">
-    <tr id="header-row">
-        <th class="team-thing column-team"><button onclick="setSort('team')" class="header-button-team">Team Number</button></th>
-        {% for key in displayNames %}
-        <th class="column-{{key.lower()}}"><button onclick="setSort('{{key.lower()}}')" class="header-button-{{key.lower()}}">{{displayNames[key]}}</button></th>
+<button onclick="updateSort()">Sort</button>
+<table id="table">
+    <tr class="header-row">
+        {% for key in displayNames.keys() %}
+        <th class="table-{{key}} {% if loop.index == 1 %}team-column{% endif %}" data-type="string">{{displayNames[key]}}</th>
         {% endfor %}
     </tr>
     {% for team in data %}
@@ -66,7 +49,6 @@
     {% endfor %}
 </table>
 
-<a href="#" onclick="download_table_as_csv()">Download as CSV</a>
-{% set previousPage = url_for('teamTable') %}
+{% set previousPage = url_for('strategyPage') %}
 {% include 'backButton.html' %}
 {% endblock %}
