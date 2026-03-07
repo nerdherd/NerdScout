@@ -928,11 +928,14 @@ def parseResults(data):
 
 def generatePoints() -> bool:
     """
-    Gives accounts a points field if they do not yet.
+    Gives accounts a points field and predictions field if they do not yet.
 
     Returns:
     - bool: succeeded
     """
+    accounts.update_many(
+        {"predictions": {"$exists": False}}, {"$set": {"predictions": {}}}
+    )
     return accounts.update_many(
         {"points": {"$exists": False}}, {"$set": {"points": 100}}
     ).acknowledged
@@ -1073,8 +1076,8 @@ def createPrediction(
             f"Couldn't create prediction for {user} in {compLevel.value}{matchNumber}_{setNumber}: Requested difference different than stored difference."
         )
         abort(409)
-
-    if matchData["matchKey"] in userData["predictions"]:
+    
+    if ("predictions" in userData) and (matchData["matchKey"] in userData["predictions"]):
         app.logger.error(
             f"Couldn't create prediction for {user} in {compLevel.value}{matchNumber}_{setNumber}: user already has a prediction."
         )
