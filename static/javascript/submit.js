@@ -39,7 +39,6 @@ var timerActive = false;
 var resetTimer = false;
 var startTime;
 var scoredElemenet = getById("scored"); // speleld wrong
-var missedElemenet = getById("missed");
 var elapsed = 0;
 function toggleTimer(){
     elapsed = (Date.now()-startTime)/1000;
@@ -66,14 +65,12 @@ function drawTimer(){
 }
 
 var score_table = getById("score-table");
-function addScoreToTable(time,scored,missed){
+function addScoreToTable(time,scored){
     let cur_row = document.createElement("tr");
     let timeEl = document.createElement("td");
     timeEl.innerText=time;
     let scoredEl = document.createElement("td");
     scoredEl.innerText=scored;
-    let missedEl = document.createElement("td");
-    missedEl.innerText=missed;
     let deleteTableEl = document.createElement("td")
     let deleteButton = document.createElement("button");
     deleteButton.innerText = "X";
@@ -83,7 +80,6 @@ function addScoreToTable(time,scored,missed){
     deleteTableEl.appendChild(deleteButton);
     cur_row.appendChild(timeEl);
     cur_row.appendChild(scoredEl);
-    cur_row.appendChild(missedEl);
     cur_row.appendChild(deleteTableEl);
     score_table.appendChild(cur_row)
 }
@@ -93,16 +89,14 @@ function submitScoringPeriod(){
         toggleTimer();
     }
     let scored = parseInt(scoredElemenet.value);
-    let missed = parseInt(missedElemenet.value);
     let time = elapsed;
     if (time <= 0.01) {
         alert("please put more time!");
         return;
     }
-    scoringPeriods[curScoringPeriod].push({"time":time,"scored":scored,"missed":missed});
+    scoringPeriods[curScoringPeriod].push({"time":time,"scored":scored});
     scoredElemenet.value = 0;
-    missedElemenet.value = 0;
-    addScoreToTable(time,scored,missed);
+    addScoreToTable(time,scored);
     
     timerActive = false;
     timer_button.innerText = "Start Timer\n0";
@@ -112,7 +106,7 @@ function submitScoringPeriod(){
 
 function addScoresToTable(scores){
     for (const scoringPeriod of scores){
-        addScoreToTable(scoringPeriod["time"],scoringPeriod["scored"],scoringPeriod["missed"]);
+        addScoreToTable(scoringPeriod["time"],scoringPeriod["scored"]);
     }
 }
 
