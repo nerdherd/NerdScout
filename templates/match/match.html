@@ -89,45 +89,29 @@ function moveImage(imageId, sliderVal){
                 <div class="table">
                     <div class="row">
                         <div class="cell cell2"><b>Preload:</b></div>
-                        
+                        <div class="cell cell2"><b>Total Scored:</b></div>
                     </div>
                     <div class="row">
                         <div class="cell cell2">
                             <p>{{ result["preloadFuel"] }}</p>    
                         </div>
-                        
-                    </div>
-                </div>
-                <div class="table">
-                    <div class="row">
-                        <div class="cell cell2"><b>Total Scored:</b></div>
-                        <div class="cell cell2 miss"><b>Total Missed:</b></div>
-                    </div>
-                    <div class="row">
                         <div class="cell cell2">
                             <p>{{ result["autoFuelTotal"] }}</p>
                         </div>
-                        <div class="cell cell2 miss">
-                            <p>{{ result["autoFuelTotalMissed"] }}</p>
-                        </div>
                     </div>
-                    
                 </div>
+                
 
                 <table class="scoretable">
                     <tr>
                         <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
                         <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shots per second"></th>
                         <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                     </tr>
                     {% for period in result["autoFuel"] %}
                     <tr>
                         <td>{{period["time"]|round(2)}}</td>
                         <td>{{period["scored"]}}</td>
-                        <td>{{period["missed"]}}</td>
-                        {# <td>{{period["fuelShotPerSecond"]|round(2)}}</td> #}
                         <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
                     </tr>
                     {% endfor %}
@@ -243,14 +227,10 @@ function moveImage(imageId, sliderVal){
                 <div clas="table">
                     <div class="row">
                         <div class="cell cell2"><b>Total Scored:</b></div>
-                        <div class="cell cell2 miss"><b>Total Missed:</b></div>
                     </div>
                     <div class="row">
                         <div class="cell cell2">
                             <p>{{ result["transitionFuelTotal"] }}</p>    
-                        </div>
-                        <div class="cell cell2 miss">
-                            <p>{{ result["transitionFuelTotalMissed"] }}</p>
                         </div>
                     </div>
                 </div>
@@ -259,16 +239,12 @@ function moveImage(imageId, sliderVal){
                     <tr>
                         <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
                         <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
                         <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                     </tr>
                     {% for period in result["transitionFuel"] %}
                     <tr>
                         <td>{{period["time"]|round(2)}}</td>
                         <td>{{period["scored"]}}</td>
-                        <td>{{period["missed"]}}</td>
-                        {# <td>{{period["fuelShotPerSecond"]|round(2)}}</td> #}
                         <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
                     </tr>
                     {% endfor %}
@@ -325,16 +301,10 @@ function moveImage(imageId, sliderVal){
                                 <div class="cell cell2">
                                     <b>Total Scored</b>
                                 </div>
-                                <div class="cell cell2 miss">
-                                    <b>Total Missed</b>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="cell cell2">
                                     {{result["firstActiveShiftFuelTotal"]}}
-                                </div>
-                                <div class="cell cell2">
-                                    {{result["firstActiveShiftFuelTotalMissed"]}}
                                 </div>
                             </div>
                         </div>
@@ -342,16 +312,12 @@ function moveImage(imageId, sliderVal){
                             <tr>
                                 <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
                                 <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
                                 <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                             </tr>
                             {% for period in result["firstActiveShiftFuel"] %}
                             <tr>
                                 <td>{{period["time"]|round(2)}}</td>
                                 <td>{{period["scored"]}}</td>
-                                <td>{{period["missed"]}}</td>
-                                {# <td>{{period["fuelShotPerSecond"]|round(2)}}</td> #}
                                 <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
                             </tr>
                             {% endfor %}
@@ -419,16 +385,10 @@ function moveImage(imageId, sliderVal){
                                 <div class="cell cell2">
                                     <b>Total Scored</b>
                                 </div>
-                                <div class="cell cell2 miss">
-                                    <b>Total Missed</b>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="cell cell2">
                                     {{result["firstActiveShiftFuelTotal"]}}
-                                </div>
-                                <div class="cell cell2">
-                                    {{result["firstActiveShiftFuelTotalMissed"]}}
                                 </div>
                             </div>
                         </div>
@@ -436,16 +396,12 @@ function moveImage(imageId, sliderVal){
                             <tr>
                                 <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
                                 <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
                                 <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                             </tr>
                             {% for period in result["firstActiveShiftFuel"] %}
                             <tr>
                                 <td>{{period["time"]|round(2)}}</td>
                                 <td>{{period["scored"]}}</td>
-                                <td>{{period["missed"]}}</td>
-                                {# <td>{{period["fuelShotPerSecond"]|round(2)}}</td> #}
                                 <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
                             </tr>
                             {% endfor %}
@@ -511,16 +467,10 @@ function moveImage(imageId, sliderVal){
                                 <div class="cell cell2">
                                     <b>Total Scored</b>
                                 </div>
-                                <div class="cell cell2 miss">
-                                    <b>Total Missed</b>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="cell cell2">
                                     {{result["secondActiveShiftFuelTotal"]}}
-                                </div>
-                                <div class="cell cell2">
-                                    {{result["secondActiveShiftFuelTotalMissed"]}}
                                 </div>
                             </div>
                         </div>
@@ -528,16 +478,12 @@ function moveImage(imageId, sliderVal){
                             <tr>
                                 <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
                                 <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Shot"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
                                 <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                             </tr>
                             {% for period in result["secondActiveShiftFuel"] %}
                             <tr>
                                 <td>{{period["time"]|round(2)}}</td>
                                 <td>{{period["scored"]}}</td>
-                                <td>{{period["missed"]}}</td>
-                                {# <td>{{period["fuelShotPerSecond"]|round(2)}}</td> #}
                                 <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
                             </tr>
                             {% endfor %}
@@ -605,16 +551,10 @@ function moveImage(imageId, sliderVal){
                                 <div class="cell cell2">
                                     <b>Total Scored</b>
                                 </div>
-                                <div class="cell cell2 miss">
-                                    <b>Total Missed</b>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="cell cell2">
                                     {{result["secondActiveShiftFuelTotal"]}}
-                                </div>
-                                <div class="cell cell2">
-                                    {{result["secondActiveShiftFuelTotalMissed"]}}
                                 </div>
                             </div>
                         </div>
@@ -622,16 +562,12 @@ function moveImage(imageId, sliderVal){
                             <tr>
                                 <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
                                 <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
                                 <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                             </tr>
                             {% for period in result["secondActiveShiftFuel"] %}
                             <tr>
                                 <td>{{period["time"]|round(2)}}</td>
                                 <td>{{period["scored"]}}</td>
-                                <td>{{period["missed"]}}</td>
-                                {# <td>{{period["fuelShotPerSecond"]|round(2)}}</td> #}
                                 <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
                             </tr>
                             {% endfor %}
@@ -700,14 +636,10 @@ function moveImage(imageId, sliderVal){
                 <div clas="table">
                     <div class="row">
                         <div class="cell cell2"><b>Total Scored:</b></div>
-                        <div class="cell cell2 miss"><b>Total Missed:</b></div>
                     </div>
                     <div class="row">
                         <div class="cell cell2">
                             <p>{{ result["endgameFuelTotal"] }}</p>    
-                        </div>
-                        <div class="cell cell2 miss">
-                            <p>{{ result["endgameFuelTotalMissed"] }}</p>
                         </div>
                     </div>
                 </div>
@@ -716,16 +648,12 @@ function moveImage(imageId, sliderVal){
                     <tr>
                         <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
                         <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Missed.svg" alt="Fuel Missed"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ShotPS.svg" alt="Shot per second"></th>
                         <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
                     </tr>
                     {% for period in result["endgameFuel"] %}
                     <tr>
                         <td>{{period["time"]|round(2)}}</td>
                         <td>{{period["scored"]}}</td>
-                        <td>{{period["missed"]}}</td>
-                        {# <td>{{period["fuelShotPerSecond"]|round(2)}}</td> #}
                         <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
                     </tr>
                     {% endfor %}
