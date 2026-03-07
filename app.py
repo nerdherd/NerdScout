@@ -620,29 +620,31 @@ def teamDataSummary():
     isAnObject: bool = stat == "highest" or stat == "lowest"
     matchViewer = url_for("renderMatch")
     for team in teams:
-        data.append({"team": team["number"], "results": []})
+        data.append({"team": team["number"], "results": {}})
         results = getTeamResults(team["number"])
         if not results:
             continue
         for key, result in results[0]["results"][0].items():
             if type(result) == str or key in dontSummarize:
                 continue
-            if type(result) == list:
-                i = 0
-                for level in result:
-                    piece = method(results, key, i)
-                    if isAnObject:
-                        data[-1]["results"].append({f"{key}L{i+1}": piece["value"], "matchId": f"{matchViewer}?matchNum={piece['matchNumber']}&compLevel={piece['compLevel']}&setNum={piece['setNumber']}"})  # type: ignore
-                    else:
-                        data[-1]["results"].append({f"{key}L{i+1}": piece})
-                    i += 1
+            # if type(result) == list:
+            #     i = 0
+            #     for level in result:
+            #         piece = method(results, key, i)
+            #         if isAnObject:
+            #             data[-1]["results"].append({f"{key}L{i+1}": piece["value"], "matchId": f"{matchViewer}?matchNum={piece['matchNumber']}&compLevel={piece['compLevel']}&setNum={piece['setNumber']}"})  # type: ignore
+            #         else:
+            #             data[-1]["results"].append({f"{key}L{i+1}": piece})
+            #         i += 1
             else:
                 piece = method(results, key)
+                data[-1]["results"][key] = {}
                 if isAnObject:
-                    data[-1]["results"].append({key: piece["value"], "matchId": f"{matchViewer}?matchNum={piece['matchNumber']}&compLevel={piece['compLevel']}&setNum={piece['setNumber']}"})  # type: ignore
+                    data[-1]["results"][key]["value"] = piece["value"]
+                    data[-1]["results"][key]["matchId"] = f"{matchViewer}?matchNum={piece['matchNumber']}&compLevel={piece['compLevel']}&setNum={piece['setNumber']}"  # type: ignore
                 else:
-                    data[-1]["results"].append({key: piece})
-        data[-1]["results"].insert(0, data[-1]["results"].pop())
+                    data[-1]["results"][key]["value"] = piece
+
     return data
 
 
@@ -661,7 +663,8 @@ def teamTable():
 
     displayNames = game.teamTableDisplayNames
     data = teamDataSummary()
-    print(data[0])
+    print("hey here is the data for this request thanks")
+    print(data[-1])
     return render_template(
         "strategy/team/table.html",
         displayNames=displayNames,
