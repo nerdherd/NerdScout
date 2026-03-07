@@ -935,7 +935,7 @@ class Rebuilt(Game):
             "preloadFuel": "Preloaded Fuel",
             "autoFuel": "Auto Fuel",
             "autoFuelTotal": "Total Auto Fuel",
-            "autoFuelTotalMissed": "Total Auto Fuel Missed",
+            # "autoFuelTotalMissed": "Total Auto Fuel Missed",
             "autoDepot": "Intaked from Depot During Auto",
             "autoBump": "Went over the Bump in Auto",
             "autoTrench": "Went under the Trench in Auto",
@@ -949,17 +949,17 @@ class Rebuilt(Game):
             "firstShift": "Active in first and third shifts",
             "transitionFuel": "Transition Shift Fuel",
             "transitionFuelTotal": "Total Transition Shift Fuel",
-            "transitionFuelTotalMissed": "Total Transition Shift Fuel Missed",
+            # "transitionFuelTotalMissed": "Total Transition Shift Fuel Missed",
             "transitionFed": "Fed Fuel Into Alliance Zone During Transition Period",
             "transitionDefense": "Defended During Transition Period",
             "firstActiveShiftFuel": "First Active Shift Fuel",
             "firstActiveShiftFuelTotal": "Total First Active Shift Fuel",
-            "firstActiveShiftFuelTotalMissed": "Total First Active Shift Fuel Missed",
+            # "firstActiveShiftFuelTotalMissed": "Total First Active Shift Fuel Missed",
             "firstActiveShiftFed": "Fed Fuel Into Alliance Zone During the First Active Shift",
             "firstActiveShiftDefense": "Defended During the First Active Shift",
             "secondActiveShiftFuel": "Second Active Shift Fuel",
             "secondActiveShiftFuelTotal": "Total Second Active Shift Fuel",
-            "secondActiveShiftFuelTotalMissed": "Total Second Active Shift Fuel Missed",
+            # "secondActiveShiftFuelTotalMissed": "Total Second Active Shift Fuel Missed",
             "secondActiveShiftFed": "Fed Fuel Into Alliance Zone During the Second Active Shift",
             "secondActiveShiftDefense": "Defended During the Second Active Shift",
             "firstInactiveShiftScored": "Scored During First Inactive Shift",
@@ -970,7 +970,7 @@ class Rebuilt(Game):
             "secondInactiveShiftDefense": "Defended During First Inactive Shift",
             "endgameFuel": "Endgame Fuel",
             "endgameFuelTotal": "Total Endgame Fuel",
-            "endgameFuelTotalMissed": "Total Endgame Fuel Missed",
+            # "endgameFuelTotalMissed": "Total Endgame Fuel Missed",
             "endgameFed": "Fed Fuel Into Alliance Zone During Endgame",
             "endgameDefense": "Defended During Endgame",
             "endClimb": "Endgame Climb",
@@ -986,17 +986,17 @@ class Rebuilt(Game):
             "comment": "Comment",
             "cannedComments": "Canned Comments",
             "scout": "Scout",
-            "autoFuelAverageShotPerSecond": "Average Auto Fuel Shot Per Second",
+            # "autoFuelAverageShotPerSecond": "Average Auto Fuel Shot Per Second",
             "autoFuelAverageScoredPerSecond": "Average Auto Fuel Scored Per Second",
-            "transitionFuelAverageShotPerSecond": "Average Transition Fuel Shot Per Second",
+            # "transitionFuelAverageShotPerSecond": "Average Transition Fuel Shot Per Second",
             "transitionFuelAverageScoredPerSecond": "Average Transition Fuel Scored Per Second",
-            "firstActiveShiftFuelAverageShotPerSecond": "Average First Active Shift Fuel Shot Per Second",
+            # "firstActiveShiftFuelAverageShotPerSecond": "Average First Active Shift Fuel Shot Per Second",
             "firstActiveShiftFuelAverageScoredPerSecond": "Average First Active Shift Fuel Scored Per Second",
-            "secondActiveShiftFuelAverageShotPerSecond": "Average Second Active Shift Fuel Shot Per Second",
+            # "secondActiveShiftFuelAverageShotPerSecond": "Average Second Active Shift Fuel Shot Per Second",
             "secondActiveShiftFuelAverageScoredPerSecond": "Average Second Active Shift Fuel Scored Per Second",
-            "endgameFuelAverageShotPerSecond": "Average Endgame Fuel Shot Per Second",
+            # "endgameFuelAverageShotPerSecond": "Average Endgame Fuel Shot Per Second",
             "endgameFuelAverageScoredPerSecond": "Average Endgame Fuel Scored Per Second",
-            "totalFuelAverageShotPerSecond": "Average Fuel Shot Per Second",
+            # "totalFuelAverageShotPerSecond": "Average Fuel Shot Per Second",
             "totalFuelAverageScoredPerSecond": "Average Fuel Scored Per Second",
         }
         self.matches = matches
@@ -1017,7 +1017,7 @@ class Rebuilt(Game):
             "Active in first and third shifts": "firstShift,0",
             # teleop fuel block
             "Transition Shift Fuel Total": "transitionFuelTotal,0",
-            "Transition Shift Fuel Missed": "transitionFuelTotalMissed,0",
+            # "Transition Shift Fuel Missed": "transitionFuelTotalMissed,0",
             "First Active Shift Fuel Total": "firstActiveShiftFuelTotal,0",
             "Second Active Shift Fuel Total": "secondActiveShiftFuelTotal,0",
             "Endgame Fuel Total": "endgameFuelTotal,0",
@@ -1037,24 +1037,24 @@ class Rebuilt(Game):
             "Total Fuel Missed": "totalFuelMissed,0",
             "Minor Fouls": "minorFouls,0",
             "Major Fouls": "majorFouls,0",
-            "Average Auto Fuel Shot Per Second": "autoFuelAverageShotPerSecond,0",
+            # "Average Auto Fuel Shot Per Second": "autoFuelAverageShotPerSecond,0",
             "Average Auto Fuel Scored Per Second": "autoFuelAverageScoredPerSecond,0",
-            "Average Transition Fuel Shot Per Second": "transitionFuelAverageShotPerSecond,0",
+            # "Average Transition Fuel Shot Per Second": "transitionFuelAverageShotPerSecond,0",
             "Average Transition Fuel Scored Per Second": "transitionFuelAverageScoredPerSecond,0",
-            "Average First Active Shift Fuel Shot Per Second": "firstActiveShiftFuelAverageShotPerSecond,0",
+            # "Average First Active Shift Fuel Shot Per Second": "firstActiveShiftFuelAverageShotPerSecond,0",
             "Average First Active Shift Fuel Scored Per Second": "firstActiveShiftFuelAverageScoredPerSecond,0",
             "Average Second Active Shift Fuel Shot Per Second": "secondActiveShiftFuelAverageShotPerSecond,0",
             "Average Second Active Shift Fuel Scored Per Second": "secondActiveShiftFuelAverageScoredPerSecond,0",
-            "Average Endgame Fuel Shot Per Second": "endgameFuelAverageShotPerSecond,0",
+            # "Average Endgame Fuel Shot Per Second": "endgameFuelAverageShotPerSecond,0",
             "Average Endgame Fuel Scored Per Second": "endgameFuelAverageScoredPerSecond,0",
-            "Average Fuel Shot Per Second": "totalFuelAverageShotPerSecond,0",
+            # "Average Fuel Shot Per Second": "totalFuelAverageShotPerSecond,0",
             "Average Fuel Scored Per Second": "totalFuelAverageScoredPerSecond,0",
         }
         self.teamTableDisplayNames = {
             "score": "Score Impact",
             "preloadFuel": "Preloaded Fuel",
             "autoFuelTotal": "Total Auto Fuel",
-            "autoFuelTotalMissed": "Total Auto Fuel Missed",
+            # "autoFuelTotalMissed": "Total Auto Fuel Missed",
             "autoDepot": "Intaked from Depot During Auto",
             "autoBump": "Went over the Bump in Auto",
             "autoTrench": "Went under the Trench in Auto",
@@ -1067,15 +1067,15 @@ class Rebuilt(Game):
             "autoFedToOutpost": "Fed to the Outpost duringn Auto",
             "firstShift": "Active in first and third shifts",
             "transitionFuelTotal": "Total Transition Shift Fuel",
-            "transitionFuelTotalMissed": "Total Transition Shift Fuel Missed",
+            # "transitionFuelTotalMissed": "Total Transition Shift Fuel Missed",
             "firstActiveShiftFuelTotal": "Total First Active Shift Fuel",
-            "firstActiveShiftFuelTotalMissed": "Total First Active Shift Fuel Missed",
+            # "firstActiveShiftFuelTotalMissed": "Total First Active Shift Fuel Missed",
             "secondActiveShiftFuelTotal": "Total Second Active Shift Fuel",
-            "secondActiveShiftFuelTotalMissed": "Total Second Active Shift Fuel Missed",
+            # "secondActiveShiftFuelTotalMissed": "Total Second Active Shift Fuel Missed",
             "scoredDuringFirstInactiveShift": "Scored During First Inactive Shift",
             "scoredDuringSecondInactiveShift": "Scored During Second Inactive Shift",
             "endgameFuelTotal": "Total Endgame Fuel",
-            "endgameFuelTotalMissed": "Total Endgame Fuel Missed",
+            # "endgameFuelTotalMissed": "Total Endgame Fuel Missed",
             "endClimb": "Endgame Climb",
             "endClimbAttempted": "Endgame Climb Attempted",
             "playedDefense": "Played Defense",
@@ -1087,17 +1087,17 @@ class Rebuilt(Game):
             "totalFuelMissed": "Total Fuel Missed",
             "minorFouls": "Minor Fouls",
             "majorFouls": "Major Fouls",
-            "autoFuelAverageShotPerSecond": "Average Auto Fuel Shot Per Second",
+            # "autoFuelAverageShotPerSecond": "Average Auto Fuel Shot Per Second",
             "autoFuelAverageScoredPerSecond": "Average Auto Fuel Scored Per Second",
-            "transitionFuelAverageShotPerSecond": "Average Transition Fuel Shot Per Second",
+            # "transitionFuelAverageShotPerSecond": "Average Transition Fuel Shot Per Second",
             "transitionFuelAverageScoredPerSecond": "Average Transition Fuel Scored Per Second",
-            "firstActiveShiftFuelAverageShotPerSecond": "Average First Active Shift Fuel Shot Per Second",
+            # "firstActiveShiftFuelAverageShotPerSecond": "Average First Active Shift Fuel Shot Per Second",
             "firstActiveShiftFuelAverageScoredPerSecond": "Average First Active Shift Fuel Scored Per Second",
-            "secondActiveShiftFuelAverageShotPerSecond": "Average Second Active Shift Fuel Shot Per Second",
+            # "secondActiveShiftFuelAverageShotPerSecond": "Average Second Active Shift Fuel Shot Per Second",
             "secondActiveShiftFuelAverageScoredPerSecond": "Average Second Active Shift Fuel Scored Per Second",
-            "endgameFuelAverageShotPerSecond": "Average Endgame Fuel Shot Per Second",
+            # "endgameFuelAverageShotPerSecond": "Average Endgame Fuel Shot Per Second",
             "endgameFuelAverageScoredPerSecond": "Average Endgame Fuel Scored Per Second",
-            "totalFuelAverageShotPerSecond": "Average Fuel Shot Per Second",
+            # "totalFuelAverageShotPerSecond": "Average Fuel Shot Per Second",
             "totalFuelAverageScoredPerSecond": "Average Fuel Scored Per Second",
         }
         self.matchTableDisplayNames = {
@@ -1111,8 +1111,8 @@ class Rebuilt(Game):
             "preloadFuel": "Preloaded Fuel",
             # "autoFuel": "Auto Fuel",
             "autoFuelTotal": "Total Auto Fuel",
-            "autoFuelTotalMissed": "Total Auto Fuel Missed",
-            "autoFuelAverageShotPerSecond": "Average Auto Fuel Shot Per Second",
+            # "autoFuelTotalMissed": "Total Auto Fuel Missed",
+            # "autoFuelAverageShotPerSecond": "Average Auto Fuel Shot Per Second",
             "autoFuelAverageScoredPerSecond": "Average Auto Fuel Scored Per Second",
             "autoDepot": "Intaked from Depot During Auto",
             "autoBump": "Went over the Bump in Auto",
@@ -1127,25 +1127,25 @@ class Rebuilt(Game):
             "firstShift": "Active in first and third shifts",
             # "transitionFuel": "Transition Shift Fuel",
             "transitionFuelTotal": "Total Transition Shift Fuel",
-            "transitionFuelTotalMissed": "Total Transition Shift Fuel Missed",
-            "transitionFuelAverageShotPerSecond": "Average Transition Fuel Shot Per Second",
+            # "transitionFuelTotalMissed": "Total Transition Shift Fuel Missed",
+            # "transitionFuelAverageShotPerSecond": "Average Transition Fuel Shot Per Second",
             "transitionFuelAverageScoredPerSecond": "Average Transition Fuel Scored Per Second",
             # "firstActiveShiftFuel": "First Active Shift Fuel",
             "firstActiveShiftFuelTotal": "Total First Active Shift Fuel",
-            "firstActiveShiftFuelTotalMissed": "Total First Active Shift Fuel Missed",
-            "firstActiveShiftFuelAverageShotPerSecond": "Average First Active Shift Fuel Shot Per Second",
+            # "firstActiveShiftFuelTotalMissed": "Total First Active Shift Fuel Missed",
+            # "firstActiveShiftFuelAverageShotPerSecond": "Average First Active Shift Fuel Shot Per Second",
             "firstActiveShiftFuelAverageScoredPerSecond": "Average First Active Shift Fuel Scored Per Second",
             # "secondActiveShiftFuel": "Second Active Shift Fuel",
             "secondActiveShiftFuelTotal": "Total Second Active Shift Fuel",
-            "secondActiveShiftFuelTotalMissed": "Total Second Active Shift Fuel Missed",
-            "secondActiveShiftFuelAverageShotPerSecond": "Average Second Active Shift Fuel Shot Per Second",
+            # "secondActiveShiftFuelTotalMissed": "Total Second Active Shift Fuel Missed",
+            # "secondActiveShiftFuelAverageShotPerSecond": "Average Second Active Shift Fuel Shot Per Second",
             "secondActiveShiftFuelAverageScoredPerSecond": "Average Second Active Shift Fuel Scored Per Second",
             "firstInactiveShiftScored": "Scored During First Inactive Shift",
             "secondInactiveShiftScored": "Scored During Second Inactive Shift",
             # "endgameFuel": "Endgame Fuel",
             "endgameFuelTotal": "Total Endgame Fuel",
-            "endgameFuelTotalMissed": "Total Endgame Fuel Missed",
-            "endgameFuelAverageShotPerSecond": "Average Endgame Fuel Shot Per Second",
+            # "endgameFuelTotalMissed": "Total Endgame Fuel Missed",
+            # "endgameFuelAverageShotPerSecond": "Average Endgame Fuel Shot Per Second",
             "endgameFuelAverageScoredPerSecond": "Average Endgame Fuel Scored Per Second",
             "endClimb": "Endgame Climb",
             "endClimbAttempted": "Endgame Climb Attempted",
@@ -1156,7 +1156,7 @@ class Rebuilt(Game):
             "groundIntake": "Intaked from the ground",
             "totalFuel": "Total Fuel Worth Points",
             "totalFuelMissed": "Total Fuel Missed",
-            "totalFuelAverageShotPerSecond": "Average Fuel Shot Per Second",
+            # "totalFuelAverageShotPerSecond": "Average Fuel Shot Per Second",
             "totalFuelAverageScoredPerSecond": "Average Fuel Scored Per Second",
             "minorFouls": "Minor Fouls",
             "majorFouls": "Major Fouls",
@@ -1310,31 +1310,31 @@ class Rebuilt(Game):
         totalFuel: int = 0
         totalFuelMissed: int = 0
         autoFuelTotal = 0
-        autoFuelTotalMissed = 0
+        # autoFuelTotalMissed = 0
         transitionFuelTotal = 0
-        transitionFuelTotalMissed = 0
+        # transitionFuelTotalMissed = 0
         firstActiveShiftFuelTotal = 0
-        firstActiveShiftFuelTotalMissed = 0
+        # firstActiveShiftFuelTotalMissed = 0
         secondActiveShiftFuelTotal = 0
-        secondActiveShiftFuelTotalMissed = 0
+        # secondActiveShiftFuelTotalMissed = 0
         endgameFuelTotal = 0
-        endgameFuelTotalMissed = 0
+        # endgameFuelTotalMissed = 0
 
         for period in autoFuel:
             autoFuelTotal += period["scored"]
-            autoFuelTotalMissed += period["missed"]
+            # autoFuelTotalMissed += period["missed"]
         for period in transitionFuel:
             transitionFuelTotal += period["scored"]
-            transitionFuelTotalMissed += period["missed"]
+            # transitionFuelTotalMissed += period["missed"]
         for period in firstActiveShiftFuel:
             firstActiveShiftFuelTotal += period["scored"]
-            firstActiveShiftFuelTotalMissed += period["missed"]
+            # firstActiveShiftFuelTotalMissed += period["missed"]
         for period in secondActiveShiftFuel:
             secondActiveShiftFuelTotal += period["scored"]
-            secondActiveShiftFuelTotalMissed += period["missed"]
+            # secondActiveShiftFuelTotalMissed += period["missed"]
         for period in endgameFuel:
             endgameFuelTotal += period["scored"]
-            endgameFuelTotalMissed += period["missed"]
+            # endgameFuelTotalMissed += period["missed"]
         totalFuel = (
             autoFuelTotal
             + transitionFuelTotal
@@ -1342,19 +1342,19 @@ class Rebuilt(Game):
             + secondActiveShiftFuelTotal
             + endgameFuelTotal
         )
-        totalFuelMissed = (
-            autoFuelTotalMissed
-            + transitionFuelTotalMissed
-            + firstActiveShiftFuelTotalMissed
-            + secondActiveShiftFuelTotalMissed
-            + endgameFuelTotalMissed
-        )
+        # totalFuelMissed = (
+        #     autoFuelTotalMissed
+        #     + transitionFuelTotalMissed
+        #     + firstActiveShiftFuelTotalMissed
+        #     + secondActiveShiftFuelTotalMissed
+        #     + endgameFuelTotalMissed
+        # )
         data = {
             "startPos": startPos,
             "preloadFuel": preloadFuel,
             "autoFuel": autoFuel,
             "autoFuelTotal": autoFuelTotal,
-            "autoFuelTotalMissed": autoFuelTotalMissed,
+            # "autoFuelTotalMissed": autoFuelTotalMissed,
             "autoDepot": autoDepot,
             "autoBump": autoBump,
             "autoTrench": autoTrench,
@@ -1368,19 +1368,19 @@ class Rebuilt(Game):
             "firstShift": firstShift,
             "transitionFuel": transitionFuel,
             "transitionFuelTotal": transitionFuelTotal,
-            "transitionFuelTotalMissed": transitionFuelTotalMissed,
+            # "transitionFuelTotalMissed": transitionFuelTotalMissed,
             "transitionFed": transitionFed,
             "transitionDefense": transitionDefense,
             "firstActiveShiftFuel": firstActiveShiftFuel,
             "firstActiveShiftFuelTotal": firstActiveShiftFuelTotal,
             "firstActiveShiftFed": firstActiveShiftFed,
             "firstActiveShiftDefense": firstActiveShiftDefense,
-            "firstActiveShiftFuelTotalMissed": firstActiveShiftFuelTotalMissed,
+            # "firstActiveShiftFuelTotalMissed": firstActiveShiftFuelTotalMissed,
             "secondActiveShiftFuel": secondActiveShiftFuel,
             "secondActiveShiftFuelTotal": secondActiveShiftFuelTotal,
             "secondActiveShiftFed": secondActiveShiftFed,
             "secondActiveShiftDefense": secondActiveShiftDefense,
-            "secondActiveShiftFuelTotalMissed": secondActiveShiftFuelTotalMissed,
+            # "secondActiveShiftFuelTotalMissed": secondActiveShiftFuelTotalMissed,
             "firstInactiveShiftScored": firstInactiveShiftScored,
             "firstInactiveShiftFed": firstInactiveShiftFed,
             "firstInactiveShiftDefense": firstInactiveShiftDefense,
@@ -1391,7 +1391,7 @@ class Rebuilt(Game):
             "endgameFuelTotal": endgameFuelTotal,
             "endgameFed": endgameFed,
             "endgameDefense": endgameDefense,
-            "endgameFuelTotalMissed": endgameFuelTotalMissed,
+            # "endgameFuelTotalMissed": endgameFuelTotalMissed,
             "endClimb": endClimb.value,
             "endClimbAttempted": endClimbAttempted.value,
             # "playedDefense": playedDefense,
@@ -1412,7 +1412,7 @@ class Rebuilt(Game):
             "scout": scout,
         }
 
-        totalShotPerSecond = 0
+        # totalShotPerSecond = 0
         totalScoredPerSecond = 0
         totalDataLength = 0
         for period in (
@@ -1422,7 +1422,7 @@ class Rebuilt(Game):
             "secondActiveShiftFuel",
             "endgameFuel",
         ):
-            periodShotPerSecond = 0
+            # periodShotPerSecond = 0
             periodScoredPerSecond = 0
             dataLength = len(data[period])
             for i in range(dataLength):
@@ -1433,38 +1433,38 @@ class Rebuilt(Game):
                 except ZeroDivisionError:
                     data[period][i]["fuelScoredPerSecond"] = 0
                     app.logger.warning(f"NaN calculated for fuelScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
-                try:
-                    data[period][i]["fuelShotPerSecond"] = (
-                        data[period][i]["scored"] + data[period][i]["missed"]
-                    ) / data[period][i]["time"]
-                except ZeroDivisionError:
-                    data[period][i]["fuelShotPerSecond"] = 0
-                    app.logger.warning(f"NaN calculated for fuelShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+                # try:
+                #     data[period][i]["fuelShotPerSecond"] = (
+                #         data[period][i]["scored"] + data[period][i]["missed"]
+                #     ) / data[period][i]["time"]
+                # except ZeroDivisionError:
+                #     data[period][i]["fuelShotPerSecond"] = 0
+                #     app.logger.warning(f"NaN calculated for fuelShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
 
-                periodShotPerSecond += data[period][i]["fuelShotPerSecond"]
+                # periodShotPerSecond += data[period][i]["fuelShotPerSecond"]
                 periodScoredPerSecond += data[period][i]["fuelScoredPerSecond"]
-                totalShotPerSecond += data[period][i]["fuelShotPerSecond"]
+                # totalShotPerSecond += data[period][i]["fuelShotPerSecond"]
                 totalScoredPerSecond += data[period][i]["fuelScoredPerSecond"]
 
             totalDataLength += dataLength
             dataLength = 1 if dataLength <= 0 else dataLength
 
-            try:
-                data[f"{period}AverageShotPerSecond"] = periodShotPerSecond / dataLength
-            except ZeroDivisionError:
-                    data[f"{period}AverageShotPerSecond"] = 0
-                    app.logger.warning(f"NaN calculated for {period}AverageShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+            # try:
+            #     data[f"{period}AverageShotPerSecond"] = periodShotPerSecond / dataLength
+            # except ZeroDivisionError:
+            #         data[f"{period}AverageShotPerSecond"] = 0
+            #         app.logger.warning(f"NaN calculated for {period}AverageShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
             try:
                 data[f"{period}AverageScoredPerSecond"] = periodScoredPerSecond / dataLength
             except ZeroDivisionError:
                 data[f"{period}AverageScoredPerSecond"] = 0
                 app.logger.warning(f"NaN calculated for {period}AverageScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
 
-        try:
-            data[f"totalFuelAverageShotPerSecond"] = totalShotPerSecond / totalDataLength
-        except ZeroDivisionError:
-            data[f"totalFuelAverageShotPerSecond"] = 0
-            app.logger.warning(f"NaN calculated for totalFuelAverageShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+        # try:
+        #     data[f"totalFuelAverageShotPerSecond"] = totalShotPerSecond / totalDataLength
+        # except ZeroDivisionError:
+        #     data[f"totalFuelAverageShotPerSecond"] = 0
+        #     app.logger.warning(f"NaN calculated for totalFuelAverageShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
         try:
             data[f"totalFuelAverageScoredPerSecond"] = (
                 totalScoredPerSecond / totalDataLength
@@ -1720,12 +1720,12 @@ class Rebuilt(Game):
             "score": getAllStatsForCategory(teamResults, "score"),
             "preloadFuel": getAllStatsForCategory(teamResults, "preloadFuel"),
             "autoFuelTotal": getAllStatsForCategory(teamResults, "autoFuelTotal"),
-            "autoFuelTotalMissed": getAllStatsForCategory(
-                teamResults, "autoFuelTotalMissed"
-            ),
-            "autoFuelAverageShotPerSecond": getAllStatsForCategory(
-                teamResults, "autoFuelAverageShotPerSecond"
-            ),
+            # "autoFuelTotalMissed": getAllStatsForCategory(
+            #     teamResults, "autoFuelTotalMissed"
+            # ),
+            # "autoFuelAverageShotPerSecond": getAllStatsForCategory(
+            #     teamResults, "autoFuelAverageShotPerSecond"
+            # ),
             "autoFuelAverageScoredPerSecond": getAllStatsForCategory(
                 teamResults, "autoFuelAverageScoredPerSecond"
             ),
@@ -1736,55 +1736,55 @@ class Rebuilt(Game):
             "transitionFuelTotal": getAllStatsForCategory(
                 teamResults, "transitionFuelTotal"
             ),
-            "transitionFuelTotalMissed": getAllStatsForCategory(
-                teamResults, "transitionFuelTotalMissed"
-            ),
-            "transitionFuelAverageShotPerSecond": getAllStatsForCategory(
-                teamResults, "transitionFuelAverageShotPerSecond"
-            ),
+            # "transitionFuelTotalMissed": getAllStatsForCategory(
+            #     teamResults, "transitionFuelTotalMissed"
+            # ),
+            # "transitionFuelAverageShotPerSecond": getAllStatsForCategory(
+            #     teamResults, "transitionFuelAverageShotPerSecond"
+            # ),
             "transitionFuelAverageScoredPerSecond": getAllStatsForCategory(
                 teamResults, "transitionFuelAverageScoredPerSecond"
             ),
             "firstActiveShiftFuelTotal": getAllStatsForCategory(
                 teamResults, "firstActiveShiftFuelTotal"
             ),
-            "firstActiveShiftFuelTotalMissed": getAllStatsForCategory(
-                teamResults, "firstActiveShiftFuelTotalMissed"
-            ),
-            "firstActiveShiftFuelAverageShotPerSecond": getAllStatsForCategory(
-                teamResults, "firstActiveShiftFuelAverageShotPerSecond"
-            ),
+            # "firstActiveShiftFuelTotalMissed": getAllStatsForCategory(
+            #     teamResults, "firstActiveShiftFuelTotalMissed"
+            # ),
+            # "firstActiveShiftFuelAverageShotPerSecond": getAllStatsForCategory(
+            #     teamResults, "firstActiveShiftFuelAverageShotPerSecond"
+            # ),
             "firstActiveShiftFuelAverageScoredPerSecond": getAllStatsForCategory(
                 teamResults, "firstActiveShiftFuelAverageScoredPerSecond"
             ),
             "secondActiveShiftFuelTotal": getAllStatsForCategory(
                 teamResults, "secondActiveShiftFuelTotal"
             ),
-            "secondActiveShiftFuelTotalMissed": getAllStatsForCategory(
-                teamResults, "secondActiveShiftFuelTotalMissed"
-            ),
-            "secondActiveShiftFuelAverageShotPerSecond": getAllStatsForCategory(
-                teamResults, "secondActiveShiftFuelAverageShotPerSecond"
-            ),
+            # "secondActiveShiftFuelTotalMissed": getAllStatsForCategory(
+            #     teamResults, "secondActiveShiftFuelTotalMissed"
+            # ),
+            # "secondActiveShiftFuelAverageShotPerSecond": getAllStatsForCategory(
+            #     teamResults, "secondActiveShiftFuelAverageShotPerSecond"
+            # ),
             "secondActiveShiftFuelAverageScoredPerSecond": getAllStatsForCategory(
                 teamResults, "secondActiveShiftFuelAverageScoredPerSecond"
             ),
             "endgameFuelTotal": getAllStatsForCategory(teamResults, "endgameFuelTotal"),
-            "endgameFuelTotalMissed": getAllStatsForCategory(
-                teamResults, "endgameFuelTotalMissed"
-            ),
-            "endgameFuelAverageShotPerSecond": getAllStatsForCategory(
-                teamResults, "endgameFuelAverageShotPerSecond"
-            ),
+            # "endgameFuelTotalMissed": getAllStatsForCategory(
+            #     teamResults, "endgameFuelTotalMissed"
+            # ),
+            # "endgameFuelAverageShotPerSecond": getAllStatsForCategory(
+            #     teamResults, "endgameFuelAverageShotPerSecond"
+            # ),
             "endgameFuelAverageScoredPerSecond": getAllStatsForCategory(
                 teamResults, "endgameFuelAverageScoredPerSecond"
             ),
             "endClimb": getAllStatsForCategory(teamResults, "endClimb"),
             "endClimbAttempted": getAllStatsForCategory(teamResults, "endClimbAttempted"),
             "totalFuel": getAllStatsForCategory(teamResults, "totalFuel"),
-            "totalFuelAverageShotPerSecond": getAllStatsForCategory(
-                teamResults, "totalFuelAverageShotPerSecond"
-            ),
+            # "totalFuelAverageShotPerSecond": getAllStatsForCategory(
+            #     teamResults, "totalFuelAverageShotPerSecond"
+            # ),
             "totalFuelAverageScoredPerSecond": getAllStatsForCategory(
                 teamResults, "totalFuelAverageScoredPerSecond"
             ),
@@ -1845,55 +1845,55 @@ class Rebuilt(Game):
             + team2Results[-1]["autoFuelTotal"]
             + team3Results[-1]["autoFuelTotal"]
         )
-        autoFuelTotalMissed = (
-            team1Results[-1]["autoFuelTotalMissed"]
-            + team2Results[-1]["autoFuelTotalMissed"]
-            + team3Results[-1]["autoFuelTotalMissed"]
-        )
+        # autoFuelTotalMissed = (
+        #     team1Results[-1]["autoFuelTotalMissed"]
+        #     + team2Results[-1]["autoFuelTotalMissed"]
+        #     + team3Results[-1]["autoFuelTotalMissed"]
+        # )
 
         transitionFuelTotal = (
             team1Results[-1]["transitionFuelTotal"]
             + team2Results[-1]["transitionFuelTotal"]
             + team3Results[-1]["transitionFuelTotal"]
         )
-        transitionFuelTotalMissed = (
-            team1Results[-1]["transitionFuelTotalMissed"]
-            + team2Results[-1]["transitionFuelTotalMissed"]
-            + team3Results[-1]["transitionFuelTotalMissed"]
-        )
+        # transitionFuelTotalMissed = (
+        #     team1Results[-1]["transitionFuelTotalMissed"]
+        #     + team2Results[-1]["transitionFuelTotalMissed"]
+        #     + team3Results[-1]["transitionFuelTotalMissed"]
+        # )
 
         firstActiveShiftFuelTotal = (
             team1Results[-1]["firstActiveShiftFuelTotal"]
             + team2Results[-1]["firstActiveShiftFuelTotal"]
             + team3Results[-1]["firstActiveShiftFuelTotal"]
         )
-        firstActiveShiftFuelTotalMissed = (
-            team1Results[-1]["firstActiveShiftFuelTotalMissed"]
-            + team2Results[-1]["firstActiveShiftFuelTotalMissed"]
-            + team3Results[-1]["firstActiveShiftFuelTotalMissed"]
-        )
+        # firstActiveShiftFuelTotalMissed = (
+        #     team1Results[-1]["firstActiveShiftFuelTotalMissed"]
+        #     + team2Results[-1]["firstActiveShiftFuelTotalMissed"]
+        #     + team3Results[-1]["firstActiveShiftFuelTotalMissed"]
+        # )
 
         secondActiveShiftFuelTotal = (
             team1Results[-1]["secondActiveShiftFuelTotal"]
             + team2Results[-1]["secondActiveShiftFuelTotal"]
             + team3Results[-1]["secondActiveShiftFuelTotal"]
         )
-        secondActiveShiftFuelTotalMissed = (
-            team1Results[-1]["secondActiveShiftFuelTotalMissed"]
-            + team2Results[-1]["secondActiveShiftFuelTotalMissed"]
-            + team3Results[-1]["secondActiveShiftFuelTotalMissed"]
-        )
+        # secondActiveShiftFuelTotalMissed = (
+        #     team1Results[-1]["secondActiveShiftFuelTotalMissed"]
+        #     + team2Results[-1]["secondActiveShiftFuelTotalMissed"]
+        #     + team3Results[-1]["secondActiveShiftFuelTotalMissed"]
+        # )
 
         endgameFuelTotal = (
             team1Results[-1]["endgameFuelTotal"]
             + team2Results[-1]["endgameFuelTotal"]
             + team3Results[-1]["endgameFuelTotal"]
         )
-        endgameFuelTotalMissed = (
-            team1Results[-1]["endgameFuelTotalMissed"]
-            + team2Results[-1]["endgameFuelTotalMissed"]
-            + team3Results[-1]["endgameFuelTotalMissed"]
-        )
+        # endgameFuelTotalMissed = (
+        #     team1Results[-1]["endgameFuelTotalMissed"]
+        #     + team2Results[-1]["endgameFuelTotalMissed"]
+        #     + team3Results[-1]["endgameFuelTotalMissed"]
+        # )
 
         endgameClimbs = [
             EndPositionRebuilt(team1Results[-1]["endClimb"]),
@@ -1950,15 +1950,15 @@ class Rebuilt(Game):
 
         return {
             "autoFuelTotal": autoFuelTotal,
-            "autoFuelTotalMissed": autoFuelTotalMissed,
+            # "autoFuelTotalMissed": autoFuelTotalMissed,
             "transitionFuelTotal": transitionFuelTotal,
-            "transitionFuelTotalMissed": transitionFuelTotalMissed,
+            # "transitionFuelTotalMissed": transitionFuelTotalMissed,
             "firstActiveShiftFuelTotal": firstActiveShiftFuelTotal,
-            "firstActiveShiftFuelTotalMissed": firstActiveShiftFuelTotalMissed,
+            # "firstActiveShiftFuelTotalMissed": firstActiveShiftFuelTotalMissed,
             "secondActiveShiftFuelTotal": secondActiveShiftFuelTotal,
-            "secondActiveShiftFuelTotalMissed": secondActiveShiftFuelTotalMissed,
+            # "secondActiveShiftFuelTotalMissed": secondActiveShiftFuelTotalMissed,
             "endgameFuelTotal": endgameFuelTotal,
-            "endgameFuelTotalMissed": endgameFuelTotalMissed,
+            # "endgameFuelTotalMissed": endgameFuelTotalMissed,
             "endgameClimbs": endgameClimbs,
             "autoClimbs": autoClimbs,
             "minorFouls": minorFouls,
