@@ -709,3 +709,9 @@ h3{
 #adminDiv{
     text-align: center
 }
+
+.fieldImg{
+    width:25px;
+    padding: 0px;
+    margin: 0px;
+}

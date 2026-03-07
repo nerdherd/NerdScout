@@ -78,8 +78,8 @@ function moveImage(imageId, sliderVal){
                         moveImage("fieldHighlight-{{ color }}-{{ team['teamNumber'] }}-{{ loop.index }}",{{ result["startPos"] }});
                         </script>
                 </div>
-                <p>startpos</p>
-                {{ result["startPos"] }}
+                <p>Start Position: {{ result["startPos"] }}</p>
+                
             </div>
 
             <div class="sectionDiv">
@@ -212,6 +212,25 @@ function moveImage(imageId, sliderVal){
             <div class="sectionDiv">
                 <h1>Transition</h1>
 
+                <div class="column">
+                    <div class="booleanItem">
+                        <h2>Fed:</h2>
+                        {% if result["transitionFed"] %}
+                        <img src="static\images\RebuiltMatchDisplay\True.svg">
+                        {% else %}
+                        <img src="static\images\RebuiltMatchDisplay\False.svg">
+                        {% endif %} 
+                    </div>
+                    <div class="booleanItem">
+                        <h2>Defended:</h2>
+                        {% if result["transitionDefense"] %}
+                        <img src="static\images\RebuiltMatchDisplay\True.svg">
+                        {% else %}
+                        <img src="static\images\RebuiltMatchDisplay\False.svg">
+                        {% endif %} 
+                    </div>                 
+                </div>
+
                 <div clas="table">
                     <div class="row">
                         <div class="cell cell2"><b>Total Scored:</b></div>
@@ -249,24 +268,7 @@ function moveImage(imageId, sliderVal){
                     <p>No Data</p>
                 {% endif %}
 
-                <div class="row">
-                    <div class="booleanItem">
-                        <h2>Fed:</h2>
-                        {% if result["transitionFed"] %}
-                        <img src="static\images\RebuiltMatchDisplay\True.svg">
-                        {% else %}
-                        <img src="static\images\RebuiltMatchDisplay\False.svg">
-                        {% endif %} 
-                    </div>
-                    <div class="booleanItem">
-                        <h2>Defended:</h2>
-                        {% if result["transitionDefense"] %}
-                        <img src="static\images\RebuiltMatchDisplay\True.svg">
-                        {% else %}
-                        <img src="static\images\RebuiltMatchDisplay\False.svg">
-                        {% endif %} 
-                    </div>                 
-                    </div>
+                
             </div>
 
             <div class="sectionDiv">
