@@ -248,13 +248,15 @@
             <div class="shift-thing shift-postgame">
                 <div class="column">
                     <label for="attemptedEndClimb" id="AttemptEndPosText">Attempted End position: Ground</label>
+                    <script>var attemptedEndClimbObject;</script>
                     <div class="row endPosImages">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Grnd.svg')}}">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L1.svg')}}">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L2.svg')}}">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L3.svg')}}">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Grnd.svg')}}" onclick="attemptedEndClimbObject.value = 0">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L1.svg')}}" onclick="attemptedEndClimbObject.value = 1">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L2.svg')}}" onclick="attemptedEndClimbObject.value = 2">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L3.svg')}}" onclick="attemptedEndClimbObject.value = 3">
                     </div>
                     <input type="range" min="0" max="3" step="1" value="0" id="attemptedEndClimb" oninput="endChangeText()">
+                    <script>attemptedEndClimbObject = document.getElementById('attemptedEndClimb');</script>
                 </div>
                 <div class="row">
                     <label class="toggle-btn-wrapper">
@@ -266,13 +268,15 @@
                 </div>
                 <div class="column" id="attemptEndDiv">
                     <label for="endClimb" id="EndPosText">Actual End position: Ground</label>
+                    <script>var endClimbObject;</script>
                     <div class="row endPosImages">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Grnd.svg')}}">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L1.svg')}}">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L2.svg')}}">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L3.svg')}}">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Grnd.svg')}}" onclick="endClimbObject.value = 0">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L1.svg')}}" onclick="endClimbObject.value = 1">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L2.svg')}}" onclick="endClimbObject.value = 2">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L3.svg')}}" onclick="endClimbObject.value = 3">
                     </div>
                     <input type="range" min="0" max="3" step="1" value="0" id="endClimb" oninput="accChangeText()">
+                    <script>endClimbObject = document.getElementById('endClimb');</script>
                 </div>
                 <div class="row">
                     <label class="toggle-btn-wrapper">
