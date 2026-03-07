@@ -17,84 +17,18 @@ th, td {
     background-color: var(--darker-cell);
 }
 
-#header-row{
-    position:sticky;
-    top:0;
-    z-index:11;
-}
-
-th button {
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-    font-weight: bold;
-    background: #00000000;
-}
-
-th button:hover {
-    cursor: pointer;
-}
-
-th button:hover:not(.title-selected) {
-    cursor: pointer;
-    background: #00000080;
-}
-
-.title-selected{
-    background-color: var(--blue-alliance);
-}
-
-/* .team-thing{
-    position: sticky;
-    left:0;
-} */
-
-.team-thing{
-    background-color: #040a1a;
-    position: sticky;
-    left: 0;
-    z-index: 10;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.hidden2 {
-    display: none !important;
-}
-
-#column-select, #team-select, #comp-select {
-    display:flex;
-    flex-direction: column;
-}
-
-td{
+td {
     text-align: right;
     padding-right:4px;
 }
 
-/* TODO: style these */
-td.active {
-    background-color: green;
+.table-comment, .table-cannedComments {
+    width: 500px;
 }
 
-td.inactive {
-    background-color: red;
-}
-
-
-.startPosDisplay {
-    width: calc(317.7px / 3);
-    height: calc(158.6px / 3);
-    background-size:cover;
-    position: relative;
-}
-
-.startPosIndicator {
-    position:absolute;
-    width:5px;
-    height:5px;
-    background-color: black;
-    transform: translate(-50%,-50%);
+.team-column{
+    background-color: #040a1a;
+    position: sticky;
+    left: 0;
+    z-index: 10;
 }

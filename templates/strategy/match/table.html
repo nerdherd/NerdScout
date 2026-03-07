@@ -6,115 +6,51 @@
 <link rel="preload" href="{{ url_for('static', filename='stylesheets/table.css') }}" as="style">
 <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/table.css') }}">
 <script src="{{ url_for('static',filename='javascript/table.js')}}" defer></script>
-<style>
-    /*th, td {
-        width: 130px !important;
-    }*/
-
-    .column-comment, .column-cannedcomments{
-        width: 500px !important;
-        text-wrap: wrap;
-        overflow-wrap: break-word;
-        text-align: left;
-    }
-</style>
 {% endblock %}
 
 {% block content %}
 <h1>Match Data Table</h1>
-<details>
-    <summary>Instructions</summary>
-    <ul>
-        <li>Use the table settings dropdown to select specific columns to show</li>
-        <li>Use the dropdowns to sort the table by any scoring category</li>
-        <li>Alternatively click on the header of any column to sort by it</li>
-    </ul>
-</details>
-<details>
-    <summary>Table Settings</summary>
-    <div id="column-select">
-        {% for key in displayNames %}
-        {% if key != "team" %}
-        <div><input type="checkbox" data-value="{{key.lower()}}" id="checkbox-{{key.lower()}}" name="checkbox-{{key.lower()}}" checked><label for="checkbox-{{key.lower()}}">{{displayNames[key]}}</label></div>
-        {% endif %}
-        {% endfor %}
-        <button onclick="setColumns()">Apply</button>
-    </div>
-</details>
-<details>
-    <summary>Team Settings</summary>
-    <div id="team-select">
-        {% for team in teams %}
-        <div>
-            <input type="checkbox" data-team="{{team}}" id="team-checkbox-{{team}}" name="team-checkbox-{{team}}" checked><label for="team-checkbox-{{team}}">{{team}}</label>
-        </div>
-        {% endfor %}
-        <button onclick="setRows(1)">Apply</button>
-    </div>
-</details>
-<details>
-    <summary>Competition Level Settings</summary>
-    <!-- qm, ef, qf, sf, f -->
-    <div id="comp-select">
-        <div>
-            <input type="checkbox" data-level="qm" id="comp-checkbox-qm" name="comp-checkbox-qm" checked><label for="comp-checkbox-qm">Qualifying</label>
-        </div>
-        <div>
-            <input type="checkbox" data-level="ef" id="comp-checkbox-ef" name="comp-checkbox-ef" checked><label for="comp-checkbox-ef">ef</label>
-        </div>
-        <div>
-            <input type="checkbox" data-level="qf" id="comp-checkbox-qf" name="comp-checkbox-qf" checked><label for="comp-checkbox-qf">qf</label>
-        </div>
-        <div>
-            <input type="checkbox" data-level="sf" id="comp-checkbox-sf" name="comp-checkbox-sf" checked><label for="comp-checkbox-sf">Playoff</label>
-        </div>
-        <div>
-            <input type="checkbox" data-level="f" id="comp-checkbox-f" name="comp-checkbox-f" checked><label for="comp-checkbox-f">Final</label>
-        </div>
-        <button onclick="setRows(1)">Apply</button>
-    </div>
-</details>
 
+<a href="javascript:download_table_as_csv()">download as csv</a>
+<br>
 <select id="sort-category">
     <!-- <option value="team" selected>Team</option> -->
     {% for key in displayNames %}
     <option value="{{key.lower()}}">{{displayNames[key]}}</option>
     {% endfor %}
 </select>
-
 <select id="sort-input">
     <option value="ascending">Ascending</option>
     <option value="descending">Descending</option>
 </select>
-<button onclick="updateSort()">sort</button>
-<table id="main-table">
-    <tr id="header-row" class="header-row">
-        {% for key in displayNames %}
-        <th class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %}" data-displayname="{{'Starting Position X", "Starting Position Y' if key == 'startpos' else displayNames[key]}}"><button onclick="setSort('{{key.lower()}}')" class="header-button-{{key.lower()}}">{{displayNames[key]}}</button></th>
+<button onclick="updateSort()">Sort</button>
+<table id="table">
+    <tr class="header-row">
+        {% for key in displayNames.keys() %}
+        <th class="table-{{key}} {% if loop.index == 1 %}team-column{% endif %}" data-type="string">{{displayNames[key]}}</th>
         {% endfor %}
     </tr>
-    {% for match in results %}
-    <tr class="team-row row-{{match['team']}} complevel-{{match['compLevel']}}" data-team="{{match['team']}}" {% for key in displayNames %}{% if key == "startpos"%} data-startposx="{{match['startPosX']}}" data-startposy="{{match['startPosY']}}" {% else %} data-{{key}}="{{match[key]}}" {% endif %}{% endfor %}>
-        {% for key in displayNames %}
-        <td class="column-{{key.lower()}} {% if loop.index == 1 %}team-thing{% endif %} {% if key in ('comment', 'cannedComments', 'scout', 'displayName', 'compLevel') %}escape{% endif %}  {% if match['firstShift'] %}{% if '1' in key or '3' in key %} active {% elif '2' in key or '4' in key %} inactive {% endif %}{% else %}{% if '2' in key or '4' in key %} active {% elif '1' in key or '3' in key %} inactive {% endif %}{% endif %}" data-datas="{{key.lower()}}">
-            {% if key == "displayName" %}
-            <a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],compLevel=match['compLevel'],setNum=match['setNumber']) }}">{{match[key]}}</a>
-            {% elif key == "cannedComments" %}
-            <p>{{",".join(match[key])}}</p>
-            {% else %}
-            <p>{{match[key]}}</p>
-            {% endif %}
+    {% for match in results%}
+    <tr class="row" {% for key in displayNames %}data-{{key|lower}}="{{match[key]}}"{% endfor %}>
+        {% for key in displayNames.keys() %}
+        <td id="{{key}}" data-value="{{match[key]}}" class="table-{{key}} {% if loop.index == 1 %}team-column{% endif %}"
+        {% if key == "displayName" %}
+        data-type="string"><a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],compLevel=match['compLevel'],setNum=match['setNumber']) }}">{{match[key]}}</a>
+        {% elif match[key] is float %}
+        data-type="number">{{"%.2f"|format(match[key]|float)}}
+        {% elif match[key] is integer %}
+        data-type="number">{{match[key]}}
+        {% elif match[key] is iterable and match[key] is not string %}
+        data-type="string">{{"".join(match[key])}}
+        {% else %}
+        data-type="{{ "boolean" if match[key] is boolean else "string"}}">{{match[key]}}
+        {% endif %}
         </td>
         {% endfor %}
-        <td style="display:none"></td>
     </tr>
     {% endfor %}
 </table>
 
-<a href="#" onclick="download_table_as_csv(true)">Download as CSV</a>
 {% set previousPage = url_for('strategyPage') %}
 {% include 'backButton.html' %}
-<!-- <script>
-    const displayNames = [{% for key in displayNames %}{% if key == "startpos"%} "startPosX", "startPosY", {% else %} "{{key}}", {% endif %}{% endfor %}];
-</script> -->
 {% endblock %}

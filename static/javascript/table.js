@@ -1,21 +1,17 @@
-var rows = Array.prototype.slice.call(document.querySelectorAll(".team-row"));
-const mainTable = document.getElementById("main-table");
+// var rows = Array.from(document.querySelectorAll(".row"));
+const table = document.getElementById("table");
 
 function updateSort(){
-    sortCategory = document.getElementById("sort-category").value;
-    if (sortCategory == "startpos") return;
+    let sortCategory = document.getElementById("sort-category").value;
+    let descending = (document.getElementById("sort-input").value === "descending");
 
-    rowNodes = document.querySelectorAll(".team-row");
-
-    rows = Array.prototype.slice.call(rowNodes);
-
+    let rowNodes = document.querySelectorAll(".row");
+    let rows = Array.from(rowNodes);
     for (const row of rowNodes){
         row.remove();
     }
 
-    let descending = (document.getElementById("sort-input").value === "descending");
-
-    rows.sort(function(a,b){
+    rows.sort((a,b) => {
         var aRaw = a.dataset[sortCategory];
         var bRaw = b.dataset[sortCategory];
         if (aRaw === "True" || aRaw === "False"){
@@ -55,64 +51,36 @@ function updateSort(){
         if (aVal < bVal) return -1;
         return 0;
     });
+
     if (descending){
         rows = rows.reverse();
     }
-    
+
     rows.forEach(element => {
-        mainTable.appendChild(element);
-    });;
-
-    for (const button of document.querySelectorAll("th button")){
-        button.classList.remove("title-selected");
-        if (button.classList.contains("header-button-"+sortCategory)){
-            button.classList.add("title-selected");
-        }
-    }
+        table.appendChild(element);
+    });
 }
 
-function isNumeric(str) {
-    return !isNaN(str) && !isNaN(parseFloat(str))
-}
-
-function download_table_as_csv(isMatches=false,separator = ',') {
-    var rows = document.querySelectorAll('table#main-table tr');
+function download_table_as_csv(separator = ',') {
+    var rows = table.querySelectorAll("tr");
     var csv = [];
     for (var i = 0; i < rows.length; i++) {
-        if (rows[i].classList.contains("hidden")){
-            continue;
-        }
         var row = [], cols = rows[i].querySelectorAll('td, th');
         for (var j = 0; j < cols.length; j++) {
-            if (cols[j].classList.contains("hidden")){
-                continue;
-            }
-
-            if (cols[j].nodeName==="TH"||cols[j].classList.contains("escape")){ //|| isNaN(cols[j].innerText) || isNaN(parseFloat(cols[j].innerText))){
-                var data = cols[j].innerText;
-                // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+            let cell = cols[j];
+            let data = cell.innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+            if (cell.dataset.type === "string"){
                 data = data.replace(/"/g, '""');
-                if ("displayname" in cols[j].dataset) var data = cols[j].dataset.displayname;
-                // Clean innertext to remove multiple spaces and jumpline (break csv)
-                data = data.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ');
-                // Push escaped string
                 row.push('"' + data + '"');
             } else {
-                // if (cols[j].dataset.datas.includes(",")) console.log("tea");
-                let tochecks = cols[j].dataset.datas.split(",");
-                for (const tocheck of tochecks){
-                    var data = rows[i].dataset[tocheck];
-                    row.push(data);
-                }
+                row.push(""+data);
             }
         }
         csv.push(row.join(separator));
     }
     var csv_string = csv.join('\n');
     // Download it
-    var filename;
-    if (!isMatches) {filename = 'export_teams_' + new Date().toLocaleDateString() + '.csv'}
-    else {filename = 'export_matches_' + new Date().toLocaleDateString() + '.csv'};
+    var filename = 'match_data_'+new Date().toLocaleDateString() + '.csv';
     var link = document.createElement('a');
     link.style.display = 'none';
     link.setAttribute('target', '_blank');
@@ -121,78 +89,4 @@ function download_table_as_csv(isMatches=false,separator = ',') {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
-
-function setSort(value){
-    let options = document.getElementById("sort-category").querySelectorAll("option");
-    for (const option of options){
-        let selected = (option.value === value);
-        if (option.selected&&selected){
-            for (const orderoption of document.getElementById("sort-input").querySelectorAll("option")){
-                orderoption.toggleAttribute("selected");
-            }
-        }
-        option.selected = selected;
-    }
-    updateSort();
-}
-
-function setColumns(){
-    const columnSelectDiv = document.getElementById("column-select");
-    let allowedColumns = ["column-team"];
-    for (const checkbox of columnSelectDiv.querySelectorAll("input")){
-        if (checkbox.checked){
-            allowedColumns.push("column-"+checkbox.dataset.value);
-        }
-    }
-
-    console.log(allowedColumns);
-
-
-    let rowNodes = mainTable.querySelectorAll("tr");
-    for (const rowNode of rowNodes){
-        for (const element of rowNode.children){
-            element.classList.add("hidden");
-            for (const curClass of element.classList){
-                if (allowedColumns.includes(curClass)){
-                    element.classList.remove("hidden");
-                }
-            }
-        }
-    }
-}
-
-function setRows(type = 0){
-    const teamSelectDiv = document.getElementById("team-select");
-    var allowedRows = ["header-row"];
-    for (const checkbox of teamSelectDiv.querySelectorAll("input")){
-        if (checkbox.checked){
-            allowedRows.push("row-"+checkbox.dataset.team);
-        }
-    }
-    let rowNodes = mainTable.querySelectorAll("tr");
-    for (const rowNode of rowNodes){
-        rowNode.classList.add("hidden");
-        for (const curClass of rowNode.classList){
-            if (allowedRows.includes(curClass)){
-                rowNode.classList.remove("hidden");
-            }
-        }
-    }
-
-    const compSelectDiv = document.getElementById("comp-select");
-    allowedRows = ["header-row"];
-    for (const checkbox of compSelectDiv.querySelectorAll("input")){
-        if (checkbox.checked){
-            allowedRows.push("complevel-"+checkbox.dataset.level);
-        }
-    }
-    for (const rowNode of rowNodes){
-        rowNode.classList.add("hidden2");
-        for (const curClass of rowNode.classList){
-            if (allowedRows.includes(curClass)){
-                rowNode.classList.remove("hidden2");
-            }
-        }
-    }
 }
