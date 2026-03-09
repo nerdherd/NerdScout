@@ -87,6 +87,7 @@ body{
 
 #stats{
     background-color: var(--nerd-herd-navy);
+    width:100%;
 }
 
 li.unchecked::marker {
