@@ -21,7 +21,7 @@
 </select>
 <select id="sort-input">
     <option value="ascending">Ascending</option>
-    <option value="descending">Descending</option>
+    <option value="descending" selected>Descending</option>
 </select>
 <button onclick="updateSort()">Sort</button>
 <table id="table">
@@ -33,13 +33,13 @@
     </tr>
     {% for team in data %}
     {% if team["results"] %}
-    <tr class="row" data-team="{{team['team']}}" {% for key in displayNames %}data-{{key}}="{{team['results'][key]}}"{% endfor %}>
+    <tr class="row" data-team="{{team['team']}}" {% for key in displayNames %}data-{{key}}="{{team['results'][key]['value']}}"{% endfor %}>
         <td class="team-column"><p>{{team["team"]}}</p></td>
         {% for key in displayNames %}
         <td class="column-{{key.lower()}}">
             <!--{{key}}-->
             {% if links %}
-            <a href="{{team['results'][loop.index-1]['matchId']}}">{{team["results"][key]['value']}}</a>
+            <a href="{{team['results'][key]['matchId']}}">{{team["results"][key]['value']}}</a>
             {% else %}
             <p>{{team["results"][key]['value']}}</p>
             {% endif %}

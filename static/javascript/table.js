@@ -90,3 +90,5 @@ function download_table_as_csv(separator = ',') {
     link.click();
     document.body.removeChild(link);
 }
+
+updateSort();
