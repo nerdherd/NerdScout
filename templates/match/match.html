@@ -17,11 +17,12 @@ function moveImage(imageId, sliderVal){
 {% block content %}
 {% set previousPage = url_for("renderMatch") %}
 <div class="navbuttons">
+{% set backText = "Match Select"%}
     {% include 'backButton.html' %}
     {% if nextMatch %}
-    <a href="{{ url_for('renderMatch',matchNum=results['matchNumber']+1,compLevel=results['compLevel'],setNum=results['setNumber']) }}" id="nextButtonLink">
+    <a href="{{ url_for('renderMatch',matchNum=nextMatch['matchNumber'],compLevel=nextMatch['compLevel'],setNum=nextMatch['setNumber']) }}" id="nextButtonLink">
         <div id="nextButton" class="card">
-            <span id="nextButtonContents"><span style="white-space:pre;">Next </span><span class="icon" style="font-size: 20px;">arrow_forward_ios</span></span>
+            <span id="nextButtonContents"><span style="white-space:pre;">Next Match</span><span class="icon" style="font-size: 20px;">arrow_forward_ios</span></span>
         </div>
     </a>
     {% endif %}

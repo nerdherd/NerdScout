@@ -197,13 +197,21 @@ def renderMatch():
                 f"Team {results['teams'][team]} in match {compLevel}{matchNumber} set {setNumber} has no stored alliance."
             )
 
-    nextMatch = False
-    try:
-        getMatch(compLevel, matchNumber + 1, setNumber)[-1]  # type: ignore
-        nextMatch = True
-    except (IndexError, AttributeError) as err:
-        # IndexError: There isnt a next match
-        pass
+    nextMatch = None
+    nextMatch = getMatch(compLevel, matchNumber + 1, setNumber)
+    if not nextMatch:
+        nextMatch = getMatch(compLevel, matchNumber, setNumber + 1)
+
+    # under normal conditions, SF matches shouldn't exist unless qualification is done.
+    if not nextMatch and compLevel == CompLevel.QM:
+        nextMatch = getMatch(CompLevel.SF,1,1)
+
+    # standard 8-alliance brackets have 13 playoffs before finals
+    if compLevel == CompLevel.SF and setNumber == 13:
+        nextMatch = getMatch(CompLevel.F,1,1)
+
+    if nextMatch:
+        nextMatch = nextMatch[-1]
 
     showAdmin = session["username"] and isDbAdmin(session["username"])
 
