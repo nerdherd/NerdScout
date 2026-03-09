@@ -33,7 +33,7 @@
     {% for match in results%}
     <tr class="row" {% for key in displayNames %}data-{{key|lower}}="{{match[key]}}"{% endfor %}>
         {% for key in displayNames.keys() %}
-        <td id="{{key}}" data-value="{{match[key]}}" class="table-{{key}} {% if loop.index == 1 %}team-column{% endif %}"
+        <td data-value="{{match[key]}}" class="table-{{key}} {% if loop.index == 1 %}team-column{% endif %}"
         {% if key == "displayName" %}
         data-type="string"><a href="{{ url_for('renderMatch',matchNum=match['matchNumber'],compLevel=match['compLevel'],setNum=match['setNumber']) }}">{{match[key]}}</a>
         {% elif match[key] is float %}

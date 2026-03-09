@@ -663,8 +663,7 @@ def teamTable():
 
     displayNames = game.teamTableDisplayNames
     data = teamDataSummary()
-    print("hey here is the data for this request thanks")
-    print(data[-1])
+    print([a for a in data[-1]["results"].keys()])
     return render_template(
         "strategy/team/table.html",
         displayNames=displayNames,

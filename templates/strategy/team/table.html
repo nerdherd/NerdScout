@@ -26,21 +26,22 @@
 <button onclick="updateSort()">Sort</button>
 <table id="table">
     <tr class="header-row">
+        <th class="team-column">Team</th>
         {% for key in displayNames.keys() %}
-        <th class="table-{{key}} {% if loop.index == 1 %}team-column{% endif %}" data-type="string">{{displayNames[key]}}</th>
+        <th class="table-{{key}}" data-type="string">{{displayNames[key]}}</th>
         {% endfor %}
     </tr>
     {% for team in data %}
     {% if team["results"] %}
-    <tr class="team-row" data-team="{{team['team']}}" {% for key in displayNames %}data-{{key}}="{{team['results'][loop.index-1][key]}}"{% endfor %}>
-        <td class="team-thing column-team"><p>{{team["team"]}}</p></td>
+    <tr class="row" data-team="{{team['team']}}" {% for key in displayNames %}data-{{key}}="{{team['results'][key]}}"{% endfor %}>
+        <td class="team-column"><p>{{team["team"]}}</p></td>
         {% for key in displayNames %}
-        <td  class="column-{{key.lower()}}">
+        <td class="column-{{key.lower()}}">
             <!--{{key}}-->
             {% if links %}
-            <a href="{{team['results'][loop.index-1]['matchId']}}">{{team["results"][loop.index-1][key]}}</a>
+            <a href="{{team['results'][loop.index-1]['matchId']}}">{{team["results"][key]['value']}}</a>
             {% else %}
-            <p>{{team["results"][loop.index-1][key]}}</p>
+            <p>{{team["results"][key]['value']}}</p>
             {% endif %}
         </td>
         {% endfor %}
