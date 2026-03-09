@@ -194,11 +194,17 @@
 <input type="number" min="1" max="6" step="1" value="1" id="roundInput" class="counter" {% if "pickems" in userData %}style="display:none;"{% endif %}/>
 <button class="plus" onclick="incrementCounter('roundInput',true)" {% if "pickems" in userData %}style="display:none;"{% endif %}>+</button>
 <br>
-{% if not "pickems" in userData %}
+{% set playoffsStarted = False %}
+{% if playoff1 %}
+    {% set playoffsStarted = playoff1["results"]["scored"] %}
+{% endif %}
+{% if (not "pickems" in userData) and (not playoffsStarted)%}
 <label for="pointsInput">Points (max {{userPoints}}): </label>
 <input type="number" min="1" max="{{ userPoints }}" step="1" id="pointsInput" placeholder="{{ userPoints }}"/>
 <br>
 <button onclick="submit()" class="submit">submit</button>
+{% elif playoffsStarted %}
+<p>Playoffs have commenced.</p>
 {% else %}
 <p>You already completed pickems.</p>
 {% endif %}

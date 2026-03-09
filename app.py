@@ -749,12 +749,17 @@ def pointsPlayoffsPage():
                 alliances.append(alliance)
         except:
             alliances = []
+    
+    playoff1 = getMatch(CompLevel.SF,1,1)
+    if playoff1:
+        playoff1 = playoff1[-1]
     return render_template(
         "predict/playoffs.html",
         isAdmin=isDbAdmin(session['username']),
         alliances=alliances,
         userPoints=userPoints,
         userData=userData,
+        playoff1=playoff1
     )
 
 @app.route("/nerdpredict/playoffs/pay", methods=["POST"])

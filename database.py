@@ -1250,6 +1250,12 @@ def createPickEms(
     if ("pickems" in userData):
         app.logger.error(f"Failed to create pickems for {user}: user already has pickems")
         abort(401)
+
+    playoffs1 = getMatch(CompLevel.SF,1,1)
+    if playoffs1 != []:
+        if playoffs1["results"]["scored"]:
+            app.logger.error(f"Failed to create pickems for {user}: playoffs started")
+            abort(403)   
     userPoints = userData["points"]
     if userPoints < points:
         raise PaymentRequired
