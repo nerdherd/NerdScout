@@ -1013,8 +1013,10 @@ def getPointsRankings() -> list[dict]:
         users[i].pop("passwordHash")
         users[i].pop("approved")
         users[i].pop("admin")
+    removed = 0
     for user in nonapproved:
-        users.pop(user)
+        users.pop(user - removed)
+        removed += 1
     return sorted(users, key=lambda user: user["points"], reverse=True)
 
 
