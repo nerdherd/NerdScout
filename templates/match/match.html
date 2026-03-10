@@ -71,8 +71,9 @@ function moveImage(imageId, sliderVal){
                 <div class="column">
                         <div class="field">
                             <div id="fieldHighlight-{{ color }}-{{ team['teamNumber'] }}-{{ loop.index }}" class="fieldHighlight"></div>
+                            {% set colorCap = color | capitalize%}
                             {% for n in range(10)%}
-                            <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ (color) +'/(' + (n+1)|string + ').png')}}">
+                            <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ (colorCap) +'/(' + (n+1)|string + ').png')}}">
                             {% endfor %}
                         </div>
                         <script>
