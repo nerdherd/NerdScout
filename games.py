@@ -1168,6 +1168,7 @@ class Rebuilt(Game):
             "Bad Driving",
             "Fast Driving",
             "Slow Driving",
+            "Shoot While Intaking",
             "Played Defense",
             "Good Defense",
             "Bad Defense",

@@ -179,7 +179,7 @@
                 {% if "transition"==n %}
                     {# change this into a switch #}
                     <div class="column">
-                        <h2>First Shift Winner</h2>
+                        <h2>Auto Winner</h2>
                         <h2 class="error" id="winnerNotPicked"> PLEASE PICK A WINNER </h2>
                         
                         <div class="row">
@@ -250,10 +250,10 @@
                     <label for="attemptedEndClimb" id="AttemptEndPosText">Attempted End position: Ground</label>
                     <script>var attemptedEndClimbObject;</script>
                     <div class="row endPosImages">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Grnd.svg')}}" onclick="attemptedEndClimbObject.value = 0">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L1.svg')}}" onclick="attemptedEndClimbObject.value = 1">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L2.svg')}}" onclick="attemptedEndClimbObject.value = 2">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L3.svg')}}" onclick="attemptedEndClimbObject.value = 3">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Grnd.svg')}}" onclick="attemptedEndClimbObject.value = 0; endChangeText();">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L1.svg')}}" onclick="attemptedEndClimbObject.value = 1; endChangeText();">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L2.svg')}}" onclick="attemptedEndClimbObject.value = 2; endChangeText();">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L3.svg')}}" onclick="attemptedEndClimbObject.value = 3; endChangeText();">
                     </div>
                     <input type="range" min="0" max="3" step="1" value="0" id="attemptedEndClimb" oninput="endChangeText()">
                     <script>attemptedEndClimbObject = document.getElementById('attemptedEndClimb');</script>
@@ -270,10 +270,10 @@
                     <label for="endClimb" id="EndPosText">Actual End position: Ground</label>
                     <script>var endClimbObject;</script>
                     <div class="row endPosImages">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Grnd.svg')}}" onclick="endClimbObject.value = 0">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L1.svg')}}" onclick="endClimbObject.value = 1">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L2.svg')}}" onclick="endClimbObject.value = 2">
-                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L3.svg')}}" onclick="endClimbObject.value = 3">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Grnd.svg')}}" onclick="endClimbObject.value = 0; accChangeText();">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L1.svg')}}" onclick="endClimbObject.value = 1; accChangeText();">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L2.svg')}}" onclick="endClimbObject.value = 2; accChangeText();">
+                        <img class="endPosImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/L3.svg')}}" onclick="endClimbObject.value = 3; accChangeText();">
                     </div>
                     <input type="range" min="0" max="3" step="1" value="0" id="endClimb" oninput="accChangeText()">
                     <script>endClimbObject = document.getElementById('endClimb');</script>
