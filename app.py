@@ -40,106 +40,106 @@ def index():
     return render_template("index.html", username=username)
 
 
-@app.route("/createTestMatches")
-def createTestMatches():
-    foundationNames = (
-        "Abaca",
-        "Louis & Lewis",
-        "Super Evil Wevils",
-        "Wheler",
-        "Mr. Hello's",
-        "John",
-    )
-    for i, foundationName in zip(range(9991, 9997), foundationNames):
-        if not getTeam(i):
-            addTeam(i, f"{foundationName} Foundation", foundationName)
-    for i in range(9991, 9996):
-        if not getMatch(CompLevel.QM, i, 1):
-            addScheduledMatch(
-                i,
-                1,
-                CompLevel.QM,
-                f"2026test_qm{i}",
-                f"TestMatch {i}",
-                9991,
-                9992,
-                9993,
-                9994,
-                9995,
-                9996,
-            )
-            addTestTBAData(CompLevel.QM,i,1)
-            addTestPredictionToDatabase(f"2026test_qm{i}")
-    randomScoringPeriods = lambda n: [
-        {
-            "time": random.random() * 5.0,
-            "scored": random.randint(0, 30),
-            "missed": random.randint(0, 30),
-        }
-        for _ in range(n)
-    ]
-    for i in range(9991, 9996):
-        for team in Station:
-            game.scoreRobotInMatch(
-                matchNumber=i,
-                setNumber=1,
-                compLevel=CompLevel.QM,
-                station=team,
-                startPos=random.random(),
-                preloadFuel=random.randint(0, 8),
-                autoFuel=randomScoringPeriods(random.randint(0, 5)),
-                autoDepot=random.random() > 0.5,
-                autoBump=random.random() > 0.5,
-                autoTrench=random.random() > 0.5,
-                autoNeutralIntake=random.random() > 0.5,
-                autoAttemptedSecondScore=random.random() > 0.5,
-                autoSucceededSecondScore=random.random() > 0.5,
-                autoClimbAttempted=random.random() > 0.5,
-                autoClimbSuccess=random.random() > 0.5,
-                autoOutpostFeed=random.random() > 0.5,
-                autoFedToOutpost=random.random() > 0.5,
-                firstShift=random.random() > 0.5,
-                transitionFuel=randomScoringPeriods(random.randint(0, 5)),
-                transitionFed=random.random() > 0.5,
-                transitionDefense=random.random() > 0.5,
-                firstActiveShiftFuel=randomScoringPeriods(random.randint(0, 5)),
-                firstActiveShiftFed=random.random() > 0.5,
-                firstActiveShiftDefense=random.random() > 0.5,
-                secondActiveShiftFuel=randomScoringPeriods(random.randint(0, 5)),
-                secondActiveShiftFed=random.random() > 0.5,
-                secondActiveShiftDefense=random.random() > 0.5,
-                firstInactiveShiftScored=random.random() > 0.5,
-                firstInactiveShiftFed=random.random() > 0.5,
-                firstInactiveShiftDefense=random.random() > 0.5,
-                secondInactiveShiftScored=random.random() > 0.5,
-                secondInactiveShiftFed=random.random() > 0.5,
-                secondInactiveShiftDefense=random.random() > 0.5,
-                endgameFuel=randomScoringPeriods(random.randint(0, 5)),
-                endgameFed=random.random() > 0.5,
-                endgameDefense=random.random() > 0.5,
-                endClimb=EndPositionRebuilt(random.randint(0, 3)),
-                endClimbAttempted=EndPositionRebuilt(random.randint(0, 3)),
-                outpostIntake=random.random() > 0.5,
-                groundIntake=random.random() > 0.5,
-                fedToOutpost=random.random() > 0.5,
-                minorFouls=random.randint(0, 10),
-                majorFouls=random.randint(0, 3),
-                comment="abaca",
-                cannedComments=[],
-                scout=random.choice(
-                    [
-                        "hello",
-                        "hello2",
-                        "hlelo3",
-                        "tonnieboy300",
-                        "mr hello",
-                        "hello jr",
-                        "ms hello",
-                    ]
-                ),
-            )
-    writeToCacheFile("2026test", "recentEventKey")
-    return "ok."
+# @app.route("/createTestMatches")
+# def createTestMatches():
+#     foundationNames = (
+#         "Abaca",
+#         "Louis & Lewis",
+#         "Super Evil Wevils",
+#         "Wheler",
+#         "Mr. Hello's",
+#         "John",
+#     )
+#     for i, foundationName in zip(range(9991, 9997), foundationNames):
+#         if not getTeam(i):
+#             addTeam(i, f"{foundationName} Foundation", foundationName)
+#     for i in range(9991, 9996):
+#         if not getMatch(CompLevel.QM, i, 1):
+#             addScheduledMatch(
+#                 i,
+#                 1,
+#                 CompLevel.QM,
+#                 f"2026test_qm{i}",
+#                 f"TestMatch {i}",
+#                 9991,
+#                 9992,
+#                 9993,
+#                 9994,
+#                 9995,
+#                 9996,
+#             )
+#             addTestTBAData(CompLevel.QM,i,1)
+#             addTestPredictionToDatabase(f"2026test_qm{i}")
+#     randomScoringPeriods = lambda n: [
+#         {
+#             "time": random.random() * 5.0,
+#             "scored": random.randint(0, 30),
+#             "missed": random.randint(0, 30),
+#         }
+#         for _ in range(n)
+#     ]
+#     for i in range(9991, 9996):
+#         for team in Station:
+#             game.scoreRobotInMatch(
+#                 matchNumber=i,
+#                 setNumber=1,
+#                 compLevel=CompLevel.QM,
+#                 station=team,
+#                 startPos=random.random(),
+#                 preloadFuel=random.randint(0, 8),
+#                 autoFuel=randomScoringPeriods(random.randint(0, 5)),
+#                 autoDepot=random.random() > 0.5,
+#                 autoBump=random.random() > 0.5,
+#                 autoTrench=random.random() > 0.5,
+#                 autoNeutralIntake=random.random() > 0.5,
+#                 autoAttemptedSecondScore=random.random() > 0.5,
+#                 autoSucceededSecondScore=random.random() > 0.5,
+#                 autoClimbAttempted=random.random() > 0.5,
+#                 autoClimbSuccess=random.random() > 0.5,
+#                 autoOutpostFeed=random.random() > 0.5,
+#                 autoFedToOutpost=random.random() > 0.5,
+#                 firstShift=random.random() > 0.5,
+#                 transitionFuel=randomScoringPeriods(random.randint(0, 5)),
+#                 transitionFed=random.random() > 0.5,
+#                 transitionDefense=random.random() > 0.5,
+#                 firstActiveShiftFuel=randomScoringPeriods(random.randint(0, 5)),
+#                 firstActiveShiftFed=random.random() > 0.5,
+#                 firstActiveShiftDefense=random.random() > 0.5,
+#                 secondActiveShiftFuel=randomScoringPeriods(random.randint(0, 5)),
+#                 secondActiveShiftFed=random.random() > 0.5,
+#                 secondActiveShiftDefense=random.random() > 0.5,
+#                 firstInactiveShiftScored=random.random() > 0.5,
+#                 firstInactiveShiftFed=random.random() > 0.5,
+#                 firstInactiveShiftDefense=random.random() > 0.5,
+#                 secondInactiveShiftScored=random.random() > 0.5,
+#                 secondInactiveShiftFed=random.random() > 0.5,
+#                 secondInactiveShiftDefense=random.random() > 0.5,
+#                 endgameFuel=randomScoringPeriods(random.randint(0, 5)),
+#                 endgameFed=random.random() > 0.5,
+#                 endgameDefense=random.random() > 0.5,
+#                 endClimb=EndPositionRebuilt(random.randint(0, 3)),
+#                 endClimbAttempted=EndPositionRebuilt(random.randint(0, 3)),
+#                 outpostIntake=random.random() > 0.5,
+#                 groundIntake=random.random() > 0.5,
+#                 fedToOutpost=random.random() > 0.5,
+#                 minorFouls=random.randint(0, 10),
+#                 majorFouls=random.randint(0, 3),
+#                 comment="abaca",
+#                 cannedComments=[],
+#                 scout=random.choice(
+#                     [
+#                         "hello",
+#                         "hello2",
+#                         "hlelo3",
+#                         "tonnieboy300",
+#                         "mr hello",
+#                         "hello jr",
+#                         "ms hello",
+#                     ]
+#                 ),
+#             )
+#     writeToCacheFile("2026test", "recentEventKey")
+#     return "ok."
 
 
 @app.route("/match")
@@ -648,7 +648,7 @@ def teamDataSummary():
                 piece = method(results, key)
                 data[-1]["results"][key] = {}
                 if isAnObject:
-                    data[-1]["results"][key]["value"] = piece["value"]
+                    data[-1]["results"][key]["value"] = piece["value"] # type: ignore
                     data[-1]["results"][key]["matchId"] = f"{matchViewer}?matchNum={piece['matchNumber']}&compLevel={piece['compLevel']}&setNum={piece['setNumber']}"  # type: ignore
                 else:
                     data[-1]["results"][key]["value"] = piece
