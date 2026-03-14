@@ -576,20 +576,22 @@ def scoutTeam():
     )
 
 
-dontSummarize = frozenset(
-    [
-        "startPos",
-        "endPos",
-        "attemptedEndPos",
-        "cannedComments",
-        "endPosSuccess",
-        "autoFuel",
-        "transitionFuel",
-        "firstActiveShiftFuel",
-        "secondActiveShiftFuel",
-        "endgameFuel",
-    ]
-)
+# dontSummarize = frozenset(
+#     [
+#         "startPos",
+#         "endPos",
+#         "attemptedEndPos",
+#         "cannedComments",
+#         "endPosSuccess",
+#         "autoFuel",
+#         "transitionFuel",
+#         "firstActiveShiftFuel",
+#         "secondActiveShiftFuel",
+#         "endgameFuel",
+#     ]
+# )
+
+possibleTeamTableKeys = frozenset(game.teamTableDisplayNames.keys())
 
 
 @app.route("/team/summary")
@@ -633,7 +635,7 @@ def teamDataSummary():
         if not results:
             continue
         for key, result in results[0]["results"][0].items():
-            if type(result) == str or key in dontSummarize:
+            if (type(result) == str) or not (key in possibleTeamTableKeys):
                 continue
             # if type(result) == list:
             #     i = 0
