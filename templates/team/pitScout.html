@@ -125,6 +125,14 @@
         <input type="text" id="cycles" name="cycles"/>
     </div>
     <div class="card">
+        <label for="points">How many points do they usually get per game?</label><br>
+        <input type="text" id="points" name="points"/>
+    </div>
+    <div class="card">
+        <label for="range">What is their estimated shooting range?</label><br>
+        <input type="text" id="range" name="range"/>
+    </div>
+    <div class="card">
         <label for="weight">What is their robot weight (without batteries and bumpers) (lbs)? </label><br>
         <input type="number" id="weight" name="weight"/>
     </div>
@@ -238,6 +246,8 @@
             },
             "hold":getValue("hold"),
             "cycles":getValue("cycles"),
+            "points":getValue("points"),
+            "range":getValue("range"),
             "weight":getValue("weight"),
             "special":getValue("special",false),
             "organization":getValue("organize"),

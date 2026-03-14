@@ -1191,6 +1191,7 @@ class Rebuilt(Game):
             ("Intake from neutral zone", "auto-neutral"),
             ("Climb level 1 in the center", "auto-climb1-center"),
             ("Climb level 1 on the sides", "auto-climb1-side"),
+            ("Shoot while moving", "auto-moving"),
         )
         self.pitScoutTeleCapabilities = (
             ("Score in hub", "tele-fuel"),
@@ -1199,6 +1200,7 @@ class Rebuilt(Game):
             ("Intake from depot", "tele-depot"),
             ("Intake from outpost chute", "tele-outpost"),
             ("Intake from neutral zone", "tele-neutral"),
+            ("Shoot while moving", "tele-moving"),
         )
         self.pitScoutClimbingCapabilities = (
             ("No climb","tele-climb-none"),

@@ -68,6 +68,7 @@
                 <li class="{{'checked' if data['auto']['auto-depot'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-depot"] else "cannot"}} intake from the depot</li>
                 <li class="{{'checked' if data['auto']['auto-outpost'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-outpost"] else "cannot"}} intake from the outpost chute</li>
                 <li class="{{'checked' if data['auto']['auto-neutral'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-neutral"] else "cannot"}} intake from the neutral zone</li>
+                <li class="{{'checked' if data['auto']['auto-moving'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-moving"] else "cannot"}} shoot while moving</li>
                 <li class="{{'checked' if data['auto']['climb'] else 'unchecked'}}">Climb:</li>
                 <ul>
                     {% for n in ("center","side")%}
@@ -79,10 +80,11 @@
             <ul>
                 <li class="{{'checked' if data['tele']['tele-fuel'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-fuel"] else "cannot"}} score in the hub</li>
                 <li class="{{'checked' if data['tele']['tele-depot'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-depot"] else "cannot"}} intake from the depot</li>
-                <li class="{{'checked' if data['tele']['tele-bump'] else 'unchecked'}}">They {{ "can" if data["auto"]["tele-bump"] else "cannot"}} travel over the bump</li>
-                <li class="{{'checked' if data['tele']['tele-trench'] else 'unchecked'}}">They {{ "can" if data["auto"]["tele-trench"] else "cannot"}} travel under the trench</li>
+                <li class="{{'checked' if data['tele']['tele-bump'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-bump"] else "cannot"}} travel over the bump</li>
+                <li class="{{'checked' if data['tele']['tele-trench'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-trench"] else "cannot"}} travel under the trench</li>
                 <li class="{{'checked' if data['tele']['tele-outpost'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-outpost"] else "cannot"}} intake from the outpost chute</li>
                 <li class="{{'checked' if data['tele']['tele-neutral'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-neutral"] else "cannot"}} intake from the neutral zone</li>
+                <li class="{{'checked' if data['tele']['tele-moving'] else 'unchecked'}}">They {{ "can" if data["tele"]["tele-moving"] else "cannot"}} shoot while moving</li>
             </ul>
             <h3>Climb:</h3>
             <ul>
@@ -99,6 +101,8 @@
             </ul>
             <p>How much fuel can the hold and score at a time? {{data["hold"]}}</p>
             <p>How many cycles do they usually get per game? {{data["cycles"]}}</p>
+            <p>How many points do they usually get per game? {{data["points"]}}</p>
+            <p>What is their estimated shooting range? {{data["range"]}}</p>
             <p>Robot weight: {{data["weight"]}}</p>
             <p>Pit organization: {{data["organization"]}}</p>
             {% if data['special'] %}
