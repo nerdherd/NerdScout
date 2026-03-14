@@ -71,7 +71,7 @@
     }
     .items{
         display:flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
         column-gap: 20px;
     }
@@ -107,139 +107,54 @@
 <h1>Predicting results for teams: {{team1}}, {{team2}}, {{team3}}</h1>
 <div class="main">
     <div class="items">
-        <div class="section">
-            <div class="section-title">
-                <h2>Auto</h2>
-            </div>
-            
-            <div class="leave-div">
+            <div class="card auto-tower-div">
                 <div class="row">
-                    <div class="title"><b>Teams leaving:</b></div>
+                    <div class="title"><b>Auto Tower</b></div>
                 </div>
                 <div class="row">
                     <div class="cell">
-                        {% if result["autoLeave"] > 0 %}
-                        <img src="{{ url_for('static', filename='images/matchDisplay/True.svg') }}" class="startPosImg">
-                        {% else %}
-                        <img src="{{ url_for('static', filename='images/matchDisplay/False.svg') }}" class="startPosImg">           
-                        {% endif %}
+                        <span>L{{ result["team1AutoClimb"] }}</span>
                     </div>
                     <div class="cell">
-                        {% if result["autoLeave"] > 1 %}
-                        <img src="{{ url_for('static', filename='images/matchDisplay/True.svg') }}" class="startPosImg">
-                        {% else %}
-                        <img src="{{ url_for('static', filename='images/matchDisplay/False.svg') }}" class="startPosImg">           
-                        {% endif %}
+                        <span>L{{ result["team2AutoClimb"] }}</span>
                     </div>
                     <div class="cell">
-                        {% if result["autoLeave"] > 2 %}
-                        <img src="{{ url_for('static', filename='images/matchDisplay/True.svg') }}" class="startPosImg">
-                        {% else %}
-                        <img src="{{ url_for('static', filename='images/matchDisplay/False.svg') }}" class="startPosImg">           
-                        {% endif %}
+                        <span>L{{ result["team3AutoClimb"] }}</span>
                     </div>
                 </div>
             </div>
 
-            <div class="reef-div">
+            <div class="card fuel-div">
                 <div class="row">
-                    <div class="title"><b>Reef</b></div>
+                    <div class="title"><b>Fuel</b></div>
                 </div>
                 <div class="row">
-                    <div class="cell">L1</div>
-                    <div class="cell">L2</div>
-                    <div class="cell">L3</div>
-                    <div class="cell">L4</div>
-                </div>
-                <div class="row">
-                    <div class="cell">{{result["autoReef"][0]}}</div>
-                    <div class="cell">{{result["autoReef"][1]}}</div>
-                    <div class="cell">{{result["autoReef"][2]}}</div>
-                    <div class="cell">{{result["autoReef"][3]}}</div>
+                    <div class="cell">{{result["team1Fuel"]}}</div>
+                    <div class="cell">{{result["team2Fuel"]}}</div>
+                    <div class="cell">{{result["team3Fuel"]}}</div>
                 </div>
             </div>
 
-            <div class="algae-div">
+            <div class="card tele-tower-div">
                 <div class="row">
-                    <div class="title"><b>Algae</b></div>
+                    <div class="title"><b>Endgame Tower</b></div>
                 </div>
                 <div class="row">
-                    <div class="cell cell-wide">Processor</div>
-                    <div class="cell cell-wide">Net</div>
-                </div>
-                <div class="row">
-                    <div class="cell cell-wide">{{result["autoProcessor"]}}</div>
-                    <div class="cell cell-wide">{{result["autoNet"]}}</div>
+                    <div class="cell">
+                        <span>L{{ result["endPos1"] }}</span>
+                    </div>
+                    <div class="cell">
+                        <span>L{{ result["endPos2"] }}</span>
+                    </div>
+                    <div class="cell">
+                        <span>L{{ result["endPos3"] }}</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="section">
-            <div class="section-title">
-                <h2>Tele</h2>
-            </div>
-            
-        
-            <div class="reef-div">
-                <div class="row">
-                    <div class="title"><b>Reef</b></div>
-                </div>
-                <div class="row">
-                    <div class="cell">L1</div>
-                    <div class="cell">L2</div>
-                    <div class="cell">L3</div>
-                    <div class="cell">L4</div>
-                </div>
-                <div class="row">
-                    <div class="cell">{{result["teleReef"][0]}}</div>
-                    <div class="cell">{{result["teleReef"][1]}}</div>
-                    <div class="cell">{{result["teleReef"][2]}}</div>
-                    <div class="cell">{{result["teleReef"][3]}}</div>
-                </div>
-            </div>
-        
-            <div class="algae-div">
-                <div class="row">
-                    <div class="title"><b>Algae</b></div>
-                </div>
-                <div class="row">
-                    <div class="cell cell-wide">Processor</div>
-                    <div class="cell cell-wide">Net</div>
-                </div>
-                <div class="row">
-                    <div class="cell cell-wide">{{result["teleProcessor"]}}</div>
-                    <div class="cell cell-wide">{{result["teleNet"]}}</div>
-                </div>
-            </div>
-
-            <div class="leave-div">
-                <div class="row">
-                    <div class="title"><b>End positions:</b></div>
-                </div>
-                <div class="row">
-                    <div class="cell cell-wide">
-                        {{team1}}
-                    </div>
-                    <div class="cell cell-wide">
-                        {{team2}}
-                    </div>
-                    <div class="cell cell-wide">
-                        {{team3}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="cell cell-wide">
-                        {{(["None","Park","Shallow","Deep"])[result["endPos1"]]}}
-                    </div>
-                    <div class="cell cell-wide">
-                        {{(["None","Park","Shallow","Deep"])[result["endPos2"]]}}
-                    </div>
-                    <div class="cell cell-wide">
-                        {{(["None","Park","Shallow","Deep"])[result["endPos3"]]}}
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
     <div class="fouls">
         <h2>Score: {{result["score"]}}</h2>
         <h2>Minor Fouls: {{result["minorFouls"]}}</h2>

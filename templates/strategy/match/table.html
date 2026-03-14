@@ -9,6 +9,9 @@
 {% endblock %}
 
 {% block content %}
+{% set previousPage = url_for('strategyPage') %}
+{% include 'backButton.html' %}
+
 <h1>Match Data Table</h1>
 
 <a href="javascript:download_table_as_csv()">download as csv</a>
@@ -51,6 +54,4 @@
     {% endfor %}
 </table>
 
-{% set previousPage = url_for('strategyPage') %}
-{% include 'backButton.html' %}
 {% endblock %}

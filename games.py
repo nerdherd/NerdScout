@@ -945,7 +945,7 @@ class Rebuilt(Game):
             "autoClimbAttempted": "Auto L1 Climb Attempted",
             "autoClimbSuccess": "Auto L1 Climb Succeeded",
             "autoOutpostFeed": "Fed from the Outpost during Auto",
-            "autoFedToOutpost": "Fed to the Outpost duringn Auto",
+            "autoFedToOutpost": "Fed to the Outpost during Auto",
             "firstShift": "Active in first and third shifts",
             "transitionFuel": "Transition Shift Fuel",
             "transitionFuelTotal": "Total Transition Shift Fuel",
@@ -1076,7 +1076,7 @@ class Rebuilt(Game):
             "autoClimbAttempted": "Auto L1 Climb Attempted",
             "autoClimbSuccess": "Auto L1 Climb Succeeded",
             "autoOutpostFeed": "Fed from the Outpost during Auto",
-            "autoFedToOutpost": "Fed to the Outpost duringn Auto",
+            "autoFedToOutpost": "Fed to the Outpost during Auto",
             "firstShift": "Active in first and third shifts",
             "transitionFuelTotal": "Total Transition Shift Fuel",
             "transitionFed": "Fed during transition shift",
@@ -1122,7 +1122,7 @@ class Rebuilt(Game):
             "autoClimbAttempted": "Auto L1 Climb Attempted",
             "autoClimbSuccess": "Auto L1 Climb Succeeded",
             "autoOutpostFeed": "Fed from the Outpost during Auto",
-            "autoFedToOutpost": "Fed to the Outpost duringn Auto",
+            "autoFedToOutpost": "Fed to the Outpost during Auto",
             "firstShift": "Active in first and third shifts",
             # "transitionFuel": "Transition Shift Fuel",
             "transitionFuelTotal": "Total Transition Shift Fuel",
@@ -1543,14 +1543,14 @@ class Rebuilt(Game):
         team2Data = getTeamResults(team2)
         team3Data = getTeamResults(team3)
 
-        team1AutoClimb = int(calc(team1Data, "autoClimb") >= 0.5)
-        team2AutoClimb = int(calc(team2Data, "autoClimb") >= 0.5)
-        team3AutoClimb = int(calc(team3Data, "autoClimb") >= 0.5)
+        team1AutoClimb = int(calc(team1Data, "autoClimbSuccess") >= 0.5)
+        team2AutoClimb = int(calc(team2Data, "autoClimbSuccess") >= 0.5)
+        team3AutoClimb = int(calc(team3Data, "autoClimbSuccess") >= 0.5)
         autoClimbTotal = team1AutoClimb + team2AutoClimb + team3AutoClimb
 
-        team1End = round(calc(team1Data, "endPos"))
-        team2End = round(calc(team2Data, "endPos"))
-        team3End = round(calc(team3Data, "endPos"))
+        team1End = round(calc(team1Data, "endClimb"))
+        team2End = round(calc(team2Data, "endClimb"))
+        team3End = round(calc(team3Data, "endClimb"))
 
         team1Minors = calc(team1Data, "minorFouls")
         team2Minors = calc(team2Data, "minorFouls")
@@ -1560,11 +1560,11 @@ class Rebuilt(Game):
         team2Majors = calc(team2Data, "majorFouls")
         team3Majors = calc(team3Data, "majorFouls")
 
-        fuel = (
-            round(calc(team1Data, "totalFuel"))
-            + round(calc(team2Data, "totalFuel"))
-            + round(calc(team3Data, "totalFuel"))
-        )
+        team1Fuel = round(calc(team1Data, "totalFuel"))
+        team2Fuel = round(calc(team2Data, "totalFuel"))
+        team3Fuel = round(calc(team3Data, "totalFuel"))
+
+        fuel = team1Fuel + team2Fuel + team3Fuel
 
         score = self.calculateScore(fuel, False, EndPositionRebuilt.NONE, 0, 0)
 
@@ -1600,6 +1600,12 @@ class Rebuilt(Game):
         return {
             "score": score,
             "autoClimb": autoClimbTotal,
+            "team1AutoClimb": team1AutoClimb,
+            "team2AutoClimb": team2AutoClimb,
+            "team3AutoClimb": team3AutoClimb,
+            "team1Fuel": team1Fuel,
+            "team2Fuel": team2Fuel,
+            "team3Fuel": team3Fuel,
             "fuelTotal": fuel,
             "endPos1": team1End,
             "endPos2": team2End,
