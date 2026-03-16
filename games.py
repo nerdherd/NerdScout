@@ -1201,6 +1201,7 @@ class Rebuilt(Game):
             ("Intake from outpost chute", "tele-outpost"),
             ("Intake from neutral zone", "tele-neutral"),
             ("Shoot while moving", "tele-moving"),
+            ("Shoot with distance", "tele-distance"),
         )
         self.pitScoutClimbingCapabilities = (
             ("No climb","tele-climb-none"),
