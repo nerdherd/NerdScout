@@ -580,7 +580,7 @@ def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -
         app.logger.error(f"Failed to load data for match {matchKey} from TBA.")
         abort(500)
     if "score_breakdown" in TBAdata:
-        if not TBAdata["score_breakdown"]:
+        if not TBAdata["score_breakdown"] or not TBAdata["actual_time"] or not TBAdata["winning_alliance"]:
             errorString = f"Couldn't update {TBAdata['key']}: recieved data is null"
             return (False, errorString)
         if not "scoreBreakdown" in matchData["results"]:
