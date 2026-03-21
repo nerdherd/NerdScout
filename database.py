@@ -1192,12 +1192,14 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
         return
 
     for user in correctUsers:
+        minimumPayout = max(round(user["predictions"][matchKey]["points"] * 1.25),5)
 
         # payout calculation: (bet/total bets for alliance) * total for all bets
         # = % of red or blue pool * total pool
         payout = round(
             (user["predictions"][matchKey]["points"] / winningPool) * totalPool
         )
+        if payout < minimumPayout: payout = minimumPayout
         accounts.update_one(
             {"username": user["username"]},
             {
