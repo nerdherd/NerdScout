@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="preload" href="{{ url_for('static', filename='stylesheets/uploadImage.css') }}" as="style">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/uploadImage.css') }}">
+{% endblock %}
+
+{% block title %}Pitscout as CSV{% endblock %}
+
+{% block content %}
+{% set previousPage = "javascript:history.back()" %}
+{% include 'backButton.html' %}
+<h1>Download pit-scouting data as a CSV</h1>
+<button onclick="dowloadCSV()">Download</button>
+<p>Make sure it looks correct:</p>
+<pre id="display"></pre>
+
+<script>
+    const data = "{{ csvdata|safe }}";
+    document.getElementById("display").innerText = data;
+    function dowloadCSV(){
+        var filename = 'pitscout_data_'+new Date().toLocaleDateString() + '.csv';
+        var link = document.createElement('a');
+        link.style.display = 'none';
+        link.setAttribute('target', '_blank');
+        link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+{% endblock %}
