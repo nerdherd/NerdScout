@@ -1172,8 +1172,13 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
     correctUsers = []
     winningPool = 0
     for user in correctUsersRaw:
+        predRequired = user["predictions"][matchKey]["statsForRed"] == user["predictions"][matchKey]["forRed"]
+        if predRequired:
+            predNum = user["predictions"][matchKey]["difference"] <= scoreDifference
+        else:
+            predNum = True
         # if guessed correct alliance, score difference is greater than predicted, and submitted before match start
-        if (user["predictions"][matchKey]["forRed"] == forRed) and (user["predictions"][matchKey]["difference"] <= scoreDifference) and (user["predictions"][matchKey]["timestamp"] <= matchStartTime):
+        if (user["predictions"][matchKey]["forRed"] == forRed) and (predNum) and (user["predictions"][matchKey]["timestamp"] <= matchStartTime):
             correctUsers.append(user)
             winningPool += user["predictions"][matchKey]["points"]
             app.logger.info(f"{user['username']} predicted correctly: Correct Alliance Winner")
