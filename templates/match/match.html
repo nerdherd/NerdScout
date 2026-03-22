@@ -903,25 +903,31 @@ function moveImage(imageId, sliderVal){
         {% endif %}
     <h3>Result</h3>
     {% set trueWinner = results["results"]['winningAlliance']%}
+    {% set trueLoser = ""%}
     {% if trueWinner == "red"%}
         {% set trueLoser = "blue"%}
     {% else %}
         {% set trueLoser = "red" %}
     {% endif %}
-    {% set trueDifference = results["results"]["scoreBreakdown"][trueWinner]["totalPoints"] - results["results"]["scoreBreakdown"][trueLoser]["totalPoints"] %}
-    <p id="trueResult"><span class="{{trueWinner}}Text">{{trueWinner | capitalize}}</span> wins by {{trueDifference}} points</p>
-    {% if ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
-    <p id="resultDifference">
-    {% if trueWinner == apiWinner %}
-    {% set predDifference = trueDifference - (apiDifference | round(2)) %}
-    {% if predDifference < 0 %}-{% else %}+{% endif %}{{ predDifference | abs | round(2)}}
-    {% else %}
-    {% set predDifference = trueDifference + (apiDifference | round(2)) %}
-    -{{ predDifference | abs | round(2)}}
-    {% endif %}
+    {% if trueWinner %}
+        {% set trueDifference = results["results"]["scoreBreakdown"][trueWinner]["totalPoints"] - results["results"]["scoreBreakdown"][trueLoser]["totalPoints"] %}
+        <p id="trueResult"><span class="{{trueWinner}}Text">{{trueWinner | capitalize}}</span> wins by {{trueDifference}} points</p>
+    {% if ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"])%}
+        <p id="resultDifference">
+        {% if trueWinner == apiWinner %}
+        {% set predDifference = trueDifference - (apiDifference | round(2)) %}
+        {% if predDifference < 0 %}-{% else %}+{% endif %}{{ predDifference | abs | round(2)}}
+        {% else %}
+        {% set predDifference = trueDifference + (apiDifference | round(2)) %}
+        -{{ predDifference | abs | round(2)}}
+        {% endif %}
+
      from prediction
     </p>
     {% endif %}
+    {% else %}
+    <p id="trueResult">Tie.</p>
+    <p id="resultDifference">-{{apiDifference | round(2)}} from prediction</p>{% endif %}
     <p class="predictionsNotOpenMessage">This match has been scored.</p>
     {% elif madePrediction  and ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
     {% set apiDifference = results["predictionData"]["points_difference"]%}

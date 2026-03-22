@@ -402,7 +402,9 @@ def updateScheduleFromTBA(event: str):
                     app.logger.info(
                         f"Saved new score breakdown for {match['key']}; Now paying predictions."
                     )
-                    payoutPredictions(match["key"], match["winning_alliance"] == "red")
+                    winningAllianceString = match["winning_alliance"]
+                    tie = not winningAllianceString
+                    payoutPredictions(match["key"], match["winning_alliance"] == "red", tie)
                     continue
                 if matchInDB["results"]["postResultTime"] < match["post_result_time"]:
                     matches.update_one(
@@ -580,7 +582,7 @@ def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -
         app.logger.error(f"Failed to load data for match {matchKey} from TBA.")
         abort(500)
     if "score_breakdown" in TBAdata:
-        if not TBAdata["score_breakdown"] or not TBAdata["actual_time"] or not TBAdata["winning_alliance"]:
+        if not TBAdata["score_breakdown"] or not TBAdata["actual_time"]:
             errorString = f"Couldn't update {TBAdata['key']}: recieved data is null"
             return (False, errorString)
         if not "scoreBreakdown" in matchData["results"]:
@@ -599,7 +601,9 @@ def updateMatchFromTBA(compLevel: CompLevel, matchNumber: int, setNumber: int) -
             app.logger.info(
                 f"Saved new score breakdown for {TBAdata['key']}; Now paying predictions."
             )
-            payoutPredictions(TBAdata["key"], TBAdata["winning_alliance"] == "red")
+            winningAllianceString = TBAdata["winning_alliance"]
+            tie = not winningAllianceString
+            payoutPredictions(TBAdata["key"], winningAllianceString == "red", tie)
             return (True,"")
         if matchData["results"]["postResultTime"] < TBAdata["post_result_time"]:
             matches.update_one(
@@ -1144,13 +1148,14 @@ def getPredictionAccountsForAlliance(matchKey: str, forRed: bool):
     return parseResults(accounts.find({f"predictions.{matchKey}.forRed": forRed}))
 
 
-def payoutPredictions(matchKey: str, forRed: bool) -> None:
+def payoutPredictions(matchKey: str, forRed: bool, tie:bool=False) -> None:
     """
     Pays out predictions on a given match.
 
     Inputs:
     - matchKey (str): The match key of the match to pay out
     - forRed (bool): If red alliance won the match.
+    - tie (bool): If the match was a tie, defaults to false
     """
     matchData = parseResults(matches.find_one({"matchKey": matchKey}))
     correctUsersRaw = getPredictionAccountsForAlliance(matchKey, forRed)
@@ -1172,6 +1177,13 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
     correctUsers = []
     winningPool = 0
     for user in correctUsersRaw:
+        if tie:
+            if user["predictions"][matchKey]["statsForRed"] != user["predictions"][matchKey]["forRed"]:
+                correctUsers.append(user)
+                winningPool += user["predictions"][matchKey]["points"]
+                app.logger.info(f"{user['username']} predicted correctly: Tie and predicted favorite would lose.")
+                continue
+
         predRequired = user["predictions"][matchKey]["statsForRed"] == user["predictions"][matchKey]["forRed"]
         if predRequired:
             predNum = user["predictions"][matchKey]["difference"] <= scoreDifference
@@ -1183,6 +1195,13 @@ def payoutPredictions(matchKey: str, forRed: bool) -> None:
             winningPool += user["predictions"][matchKey]["points"]
             app.logger.info(f"{user['username']} predicted correctly: Correct Alliance Winner")
     for user in incorrecUsersRaw:
+        if tie:
+            if user["predictions"][matchKey]["statsForRed"] != user["predictions"][matchKey]["forRed"]:
+                correctUsers.append(user)
+                winningPool += user["predictions"][matchKey]["points"]
+                app.logger.info(f"{user['username']} predicted correctly: Tie and predicted favorite would lose.")
+                continue
+        
         # if guessed incorrect alliance (or guessed favorite wouldn't win by the given difference), the Statbotics
         # favorite won, score difference is less than predicted, and submitted before match start
         if (user["predictions"][matchKey]["forRed"] != forRed) and (user["predictions"][matchKey]["statsForRed"] == forRed) and (user["predictions"][matchKey]["difference"] > scoreDifference) and (user["predictions"][matchKey]["timestamp"] <= matchStartTime):
@@ -1741,7 +1760,9 @@ def addTestTBAData(compLevel: CompLevel, matchNumber: int, setNumber: int) -> bo
             app.logger.info(
                 f"Saved new score breakdown for {TBAdata['key']}; Now paying predictions."
             )
-            payoutPredictions(TBAdata["key"], TBAdata["winning_alliance"] == "red")
+            winningAllianceString = TBAdata["winning_alliance"]
+            tie = not winningAllianceString
+            payoutPredictions(TBAdata["key"], TBAdata["winning_alliance"] == "red", tie)
             return True
         if matchData["results"]["postResultTime"] < TBAdata["post_result_time"]:
             matches.update_one(
