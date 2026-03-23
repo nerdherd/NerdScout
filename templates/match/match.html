@@ -828,6 +828,31 @@ function moveImage(imageId, sliderVal){
                 <button onclick="selectButton(false); difference={{apiDifference}}" id="falseButton">Blue wins by {{apiDifference | round(2)}} or more</button>
                 {% endif %}
             </div>
+            <div class="payoutInfoContainer">
+                {% if "overall" in results["prizePool"]%}
+                {% set totalPrizePool = results["prizePool"]["overall"] %}
+                {% else %}
+                {% set totalPrizePool = 0 %}
+                {% endif %}
+                <div class="payoutInfo payoutInfoLeft">
+                {% if "red" in results["prizePool"]%}
+                {% set redPrizePool = results["prizePool"]["red"] %}
+                {% else %}
+                {% set redPrizePool = 0 %}
+                {% endif %}
+                <p>{{redPrizePool}} points bet</p>
+                <p>{% if redPrizePool != 0 %}{% set redRatio = (totalPrizePool/redPrizePool)%}{% if redRatio < 1.25 %}1.25x{%else%}{{ redRatio | round(2)}}x{% endif%}{% else %}1.25x{%endif%} mult</p>
+                </div>
+                <div class="payoutInfo payoutInfoRight">
+                {% if "blue" in results["prizePool"]%}
+                {% set bluePrizePool = results["prizePool"]["blue"] %}
+                {% else %}
+                {% set bluePrizePool = 0 %}
+                {% endif %}
+                <p>{{bluePrizePool}} points bet</p>
+                <p>{% if bluePrizePool != 0 %}{% set blueRatio = (totalPrizePool/bluePrizePool)%}{% if blueRatio < 1.25 %}1.25x{%else%}{{ blueRatio | round(2)}}x{% endif%}{% else %}1.25x{%endif%} mult</p>
+                </div>
+            </div>
             <input type="number" min="0" max="{{ userPoints }}" id="predictPointsInput">
             <br>
             <span id="maxPointsDisplay">max {{ userPoints }} points</span>

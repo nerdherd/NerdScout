@@ -715,3 +715,15 @@ h3{
     padding: 0px;
     margin: 0px;
 }
+
+.payoutInfoContainer{
+    display:flex;
+}
+
+.payoutInfo{
+    width:50%
+}
+
+.payoutInfo p{
+    margin:2px;
+}
