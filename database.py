@@ -1482,6 +1482,7 @@ def payPickEms() -> bool:
         "m11": [m11["teams"]["red1"],m11["teams"]["red2"],m11["teams"]["red3"]],
         "m12": [m12["teams"]["red1"],m12["teams"]["red2"],m12["teams"]["red3"]],
         "m13": [m13["teams"]["red1"],m13["teams"]["red2"],m13["teams"]["red3"]],
+        
     }
     allianceDict = {
         tuple(allMatchRedCaptains["m1"]): 1,
@@ -1583,9 +1584,10 @@ def payPickEms() -> bool:
                 )
                 points += pointsSpent
 
+        pick = "finals"
         realFinalsWinner = (
                 determineAlliance(allianceDict,finalsRedCaptain)
-                if allMatchResults[pick]["winningAlliance"] == "red"
+                if finalsWinner == "red"
                 else determineAlliance(allianceDict,finalsBlueCaptain)
             )
         if userPickems["winner"] == realFinalsWinner:
