@@ -301,6 +301,8 @@ function submitData(matchNum, compLevel, setNum, robot){
         "endgameFuel": scoringPeriods[4],
         "firstInactiveShiftScored": gc("firstInactiveShiftScored"),
         "secondInactiveShiftScored": gc("secondInactiveShiftScored"),
+        "firstInactiveShiftIntaked": gc("firstInactiveShiftIntaked"),
+        "secondInactiveShiftIntaked": gc("secondInactiveShiftIntaked"),
         "endClimb": getId("endClimb"),
         "endClimbAttempted": getId("attemptedEndClimb"),
         "outpostIntake": gc("outpostIntake"),

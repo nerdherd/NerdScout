@@ -358,6 +358,14 @@ function moveImage(imageId, sliderVal){
                                     <img src="static\images\rebuiltMatchDisplay\False.svg">
                                     {% endif %}
                                 </div>
+                                <div class="booleanItem">
+                                    <h2>Intaked:</h2>
+                                    {% if result["firstInactiveShiftIntaked"] %}
+                                    <img src="static\images\rebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\rebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endif %}
                     </div>
@@ -519,6 +527,14 @@ function moveImage(imageId, sliderVal){
                                 <div class="booleanItem">
                                     <h2>Scored:</h2>
                                     {% if result["secondInactiveShiftScored"] %}
+                                    <img src="static\images\rebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\rebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
+                                <div class="booleanItem">
+                                    <h2>Intaked:</h2>
+                                    {% if result["secondInactiveShiftIntaked"] %}
                                     <img src="static\images\rebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\rebuiltMatchDisplay\False.svg">
