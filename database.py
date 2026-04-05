@@ -1408,7 +1408,7 @@ def payPickEms() -> bool:
     app.logger.info("Starting to pay out pickems")
     qual1 = getMatch(CompLevel.QM, 1, 1)[0]
     updateScheduleFromTBA(qual1["matchKey"].split("_")[0])
-    finals2 = getMatch(CompLevel.F, 1, 1)[0]
+    finals2 = getMatch(CompLevel.F, 2, 1)[0]
     if "scoreBreakdown" not in finals2["results"]:
         app.logger.warning("Failed to pay pickems: finals 2 not scored")
         return False
@@ -1432,7 +1432,7 @@ def payPickEms() -> bool:
     m13 = getMatch(CompLevel.SF, 1, 13)[0]
 
     
-    finals3 = getMatch(CompLevel.F, 1, 3)
+    finals3 = getMatch(CompLevel.F, 3, 1)
     if not finals3:
         finals3 = {}
     else:
