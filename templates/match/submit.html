@@ -149,6 +149,25 @@
                         </div>
                     </label>
                 </div>
+                <div class="column">
+                        <h2>Auto Winner</h2>
+                        <h2 class="error" id="winnerNotPicked"> PLEASE PICK A WINNER </h2>
+                        
+                        <div class="row">
+                            <label class="toggle-btn-wrapper">
+                                <div class="toggle-btn toggleShift" id="redWinner">
+                                    <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/RedWin.svg')}}">
+                                    <input type="checkbox" id="redFirstShift" onclick="redTeamWon('{{'Red' if 'red' in rbtStat else 'Blue'}}')">
+                                </div>
+                            </label>
+                            <label class="toggle-btn-wrapper">
+                                <div class="toggle-btn toggleShift" id="blueWinner">
+                                    <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/BlueWin.svg')}}">
+                                    <input type="checkbox" id="blueFirstShift" onclick="blueTeamWon('{{'Red' if 'red' in rbtStat else 'Blue'}}')">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
 
             </div>
             {% for n in ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"] %}
@@ -182,37 +201,6 @@
                         </div>
                     </label>
                 </div>
-                {% if "transition"==n %}
-                    {# change this into a switch #}
-                    <div class="column">
-                        <h2>Auto Winner</h2>
-                        <h2 class="error" id="winnerNotPicked"> PLEASE PICK A WINNER </h2>
-                        
-                        <div class="row">
-                            <label class="toggle-btn-wrapper">
-                                <div class="toggle-btn toggleShift" id="redWinner">
-                                    <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/RedWin.svg')}}">
-                                    <input type="checkbox" id="redFirstShift" onclick="redTeamWon('{{'Red' if 'red' in rbtStat else 'Blue'}}')">
-                                </div>
-                            </label>
-                            <label class="toggle-btn-wrapper">
-                                <div class="toggle-btn toggleShift" id="blueWinner">
-                                    <img src="{{ url_for('static', filename='images/rebuiltMatchDisplay/BlueWin.svg')}}">
-                                    <input type="checkbox" id="blueFirstShift" onclick="blueTeamWon('{{'Red' if 'red' in rbtStat else 'Blue'}}')">
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    {# <div class="row">
-                        <label class="toggle-btn-wrapper">
-                            <div class="toggle-btn">
-                                <b>Won first Shift?</b>
-                                <input type="checkbox" id="firstShift">
-                            </div>
-                        </label>
-                    </div> #}
-                {% endif %}
                 
             </div>
             {% endfor %}
