@@ -396,7 +396,7 @@ body {
 }
 
 .fieldHighlight {
-    width: 10%;
+    width: 33.333%;
     height: 100%;
     background-color: rgb(255,255,0,0.2);
     position: absolute;

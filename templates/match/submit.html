@@ -217,7 +217,7 @@
                                 <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ ('Red' if 'red' in rbtStat else 'Blue') +'/(' + (n+1)|string + ').png')}}">
                                 {% endfor %}
                             </div>
-                        <input type="range" min="0" max="9" step="1" val="5" id="startposinput" oninput="moveImage()">
+                        <input type="range" min="0" max="2" step="1" val="1" id="startposinput" oninput="moveImage()">
                         </div>
 
                     </div>
@@ -341,7 +341,7 @@
     const fieldHighlight = document.getElementById("fieldHighlight");
     function moveImage(){
         var sliderVal = slider.value;
-        fieldHighlight.style.left = (sliderVal*10)+"%";
+        fieldHighlight.style.left = (sliderVal*33.333)+"%";
     }
     moveImage();
 </script>
