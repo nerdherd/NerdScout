@@ -984,6 +984,10 @@ class Rebuilt(Game):
             "fedToOutpost": "Fed to the outpost",
             "totalFuel": "Total Fuel Worth Points",
             # "totalFuelMissed": "Total Fuel Missed",
+            "feedingRank":"Feeding Rank",
+            "feedingComment":"Feeding Comment",
+            "defenseRank":"Defense Rank",
+            "defenseComment":"Defense Comment",
             "minorFouls": "Minor Fouls",
             "majorFouls": "Major Fouls",
             "score": "Score Impact",
@@ -1041,6 +1045,8 @@ class Rebuilt(Game):
             "Intaked from the ground": "groundIntake,0",
             "Total Fuel Worth Points": "totalFuel,0",
             # "Total Fuel Missed": "totalFuelMissed,0",
+            "Feeding Rank":"feedingRank,0",
+            "Defense Rank":"defenseRank,0",
             "Minor Fouls": "minorFouls,0",
             "Major Fouls": "majorFouls,0",
             # "Average Auto Fuel Shot Per Second": "autoFuelAverageShotPerSecond,0",
@@ -1106,6 +1112,8 @@ class Rebuilt(Game):
             "endgameDefense": "Played defense during endgame",
             "endClimb": "Endgame Climb",
             "endClimbAttempted": "Endgame Climb Attempted",
+            "feedingRank":"Feeding Rank",
+            "defenseRank":"Defense Rank",
         }
         self.matchTableDisplayNames = {
             "team": "Team",
@@ -1167,6 +1175,10 @@ class Rebuilt(Game):
             # "totalFuelMissed": "Total Fuel Missed",
             # "totalFuelAverageShotPerSecond": "Average Fuel Shot Per Second",
             "totalFuelAverageScoredPerSecond": "Average Fuel Scored Per Second",
+            "feedingRank":"Feeding Rank",
+            "feedingComment":"Feeding Comment",
+            "defenseRank":"Defense Rank",
+            "defenseComment":"Defense Comment",
             "minorFouls": "Minor Fouls",
             "majorFouls": "Major Fouls",
             "comment": "Comment",
@@ -1305,6 +1317,14 @@ class Rebuilt(Game):
         outpostIntake: bool,
         groundIntake: bool,
         fedToOutpost: bool,
+        # "feedingRank":"Feeding Rank",
+            # "feedingComment":"Feeding Comment",
+            # "defenseRank":"Defense Rank",
+            # "defenseComment":"Defense Comment",
+        feedingRank: int|None,
+        feedingComment: str|None,
+        defenseRank:int|None,
+        defenseComment:str|None,
         minorFouls: int,
         majorFouls: int,
         comment: str,
@@ -1323,7 +1343,7 @@ class Rebuilt(Game):
         - Boolean: if the robot was successfully scored
         """
         totalFuel: int = 0
-        totalFuelMissed: int = 0
+        # totalFuelMissed: int = 0
         autoFuelTotal = 0
         # autoFuelTotalMissed = 0
         transitionFuelTotal = 0
@@ -1418,7 +1438,11 @@ class Rebuilt(Game):
             "groundIntake": groundIntake,
             "fedToOutpost": fedToOutpost,
             "totalFuel": totalFuel,
-            "totalFuelMissed": totalFuelMissed,
+            # "totalFuelMissed": totalFuelMissed,
+            "feedingRank":feedingRank,
+            "feedingComment":feedingComment,
+            "defenseRank":defenseRank,
+            "defenseComment":defenseComment,
             "minorFouls": minorFouls,
             "majorFouls": majorFouls,
             "score": self.calculateScore(
