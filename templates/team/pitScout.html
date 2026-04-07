@@ -40,6 +40,9 @@
             <div>
                 <input type="checkbox" id="shooting-opposite" name="shooting-opposite"> <label for="shooting-opposite">Shooting on opposite as intake</label>
             </div>
+            <div>
+                <input type="checkbox" id="shooting-turret" name="shooting-turret"> <label for="shooting-turret">Shooting using a turret</label>
+            </div>
         </div>
     </div>
     <div class="card">
@@ -118,7 +121,7 @@
     </div>
     <div class="card">
         <label for="hold">How much fuel can they intake and hold at a time? </label><br>
-        <input type="number" id="hold" name="hold" min="0"/>
+        <input type="text" id="hold" name="hold" min="0"/>
     </div>
     <div class="card">
         <label for="cycles">How many cycles do they usually get per game?</label><br>
@@ -134,7 +137,7 @@
     </div>
     <div class="card">
         <label for="weight">What is their robot weight (without batteries and bumpers) (lbs)? </label><br>
-        <input type="number" id="weight" name="weight"/>
+        <input type="text" id="weight" name="weight"/>
     </div>
     <div class="card"> 
         <label for="special">Anything special we should know about their robot? </label><br>
@@ -218,6 +221,7 @@
             "shootside": {
                 "shooting-same": getCheckbox("shooting-same"),
                 "shooting-opposite": getCheckbox("shooting-opposite"),
+                "shooting-turret": getCheckbox("shooting-turret")
             },
             "languages": {
                 "java": getCheckbox("language-java"),
