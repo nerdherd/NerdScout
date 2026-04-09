@@ -80,12 +80,14 @@ def index():
 #     ]
 #     for i in range(9991, 9996):
 #         for team in Station:
+#             feeding = (random.random() > 0.5)
+#             defending = (random.random() > 0.5)
 #             game.scoreRobotInMatch(
 #                 matchNumber=i,
 #                 setNumber=1,
 #                 compLevel=CompLevel.QM,
 #                 station=team,
-#                 startPos=random.random(),
+#                 startPos=random.randint(0,2),
 #                 preloadFuel=random.randint(0, 8),
 #                 autoFuel=randomScoringPeriods(random.randint(0, 5)),
 #                 autoDepot=random.random() > 0.5,
@@ -111,9 +113,11 @@ def index():
 #                 firstInactiveShiftScored=random.random() > 0.5,
 #                 firstInactiveShiftFed=random.random() > 0.5,
 #                 firstInactiveShiftDefense=random.random() > 0.5,
+#                 firstInactiveShiftIntaked=random.random() > 0.5,
 #                 secondInactiveShiftScored=random.random() > 0.5,
 #                 secondInactiveShiftFed=random.random() > 0.5,
 #                 secondInactiveShiftDefense=random.random() > 0.5,
+#                 secondInactiveShiftIntaked=random.random() > 0.5,
 #                 endgameFuel=randomScoringPeriods(random.randint(0, 5)),
 #                 endgameFed=random.random() > 0.5,
 #                 endgameDefense=random.random() > 0.5,
@@ -122,6 +126,10 @@ def index():
 #                 outpostIntake=random.random() > 0.5,
 #                 groundIntake=random.random() > 0.5,
 #                 fedToOutpost=random.random() > 0.5,
+#                 feedingRank=random.randint(1,10) if feeding else None,
+#                 feedingComment="this robot was feeding :3" if feeding else None,
+#                 defenseRank=random.randint(1,10) if defending else None,
+#                 defenseComment="this robot was defending >:(" if defending else None,
 #                 minorFouls=random.randint(0, 10),
 #                 majorFouls=random.randint(0, 3),
 #                 comment="abaca",
@@ -747,6 +755,7 @@ def teamTable():
     displayNames = game.teamTableDisplayNames
     data = teamDataSummary()
     print([a for a in data[-1]["results"].keys()])
+    print(data)
     return render_template(
         "strategy/team/table.html",
         displayNames=displayNames,

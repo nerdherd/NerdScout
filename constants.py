@@ -122,10 +122,14 @@ def getListOfScoringCategory(data: list, key: str, index: int = 0):
             score = item["results"][-1][key]
             if type(score) == list:
                 score = score[index]
+            if score == None:
+                continue
             scores.append(int(score))
         except:
             app.logger.error(f'Failed to get data for key {key} in data "{item}"')  # type: ignore
             abort(500)
+
+    if not scores: scores = [0]
     return scores
 
 
