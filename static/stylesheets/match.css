@@ -727,3 +727,7 @@ h3{
 .payoutInfo p{
     margin:2px;
 }
+
+.ranking *{
+    margin: 1px;
+}

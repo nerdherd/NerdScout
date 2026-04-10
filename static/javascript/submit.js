@@ -349,11 +349,11 @@ function submitData(matchNum, compLevel, setNum, robot){
         rawData[`${name}Defense`]=gc(`${name}Defense`);
         defendShow = gc(`${name}Defense`) || defendShow;
     }
-    if(fedShow){
-        rawData[feedingRank] = null;
+    if(!fedShow){
+        rawData["feedingRank"] = null;
     }
-    if(defendShow){
-        rawData[defenseRank] = null;
+    if(!defendShow){
+        rawData["defenseRank"] = null;
     }
     data = JSON.stringify(rawData);
     console.log(rawData);

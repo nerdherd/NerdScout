@@ -750,6 +750,24 @@ function moveImage(imageId, sliderVal){
                 </div>
             </div>
 
+            {% if result["feedingRank"]%}
+            <h3>Fed</h3>
+            <div class="sectionDiv ranking">
+                <h4>Ranking: {{result["feedingRank"]}}</h4>
+                <h4>Reason:</h4>
+                <p>Ranking: {{result["feedingComment"]}}</p>
+            </div>
+            {% endif %}
+
+            {% if result["defenseRank"]%}
+            <h3>Defense</h3>
+            <div class="sectionDiv ranking">
+                <h4>Ranking: {{result["defenseRank"]}}</h4>
+                <h4>Reason:</h4>
+                <p>Ranking: {{result["defenseComment"]}}</p>
+            </div>
+            {% endif %}
+
             <h3>Comment:</h3>
             <div class="sectionDiv">
                 <div class="comments">
