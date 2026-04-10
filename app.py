@@ -592,8 +592,9 @@ def getPitScoutCSV():
         ("Language(s) used","languages"), # needs custom
         ("Are their bumpers open or closed?","bumpers"), # needs custom
         ("What side do they shoot out of?","shootside"), # needs custom
-        ("Do they CURRENTLY have a camera on their robot? If so, what for? Do they have auto aim?","drivebase"),
+        ("Do they CURRENTLY have a camera on their robot? If so, what for? Do they have auto aim?","camera"),
 
+        ("What is their ranking of preferred autos?","auto","auto-rank  "),
         ("Can they score preloaded fuel during auto?","auto","auto-fuel-preload"),
         ("Can they score intaked fuel during auto?","auto","auto-fuel"),
         ("Can they move over the bump during auto?","auto","auto-bump"),
@@ -618,6 +619,7 @@ def getPitScoutCSV():
         ("How much fuel can they intake and hold at a time?","hold"),
         ("How many cycles do they usually get per game?","cycles"),
         ("How many points do they usually get per game?","points"),
+        ("What is their fuel per second?","rate"),
         ("What is their estimated shooting range?","range"),
         ("What is their robot weight (without batteries and bumpers) (lbs)?","weight"),
         ("Anything special we should know about their robot?","special"),

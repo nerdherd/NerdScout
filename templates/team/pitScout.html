@@ -11,7 +11,6 @@
 {% block content %}
 {% set previousPage = "javascript:history.back()" %}
 {% include 'backButton.html' %}
-
     <div class="card">
         <label for="team">Team Number:</label>
         <input type="number" id="team" name="team" {% if team %}value="{{team}}"{%endif%}/>
@@ -86,6 +85,8 @@
         <input type="text" id="camera" name="camera">
     </div>
     <div class="card">
+        <label for="auto-rank">What is their ranking of preferred autos (left, middle, right)? Write from most preferred to least, seperated by commas </label><br>
+        <input type="text" id="auto-rank" name="auto-rank"/>
         <p>What can they realistically do during auto?</p>
         <div>
             {% for capability in autoCapabilities %}
@@ -121,7 +122,11 @@
     </div>
     <div class="card">
         <label for="hold">How much fuel can they intake and hold at a time? </label><br>
-        <input type="text" id="hold" name="hold" min="0"/>
+        <input type="text" id="hold" name="hold"/>
+    </div>
+    <div class="card">
+        <label for="rate">What is their fuel per second? </label><br>
+        <input type="text" id="rate" name="rate"/>
     </div>
     <div class="card">
         <label for="cycles">How many cycles do they usually get per game?</label><br>
@@ -232,6 +237,7 @@
             },
             "camera": getValue("camera"),
             "auto": {
+                "auto-rank":getValue("auto-rank"),
                 {% for capability in autoCapabilities %}
                 "{{capability[1]}}":getCheckbox("{{capability[1]}}"),
                 {% endfor %}
@@ -250,6 +256,7 @@
             },
             "hold":getValue("hold"),
             "cycles":getValue("cycles"),
+            "rate":getValue("rate"),
             "points":getValue("points"),
             "range":getValue("range"),
             "weight":getValue("weight"),

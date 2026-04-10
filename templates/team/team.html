@@ -57,10 +57,12 @@
             <ul>
                 {% if data["shootside"]["shooting-same"] %}<li>Same side as intake</li>{% endif %}
                 {% if data["shootside"]["shooting-opposite"] %}<li>Opposite side of intake</li>{% endif %}
+                {% if data["shootside"]["shooting-turret"] %}<li>Turret</li>{% endif %}
             </ul>
             <p>Do they currently have a camera on their robot? {{data["camera"]}}</p>
             <h3>Auto:</h3>
             <ul>
+                <li>Ranking of preffered autos: {{ data["auto"]["auto-rank"] }}</li>
                 <li class="{{'checked' if data['auto']['auto-fuel-preload'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-fuel-preload"] else "cannot"}} score preloaded fuel in the hub</li>
                 <li class="{{'checked' if data['auto']['auto-fuel'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-fuel"] else "cannot"}} score extra fuel after intaking in the hub</li>
                 <li class="{{'checked' if data['auto']['auto-bump'] else 'unchecked'}}">They {{ "can" if data["auto"]["auto-bump"] else "cannot"}} travel over the bump</li>
@@ -102,8 +104,11 @@
             </ul>
             <p>How much fuel can the hold and score at a time? {{data["hold"]}}</p>
             <p>How many cycles do they usually get per game? {{data["cycles"]}}</p>
+            <p>What is their fuel per second? {{data["rate"]}}</p>
             <p>How many points do they usually get per game? {{data["points"]}}</p>
             <p>What is their estimated shooting range? {{data["range"]}}</p>
+            <p>How experienced are their drivers? {{data["experience"]}}</p>
+            <p>How many batteries/battery chargers do they have? {{data["battery"]}}</p>
             <p>Robot weight: {{data["weight"]}}</p>
             <p>Pit organization: {{data["organization"]}}</p>
             {% if data['special'] %}
