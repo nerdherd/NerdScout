@@ -85,8 +85,25 @@
         <input type="text" id="camera" name="camera">
     </div>
     <div class="card">
-        <label for="auto-rank">What is their ranking of preferred autos (left, middle, right)? Write from most preferred to least, seperated by commas </label><br>
-        <input type="text" id="auto-rank" name="auto-rank"/>
+        <!-- <label for="auto-rank">What is their ranking of preferred autos (left, middle, right)? Write from most preferred to least, seperated by commas </label><br>
+        <input type="text" id="auto-rank" name="auto-rank"/> -->
+        <p>What is their ranking of preferred autos, from most preferred to least?</p>
+        <div id="ranking">
+            <ol>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ol>
+            <div id="rankings">
+                {% for n in range(3) %}
+                    <div id="rank-{{n+1}}" class="rank-thing" data-value="{{(["left","middle","right"])[n]}}">
+                        <button class="material-symbols-sharp" onclick="moveup('rank-{{n+1}}')">arrow_upward</button>
+                        <button class="material-symbols-sharp" onclick="movedown('rank-{{n+1}}')">arrow_downward</button>
+                        {{(["Left","Middle","Right"])[n]}}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
         <p>What can they realistically do during auto?</p>
         <div>
             {% for capability in autoCapabilities %}
@@ -165,6 +182,20 @@
 <button onclick="submitData()" class="card">Submit</button>
 
 <script>
+
+    function moveup(id){
+        let element = document.getElementById(id);
+        if(element.previousElementSibling)
+            element.parentNode.insertBefore(element, element.previousElementSibling);
+    }
+
+    function movedown(id){
+        let element = document.getElementById(id);
+        if(element.nextElementSibling)
+            element.parentNode.insertBefore(element.nextElementSibling, element);
+    }
+
+
     function getCheckbox(id){
         return document.getElementById(id).checked;
     }
@@ -212,6 +243,11 @@
         let team = getValue("team");
         console.log(team);
 
+        let ranking = [];
+        for (const element of document.querySelectorAll(".rank-thing")){
+            ranking.push(element.dataset.value);
+        }
+
         let rawData = {
             "battery": getValue("battery"),
             "drivebase": {
@@ -237,7 +273,7 @@
             },
             "camera": getValue("camera"),
             "auto": {
-                "auto-rank":getValue("auto-rank"),
+                "auto-rank": ranking.join(", "),
                 {% for capability in autoCapabilities %}
                 "{{capability[1]}}":getCheckbox("{{capability[1]}}"),
                 {% endfor %}
