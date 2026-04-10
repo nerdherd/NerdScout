@@ -121,6 +121,30 @@ function switchScoringPeriod(newPeriod){
     reloadScoringTable();
 }
 
+function changeRank(feed){
+    if (feed) {
+        getById("feedingLabel").textContent = `${getId("feedingRank")}/10`;
+    } else {
+        getById("defendingLabel").textContent = `${getId("defendingRank")}/10`;
+    }
+}
+
+function revealRanks(feed){
+    if(feed){
+        show = false;
+        for (const name of ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"]){
+            show = gc(`${name}Fed`) || show;
+        }
+        getById("fedFeedback").style.display = show ? "flex" : "none";
+    } else {
+        show = false;
+        for (const name of ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"]){
+            show = gc(`${name}Defense`) || show;
+        }
+        getById("defendingFeedback").style.display = show ? "flex" : "none";
+    }
+}
+
 var weWon = false;
 var wonTouched = false;
 
@@ -129,7 +153,7 @@ const firstShiftCheckbox = getById("firstShift");
 const mainInputDiv = getById("main-input");
 function setScoringPeriod(newPeriod){
     console.log(newPeriod);
-    if(newPeriod >= 2 && !wonTouched){
+    if(newPeriod >= 1 && !wonTouched){
         alert("PLEASE PICK A SHIFT WINNER");
         return;
     }
@@ -309,17 +333,27 @@ function submitData(matchNum, compLevel, setNum, robot){
         "groundIntake": gc("groundIntake"),
         "fedToOutpost": gc("fedToOutpost"),
         "feedingRank": getId("feedingRank"),
-        "feedingComment": getId("feedingComment"),
+        "feedingComment": getId("feedingComment", false),
         "defenseRank": getId("defendingRank"),
-        "defenseComment": getId("defendingComment"),
+        "defenseComment": getId("defendingComment", false),
         "minorFouls": getId("minorFouls"),
         "majorFouls": getId("majorFouls"),  
         "comment": getId("comments",false),  
         "cannedComments": cannedComments,  
     };
+    fedShow = false;
+    defendShow = false;
     for (const name of ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"]){
         rawData[`${name}Fed`]=gc(`${name}Fed`);
+        fedShow = gc(`${name}Fed`) || fedShow;
         rawData[`${name}Defense`]=gc(`${name}Defense`);
+        defendShow = gc(`${name}Defense`) || defendShow;
+    }
+    if(fedShow){
+        rawData[feedingRank] = null;
+    }
+    if(defendShow){
+        rawData[defenseRank] = null;
     }
     data = JSON.stringify(rawData);
     console.log(rawData);

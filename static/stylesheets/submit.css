@@ -475,7 +475,7 @@ button:active{
     width:100%;
     justify-content: space-between;
 }
-#comments{
+.comments{
     width:100%;
 }
 
@@ -483,4 +483,12 @@ button:active{
     width:100%;
     font-size:2rem;
     margin-top:5px;
+}
+
+.slider{
+    width: 318px;
+}
+
+#fedFeedback, #defendingFeedback{
+    display: none;
 }

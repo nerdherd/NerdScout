@@ -191,13 +191,13 @@
                     <label class="toggle-btn-wrapper">
                         <div class="toggle-btn">
                             <p>Fed</p>
-                            <input type="checkbox" id="{{n}}Fed">
+                            <input type="checkbox" id="{{n}}Fed" onclick="revealRanks(true)">
                         </div>
                     </label>
                     <label class="toggle-btn-wrapper">
                         <div class="toggle-btn">
                             <p>Played Defense</p>
-                            <input type="checkbox" id="{{n}}Defense">
+                            <input type="checkbox" id="{{n}}Defense" onclick="revealRanks(false)">
                         </div>
                     </label>
                 </div>
@@ -293,15 +293,17 @@
                     </label>
                 </div>
 
-                <div class="row" id="fedFeedback">
+                <div class="column" id="fedFeedback">
                     <p>How well did they feed?</p>
-                    <input type="range" min="1" max="10" step="1" value="5" id="feedingRank">
-                    <textarea id="feedingComment" placeholder="Explanation here..."></textarea>
+                    <label for="feedingRank" id="feedingLabel">5/10</label>
+                    <input type="range" min="1" max="10" step="1" value="5" class="slider" id="feedingRank" oninput="changeRank(true)">
+                    <textarea id="feedingComment" class="comments" placeholder="Explanation here..."></textarea>
                 </div>
-                <div class="row" id="fedFeedback">
+                <div class="column" id="defendingFeedback">
                     <p>How well did they defend?</p>
-                    <input type="range" min="1" max="10" step="1" value="5" id="defendingRank">
-                    <textarea id="defendingComment" placeholder="Explanation here..."></textarea>
+                    <label for="defendingRank" id="defendingLabel">5/10</label>
+                    <input type="range" min="1" max="10" step="1" value="5" class="slider" id="defendingRank" oninput="changeRank(false)">
+                    <textarea id="defendingComment" class="comments" placeholder="Explanation here..."></textarea>
                 </div>
 
                 <div>
@@ -311,7 +313,7 @@
                         <button data-text="{{cannedComment}}" id="canned-{{cannedComment}}" onclick="toggleActive('canned-{{cannedComment}}')" class="canned-button">{{cannedComment}}</button>
                         {% endfor %}
                     </div>
-                    <textarea id="comments" placeholder="Write comments here..."></textarea>
+                    <textarea id="comments" class="comments" placeholder="Write comments here..."></textarea>
                 </div>
                 <button onclick="submitData({{matchVal}}, '{{compLvl}}', {{setVal}}, '{{rbtStat}}')" class="submitButton">Submit</button>
             </div>
