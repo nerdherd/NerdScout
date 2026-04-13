@@ -4,7 +4,8 @@
 }
 
 * {
-    color: var(--text-color)
+    color: var(--text-color);
+    touch-action: manipulation;
 }
 
 body {
