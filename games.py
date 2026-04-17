@@ -988,6 +988,8 @@ class Rebuilt(Game):
             "feedingComment":"Feeding Comment",
             "defenseRank":"Defense Rank",
             "defenseComment":"Defense Comment",
+            "driverRank": "Driver Skill Rank",
+            "vibeCheck": "Vibe Check",
             "minorFouls": "Minor Fouls",
             "majorFouls": "Major Fouls",
             "score": "Score Impact",
@@ -1047,6 +1049,8 @@ class Rebuilt(Game):
             # "Total Fuel Missed": "totalFuelMissed,0",
             "Feeding Rank":"feedingRank,0",
             "Defense Rank":"defenseRank,0",
+            "Driver Skill Rank": "driverRank,0",
+            "Vibe Check": "vibeCheck,0",
             "Minor Fouls": "minorFouls,0",
             "Major Fouls": "majorFouls,0",
             # "Average Auto Fuel Shot Per Second": "autoFuelAverageShotPerSecond,0",
@@ -1114,6 +1118,8 @@ class Rebuilt(Game):
             "endClimbAttempted": "Endgame Climb Attempted",
             "feedingRank":"Feeding Rank",
             "defenseRank":"Defense Rank",
+            "driverRank": "Driver Skill Rank",
+            "vibeCheck": "Vibe Check",
         }
         self.matchTableDisplayNames = {
             "team": "Team",
@@ -1179,6 +1185,8 @@ class Rebuilt(Game):
             "feedingComment":"Feeding Comment",
             "defenseRank":"Defense Rank",
             "defenseComment":"Defense Comment",
+            "driverRank": "Driver Skill Rank",
+            "vibeCheck": "Vibe Check",
             "minorFouls": "Minor Fouls",
             "majorFouls": "Major Fouls",
             "comment": "Comment",
@@ -1325,6 +1333,8 @@ class Rebuilt(Game):
         feedingComment: str|None,
         defenseRank:int|None,
         defenseComment:str|None,
+        driverRank: int,
+        vibeCheck: int,
         minorFouls: int,
         majorFouls: int,
         comment: str,
@@ -1409,6 +1419,8 @@ class Rebuilt(Game):
             "feedingComment":feedingComment,
             "defenseRank":defenseRank,
             "defenseComment":defenseComment,
+            "driverRank": driverRank,
+            "vibeCheck": vibeCheck,
             "minorFouls": minorFouls,
             "majorFouls": majorFouls,
             "score": self.calculateScore(
@@ -1801,6 +1813,10 @@ class Rebuilt(Game):
             # "totalFuelAverageScoredPerSecond": getAllStatsForCategory(
             #     teamResults, "totalFuelAverageScoredPerSecond"
             # ),
+            "defenseRank": getAllStatsForCategory(teamResults,"defenseRank"),
+            "feedingRank": getAllStatsForCategory(teamResults,"feedingRank"),
+            "driverRank": getAllStatsForCategory(teamResults,"driverRank"),
+            "vibeCheck": getAllStatsForCategory(teamResults,"vibeCheck"),
             "minorFouls": getAllStatsForCategory(teamResults, "minorFouls"),
             "majorFouls": getAllStatsForCategory(teamResults, "majorFouls"),
         }

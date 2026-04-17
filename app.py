@@ -1016,6 +1016,8 @@ def submitScorePage():
                 feedingComment=submission["feedingComment"],
                 defenseRank=submission["defenseRank"],
                 defenseComment=submission["defenseComment"],
+                driverRank=submission["driverRank"],
+                vibeCheck=submission["vibeCheck"],
                 minorFouls=submission["minorFouls"],
                 majorFouls=submission["majorFouls"],
                 comment=submission["comment"],
