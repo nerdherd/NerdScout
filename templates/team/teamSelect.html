@@ -50,6 +50,11 @@
     const line_color = "white";
     const fill_color = "#5386E4";
 
+    const indexes = [...Array(stat_count).keys()];
+    const angles = indexes.map(n=>2*Math.PI*n/stat_count);
+    const sins = angles.map(n=>Math.sin(n)*matrix_size);
+    const coss = angles.map(n=>Math.cos(n)*matrix_size);
+
     function drawStatMatrix(stat_values,id){
         const stat_matrix_canvas = document.getElementById(id);
         const stat_matrix_ctx = stat_matrix_canvas.getContext("2d");
@@ -58,16 +63,10 @@
         stat_matrix_ctx.clearRect(0,0,stat_width,stat_height);
         stat_matrix_ctx.lineWidth = 3;
 
-        let sins = [];
-        let coss = [];
-
         stat_matrix_ctx.beginPath();
         stat_matrix_ctx.moveTo(half_width, half_height-matrix_size*stat_values[0]);
         stat_matrix_ctx.fillStyle = fill_color;
         for (let i = 0; i < stat_count; i++){
-            let angle = 2*Math.PI * i / stat_count;
-            sins.push(Math.sin(angle)*matrix_size);
-            coss.push(Math.cos(angle)*matrix_size);
             stat_matrix_ctx.lineTo(half_width+sins[i]*stat_values[i],half_height-coss[i]*stat_values[i]);
         }
         stat_matrix_ctx.lineTo(half_width, half_height-matrix_size*stat_values[0]);
@@ -84,7 +83,7 @@
             let cury = half_height-coss[i];
             stat_matrix_ctx.lineTo(curx,cury);
             stat_matrix_ctx.lineTo(half_width,half_height);
-            stat_matrix_ctx.lineTo(curx,cury);
+            stat_matrix_ctx.moveTo(curx,cury);
             stat_matrix_ctx.fillText(stat_names[i],curx+text_offset_x[i],cury+text_offset_y[i]);
         }
         stat_matrix_ctx.lineTo(half_width, half_height- matrix_size);
