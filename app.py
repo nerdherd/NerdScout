@@ -7,6 +7,7 @@ from flask import (
     session,
     url_for,
 )
+from flask_squeeze import Squeeze
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash
@@ -15,6 +16,8 @@ from constants import *
 from database import *
 from auth import *
 from games import *
+
+squeeze = Squeeze()
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.config["JSON_SORT_KEYS"] = False
@@ -26,6 +29,8 @@ app.config.from_mapping(
 app.jinja_env.filters["any"] = any
 
 game = Rebuilt(matches, teams)
+
+squeeze.init_app(app)
 
 generatePoints()
 
