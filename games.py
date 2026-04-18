@@ -2311,20 +2311,10 @@ class Rebuilt(Game):
             "score": score,
         }
     
-    def calculateStatMatrix(self, team:int) -> dict:
-        """
-        Calculates a team's stat matrix, with each field from a range from 0 to 1.
-        1 represents the highest value for that field.
-        
-        Inputs:
-        - team (int): team number
-
-        Returns:
-        - dict: stat dict
-        """
-        teamDataList = getAllTeams()
+    def getMaximumsForStatMatrix(self, teamDataList = None) -> dict[str,float]:
+        if teamDataList == None:
+            teamDataList = getAllTeams()
         teamNumberList = [i["number"] for i in teamDataList]
-        teamMatchResultList = getTeamResults(team)
 
         offenseMax = 0.0
         defenseMax = 0.0
@@ -2332,7 +2322,6 @@ class Rebuilt(Game):
         passingMax = 0.0
         stealingMax = 0.0
         autosMax = 0.0
-
         for teamNumber in teamNumberList:
             tempMatchResultList = getTeamResults(teamNumber)
             offenseScore = getMeanOfScoringCategory(tempMatchResultList,"totalTeleopFuel")
@@ -2348,6 +2337,32 @@ class Rebuilt(Game):
             passingMax = passingScore if passingScore > passingMax else passingMax
             stealingMax = stealingScore if stealingScore > stealingMax else stealingMax
             autosMax = autosScore if autosScore > autosMax else autosMax
+        return {
+            "offense":offenseMax,
+            "defense":defenseMax,
+            "driver":driverMax,
+            "passing":passingMax,
+            "stealing":stealingMax,
+            "autos":autosMax,
+        }
+
+    def calculateStatMatrix(self, team:int, maximums:dict|None = None) -> dict[str,float]:
+        """
+        Calculates a team's stat matrix, with each field from a range from 0 to 1.
+        1 represents the highest value for that field.
+        
+        Inputs:
+        - team (int): team number
+        - maximums (dict): results of getMaximumsForStatMatrix()
+
+        Returns:
+        - dict: stat dict
+        """
+
+        teamMatchResultList = getTeamResults(team)
+
+        if maximums == None:
+            maximums = self.getMaximumsForStatMatrix()
         
         offenseScore = getMeanOfScoringCategory(teamMatchResultList,"totalTeleopFuel")
         defenseScore = getMeanOfScoringCategory(teamMatchResultList,"defenseRank")
@@ -2357,13 +2372,25 @@ class Rebuilt(Game):
         autosScore = getMeanOfScoringCategory(teamMatchResultList,"autoFuelTotal")
 
         data = {
-            "offense": offenseScore/offenseMax,
-            "defense": defenseScore/defenseMax,
-            "driver": driverScore/driverMax,
-            "passing": passingScore/passingMax,
-            "stealing": stealingScore/stealingScore,
-            "autos": autosScore/autosMax,
+            "offense": offenseScore/maximums["offense"],
+            "defense": defenseScore/maximums["defense"],
+            "driver": driverScore/maximums["driver"],
+            "passing": passingScore/maximums["passing"],
+            "stealing": stealingScore/maximums["stealing"],
+            "autos": autosScore/maximums["autos"],
         }
         return data
+    
+    def calculateStatMatrices(self) -> dict[int,dict[str,float]]:
+        allTeamData = getAllTeams()
+        maximums = self.getMaximumsForStatMatrix(allTeamData)
+
+        result = {}
+        for team in allTeamData:
+            teamNumber = team["number"]
+            matrix = self.calculateStatMatrix(teamNumber,maximums)
+            result[teamNumber] = matrix
+        
+        return result
 
         

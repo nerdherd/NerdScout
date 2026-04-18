@@ -21,6 +21,11 @@
 </div>
 
 <div class="card">
+    <h2>Stat matrix</h2>
+    <canvas width="1000" height="1000" id="stat-matrix-canvas"></canvas>
+</div>
+
+<div class="card">
     <h1>Pit Scouting</h1>
     {% if team["pitScout"] %}
     <div>
@@ -218,16 +223,10 @@
     addEventListener("DOMContentLoaded", changeStat())
 </script>
 
-<div class="card">
-    <h2>Stat matrix</h2>
-    <canvas width="1000" height="1000" id="stat-matrix-canvas"></canvas>
-</div>
 <script>
-    const stat_matrix_canvas = document.getElementById("stat-matrix-canvas");
-    const stat_matrix_ctx = stat_matrix_canvas.getContext("2d");
 
-    const stat_width  = stat_matrix_canvas.width;
-    const stat_height = stat_matrix_canvas.height;
+    const stat_width  = 1000;
+    const stat_height = 1000;
 
     const half_width = stat_width/2;
     const half_height = stat_width/2;
@@ -235,15 +234,6 @@
     const matrix_size = Math.min(half_width*0.6,half_height*0.6);
 
     const stat_count = 6;
-
-    const stat_values = [
-        {{ statMatrix["offense"] }},
-        {{ statMatrix["defense"] }},
-        {{ statMatrix["driver"] }},
-        {{ statMatrix["passing"] }},
-        {{ statMatrix["stealing"] }},
-        {{ statMatrix["autos"] }},
-    ];
 
     const stat_names = [
         "Offense",
@@ -274,7 +264,10 @@
     const line_color = "white";
     const fill_color = "#5386E4";
 
-    function drawStatMatrix(){
+    function drawStatMatrix(stat_values,id="stat-matrix-canvas"){
+        const stat_matrix_canvas = document.getElementById(id);
+        const stat_matrix_ctx = stat_matrix_canvas.getContext("2d");
+
         stat_matrix_ctx.fillStyle = "white";
         stat_matrix_ctx.clearRect(0,0,stat_width,stat_height);
 
@@ -312,7 +305,14 @@
 
     }
 
-    drawStatMatrix();
+    drawStatMatrix([
+        {{ statMatrix["offense"] }},
+        {{ statMatrix["defense"] }},
+        {{ statMatrix["driver"] }},
+        {{ statMatrix["passing"] }},
+        {{ statMatrix["stealing"] }},
+        {{ statMatrix["autos"] }},
+    ]);
 </script>
 
 {% endblock %}

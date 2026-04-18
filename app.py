@@ -335,13 +335,15 @@ def teamPage():
         team = int(request.args.get("team"))  # type: ignore
         results = getTeam(team)
     except TypeError as err:
+        statMatrices = game.calculateStatMatrices()
         return render_template(
-            "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1
+            "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1, statMatrices=statMatrices
         )
 
     if results is None:
+        statMatrices = game.calculateStatMatrices()
         return render_template(
-            "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=team
+            "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=team, statMatrices=statMatrices
         )
 
     matches = getTeamMatches(team)
