@@ -220,7 +220,7 @@
 
 <div class="card">
     <h2>Stat matrix</h2>
-    <canvas width="400" height="400" id="stat-matrix-canvas"></canvas>
+    <canvas width="1000" height="1000" id="stat-matrix-canvas"></canvas>
 </div>
 <script>
     const stat_matrix_canvas = document.getElementById("stat-matrix-canvas");
@@ -255,37 +255,35 @@
     ];
     const text_offset_x = [
         0,
-        40,
-        40,
+        70,
+        90,
         0,
-        -30,
-        -30
+        -70,
+        -50
     ];
     const text_offset_y = [
         -10,
         -10,
+        20,
         30,
         20,
-        20,
-        -10
+        0
     ];
 
-    const text_color = "black";
-    const line_color = "black";
-    const fill_color = "green";
+    const text_color = "white";
+    const line_color = "white";
+    const fill_color = "#5386E4";
 
     function drawStatMatrix(){
         stat_matrix_ctx.fillStyle = "white";
         stat_matrix_ctx.clearRect(0,0,stat_width,stat_height);
-        stat_matrix_ctx.fillRect(0,0,stat_width,stat_height);
 
         let sins = [];
         let coss = [];
 
         stat_matrix_ctx.beginPath();
         stat_matrix_ctx.moveTo(half_width, half_height-matrix_size*stat_values[0]);
-        stat_matrix_ctx.fillStyle = "green";
-        stat_matrix_ctx.strokeStyle = "green";
+        stat_matrix_ctx.fillStyle = fill_color;
         for (let i = 0; i < stat_count; i++){
             let angle = 2*Math.PI * i / stat_count;
             sins.push(Math.sin(angle)*matrix_size);
@@ -299,7 +297,7 @@
         stat_matrix_ctx.moveTo(half_width, half_height-matrix_size);
         stat_matrix_ctx.fillStyle = text_color;
         stat_matrix_ctx.strokeStyle = line_color;
-        stat_matrix_ctx.font = "20px serif";
+        stat_matrix_ctx.font = "30px Poppins";
         stat_matrix_ctx.textAlign = "center";
         for (let i = 0; i < stat_count; i++){
             let curx = half_width+sins[i];
