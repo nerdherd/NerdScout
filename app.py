@@ -8,6 +8,7 @@ from flask import (
     url_for,
 )
 from flask_squeeze import Squeeze
+from minify_html import minify
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash
@@ -1198,6 +1199,15 @@ def before_request():
             f"User {session['username']} attempted to access {request.endpoint} without dbAdmin"
         )
         abort(403)
+
+@app.after_request
+def after_request(response):
+    if response.content_type == u'text/html; charset=utf-8':
+        response.set_data(
+            minify(response.get_data(as_text=True))
+        )
+        return response
+    return response
 
 
 @app.errorhandler(HTTPException)
