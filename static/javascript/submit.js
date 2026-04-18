@@ -106,30 +106,22 @@ function addScoresToTable(scores){
 //     reloadScoringTable();
 // }
 
-// function switchScoringPeriod(newPeriod){
-//     curScoringPeriod=newPeriod;
-//     mainInputDiv.classList.add(`shift-${newPeriod}`);
-//     reloadScoringTable();
-// }
+function switchScoringPeriod(newPeriod){
+    // curScoringPeriod=newPeriod;
+    mainInputDiv.classList.add(`shift-${newPeriod}`);
+    // reloadScoringTable();
+}
 
 function changeRank(tag){
     getById(`${tag}Label`).textContent = `${getId(`${tag}Rank`)}/10`
 }
 
-function revealRanks(feed){
-    if(feed){
-        show = false;
-        for (const name of ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"]){
-            show = gc(`${name}Fed`) || show;
-        }
-        getById("fedFeedback").style.display = show ? "flex" : "none";
-    } else {
-        show = false;
-        for (const name of ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"]){
-            show = gc(`${name}Defense`) || show;
-        }
-        getById("defendingFeedback").style.display = show ? "flex" : "none";
+function revealRanks(tag){
+    show = false;
+    for (const name of ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"]){
+        show = gc(`${name}${tag}`) || show;
     }
+    getById(`${tag}Feedback`).style.display = show ? "flex" : "none";
 }
 
 var weWon = false;
@@ -198,6 +190,8 @@ function setScoringPeriod(newPeriod){
             mainInputDiv.classList.remove("inactive");
             // if (newPeriod==2) switchScoringPeriod(2);
             // if (newPeriod==4) switchScoringPeriod(3);
+            if (newPeriod==2) mainInputDiv.classList.add("shift-2");
+            else mainInputDiv.classList.add("shift-3")
             return
         }
         mainInputDiv.classList.add("inactive");
@@ -209,6 +203,8 @@ function setScoringPeriod(newPeriod){
         mainInputDiv.classList.remove("inactive");
         // if (newPeriod==3) switchScoringPeriod(2);
         // if (newPeriod==5) switchScoringPeriod(3);
+        if (newPeriod==3) mainInputDiv.classList.add("shift-2");
+        else mainInputDiv.classList.add("shift-3")
         return
     }
     if (newPeriod==2) mainInputDiv.classList.add(`shift-i1`);
