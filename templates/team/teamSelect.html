@@ -9,6 +9,90 @@
 {% block title %}Team Select{% endblock %}
 
 {% block content %}
+<script>
+
+    const stat_width  = 1000;
+    const stat_height = 1000;
+
+    const half_width = stat_width/2;
+    const half_height = stat_width/2;
+
+    const matrix_size = Math.min(half_width*0.6,half_height*0.6);
+
+    const stat_count = 6;
+
+    const stat_names = [
+        "Offense",
+        "Defense",
+        "Driving Skill",
+        "Passing",
+        "Stealing",
+        "Autos"
+    ];
+    const text_offset_x = [
+        0,
+        70,
+        90,
+        0,
+        -70,
+        -50
+    ];
+    const text_offset_y = [
+        -10,
+        -10,
+        20,
+        30,
+        20,
+        0
+    ];
+
+    const text_color = "white";
+    const line_color = "white";
+    const fill_color = "#5386E4";
+
+    function drawStatMatrix(stat_values,id){
+        const stat_matrix_canvas = document.getElementById(id);
+        const stat_matrix_ctx = stat_matrix_canvas.getContext("2d");
+
+        stat_matrix_ctx.fillStyle = "white";
+        stat_matrix_ctx.clearRect(0,0,stat_width,stat_height);
+        stat_matrix_ctx.lineWidth = 3;
+
+        let sins = [];
+        let coss = [];
+
+        stat_matrix_ctx.beginPath();
+        stat_matrix_ctx.moveTo(half_width, half_height-matrix_size*stat_values[0]);
+        stat_matrix_ctx.fillStyle = fill_color;
+        for (let i = 0; i < stat_count; i++){
+            let angle = 2*Math.PI * i / stat_count;
+            sins.push(Math.sin(angle)*matrix_size);
+            coss.push(Math.cos(angle)*matrix_size);
+            stat_matrix_ctx.lineTo(half_width+sins[i]*stat_values[i],half_height-coss[i]*stat_values[i]);
+        }
+        stat_matrix_ctx.lineTo(half_width, half_height-matrix_size*stat_values[0]);
+        stat_matrix_ctx.fill();
+
+        stat_matrix_ctx.beginPath();
+        stat_matrix_ctx.moveTo(half_width, half_height-matrix_size);
+        stat_matrix_ctx.fillStyle = text_color;
+        stat_matrix_ctx.strokeStyle = line_color;
+        stat_matrix_ctx.font = "30px Poppins";
+        stat_matrix_ctx.textAlign = "center";
+        for (let i = 0; i < stat_count; i++){
+            let curx = half_width+sins[i];
+            let cury = half_height-coss[i];
+            stat_matrix_ctx.lineTo(curx,cury);
+            stat_matrix_ctx.lineTo(half_width,half_height);
+            stat_matrix_ctx.lineTo(curx,cury);
+            stat_matrix_ctx.fillText(stat_names[i],curx+text_offset_x[i],cury+text_offset_y[i]);
+        }
+        stat_matrix_ctx.lineTo(half_width, half_height- matrix_size);
+        stat_matrix_ctx.stroke();
+
+    }
+</script>
+
 {# {% set previousPage = url_for("index") %} #}
 {% include 'backButton.html' %}
 <h1>Team Select</h1>
@@ -34,12 +118,27 @@
 <div class="teams-div">
 {% for team in teams %}
     <div class="team-div" data-name="{{ team['shortName'] }}" data-num="{{ team['number'] }}">
-        <h1>Team {{ team["number"] }}</h1>
-        <h2>{{ team["shortName"] }}</h2>
-        {% autoescape off %}
-        <p>{{ team["longName"]|replace("/","/<wbr/>") }}</p>
-        {% endautoescape %}
-        <a href="?team={{ team['number'] }}"></a>
+        <div>
+            <h1>Team {{ team["number"] }}</h1>
+            <h2>{{ team["shortName"] }}</h2>
+            {% autoescape off %}
+            <p>{{ team["longName"]|replace("/","/<wbr/>") }}</p>
+            {% endautoescape %}
+            <a href="?team={{ team['number'] }}"></a>
+        </div>
+        <canvas width="1000" height="1000" id="canvas-{{loop.index}}"></canvas>
+        <script>
+            drawStatMatrix([
+                {{ statMatrices[team['number']]["offense"] }},
+                {{ statMatrices[team['number']]["defense"] }},
+                {{ statMatrices[team['number']]["driver"] }},
+                {{ statMatrices[team['number']]["passing"] }},
+                {{ statMatrices[team['number']]["stealing"] }},
+                {{ statMatrices[team['number']]["autos"] }},
+            ], "canvas-{{loop.index}}"
+            );
+            // drawStatMatrix([Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random()],"canvas-{{loop.index}}")
+        </script>
     </div>
 {% endfor %}
 </div>
