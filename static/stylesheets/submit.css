@@ -492,3 +492,9 @@ button:active{
 #fedFeedback, #defendingFeedback{
     display: none;
 }
+
+.spacer {
+    height: 10px;
+    margin: 0;
+    padding: 0;
+}
