@@ -103,24 +103,6 @@ function moveImage(imageId, sliderVal){
                     </div>
                 </div>
                 
-
-                <table class="scoretable">
-                    <tr>
-                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
-                    </tr>
-                    {% for period in result["autoFuel"] %}
-                    <tr>
-                        <td>{{period["time"]|round(2)}}</td>
-                        <td>{{period["scored"]}}</td>
-                        <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                {% if not result["autoFuel"] %}
-                    <p>No Data</p>
-                {% endif %}
             </div>
 
             <div class="sectionDiv">
@@ -201,6 +183,14 @@ function moveImage(imageId, sliderVal){
                         <img src="static\images\rebuiltMatchDisplay\False.svg">
                         {% endif %}
                     </div>
+                    <div class="booleanItem">
+                        <h2>Stole:</h2>
+                        {% if result["autoStole"] %}
+                        <img src="static\images\rebuiltMatchDisplay\True.svg">
+                        {% else %}
+                        <img src="static\images\rebuiltMatchDisplay\False.svg">
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
@@ -223,7 +213,15 @@ function moveImage(imageId, sliderVal){
                         {% else %}
                         <img src="static\images\rebuiltMatchDisplay\False.svg">
                         {% endif %} 
-                    </div>                 
+                    </div>  
+                    <div class="booleanItem">
+                        <h2>Stole:</h2>
+                        {% if result["transitionStole"] %}
+                        <img src="static\images\rebuiltMatchDisplay\True.svg">
+                        {% else %}
+                        <img src="static\images\rebuiltMatchDisplay\False.svg">
+                        {% endif %}
+                    </div>               
                 </div>
 
                 <div clas="table">
@@ -236,25 +234,6 @@ function moveImage(imageId, sliderVal){
                         </div>
                     </div>
                 </div>
-
-                <table class="scoretable">
-                    <tr>
-                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
-                    </tr>
-                    {% for period in result["transitionFuel"] %}
-                    <tr>
-                        <td>{{period["time"]|round(2)}}</td>
-                        <td>{{period["scored"]}}</td>
-                        <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                {% if not result["transitionFuel"] %}
-                    <p>No Data</p>
-                {% endif %}
-
                 
             </div>
 
@@ -297,6 +276,14 @@ function moveImage(imageId, sliderVal){
                                 <img src="static\images\rebuiltMatchDisplay\False.svg">
                                 {% endif %}
                             </div>
+                            <div class="booleanItem">
+                                <h2>Stole:</h2>
+                                {% if result["firstActiveShiftStole"] %}
+                                <img src="static\images\rebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\rebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="table">
                             <div class="row">
@@ -310,20 +297,6 @@ function moveImage(imageId, sliderVal){
                                 </div>
                             </div>
                         </div>
-                        <table class="scoretable">
-                            <tr>
-                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
-                            </tr>
-                            {% for period in result["firstActiveShiftFuel"] %}
-                            <tr>
-                                <td>{{period["time"]|round(2)}}</td>
-                                <td>{{period["scored"]}}</td>
-                                <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
                         {% if not result["firstActiveShiftFuel"] %}
                             <p>No Data</p>
                         {% endif %}
@@ -366,6 +339,14 @@ function moveImage(imageId, sliderVal){
                                     <img src="static\images\rebuiltMatchDisplay\False.svg">
                                     {% endif %}
                                 </div>
+                                <div class="booleanItem">
+                                    <h2>Stole:</h2>
+                                    {% if result["firstInactiveShiftStole"] %}
+                                    <img src="static\images\rebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\rebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endif %}
                     </div>
@@ -389,6 +370,14 @@ function moveImage(imageId, sliderVal){
                                 <img src="static\images\rebuiltMatchDisplay\False.svg">
                                 {% endif %}
                             </div>
+                            <div class="booleanItem">
+                                <h2>Stole:</h2>
+                                {% if result["firstActiveShiftStole"] %}
+                                <img src="static\images\rebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\rebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="table">
                             <div class="row">
@@ -402,23 +391,6 @@ function moveImage(imageId, sliderVal){
                                 </div>
                             </div>
                         </div>
-                        <table class="scoretable">
-                            <tr>
-                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
-                            </tr>
-                            {% for period in result["firstActiveShiftFuel"] %}
-                            <tr>
-                                <td>{{period["time"]|round(2)}}</td>
-                                <td>{{period["scored"]}}</td>
-                                <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
-                        {% if not result["firstActiveShiftFuel"] %}
-                            <p>No Data</p>
-                        {% endif %}
                         
                         
                         {% else %}
@@ -448,6 +420,14 @@ function moveImage(imageId, sliderVal){
                                     <img src="static\images\rebuiltMatchDisplay\False.svg">
                                     {% endif %}
                                 </div>
+                                <div class="booleanItem">
+                                    <h2>Stole:</h2>
+                                    {% if result["firstInactiveShiftStole"] %}
+                                    <img src="static\images\rebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\rebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endif %}
                     </div>
@@ -471,6 +451,14 @@ function moveImage(imageId, sliderVal){
                                 <img src="static\images\rebuiltMatchDisplay\False.svg">
                                 {% endif %}
                             </div>
+                            <div class="booleanItem">
+                                <h2>Stole:</h2>
+                                {% if result["secondActiveShiftStole"] %}
+                                <img src="static\images\rebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\rebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="table">
                             <div class="row">
@@ -484,23 +472,6 @@ function moveImage(imageId, sliderVal){
                                 </div>
                             </div>
                         </div>
-                        <table class="scoretable">
-                            <tr>
-                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
-                            </tr>
-                            {% for period in result["secondActiveShiftFuel"] %}
-                            <tr>
-                                <td>{{period["time"]|round(2)}}</td>
-                                <td>{{period["scored"]}}</td>
-                                <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
-                        {% if not result["secondActiveShiftFuel"] %}
-                            <p>No Data</p>
-                        {% endif %}
                         <div class="row">
                             
                             
@@ -540,6 +511,14 @@ function moveImage(imageId, sliderVal){
                                     <img src="static\images\rebuiltMatchDisplay\False.svg">
                                     {% endif %}
                                 </div>
+                                <div class="booleanItem">
+                                    <h2>Stole:</h2>
+                                    {% if result["secondInactiveShiftStole"] %}
+                                    <img src="static\images\rebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\rebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endif %}
                     </div>
@@ -563,6 +542,14 @@ function moveImage(imageId, sliderVal){
                                 <img src="static\images\rebuiltMatchDisplay\False.svg">
                                 {% endif %}
                             </div>
+                            <div class="booleanItem">
+                                <h2>Stole:</h2>
+                                {% if result["secondActiveShiftStole"] %}
+                                <img src="static\images\rebuiltMatchDisplay\True.svg">
+                                {% else %}
+                                <img src="static\images\rebuiltMatchDisplay\False.svg">
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="table">
                             <div class="row">
@@ -576,23 +563,6 @@ function moveImage(imageId, sliderVal){
                                 </div>
                             </div>
                         </div>
-                        <table class="scoretable">
-                            <tr>
-                                <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                                <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
-                            </tr>
-                            {% for period in result["secondActiveShiftFuel"] %}
-                            <tr>
-                                <td>{{period["time"]|round(2)}}</td>
-                                <td>{{period["scored"]}}</td>
-                                <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
-                        {% if not result["secondActiveShiftFuel"] %}
-                            <p>No Data</p>
-                        {% endif %}
                         
                         {% else %}
                             <div class="booleanList">
@@ -616,6 +586,14 @@ function moveImage(imageId, sliderVal){
                                 <div class="booleanItem">
                                     <h2>Scored:</h2>
                                     {% if result["secondInactiveShiftScored"] %}
+                                    <img src="static\images\rebuiltMatchDisplay\True.svg">
+                                    {% else %}
+                                    <img src="static\images\rebuiltMatchDisplay\False.svg">
+                                    {% endif %}
+                                </div>
+                                <div class="booleanItem">
+                                    <h2>Stole:</h2>
+                                    {% if result["secondInactiveShiftStole"] %}
                                     <img src="static\images\rebuiltMatchDisplay\True.svg">
                                     {% else %}
                                     <img src="static\images\rebuiltMatchDisplay\False.svg">
@@ -649,6 +627,14 @@ function moveImage(imageId, sliderVal){
                         <img src="static\images\rebuiltMatchDisplay\False.svg">
                         {% endif %}
                     </div>
+                    <div class="booleanItem">
+                        <h2>Stole:</h2>
+                        {% if result["endgameStole"] %}
+                        <img src="static\images\rebuiltMatchDisplay\True.svg">
+                        {% else %}
+                        <img src="static\images\rebuiltMatchDisplay\False.svg">
+                        {% endif %}
+                    </div>
                 </div>
 
                 <div clas="table">
@@ -661,24 +647,6 @@ function moveImage(imageId, sliderVal){
                         </div>
                     </div>
                 </div>
-
-                <table class="scoretable">
-                    <tr>
-                        <th><img src="static\images\rebuiltMatchDisplay\Time.svg" alt="Time"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\Scored.svg" alt="Fuel Scored"></th>
-                        <th><img src="static\images\rebuiltMatchDisplay\ScoredPS.svg" alt="Scored per second"></th>
-                    </tr>
-                    {% for period in result["endgameFuel"] %}
-                    <tr>
-                        <td>{{period["time"]|round(2)}}</td>
-                        <td>{{period["scored"]}}</td>
-                        <td>{{period["fuelScoredPerSecond"]|round(2)}}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                {% if not result["endgameFuel"] %}
-                    <p>No Data</p>
-                {% endif %}
                 <div class="row">
                     
                     </div>
@@ -755,7 +723,7 @@ function moveImage(imageId, sliderVal){
             <div class="sectionDiv ranking">
                 <h4>Ranking: {{result["feedingRank"]}}</h4>
                 <h4>Reason:</h4>
-                <p>Ranking: {{result["feedingComment"]}}</p>
+                <p>{{result["feedingComment"]}}</p>
             </div>
             {% endif %}
 
@@ -764,7 +732,28 @@ function moveImage(imageId, sliderVal){
             <div class="sectionDiv ranking">
                 <h4>Ranking: {{result["defenseRank"]}}</h4>
                 <h4>Reason:</h4>
-                <p>Ranking: {{result["defenseComment"]}}</p>
+                <p>{{result["defenseComment"]}}</p>
+            </div>
+            {% endif %}
+
+            {% if result["driverRank"]%}
+            <h3>Driving</h3>
+            <div class="sectionDiv ranking">
+                <h4>Ranking: {{result["driverRank"]}}</h4>
+            </div>
+            {% endif %}
+
+            {% if result["vibeCheck"]%}
+            <h3>Vibe Check</h3>
+            <div class="sectionDiv ranking">
+                <h4>Ranking: {{result["vibeCheck"]}}</h4>
+            </div>
+            {% endif %}
+
+            {% if result["stealRank"]%}
+            <h3>Stealing</h3>
+            <div class="sectionDiv ranking">
+                <h4>Ranking: {{result["stealRank"]}}</h4>
             </div>
             {% endif %}
 
