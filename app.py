@@ -562,76 +562,39 @@ def scoutTeam():
 
 @app.route("/team/csv")
 def getPitScoutCSV():
-    # TODO figure out a better way to store pit scouting data and use it
-    variables = [
-        ("How many batteries/battery chargers do they have?","battery"),
-        ("What drivebase do they use?","drivebase"),
-        ("Language(s) used","languages"), # needs custom
-        ("Are their bumpers open or closed?","bumpers"), # needs custom
-        ("What side do they shoot out of?","shootside"), # needs custom
-        ("Do they CURRENTLY have a camera on their robot? If so, what for? Do they have auto aim?","camera"),
-
-        ("What is their ranking of preferred autos?","auto","auto-rank  "),
-        ("Can they score preloaded fuel during auto?","auto","auto-fuel-preload"),
-        ("Can they score intaked fuel during auto?","auto","auto-fuel"),
-        ("Can they move over the bump during auto?","auto","auto-bump"),
-        ("Can they move over the trench during auto?","auto","auto-trench"),
-        ("Can they intake from the depot during auto?","auto","auto-depot"),
-        ("Can they intake from the outpost chute during auto?","auto","auto-outpost"),
-        ("Can they intake from the neutral zone during auto?","auto","auto-neutral"),
-        ("Can they climb during auto?","auto","climb"),
-        ("Can they climb on the center during auto?","auto","auto-climb1-center"),
-        ("Can they climb to the side during auto?","auto","auto-climb1-side"),
-        ("Can they shoot while moving during auto?","auto","auto-moving"),
-
-        ("Can they score fuel during teleop?","tele","tele-fuel"),
-        ("Can they move over the bump during teleop?","tele","tele-bump"),
-        ("Can they move over the trench during teleop?","tele","tele-trench"),
-        ("Can they intake from the depot during teleop?","tele","tele-depot"),
-        ("Can they intake from the outpost chute during teleop?","tele","tele-outpost"),
-        ("Can they intake from the neutral zone during teleop?","tele","tele-neutral"),
-        ("Can they shoot while moving during teleop?","tele","tele-moving"),
-        ("Can they shoot with distance during teleop?","tele","tele-distance"),
-
-        ("How much fuel can they intake and hold at a time?","hold"),
-        ("How many cycles do they usually get per game?","cycles"),
-        ("How many points do they usually get per game?","points"),
-        ("What is their fuel per second?","rate"),
-        ("What is their estimated shooting range?","range"),
-        ("What is their robot weight (without batteries and bumpers) (lbs)?","weight"),
-        ("Anything special we should know about their robot?","special"),
-        ("How experienced are their drivers?","experience"),
-        ("Observe for yourself and don't ask a question: how organized is their pit? ","organization"),
-        ("Any other comments?","comment"),
-
-
-    ]
-    variables.extend(
-        (capability[0], "climb", capability[1])
-        for capability in game.pitScoutClimbingCapabilities
-    )
-    variables.append(("How long does their climb usually take?","climb","climb-time"))
-
-    csv = "\\\"Team number\\\",\\\"Scout\\\","
-    for variable in variables:
-        csv+="\\\""+variable[0]+"\\\","
+    
+    csv = ["team","user"]
+    for section in game.pitScout:
+        for question in section:
+            if question["type"] == "text":
+                csv.append(question["text"])
+            elif question["type"] == "select":
+                # csv.append(question["id"]+"select")
+                for option in question["options"]:
+                    csv.append(question["text"]+" - "+option[0])
+    csv = [csv]
 
     teams = getAllTeams()
     for team in teams:
         if "pitScout" in team:
             scouted = team["pitScout"][-1]
-            line = [f"\\\"{team['number']}\\\"",f"\\\"{scouted['user']}\\\""]
+            line = [team['number'],scouted['user']]
             scouted = scouted["data"]
-            print(scouted)
-            for variable in variables:
-                current_data = scouted
-                for field in variable[1:]:
-                    current_data = current_data[field] if field in current_data else ""
-                    # print(field,current_data)
-                    if field in ("drivebase", "languages","bumpers","shootside"):
-                        current_data = ", ".join(key for key in current_data if current_data[key])
-                line.append("\\\""+str(current_data)+"\\\"")
-            csv += "\\n" + ",".join(line)
+            for section in game.pitScout:
+                for question in section:
+                    if question["type"] == "text":
+                        # csv.append(question["id"])
+                        line.append(scouted[question["id"]])
+                    elif question["type"] == "select":
+                        # csv.append(question["id"]+"select")
+                        for option in question["options"]:
+                            line.append(scouted[question["id"]][option[1]])
+            csv.append(line)
+    
+    csv = [[str(a) for a in row] for row in csv]
+    csv = [[a.replace("\"","\\\"\\\"") for a in row] for row in csv]
+    csv = [["\\\""+a+"\\\"" for a in row] for row in csv]
+    csv = "\\n".join(",".join(row) for row in csv)
 
     return render_template("team/downloadCSV.html",csvdata=csv)
 
