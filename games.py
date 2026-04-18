@@ -2386,7 +2386,7 @@ class Rebuilt(Game):
         maximums = self.getMaximumsForStatMatrix(allTeamData)
 
         result = {}
-        for team in allTeamData():
+        for team in allTeamData:
             teamNumber = team["number"]
             matrix = self.calculateStatMatrix(teamNumber,maximums)
             result[teamNumber] = matrix
