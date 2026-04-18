@@ -1399,7 +1399,7 @@ class Rebuilt(Game):
             ),
             (
                 {
-                    "text":"What can they do with regards to climbing during endgame?",
+                    "text":"Can they climb?",
                     "type":"select",
                     "options":(
                         ("No climb","none"),
@@ -1472,14 +1472,14 @@ class Rebuilt(Game):
                 {
                     "text":"How wide is their intake?",
                     "type":"text",
-                    "id":"width",
+                    "id":"width-intake",
                 },
             ),
             (
                 {
                     "text":"How wide is their shooter (for drum shooters, leave blank if N/A)?",
                     "type":"text",
-                    "id":"width",
+                    "id":"width-shooter",
                 },
             ),
             (
