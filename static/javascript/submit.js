@@ -112,12 +112,8 @@ function addScoresToTable(scores){
 //     reloadScoringTable();
 // }
 
-function changeRank(feed){
-    if (feed) {
-        getById("feedingLabel").textContent = `${getId("feedingRank")}/10`;
-    } else {
-        getById("defendingLabel").textContent = `${getId("defendingRank")}/10`;
-    }
+function changeRank(tag){
+    getById(`${tag}Label`).textContent = `${getId(`${tag}Rank`)}/10`
 }
 
 function revealRanks(feed){

@@ -300,14 +300,37 @@
                 <div class="column" id="fedFeedback">
                     <p>How well did they feed?</p>
                     <label for="feedingRank" id="feedingLabel">5/10</label>
-                    <input type="range" min="1" max="10" step="1" value="5" class="slider" id="feedingRank" oninput="changeRank(true)">
+                    <input type="range" min="1" max="10" step="1" value="5" class="slider" id="feedingRank" oninput="changeRank('feeding')">
                     <textarea id="feedingComment" class="comments" placeholder="Explanation here..."></textarea>
                 </div>
+
                 <div class="column" id="defendingFeedback">
                     <p>How well did they defend?</p>
                     <label for="defendingRank" id="defendingLabel">5/10</label>
-                    <input type="range" min="1" max="10" step="1" value="5" class="slider" id="defendingRank" oninput="changeRank(false)">
+                    <input type="range" min="1" max="10" step="1" value="5" class="slider" id="defendingRank" oninput="changeRank('defending')">
                     <textarea id="defendingComment" class="comments" placeholder="Explanation here..."></textarea>
+                </div>
+
+                <div class="column" id="driverFeedback">
+                    <p>How well did they drive?</p>
+                    <label for="driverRank" id="driverLabel">5/10</label>
+                    <input type="range" min="1" max="10" step="1" value="5" class="slider" id="driverRank" oninput="changeRank('driver')">
+                </div>
+
+                <div class="column" id="stoleFeedback">
+                    <p>How well did they steal?</p>
+                    <label for="stoleRank" id="stoleLabel">5/10</label>
+                    <input type="range" min="1" max="10" step="1" value="5" class="slider" id="stoleRank" oninput="changeRank('stole')">
+                </div>
+
+                <div class="column" id="vibeFeedback">
+                    <div class="row">
+                        <p>What's their</p>
+                        <img height="50px" src="{{ url_for('static', filename='images/VIBE.svg') }}" alt="VIBE">
+                        <p>?</p>
+                    </div>
+                    <label for="vibeRank" id="vibeLabel">5/10</label>
+                    <input type="range" min="1" max="10" step="1" value="5" class="slider" id="vibeRank" oninput="changeRank('vibe')">
                 </div>
 
                 <div>
