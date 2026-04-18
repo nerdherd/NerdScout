@@ -339,9 +339,7 @@ def teamPage():
         matches=sortMatches(matches),
         stats=stats,
         keyDisplayNames=game.keyDisplayNames,
-        autoCapabilities=game.pitScoutAutoCapabilities,
-        teleCapabilities=game.pitScoutTeleCapabilities,
-        climbCapabilities=game.pitScoutClimbingCapabilities
+        pitScoutQuestions=game.pitScout
     )
 
 
@@ -556,36 +554,10 @@ def scoutTeam():
         team = int(request.args.get("team"))  # type: ignore
     except:
         pass
-    # autoCapabilities = (
-    #     ("Score in hub","auto-fuel"),
-    #     ("Intake from depot","auto-depot"),
-    #     ("Intake from outpost chute","auto-outpost"),
-    #     ("Intake from neutral zone","auto-neutral"),
-    #     ("Climb level 1 in the center","auto-climb1-center"),
-    #     ("Climb level 1 on the sides","auto-climb1-side"),
-    #     ("Climb level 1 in the inside","auto-climb1-inside"),
-    # )
-    # teleCapabilities = (
-    #     ("Score in hub","tele-fuel"),
-    #     ("Intake from depot","tele-depot"),
-    #     ("Intake from outpost chute","tele-outpost"),
-    #     ("Intake from neutral zone","tele-neutral"),
-    #     ("Climb level 1 in the center","tele-climb1-center"),
-    #     ("Climb level 1 on the sides","tele-climb1-side"),
-    #     ("Climb level 1 in the inside","tele-climb1-inside"),
-    #     ("Climb level 2 in the center","tele-climb2-center"),
-    #     ("Climb level 2 on the sides","tele-climb2-side"),
-    #     ("Climb level 2 in the inside","tele-climb2-inside"),
-    #     ("Climb level 3 in the center","tele-climb3-center"),
-    #     ("Climb level 3 on the sides","tele-climb3-side"),
-    #     ("Climb level 3 in the inside","tele-climb3-inside"),
-    # )
     return render_template(
         "team/pitScout.html",
         team=team,
-        autoCapabilities=game.pitScoutAutoCapabilities,
-        teleCapabilities=game.pitScoutTeleCapabilities,
-        climbCapabilities=game.pitScoutClimbingCapabilities
+        pitScout = game.pitScout
     )
 
 @app.route("/team/csv")

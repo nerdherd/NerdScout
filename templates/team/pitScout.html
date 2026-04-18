@@ -11,177 +11,55 @@
 {% block content %}
 {% set previousPage = "javascript:history.back()" %}
 {% include 'backButton.html' %}
+<div>
     <div class="card">
         <label for="team">Team Number:</label>
         <input type="number" id="team" name="team" {% if team %}value="{{team}}"{%endif%}/>
     </div>
+    {% for card in pitScout %}
     <div class="card">
-        <label for="battery">How many batteries/battery chargers do they have?</label>
-        <input type="text" id="battery" name="battery"/>
-    </div>
-    <div class="card">
-        <p>Are their bumpers open or closed?</p>
+        {% for question in card %}
+        <div id="{{question['id']}}-container" {% if "hidden" in question %}style="display:none"{% endif %}>
+        {% if question["type"] == "text" %}
+        <label for="{{question['id']}}">{{question["text"]}}</label><br>
+        <input type="text" id="{{question['id']}}" name="{{question['id']}}"/>
+        {% elif question["type"] == "select" %}
+        <p>{{question["text"]}}</p>
         <div>
-            <div>
-                <input type="checkbox" id="bumper-closed" name="bumper-closed"> <label for="bumper-closed">Closed</label>
-            </div>
-            <div>
-                <input type="checkbox" id="bumper-open" name="bumper-open"> <label for="bumper-open">Open</label>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <p>What side do they shoot out of?</p>
-        <div>
-            <div>
-                <input type="checkbox" id="shooting-same" name="shooting-same"> <label for="shooting-same">Shooting on same as intake</label>
-            </div>
-            <div>
-                <input type="checkbox" id="shooting-opposite" name="shooting-opposite"> <label for="shooting-opposite">Shooting on opposite as intake</label>
-            </div>
-            <div>
-                <input type="checkbox" id="shooting-turret" name="shooting-turret"> <label for="shooting-turret">Shooting using a turret</label>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <p>What drivebase do they use?</p>
-        <div>
-            <div>
-                <input type="checkbox" id="drivetrain-swerve" name="drivetrain-swerve"> <label for="drivetrain-swerve">Swerve</label>
-            </div>
-            <div>
-                <input type="checkbox" id="drivetrain-tank" name="drivetrain-tank"> <label for="drivetrain-tank">Tank</label>
-            </div>
-            <div>
-                <input type="checkbox" id="drivetrain-other" name="drivetrain-other" onclick="showOtherInput1()"> <label for="drivetrain-other">Other</label><br>
-                <input type="text" id="drivetrain-other-input" style="display:none;">
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <p>What programming language(s) do they use?</p>
-        <div>
-            <div>
-                <input type="checkbox" id="language-java" name="language-java"> <label for="language-java">Java</label>
-            </div>
-            <div>
-                <input type="checkbox" id="language-cpp" name="language-cpp"> <label for="language-cpp">C++</label>
-            </div>
-            <div>
-                <input type="checkbox" id="language-python" name="language-python"> <label for="language-python">Python</label>
-            </div>
-            <div>
-                <input type="checkbox" id="language-labview" name="language-labview"> <label for="language-labview">LabView</label>
-            </div>
-            <div>
-                <input type="checkbox" id="language-other" name="language-other" onclick="showOtherInput2()"> <label for="language-other">Other</label><br>
-                <input type="text" id="language-other-input" style="display:none;">
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <label for="camera">Do they CURRENTLY have a camera on their robot? If so, what for? Do they have auto aim?</label><br>
-        <input type="text" id="camera" name="camera">
-    </div>
-    <div class="card">
-        <!-- <label for="auto-rank">What is their ranking of preferred autos (left, middle, right)? Write from most preferred to least, seperated by commas </label><br>
-        <input type="text" id="auto-rank" name="auto-rank"/> -->
-        <p>What is their ranking of preferred autos, from most preferred to least?</p>
-        <div id="ranking">
-            <ol>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ol>
-            <div id="rankings">
-                {% for n in range(3) %}
-                    <div id="rank-{{n+1}}" class="rank-thing" data-value="{{(["left","middle","right"])[n]}}">
-                        <button class="material-symbols-sharp" onclick="moveup('rank-{{n+1}}')">arrow_upward</button>
-                        <button class="material-symbols-sharp" onclick="movedown('rank-{{n+1}}')">arrow_downward</button>
-                        {{(["Left","Middle","Right"])[n]}}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-        <p>What can they realistically do during auto?</p>
-        <div>
-            {% for capability in autoCapabilities %}
-            <div>
-                <input type="checkbox" id="{{capability[1]}}" name="{{capability[1]}}"> <label for="{{capability[1]}}">{{capability[0]}}</label>
-            </div>
+            {% for option in question["options"] %}
+            <input type="checkbox" id="{{question['id']}}-{{option[1]}}" name="{{question['id']}}-{{option[1]}}" {% if "onclick" in question %}onclick="{{option[2]}}"{% endif %}/>
+            <label for="{{question['id']}}-{{option[1]}}">{{option[0]}}</label>
+            <br>
             {% endfor %}
+            {% if "other" in question %}
+            <input type="checkbox" id="{{question['id']}}-other" name="{{question['id']}}-other" onclick="showOtherInput('{{question['id']}}-other')"> <label for="{{question['id']}}-other">Other</label><br>
+            <input type="text" id="{{question['id']}}-other-input" style="display:none;">
+            {% endif %}
         </div>
-    </div>
-    <div class="card">
-        <p>What can they realistically do during teleop?</p>
-        <div>
-            {% for capability in teleCapabilities %}
-            <div>
-                <input type="checkbox" id="{{capability[1]}}" name="{{capability[1]}}"> <label for="{{capability[1]}}">{{capability[0]}}</label>
-            </div>
-            {% endfor %}
+        {% endif %}
         </div>
+        {% endfor %}
     </div>
-    <div class="card">
-        <p>climb</p>
-        <div>
-            {% for capability in climbCapabilities %}
-            <div>
-                <input type="checkbox" id="{{capability[1]}}" name="{{capability[1]}}"> <label for="{{capability[1]}}">{{capability[0]}}</label>
-            </div>
-            {% endfor %}
-        </div>
-        <div>
-            <label for="climb-time">How long does their climb usually take?</label><br>
-            <input type="text" id="climb-time" name="climb-time"/>
-        </div>
-    </div>
-    <div class="card">
-        <label for="hold">How much fuel can they intake and hold at a time? </label><br>
-        <input type="text" id="hold" name="hold"/>
-    </div>
-    <div class="card">
-        <label for="rate">What is their fuel per second? </label><br>
-        <input type="text" id="rate" name="rate"/>
-    </div>
-    <div class="card">
-        <label for="cycles">How many cycles do they usually get per game?</label><br>
-        <input type="text" id="cycles" name="cycles"/>
-    </div>
-    <div class="card">
-        <label for="points">How many points do they usually get per game?</label><br>
-        <input type="text" id="points" name="points"/>
-    </div>
-    <div class="card">
-        <label for="range">What is their estimated shooting range?</label><br>
-        <input type="text" id="range" name="range"/>
-    </div>
-    <div class="card">
-        <label for="weight">What is their robot weight (without batteries and bumpers) (lbs)? </label><br>
-        <input type="text" id="weight" name="weight"/>
-    </div>
-    <div class="card"> 
-        <label for="special">Anything special we should know about their robot? </label><br>
-        <input type="text" id="special" name="special"/>
-    </div>
-    <div class="card">
-        <label for="experience">How experienced are their drivers?</label><br>
-        <input type="text" id="experience" name="experience"/>
-    </div>
-    <div class="card">
-        <label for="organize">Observe for yourself and don't ask a question: how organized is their pit? </label><br>
-        <input type="text" id="organize" name="organize"/>
-    </div>
-    <div class="card">
-        <label for="comment">Any other comments? </label><br>
-        <input type="text" id="comment" name="comment"/>
-    </div>
+    {% endfor %}
 </div>
 
 <button onclick="submitData()" class="card">Submit</button>
 
 <script>
+
+    function showOtherInput(check_id){
+        showIfChecked(check_id,check_id+"-input")
+    }
+
+    function showIfChecked(check_id,el_id,display="inline"){
+        const el = document.getElementById(el_id);
+        if (document.getElementById(check_id).checked){
+            el.style.display = display;
+        } else {
+            el.style.display = "none";
+            el.value = "";
+        }
+    }
 
     function moveup(id){
         let element = document.getElementById(id);
@@ -200,6 +78,7 @@
         return document.getElementById(id).checked;
     }
     function getValue(id,checkEmpty=true){
+        console.log(id);
         let value = document.getElementById(id).value;
         let valueEmpty = (checkEmpty&&(value===""));
         isEmpty ||= valueEmpty;
@@ -249,61 +128,18 @@
         }
 
         let rawData = {
-            "battery": getValue("battery"),
-            "drivebase": {
-                "swerve": getCheckbox("drivetrain-swerve"),
-                "tank": getCheckbox("drivetrain-tank"),
-                "other": getValue("drivetrain-other-input",false)
+            {% for card in pitScout %}{% for question in card %}{% if question["type"] == "text" %}
+            "{{question['id']}}": getValue("{{question['id']}}",{% if "hidden" in question or "optional" in question %}false{% endif %}),
+            {% elif question["type"] == "select" %}
+            "{{question['id']}}": {
+            {% for option in question["options"]%}
+                "{{option[1]}}": getCheckbox("{{question['id']}}-{{option[1]}}"),
+            {% endfor %}{% if "other" in question %}
+                "other": getValue("{{question['id']}}-other-input")
+            {% endif %}
             },
-            "bumpers": {
-                "closed": getCheckbox("bumper-closed"),
-                "open": getCheckbox("bumper-open"),
-            },
-            "shootside": {
-                "shooting-same": getCheckbox("shooting-same"),
-                "shooting-opposite": getCheckbox("shooting-opposite"),
-                "shooting-turret": getCheckbox("shooting-turret")
-            },
-            "languages": {
-                "java": getCheckbox("language-java"),
-                "c++": getCheckbox("language-cpp"),
-                "python": getCheckbox("language-python"),
-                "labview": getCheckbox("language-labview"),
-                "other": getValue("language-other-input",false)
-            },
-            "camera": getValue("camera"),
-            "auto": {
-                "auto-rank": ranking.join(", "),
-                {% for capability in autoCapabilities %}
-                "{{capability[1]}}":getCheckbox("{{capability[1]}}"),
-                {% endfor %}
-                "climb":{% for n in ('center','side') %}getCheckbox("auto-climb1-{{n}}")||{% endfor %}false
-            },
-            "tele": {
-                {% for capability in teleCapabilities %}
-                "{{capability[1]}}":getCheckbox("{{capability[1]}}"),
-                {% endfor %}
-            },
-            "climb": {
-                {% for capability in climbCapabilities %}
-                "{{capability[1]}}":getCheckbox("{{capability[1]}}"),
-                {% endfor %}
-                "climb-time": getValue("climb-time")
-            },
-            "hold":getValue("hold"),
-            "cycles":getValue("cycles"),
-            "rate":getValue("rate"),
-            "points":getValue("points"),
-            "range":getValue("range"),
-            "weight":getValue("weight"),
-            "special":getValue("special",false),
-            "organization":getValue("organize"),
-            "comment":getValue("comment",false),
-            "experience":getValue("experience"),
-            {% for i in range(1,4)%}
-            "climb{{i}}":{% for n in ('center','side') %}getCheckbox("tele-climb{{i}}-{{n}}")||{% endfor %}false,
-            {% endfor %}
-        }
+            {% endif %}{% endfor %}{% endfor %}
+        };
 
         if (isEmpty) {
             alert("Please fill out every field. Missing: "+emptyList.join(", "));

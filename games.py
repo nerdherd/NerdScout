@@ -1260,37 +1260,230 @@ class Rebuilt(Game):
             "Died",
             "No Show",
             "Bad Descision Making",
-        ]
-        self.pitScoutAutoCapabilities = (
-            ("Score preloaded fuel in hub", "auto-fuel-preload"),
-            ("Score intaked fuel", "auto-fuel"),
-            ("Move over bump","auto-bump"),
-            ("Move under trench","auto-trench"),
-            ("Intake from depot", "auto-depot"),
-            ("Intake from outpost chute", "auto-outpost"),
-            ("Intake from neutral zone", "auto-neutral"),
-            ("Climb level 1 in the center", "auto-climb1-center"),
-            ("Climb level 1 on the sides", "auto-climb1-side"),
-            ("Shoot while moving", "auto-moving"),
-        )
-        self.pitScoutTeleCapabilities = (
-            ("Score in hub", "tele-fuel"),
-            ("Move over bump","tele-bump"),
-            ("Move under trench","tele-trench"),
-            ("Intake from depot", "tele-depot"),
-            ("Intake from outpost chute", "tele-outpost"),
-            ("Intake from neutral zone", "tele-neutral"),
-            ("Shoot while moving", "tele-moving"),
-            ("Shoot with distance", "tele-distance"),
-        )
-        self.pitScoutClimbingCapabilities = (
-            ("No climb","tele-climb-none"),
-            ("Climb level 1 in the center", "tele-climb1-center"),
-            ("Climb level 1 on the sides", "tele-climb1-side"),
-            ("Climb level 2 in the center", "tele-climb2-center"),
-            ("Climb level 2 on the sides", "tele-climb2-side"),
-            ("Climb level 3 in the center", "tele-climb3-center"),
-            ("Climb level 3 on the sides", "tele-climb3-side"),
+        ]        
+        self.pitScout = (
+            (
+                {
+                    "text":"How many batteries/battery chargers do they have?",
+                    "type":"text",
+                    "id":"battery"
+                },
+            ),
+            (
+                {
+                    "text":"Are their bumpers open or closed?",
+                    "type":"select",
+                    "options":(
+                        ("Closed","closed"),
+                        ("Open","open")
+                    ),
+                    "id":"bumpers"
+                },
+            ),
+            (
+                {
+                    "text":"What side do they shoot out of?",
+                    "type":"select",
+                    "options":(
+                        ("Shooting on same as intake","same"),
+                        ("Shooting on opposite as intake","opposite"),
+                        ("Shooting using a turret","turret")
+                    ),
+                    "id":"shootside"
+                },
+            ),
+            (
+                {
+                    "text":"What drivebase do they use?",
+                    "type":"select",
+                    "options":(
+                        ("Swerve","swerve"),
+                        ("Tank","tank"),
+                    ),
+                    "other":True,
+                    "id":"drivebase"
+                },
+            ),
+            (
+                {
+                    "text":"What programming language(s) do they use?",
+                    "type":"select",
+                    "options":(
+                        ("Java","java"),
+                        ("C++","cpp"),
+                        ("Python","python"),
+                        ("Labview","labview"),
+                    ),
+                    "other":True,
+                    "id":"language"
+                },
+            ),
+            (
+                {
+                    "text":"Do they CURRENTLY have a camera on their robot? If so, what for? Do they have auto aim?",
+                    "type":"text",
+                    "id":"camera"
+                },
+            ),
+            (
+                {
+                    "text":"What autos do they have?",
+                    "type":"select",
+                    "options":(
+                        ("Left","left","showIfChecked('has-auto-left','auto-describe-left-container','block')"),
+                        ("Right","right","showIfChecked('has-auto-right','auto-describe-right-container','block')"),
+                        ("Mid","mid","showIfChecked('has-auto-mid','auto-describe-mid-container','block')"),
+                    ),
+                    "id":"has-auto",
+                    "onclick":True
+                },
+                {
+                    "text":"What is their left auto?",
+                    "type":"text",
+                    "id":"auto-describe-left",
+                    "hidden":True
+                },
+                {
+                    "text":"What is their right auto?",
+                    "type":"text",
+                    "id":"auto-describe-right",
+                    "hidden":True
+                },
+                {
+                    "text":"What is their mid auto?",
+                    "type":"text",
+                    "id":"auto-describe-mid",
+                    "hidden":True
+                },
+                {
+                    "text":"What can they realistically do during auto?",
+                    "type":"select",
+                    "options":(
+                        ("Score preloaded fuel in hub", "fuel-preload"),
+                        ("Score intaked fuel", "fuel"),
+                        ("Move over bump","bump"),
+                        ("Move under trench","trench"),
+                        ("Intake from depot", "depot"),
+                        ("Intake from outpost chute", "outpost"),
+                        ("Intake from neutral zone", "neutral"),
+                        ("Climb level 1 in the center", "climb1-center"),
+                        ("Climb level 1 on the sides", "climb1-side"),
+                        ("Shoot while moving", "moving"),
+                    ),
+                    "id":"auto"
+                },
+            ),
+            (
+                {
+                    "text":"What can they realistically do during teleop?",
+                    "type":"select",
+                    "options":(
+                        ("Score in hub", "fuel"),
+                        ("Move over bump","bump"),
+                        ("Move under trench","trench"),
+                        ("Intake from depot", "depot"),
+                        ("Intake from outpost chute", "outpost"),
+                        ("Intake from neutral zone", "neutral"),
+                        ("Shoot while moving", "moving"),
+                        ("Shoot with distance", "distance"),
+                    ),
+                    "id":"tele"
+                },
+            ),
+            (
+                {
+                    "text":"What can they do with regards to climbing during endgame?",
+                    "type":"select",
+                    "options":(
+                        ("No climb","none"),
+                        ("Climb level 1 in the center", "1-center"),
+                        ("Climb level 1 on the sides", "1-side"),
+                        ("Climb level 2 in the center", "2-center"),
+                        ("Climb level 2 on the sides", "2-side"),
+                        ("Climb level 3 in the center", "3-center"),
+                        ("Climb level 3 on the sides", "3-side"),
+                    ),
+                    "id":"climb"
+                },
+                {
+                    "text":"How long does their climb usually take?",
+                    "type":"text",
+                    "id":"climb-time",
+                    "optional":True
+                },
+            ),
+            (
+                {
+                    "text":"How much fuel can they intake and hold at a time?",
+                    "type":"text",
+                    "id":"hold",
+                },
+            ),
+            (
+                {
+                    "text":"What is their fuel per second?",
+                    "type":"text",
+                    "id":"rate",
+                },
+            ),
+            (
+                {
+                    "text":"How many cycles do they usually get per game?",
+                    "type":"text",
+                    "id":"cycles",
+                },
+            ),
+            (
+                {
+                    "text":"How many points do they usually get per game?",
+                    "type":"text",
+                    "id":"points",
+                },
+            ),
+            (
+                {
+                    "text":"What is their estimated shooting range?",
+                    "type":"text",
+                    "id":"range",
+                },
+            ),
+            (
+                {
+                    "text":"What is their robot weight (without batteries and bumpers)?",
+                    "type":"text",
+                    "id":"weight",
+                },
+            ),
+            (
+                {
+                    "text":"Anything special we should know about their robot?",
+                    "type":"text",
+                    "id":"special",
+                    "optional":True
+                },
+            ),
+            (
+                {
+                    "text":"How experienced are their drivers?",
+                    "type":"text",
+                    "id":"experience",
+                },
+            ),
+            (
+                {
+                    "text":"Observe for yourself and don't ask a question: how organized is their pit?",
+                    "type":"text",
+                    "id":"organize",
+                },
+            ),
+            (
+                {
+                    "text":"Any other comments?",
+                    "type":"text",
+                    "id":"special",
+                    "optional":True
+                },
+            ),
         )
 
     def calculateScore(
