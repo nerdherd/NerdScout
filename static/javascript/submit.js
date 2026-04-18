@@ -176,16 +176,17 @@ function setScoringPeriod(newPeriod){
                 block:'end'});
         } 
     }
+    curScoringPeriod=newPeriod;
+    document.getElementById("scored").value = scores[curScoringPeriod];
+
     if (newPeriod==-1){
         mainInputDiv.classList.add(`shift-pregame`);
         mainInputDiv.classList.add("inactive");
-        curScoringPeriod=newPeriod;
         return;
     }
     if (newPeriod==7){
         mainInputDiv.classList.add(`shift-postgame`);
         mainInputDiv.classList.add("inactive");
-        curScoringPeriod=newPeriod;
         return;
     }
 
@@ -224,14 +225,22 @@ function incrementCounter(id,isPositive,amount=1){
     for (let i=0;i<amount;i++){
         if (isPositive){
             curElement.value++;
-            scores[curElement] = curElement.value;
+            // scores[curElement] = curElement.value;
         } 
         else if (curElement.value > 0){
             curElement.value--;
-            scores[curElement] = curElement.value;
+            // scores[curElement] = curElement.value;
         } 
     }
     console.log("Ran");
+}
+
+function incrementFuelCounter(id,isPositive,amount=1){
+    incrementCounter(id,isPositive,amount);
+    scores[curScoringPeriod] = parseInt(document.getElementById(id).value);
+    console.log(scores);
+    console.log(curScoringPeriod);
+
 }
 
 setScoringPeriod(-1)
