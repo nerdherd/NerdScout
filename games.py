@@ -1297,12 +1297,19 @@ class Rebuilt(Game):
                     "text":"What drivebase do they use?",
                     "type":"select",
                     "options":(
-                        ("Swerve","swerve"),
-                        ("Tank","tank"),
+                        ("Swerve","swerve","showIfChecked('drivebase-swerve','swervetype-container')"),
+                        ("Tank","tank","0"),
                     ),
                     "other":True,
-                    "id":"drivebase"
+                    "id":"drivebase",
+                    "onclick":True
                 },
+                {
+                    "text":"What swerve do they use?",
+                    "type":"text",
+                    "id":"swervetype",
+                    "hidden":True
+                }
             ),
             (
                 {
@@ -1320,7 +1327,7 @@ class Rebuilt(Game):
             ),
             (
                 {
-                    "text":"Do they CURRENTLY have a camera on their robot? If so, what for? Do they have auto aim?",
+                    "text":"Do they CURRENTLY have a camera on their robot? If so, what for? Do they have auto aim? Do they use it for anything during auto?",
                     "type":"text",
                     "id":"camera"
                 },
@@ -1428,7 +1435,7 @@ class Rebuilt(Game):
             ),
             (
                 {
-                    "text":"How many cycles do they usually get per game?",
+                    "text":"On offense, do they primarily rely on having individual cycles or shoot-while-moving clean up?",
                     "type":"text",
                     "id":"cycles",
                 },
@@ -1452,6 +1459,27 @@ class Rebuilt(Game):
                     "text":"What is their robot weight (without batteries and bumpers)?",
                     "type":"text",
                     "id":"weight",
+                },
+            ),
+            (
+                {
+                    "text":"How many motors are on their intake?",
+                    "type":"text",
+                    "id":"motors",
+                },
+            ),
+            (
+                {
+                    "text":"How wide is their intake?",
+                    "type":"text",
+                    "id":"width",
+                },
+            ),
+            (
+                {
+                    "text":"How wide is their shooter (for drum shooters, leave blank if N/A)?",
+                    "type":"text",
+                    "id":"width",
                 },
             ),
             (
