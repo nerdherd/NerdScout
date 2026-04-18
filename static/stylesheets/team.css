@@ -124,3 +124,7 @@ li.checked::marker {
     right:1rem;
     top:1.75rem;
 }
+
+canvas {
+    width: 100%;
+}

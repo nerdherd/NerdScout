@@ -218,4 +218,103 @@
     addEventListener("DOMContentLoaded", changeStat())
 </script>
 
+<div class="card">
+    <h2>Stat matrix</h2>
+    <canvas width="400" height="400" id="stat-matrix-canvas"></canvas>
+</div>
+<script>
+    const stat_matrix_canvas = document.getElementById("stat-matrix-canvas");
+    const stat_matrix_ctx = stat_matrix_canvas.getContext("2d");
+
+    const stat_width  = stat_matrix_canvas.width;
+    const stat_height = stat_matrix_canvas.height;
+
+    const half_width = stat_width/2;
+    const half_height = stat_width/2;
+
+    const matrix_size = Math.min(half_width*0.6,half_height*0.6);
+
+    const stat_count = 6;
+
+    const stat_values = [
+        Math.random(),
+        Math.random(),
+        Math.random(),
+        Math.random(),
+        Math.random(),
+        Math.random()
+    ];
+
+    const stat_names = [
+        "Offense",
+        "Defense",
+        "Driving Skill",
+        "Passing",
+        "Stealing",
+        "Autos"
+    ];
+    const text_offset_x = [
+        0,
+        40,
+        40,
+        0,
+        -30,
+        -30
+    ];
+    const text_offset_y = [
+        -10,
+        -10,
+        30,
+        20,
+        20,
+        -10
+    ];
+
+    const text_color = "black";
+    const line_color = "black";
+    const fill_color = "green";
+
+    function drawStatMatrix(){
+        stat_matrix_ctx.fillStyle = "white";
+        stat_matrix_ctx.clearRect(0,0,stat_width,stat_height);
+        stat_matrix_ctx.fillRect(0,0,stat_width,stat_height);
+
+        let sins = [];
+        let coss = [];
+
+        stat_matrix_ctx.beginPath();
+        stat_matrix_ctx.moveTo(half_width, half_height-matrix_size*stat_values[0]);
+        stat_matrix_ctx.fillStyle = "green";
+        stat_matrix_ctx.strokeStyle = "green";
+        for (let i = 0; i < stat_count; i++){
+            let angle = 2*Math.PI * i / stat_count;
+            sins.push(Math.sin(angle)*matrix_size);
+            coss.push(Math.cos(angle)*matrix_size);
+            stat_matrix_ctx.lineTo(half_width+sins[i]*stat_values[i],half_height-coss[i]*stat_values[i]);
+        }
+        stat_matrix_ctx.lineTo(half_width, half_height-matrix_size*stat_values[0]);
+        stat_matrix_ctx.fill();
+
+        stat_matrix_ctx.beginPath();
+        stat_matrix_ctx.moveTo(half_width, half_height-matrix_size);
+        stat_matrix_ctx.fillStyle = text_color;
+        stat_matrix_ctx.strokeStyle = line_color;
+        stat_matrix_ctx.font = "20px serif";
+        stat_matrix_ctx.textAlign = "center";
+        for (let i = 0; i < stat_count; i++){
+            let curx = half_width+sins[i];
+            let cury = half_height-coss[i];
+            stat_matrix_ctx.lineTo(curx,cury);
+            stat_matrix_ctx.lineTo(half_width,half_height);
+            stat_matrix_ctx.lineTo(curx,cury);
+            stat_matrix_ctx.fillText(stat_names[i],curx+text_offset_x[i],cury+text_offset_y[i]);
+        }
+        stat_matrix_ctx.lineTo(half_width, half_height- matrix_size);
+        stat_matrix_ctx.stroke();
+
+    }
+
+    drawStatMatrix();
+</script>
+
 {% endblock %}
