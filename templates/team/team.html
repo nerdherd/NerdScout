@@ -21,6 +21,11 @@
 </div>
 
 <div class="card">
+    <h2>Stat matrix</h2>
+    <canvas width="1000" height="1000" id="stat-matrix-canvas"></canvas>
+</div>
+
+<div class="card">
     <h1>Pit Scouting</h1>
     {% if team["pitScout"] %}
     <div>
@@ -218,10 +223,6 @@
     addEventListener("DOMContentLoaded", changeStat())
 </script>
 
-<div class="card">
-    <h2>Stat matrix</h2>
-    <canvas width="1000" height="1000" id="stat-matrix-canvas"></canvas>
-</div>
 <script>
     const stat_matrix_canvas = document.getElementById("stat-matrix-canvas");
     const stat_matrix_ctx = stat_matrix_canvas.getContext("2d");
