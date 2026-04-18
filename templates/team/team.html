@@ -237,12 +237,12 @@
     const stat_count = 6;
 
     const stat_values = [
-        Math.random(),
-        Math.random(),
-        Math.random(),
-        Math.random(),
-        Math.random(),
-        Math.random()
+        {{ statMatrix["offense"] }},
+        {{ statMatrix["defense"] }},
+        {{ statMatrix["driver"] }},
+        {{ statMatrix["passing"] }},
+        {{ statMatrix["stealing"] }},
+        {{ statMatrix["autos"] }},
     ];
 
     const stat_names = [

@@ -334,13 +334,15 @@ def teamPage():
 
     matches = getTeamMatches(team)
     stats = game.getAllStats(team)
+    statMatrix = game.calculateStatMatrix(team)
     return render_template(
         "team/team.html",
         team=results,
         matches=sortMatches(matches),
         stats=stats,
         keyDisplayNames=game.keyDisplayNames,
-        pitScoutQuestions=game.pitScout
+        pitScoutQuestions=game.pitScout,
+        statMatrix=statMatrix
     )
 
 
