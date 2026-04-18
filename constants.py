@@ -209,6 +209,8 @@ def getMatchWithHighestValue(data: list, key: str, index: int = 0):
         value = match["results"][-1][key]
         if type(value) == list:
             value = value[index]
+        if value == None:
+            continue
         value = int(value)
         if value > highestValue:
             highestValue = value
@@ -254,6 +256,8 @@ def getMatchWithLowestValue(data: list, key: str, index: int = 0):
         value = match["results"][-1][key]
         if type(value) == list:
             value = value[index]
+        if value == None:
+            continue
         value = int(value)
         if value < lowestValue:
             lowestValue = value
