@@ -18,15 +18,6 @@ function updateShift(){
     setScoringPeriod(curSelected);
 }
 
-function incrementCounter(id,isPositive,amount=1){
-    const curElement = document.getElementById(id);
-    for (let i=0;i<amount;i++){
-        if (isPositive) curElement.value++;
-        else if (curElement.value > 0) curElement.value--
-    }
-    console.log("Ran");
-}
-
 function getById(id){return document.getElementById(id);}
 function getId(id,isInt=true){
     let val = getById(id).value;
@@ -110,16 +101,16 @@ function addScoresToTable(scores){
     }
 }
 
-function removeScore(index){
-    scoringPeriods[curScoringPeriod].splice(index,1);
-    reloadScoringTable();
-}
+// function removeScore(index){
+//     scoringPeriods[curScoringPeriod].splice(index,1);
+//     reloadScoringTable();
+// }
 
-function switchScoringPeriod(newPeriod){
-    curScoringPeriod=newPeriod;
-    mainInputDiv.classList.add(`shift-${newPeriod}`);
-    reloadScoringTable();
-}
+// function switchScoringPeriod(newPeriod){
+//     curScoringPeriod=newPeriod;
+//     mainInputDiv.classList.add(`shift-${newPeriod}`);
+//     reloadScoringTable();
+// }
 
 function changeRank(feed){
     if (feed) {
@@ -148,11 +139,16 @@ function revealRanks(feed){
 var weWon = false;
 var wonTouched = false;
 
-var curSelected=0;
+var curSelected=-1;
 const firstShiftCheckbox = getById("firstShift");
 const mainInputDiv = getById("main-input");
+//Auto Trans S1 S2 S3 S4 End
+let scores = [0,0,0,0,0,0,0,0];
 function setScoringPeriod(newPeriod){
     console.log(newPeriod);
+    const scoreElem = document.getElementById("scored");
+    console.log(scores)
+    scoreElem.value = scores[curSelected];
     if(newPeriod >= 1 && !wonTouched){
         alert("PLEASE PICK A SHIFT WINNER");
         return;
@@ -196,15 +192,15 @@ function setScoringPeriod(newPeriod){
     if (newPeriod==0||newPeriod==1||newPeriod==6){
         mainInputDiv.classList.remove("inactive");
         mainInputDiv.classList.add(`shift-${newPeriod}`);
-        if (newPeriod==6) switchScoringPeriod(4);
-        else switchScoringPeriod(newPeriod);
+        // if (newPeriod==6) switchScoringPeriod(4);
+        // else switchScoringPeriod(newPeriod);
         return;
     }
     if (!weWon){
         if (newPeriod==2||newPeriod==4){
             mainInputDiv.classList.remove("inactive");
-            if (newPeriod==2) switchScoringPeriod(2);
-            if (newPeriod==4) switchScoringPeriod(3);
+            // if (newPeriod==2) switchScoringPeriod(2);
+            // if (newPeriod==4) switchScoringPeriod(3);
             return
         }
         mainInputDiv.classList.add("inactive");
@@ -214,8 +210,8 @@ function setScoringPeriod(newPeriod){
     }
     if (newPeriod==3||newPeriod==5){
         mainInputDiv.classList.remove("inactive");
-        if (newPeriod==3) switchScoringPeriod(2);
-        if (newPeriod==5) switchScoringPeriod(3);
+        // if (newPeriod==3) switchScoringPeriod(2);
+        // if (newPeriod==5) switchScoringPeriod(3);
         return
     }
     if (newPeriod==2) mainInputDiv.classList.add(`shift-i1`);
@@ -223,14 +219,29 @@ function setScoringPeriod(newPeriod){
     mainInputDiv.classList.add("inactive");
 }
 
+function incrementCounter(id,isPositive,amount=1){
+    const curElement = document.getElementById(id);
+    for (let i=0;i<amount;i++){
+        if (isPositive){
+            curElement.value++;
+            scores[curElement] = curElement.value;
+        } 
+        else if (curElement.value > 0){
+            curElement.value--;
+            scores[curElement] = curElement.value;
+        } 
+    }
+    console.log("Ran");
+}
+
 setScoringPeriod(-1)
 
-function reloadScoringTable(){
-    for (const row of score_table.querySelectorAll("tr:not(.headers)")){
-        row.remove();
-    }
-    addScoresToTable(scoringPeriods[curScoringPeriod]);
-}
+// function reloadScoringTable(){
+//     for (const row of score_table.querySelectorAll("tr:not(.headers)")){
+//         row.remove();
+//     }
+//     addScoresToTable(scoringPeriods[curScoringPeriod]);
+// }
 
 const redWinCheck = getById("redFirstShift")
 const blueWinCheck = getById("blueFirstShift")
