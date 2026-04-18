@@ -159,6 +159,22 @@ class Game:
         raise NotImplementedError("Game Superclass calculateAllianceFromMatches used")
         # return {}
 
+    def calculateStatMatrix(self,team:int) -> dict:
+        """
+        Calculates a team's stat matrix, with each field from a range from 0 to 1.
+        1 represents the highest value for that field.
+        
+        This shouldn't be used; replace this with a game specific function.
+
+        Inputs:
+        - team (int): team number
+
+        Returns:
+        - dict: stat dict
+        """
+        raise NotImplementedError("Game Superclass calculateStatMatrix used")
+
+
 
 class Reefscape(Game):
     def __init__(self, matches: Collection, teams: Collection):
@@ -988,6 +1004,7 @@ class Rebuilt(Game):
             "outpostIntake": "Intaked from the Outpost",
             "groundIntake": "Intaked from the ground",
             "fedToOutpost": "Fed to the outpost",
+            "totalTeleopFuel": "Total Teleop Fuel Worth Points",
             "totalFuel": "Total Fuel Worth Points",
             # "totalFuelMissed": "Total Fuel Missed",
             "feedingRank":"Feeding Rank",
@@ -1069,6 +1086,7 @@ class Rebuilt(Game):
             "Intaked from the Outpost": "outpostIntake,0",
             "Intaked from the ground": "groundIntake,0",
             "Total Fuel Worth Points": "totalFuel,0",
+            "Total Teleop Fuel Worth Points": "totalTeleopFuel,0",
             # "Total Fuel Missed": "totalFuelMissed,0",
             "Feeding Rank":"feedingRank,0",
             "Defense Rank":"defenseRank,0",
@@ -1094,6 +1112,7 @@ class Rebuilt(Game):
             "score": "Score Impact",
             # "totalFuelAverageScoredPerSecond": "Average Fuel Scored Per Second",
             "totalFuel": "Total Fuel Worth Points",
+            "totalTeleopFuel": "Total Teleop Fuel Worth Points",
             # "totalFuelMissed": "Total Fuel Missed",
             "minorFouls": "Minor Fouls",
             "majorFouls": "Major Fouls",
@@ -1227,6 +1246,7 @@ class Rebuilt(Game):
             "outpostIntake": "Intaked from the Outpost",
             "groundIntake": "Intaked from the ground",
             "totalFuel": "Total Fuel Worth Points",
+            "totalTeleopFuel": "Total Teleop Fuel Worth Points",
             # "totalFuelMissed": "Total Fuel Missed",
             # "totalFuelAverageShotPerSecond": "Average Fuel Shot Per Second",
             # "totalFuelAverageScoredPerSecond": "Average Fuel Scored Per Second",
@@ -1638,6 +1658,13 @@ class Rebuilt(Game):
             + endgameFuelTotal
         )
 
+        totalTeleopFuel = (
+            transitionFuelTotal
+            + firstActiveShiftFuelTotal
+            + secondActiveShiftFuelTotal
+            + endgameFuelTotal
+        )
+
         data = {
             "startPos": startPos,
             "preloadFuel": preloadFuel,
@@ -1687,6 +1714,7 @@ class Rebuilt(Game):
             "endgameFuelTotal": endgameFuelTotal,
             "endgameFed": endgameFed,
             "endgameDefense": endgameDefense,
+            "endgameStole": endgameStole,
             # "endgameFuelTotalMissed": endgameFuelTotalMissed,
             "endClimb": endClimb.value,
             "endClimbAttempted": endClimbAttempted.value,
@@ -1696,6 +1724,7 @@ class Rebuilt(Game):
             "outpostIntake": outpostIntake,
             "groundIntake": groundIntake,
             "fedToOutpost": fedToOutpost,
+            "totalTeleopFuel": totalTeleopFuel,
             "totalFuel": totalFuel,
             # "totalFuelMissed": totalFuelMissed,
             "feedingRank":feedingRank,
@@ -1716,65 +1745,65 @@ class Rebuilt(Game):
         }
 
         # totalShotPerSecond = 0
-        totalScoredPerSecond = 0
-        totalDataLength = 0
-        for period in (
-            "autoFuel",
-            "transitionFuel",
-            "firstActiveShiftFuel",
-            "secondActiveShiftFuel",
-            "endgameFuel",
-        ):
-            # periodShotPerSecond = 0
-            periodScoredPerSecond = 0
-            dataLength = len(data[period])
-            for i in range(dataLength):
-                try:
-                    data[period][i]["fuelScoredPerSecond"] = (
-                        data[period][i]["scored"] / data[period][i]["time"]
-                    )
-                except ZeroDivisionError:
-                    data[period][i]["fuelScoredPerSecond"] = 0
-                    app.logger.warning(f"NaN calculated for fuelScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
-                # try:
-                #     data[period][i]["fuelShotPerSecond"] = (
-                #         data[period][i]["scored"] + data[period][i]["missed"]
-                #     ) / data[period][i]["time"]
-                # except ZeroDivisionError:
-                #     data[period][i]["fuelShotPerSecond"] = 0
-                #     app.logger.warning(f"NaN calculated for fuelShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+        # totalScoredPerSecond = 0
+        # totalDataLength = 0
+        # for period in (
+        #     "autoFuel",
+        #     "transitionFuel",
+        #     "firstActiveShiftFuel",
+        #     "secondActiveShiftFuel",
+        #     "endgameFuel",
+        # ):
+        #     # periodShotPerSecond = 0
+        #     periodScoredPerSecond = 0
+        #     dataLength = len(data[period])
+        #     for i in range(dataLength):
+        #         try:
+        #             data[period][i]["fuelScoredPerSecond"] = (
+        #                 data[period][i]["scored"] / data[period][i]["time"]
+        #             )
+        #         except ZeroDivisionError:
+        #             data[period][i]["fuelScoredPerSecond"] = 0
+        #             app.logger.warning(f"NaN calculated for fuelScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+        #         # try:
+        #         #     data[period][i]["fuelShotPerSecond"] = (
+        #         #         data[period][i]["scored"] + data[period][i]["missed"]
+        #         #     ) / data[period][i]["time"]
+        #         # except ZeroDivisionError:
+        #         #     data[period][i]["fuelShotPerSecond"] = 0
+        #         #     app.logger.warning(f"NaN calculated for fuelShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
 
-                # periodShotPerSecond += data[period][i]["fuelShotPerSecond"]
-                periodScoredPerSecond += data[period][i]["fuelScoredPerSecond"]
-                # totalShotPerSecond += data[period][i]["fuelShotPerSecond"]
-                totalScoredPerSecond += data[period][i]["fuelScoredPerSecond"]
+        #         # periodShotPerSecond += data[period][i]["fuelShotPerSecond"]
+        #         periodScoredPerSecond += data[period][i]["fuelScoredPerSecond"]
+        #         # totalShotPerSecond += data[period][i]["fuelShotPerSecond"]
+        #         totalScoredPerSecond += data[period][i]["fuelScoredPerSecond"]
 
-            totalDataLength += dataLength
-            dataLength = 1 if dataLength <= 0 else dataLength
+        #     totalDataLength += dataLength
+        #     dataLength = 1 if dataLength <= 0 else dataLength
 
-            # try:
-            #     data[f"{period}AverageShotPerSecond"] = periodShotPerSecond / dataLength
-            # except ZeroDivisionError:
-            #         data[f"{period}AverageShotPerSecond"] = 0
-            #         app.logger.warning(f"NaN calculated for {period}AverageShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
-            try:
-                data[f"{period}AverageScoredPerSecond"] = periodScoredPerSecond / dataLength
-            except ZeroDivisionError:
-                data[f"{period}AverageScoredPerSecond"] = 0
-                app.logger.warning(f"NaN calculated for {period}AverageScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+        #     # try:
+        #     #     data[f"{period}AverageShotPerSecond"] = periodShotPerSecond / dataLength
+        #     # except ZeroDivisionError:
+        #     #         data[f"{period}AverageShotPerSecond"] = 0
+        #     #         app.logger.warning(f"NaN calculated for {period}AverageShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+        #     try:
+        #         data[f"{period}AverageScoredPerSecond"] = periodScoredPerSecond / dataLength
+        #     except ZeroDivisionError:
+        #         data[f"{period}AverageScoredPerSecond"] = 0
+        #         app.logger.warning(f"NaN calculated for {period}AverageScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
 
         # try:
         #     data[f"totalFuelAverageShotPerSecond"] = totalShotPerSecond / totalDataLength
         # except ZeroDivisionError:
         #     data[f"totalFuelAverageShotPerSecond"] = 0
         #     app.logger.warning(f"NaN calculated for totalFuelAverageShotPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
-        try:
-            data[f"totalFuelAverageScoredPerSecond"] = (
-                totalScoredPerSecond / totalDataLength
-            )
-        except ZeroDivisionError:
-            data[f"totalFuelAverageScoredPerSecond"] = 0
-            app.logger.warning(f"NaN calculated for totalFuelAverageScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
+        # try:
+        #     data[f"totalFuelAverageScoredPerSecond"] = (
+        #         totalScoredPerSecond / totalDataLength
+        #     )
+        # except ZeroDivisionError:
+        #     data[f"totalFuelAverageScoredPerSecond"] = 0
+        #     app.logger.warning(f"NaN calculated for totalFuelAverageScoredPerSecond {station.value} in {compLevel.value}{matchNumber}_{setNumber}")
 
         result = matches.update_many(
             {
@@ -2091,6 +2120,7 @@ class Rebuilt(Game):
             "endClimb": getAllStatsForCategory(teamResults, "endClimb"),
             "endClimbAttempted": getAllStatsForCategory(teamResults, "endClimbAttempted"),
             "totalFuel": getAllStatsForCategory(teamResults, "totalFuel"),
+            "totalTeleopFuel": getAllStatsForCategory(teamResults,"totalTeleopFuel"),
             # "totalFuelAverageShotPerSecond": getAllStatsForCategory(
             #     teamResults, "totalFuelAverageShotPerSecond"
             # ),
@@ -2280,3 +2310,60 @@ class Rebuilt(Game):
             "totalFuel": totalFuel,
             "score": score,
         }
+    
+    def calculateStatMatrix(self, team:int) -> dict:
+        """
+        Calculates a team's stat matrix, with each field from a range from 0 to 1.
+        1 represents the highest value for that field.
+        
+        Inputs:
+        - team (int): team number
+
+        Returns:
+        - dict: stat dict
+        """
+        teamDataList = getAllTeams()
+        teamNumberList = [i["number"] for i in teamDataList]
+        teamMatchResultList = getTeamResults(team)
+
+        offenseMax = 0.0
+        defenseMax = 0.0
+        driverMax = 0.0
+        passingMax = 0.0
+        stealingMax = 0.0
+        autosMax = 0.0
+
+        for teamNumber in teamNumberList:
+            tempMatchResultList = getTeamResults(teamNumber)
+            offenseScore = getMeanOfScoringCategory(tempMatchResultList,"totalTeleopFuel")
+            defenseScore = getMeanOfScoringCategory(tempMatchResultList,"defenseRank")
+            driverScore = getMeanOfScoringCategory(tempMatchResultList,"driverRank")
+            passingScore = getMeanOfScoringCategory(tempMatchResultList,"feedingRank")
+            stealingScore = getMeanOfScoringCategory(tempMatchResultList,"stealRank")
+            autosScore = getMeanOfScoringCategory(tempMatchResultList,"autoFuelTotal")
+
+            offenseMax = offenseScore if offenseScore > offenseMax else offenseMax
+            defenseMax = defenseScore if defenseScore > defenseMax else defenseMax
+            driverMax = driverScore if driverScore > driverMax else driverMax
+            passingMax = passingScore if passingScore > passingMax else passingMax
+            stealingMax = stealingScore if stealingScore > stealingMax else stealingMax
+            autosMax = autosScore if autosScore > autosMax else autosMax
+        
+        offenseScore = getMeanOfScoringCategory(teamMatchResultList,"totalTeleopFuel")
+        defenseScore = getMeanOfScoringCategory(teamMatchResultList,"defenseRank")
+        driverScore = getMeanOfScoringCategory(teamMatchResultList,"driverRank")
+        passingScore = getMeanOfScoringCategory(teamMatchResultList,"feedingRank")
+        stealingScore = getMeanOfScoringCategory(teamMatchResultList,"stealRank")
+        autosScore = getMeanOfScoringCategory(teamMatchResultList,"autoFuelTotal")
+
+        data = {
+            "offense": offenseScore/offenseMax,
+            "defense": defenseScore/defenseMax,
+            "driver": driverScore/driverMax,
+            "passing": passingScore/passingMax,
+            "stealing": stealingScore/stealingScore,
+            "autos": autosScore/autosMax,
+        }
+        return data
+
+        

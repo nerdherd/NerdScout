@@ -808,6 +808,31 @@ def getTeamResults(team: int):
             results.append(result)
     return results
 
+def getAllResults():
+    """
+    Gets all results for all scored matches, in the same format as getTeamResults
+
+    Returns:
+    - list[dict]: list of dicts of match results
+    """
+    global matches
+    # gets all matches
+    matchData = getAllMatches()
+    results = []
+    for individualMatch in matchData:
+        for station in Station:
+            stationName = station.value
+            if stationName in individualMatch["results"]:
+                resultArray = individualMatch["results"][stationName]
+                result = {"results": resultArray}
+                result["matchNumber"] = individualMatch["matchNumber"]
+                result["compLevel"] = individualMatch["compLevel"]
+                result["setNumber"] = individualMatch["setNumber"]
+                result["matchKey"] = individualMatch["matchKey"]
+                result["displayName"] = individualMatch["displayName"]
+                results.append(result)
+    return results
+
 
 def getAllTeams():
     """
