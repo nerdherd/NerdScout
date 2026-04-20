@@ -13,13 +13,14 @@
 {% include 'backButton.html' %}
 <div>
     <div class="card">
-        <label for="team">Team Number:</label>
+        <label for="team">Team Number:</label><br>
         <input type="number" id="team" name="team" {% if team %}value="{{team}}"{%endif%}/>
     </div>
     {% for card in pitScout %}
     <div class="card">
         {% for question in card %}
         <div id="{{question['id']}}-container" {% if "hidden" in question %}style="display:none"{% endif %}>
+        {% if not loop.first %}<br>{% endif %}
         {% if question["type"] == "text" %}
         <label for="{{question['id']}}">{{question["text"]}}</label><br>
         <input type="text" id="{{question['id']}}" name="{{question['id']}}"/>
