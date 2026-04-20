@@ -9,7 +9,7 @@
 {% block title %}Team Select{% endblock %}
 
 {% block content %}
-<script>
+<script defer>
 
     const stat_width  = 1000;
     const stat_height = 1000;
@@ -17,7 +17,7 @@
     const half_width = stat_width/2;
     const half_height = stat_width/2;
 
-    const matrix_size = Math.min(half_width*0.6,half_height*0.6);
+    const matrix_size = Math.min(half_width*0.7,half_height*0.7);
 
     const stat_count = 6;
 
@@ -61,7 +61,7 @@
 
         stat_matrix_ctx.fillStyle = "white";
         stat_matrix_ctx.clearRect(0,0,stat_width,stat_height);
-        stat_matrix_ctx.lineWidth = 3;
+        stat_matrix_ctx.lineWidth = 5;
 
         stat_matrix_ctx.beginPath();
         stat_matrix_ctx.moveTo(half_width, half_height-matrix_size*stat_values[0]);
@@ -76,7 +76,7 @@
         stat_matrix_ctx.moveTo(half_width, half_height-matrix_size);
         stat_matrix_ctx.fillStyle = text_color;
         stat_matrix_ctx.strokeStyle = line_color;
-        stat_matrix_ctx.font = "30px Poppins";
+        stat_matrix_ctx.font = "bold 30px arial";
         stat_matrix_ctx.textAlign = "center";
         for (let i = 0; i < stat_count; i++){
             let curx = half_width+sins[i];
@@ -126,7 +126,7 @@
             <a href="?team={{ team['number'] }}"></a>
         </div>
         <canvas width="1000" height="1000" id="canvas-{{loop.index}}"></canvas>
-        <script>
+        <script defer>
             drawStatMatrix([
                 {{ statMatrices[team['number']]["offense"] }},
                 {{ statMatrices[team['number']]["defense"] }},
