@@ -58,10 +58,8 @@ input{
 }
 
 .card {
-    padding-bottom: 20px;
+    padding: 20px;
     padding-top: 15px;
-    padding-right: 0;
-    padding-left: 20px;
 }
 
 p {
