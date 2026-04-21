@@ -744,7 +744,7 @@ function moveImage(imageId, sliderVal){
             {% endif %}
 
             {% if result["vibeCheck"]%}
-            <h3>Vibe Check</h3>
+            <h3 class="vibe"><img src="{{ url_for('static', filename='images/VIBE.svg')}}" alt="Vibe" class="vibeLogo"><span> Check</span></h3>
             <div class="sectionDiv ranking">
                 <h4>Ranking: {{result["vibeCheck"]}}</h4>
             </div>

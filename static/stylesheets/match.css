@@ -731,3 +731,19 @@ h3{
 .ranking *{
     margin: 1px;
 }
+
+.vibeLogo {
+    height:3em;
+    transform: translateY(-.1em);
+}
+
+.vibe {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.vibe span {
+    margin-left:.2em;
+}
