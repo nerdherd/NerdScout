@@ -196,19 +196,19 @@
                     <label class="toggle-btn-wrapper">
                         <div class="toggle-btn">
                             <p>Fed</p>
-                            <input type="checkbox" id="{{n}}Fed" onclick="revealRanks('Fed')">
+                            <input type="checkbox" id="{{n}}fed" onclick="revealRanks('fed')">
                         </div>
                     </label>
                     <label class="toggle-btn-wrapper">
                         <div class="toggle-btn">
                             <p>Played Defense</p>
-                            <input type="checkbox" id="{{n}}Defense" onclick="revealRanks('Defense')">
+                            <input type="checkbox" id="{{n}}defending" onclick="revealRanks('defending')">
                         </div>
                     </label>
                     <label class="toggle-btn-wrapper">
                         <div class="toggle-btn">
                             <p>Stole</p>
-                            <input type="checkbox" id="{{n}}Stole" onclick="revealRanks('Stole')">
+                            <input type="checkbox" id="{{n}}stole" onclick="revealRanks('stole')">
                         </div>
                     </label>
                 </div>
@@ -325,7 +325,7 @@
                     <input type="range" min="1" max="10" step="1" value="5" class="slider" id="driverRank" oninput="changeRank('driver')">
                 </div>
 
-                <div class="column" id="stoleFeedback">
+                <div class="column" id="stoleFeedback" style="display:none;">
                     <p>How well did they steal?</p>
                     <label for="stoleRank" id="stoleLabel">5/10</label>
                     <input type="range" min="1" max="10" step="1" value="5" class="slider" id="stoleRank" oninput="changeRank('stole')">

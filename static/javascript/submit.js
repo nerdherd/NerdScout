@@ -25,86 +25,6 @@ function getId(id,isInt=true){
 }
 
 var curScoringPeriod = 0;
-var scoringPeriods = [[],[],[],[],[]]; // auto, transition, first active, second active, endgame
-var timerActive = false;
-var resetTimer = false;
-var startTime;
-var scoredElemenet = getById("scored"); // speleld wrong
-var elapsed = 0;
-function toggleTimer(){
-    elapsed = (Date.now()-startTime)/1000;
-    if (!timerActive){
-        startTime = Date.now();
-        timerActive = true;
-        requestAnimationFrame(drawTimer);
-        timer_button.innerText = "Stop Timer";
-        return;
-    }
-    timerActive = false;
-    timer_button.innerText = "Start Timer";
-}
-
-var timer_button = getById("timer-button");
-var timer_input = getById("time");
-function drawTimer(){
-    timer_button.innerText = "Stop Timer \n " + (Date.now()-startTime)/1000;
-    if (resetTimer) {
-        resetTimer = false;
-        timer_button.innerText = "Start Timer \n " + 0;
-    }
-    if (timerActive) requestAnimationFrame(drawTimer);
-}
-
-var score_table = getById("score-table");
-function addScoreToTable(time,scored){
-    let cur_row = document.createElement("tr");
-    let timeEl = document.createElement("td");
-    timeEl.innerText=time;
-    let scoredEl = document.createElement("td");
-    scoredEl.innerText=scored;
-    let deleteTableEl = document.createElement("td")
-    let deleteButton = document.createElement("button");
-    deleteButton.innerText = "X";
-    deleteButton.classList.add("removeButton")
-    let deleteIndex = scoringPeriods[curScoringPeriod].length-1;
-    deleteButton.onclick = () => {removeScore(deleteIndex)};
-    deleteTableEl.appendChild(deleteButton);
-    cur_row.appendChild(timeEl);
-    cur_row.appendChild(scoredEl);
-    cur_row.appendChild(deleteTableEl);
-    score_table.appendChild(cur_row)
-}
-
-function submitScoringPeriod(){
-    if (timerActive){
-        toggleTimer();
-    }
-    let scored = parseInt(scoredElemenet.value);
-    let time = elapsed;
-    if (time <= 0.01) {
-        alert("please put more time!");
-        return;
-    }
-    scoringPeriods[curScoringPeriod].push({"time":time,"scored":scored});
-    scoredElemenet.value = 0;
-    addScoreToTable(time,scored);
-    
-    timerActive = false;
-    timer_button.innerText = "Start Timer\n0";
-    resetTimer = true;
-    elapsed = 0;
-}
-
-function addScoresToTable(scores){
-    for (const scoringPeriod of scores){
-        addScoreToTable(scoringPeriod["time"],scoringPeriod["scored"]);
-    }
-}
-
-// function removeScore(index){
-//     scoringPeriods[curScoringPeriod].splice(index,1);
-//     reloadScoringTable();
-// }
 
 function switchScoringPeriod(newPeriod){
     // curScoringPeriod=newPeriod;
@@ -116,11 +36,17 @@ function changeRank(tag){
     getById(`${tag}Label`).textContent = `${getId(`${tag}Rank`)}/10`
 }
 
+var revealedRanks = {
+    "fed": false,
+    "defending": false,
+    "stole": false
+}
 function revealRanks(tag){
     show = false;
     for (const name of ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"]){
         show = gc(`${name}${tag}`) || show;
     }
+    revealedRanks[tag] = show;
     getById(`${tag}Feedback`).style.display = show ? "flex" : "none";
 }
 
@@ -133,9 +59,7 @@ const mainInputDiv = getById("main-input");
 //Auto Trans S1 S2 S3 S4 End
 let scores = [0,0,0,0,0,0,0,0];
 function setScoringPeriod(newPeriod){
-    console.log(newPeriod);
     const scoreElem = document.getElementById("scored");
-    console.log(scores)
     scoreElem.value = scores[curSelected];
     if(newPeriod >= 1 && !wonTouched){
         alert("PLEASE PICK A SHIFT WINNER");
@@ -224,25 +148,14 @@ function incrementCounter(id,isPositive,amount=1){
             // scores[curElement] = curElement.value;
         } 
     }
-    console.log("Ran");
 }
 
 function incrementFuelCounter(id,isPositive,amount=1){
     incrementCounter(id,isPositive,amount);
     scores[curScoringPeriod] = parseInt(document.getElementById(id).value);
-    console.log(scores);
-    console.log(curScoringPeriod);
-
 }
 
 setScoringPeriod(-1)
-
-// function reloadScoringTable(){
-//     for (const row of score_table.querySelectorAll("tr:not(.headers)")){
-//         row.remove();
-//     }
-//     addScoresToTable(scoringPeriods[curScoringPeriod]);
-// }
 
 const redWinCheck = getById("redFirstShift")
 const blueWinCheck = getById("blueFirstShift")
@@ -319,7 +232,7 @@ function submitData(matchNum, compLevel, setNum, robot){
         "robot": robot,
         "startPos": getId("startposinput"),
         "preloadFuel": getId("preloadFuel"),
-        "autoFuel": scoringPeriods[0],
+        "autoFuelTotal": scores[0],
         "autoDepot": gc("autoDepot"),
         "autoBump": gc("autoBump"),
         "autoTrench": gc("autoTrench"),
@@ -331,42 +244,49 @@ function submitData(matchNum, compLevel, setNum, robot){
         "autoOutpostFeed": gc("autoOutpostFeed"),
         "autoFedToOutpost": gc("autoFedToOutpost"),
         "firstShift": !weWon,
-        "transitionFuel": scoringPeriods[1],
-        "firstActiveShiftFuel": scoringPeriods[2],
-        "secondActiveShiftFuel": scoringPeriods[3],
-        "endgameFuel": scoringPeriods[4],
+        "transitionFuelTotal": scores[1],
+        "transitionFed": gc("transitionfed"),
+        "transitionDefense": gc("transitiondefending"),
+        "transitionStole": gc("transitionstole"),
+        "firstActiveShiftFuelTotal": scores[(weWon)?3:2],
+        "firstActiveShiftFed": gc("firstActiveShiftfed"),
+        "firstActiveShiftDefense": gc("firstActiveShiftdefending"),
+        "firstActiveShiftStole": gc("firstActiveShiftstole"),
+        "secondActiveShiftFuelTotal": scores[(weWon)?5:4],
+        "secondActiveShiftFed": gc("secondActiveShiftfed"),
+        "secondActiveShiftDefense": gc("secondActiveShiftdefending"),
+        "secondActiveShiftStole": gc("secondActiveShiftstole"),
         "firstInactiveShiftScored": gc("firstInactiveShiftScored"),
-        "secondInactiveShiftScored": gc("secondInactiveShiftScored"),
+        "firstInactiveShiftFed": gc("firstInactiveShiftfed"),
+        "firstInactiveShiftDefense": gc("firstInactiveShiftdefending"),
+        "firstInactiveShiftStole": gc("firstInactiveShiftstole"),
         "firstInactiveShiftIntaked": gc("firstInactiveShiftIntaked"),
+        "secondInactiveShiftScored": gc("secondInactiveShiftScored"),
+        "secondInactiveShiftFed": gc("secondInactiveShiftfed"),
+        "secondInactiveShiftDefense": gc("secondInactiveShiftdefending"),
+        "secondInactiveShiftStole": gc("secondInactiveShiftstole"),
         "secondInactiveShiftIntaked": gc("secondInactiveShiftIntaked"),
+        "endgameFuelTotal": scores[6],
+        "endgameFed": gc("endgamefed"),
+        "endgameDefense": gc("endgamedefending"),
+        "endgameStole": gc("endgamestole"),
         "endClimb": getId("endClimb"),
         "endClimbAttempted": getId("attemptedEndClimb"),
         "outpostIntake": gc("outpostIntake"),
         "groundIntake": gc("groundIntake"),
         "fedToOutpost": gc("fedToOutpost"),
-        "feedingRank": getId("feedingRank"),
+        "feedingRank": revealedRanks["fed"] ? getId("feedingRank") : null,
         "feedingComment": getId("feedingComment", false),
-        "defenseRank": getId("defendingRank"),
+        "defenseRank": revealedRanks["defending"] ? getId("defendingRank") : null,
         "defenseComment": getId("defendingComment", false),
+        "driverRank":getId("driverRank"),
+        "vibeCheck":getId("vibeRank"),
+        "stealRank": revealedRanks["stole"] ? getId("stoleRank") : null,
         "minorFouls": getId("minorFouls"),
         "majorFouls": getId("majorFouls"),  
         "comment": getId("comments",false),  
         "cannedComments": cannedComments,  
     };
-    fedShow = false;
-    defendShow = false;
-    for (const name of ["transition","firstActiveShift","secondActiveShift","firstInactiveShift","secondInactiveShift","endgame"]){
-        rawData[`${name}Fed`]=gc(`${name}Fed`);
-        fedShow = gc(`${name}Fed`) || fedShow;
-        rawData[`${name}Defense`]=gc(`${name}Defense`);
-        defendShow = gc(`${name}Defense`) || defendShow;
-    }
-    if(!fedShow){
-        rawData["feedingRank"] = null;
-    }
-    if(!defendShow){
-        rawData["defenseRank"] = null;
-    }
     data = JSON.stringify(rawData);
     console.log(rawData);
     console.log(data);
@@ -426,4 +346,3 @@ function endChangeText(){
         endGameText.textContent = "Actual End Position: ".concat(climbPos[val]);
     }
 }
-changeText();
