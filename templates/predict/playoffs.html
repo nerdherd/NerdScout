@@ -33,7 +33,8 @@
         box-sizing: border-box;
         margin-left:2px;
         margin-right:2px;
-        height:1.5rem;
+        min-height:1.5rem;
+        height:auto;
     }
     
     .selected {
@@ -110,23 +111,23 @@
     <div id="first" class="round">
         <div id="match1">
             match 1
-            <button onclick="let a = setRound(1,{{alliances[0]}},{{alliances[7]}},1,8,true); setWinner(true,1,a)" class="m1_red matchButton">Alliance 1: {{alliances[0]|join(', ')}}</button>
-            <button onclick="let a = setRound(1,{{alliances[7]}},{{alliances[0]}},8,1,false); setWinner(false,1,a)" class="m1_blue matchButton">Alliance 8: {{alliances[7]|join(', ')}}</button>
+            <button onclick="let a = setRound(1,{{alliances[0]}},{{alliances[7]}},1,8,true); setWinner(true,1,a)" class="m1_red matchButton">{% if worlds %}Archimedes{% else %}Alliance 1{% endif %}: {{alliances[0]|join(', ')}}</button>
+            <button onclick="let a = setRound(1,{{alliances[7]}},{{alliances[0]}},8,1,false); setWinner(false,1,a)" class="m1_blue matchButton">{% if worlds %}Newton{% else %}Alliance 8{% endif %}: {{alliances[7]|join(', ')}}</button>
         </div>
         <div id="match2">
             match 2
-            <button onclick="let a = setRound(2,{{alliances[3]}},{{alliances[4]}},4,5,true); setWinner(true,2,a)" class="m2_red matchButton">Alliance 4: {{alliances[3]|join(', ')}}</button>
-            <button onclick="let a = setRound(2,{{alliances[4]}},{{alliances[3]}},5,4,false); setWinner(false,2,a)" class="m2_blue matchButton">Alliance 5: {{alliances[4]|join(', ')}}</button>
+            <button onclick="let a = setRound(2,{{alliances[3]}},{{alliances[4]}},4,5,true); setWinner(true,2,a)" class="m2_red matchButton">{% if worlds %}Galileo{% else %}Alliance 4{% endif %}: {{alliances[3]|join(', ')}}</button>
+            <button onclick="let a = setRound(2,{{alliances[4]}},{{alliances[3]}},5,4,false); setWinner(false,2,a)" class="m2_blue matchButton">{% if worlds %}Hopper{% else %}Alliance 5{% endif %}: {{alliances[4]|join(', ')}}</button>
         </div>
         <div id="match3">
             match 3
-            <button onclick="let a = setRound(3,{{alliances[1]}},{{alliances[6]}},2,7,true); setWinner(true,3,a)" class="m3_red matchButton">Alliance 2: {{alliances[1]|join(', ')}}</button>
-            <button onclick="let a = setRound(3,{{alliances[6]}},{{alliances[1]}},7,2,false); setWinner(false,3,a)" class="m3_blue matchButton">Alliance 7: {{alliances[6]|join(', ')}}</button>
+            <button onclick="let a = setRound(3,{{alliances[1]}},{{alliances[6]}},2,7,true); setWinner(true,3,a)" class="m3_red matchButton">{% if worlds %}Curie{% else %}Alliance 2{% endif %}: {{alliances[1]|join(', ')}}</button>
+            <button onclick="let a = setRound(3,{{alliances[6]}},{{alliances[1]}},7,2,false); setWinner(false,3,a)" class="m3_blue matchButton">{% if worlds %}Milstein{% else %}Alliance 7{% endif %}: {{alliances[6]|join(', ')}}</button>
         </div>
         <div id="match4">
             match 4
-            <button onclick="let a = setRound(4,{{alliances[2]}},{{alliances[5]}},3,6,true); setWinner(true,4,a)" class="m4_red matchButton">Alliance 3: {{alliances[2]|join(', ')}}</button>
-            <button onclick="let a = setRound(4,{{alliances[5]}},{{alliances[2]}},6,3,false); setWinner(false,4,a)" class="m4_blue matchButton">Alliance 6: {{alliances[5]|join(', ')}}</button>
+            <button onclick="let a = setRound(4,{{alliances[2]}},{{alliances[5]}},3,6,true); setWinner(true,4,a)" class="m4_red matchButton">{% if worlds %}Daly{% else %}Alliance 3{% endif %}: {{alliances[2]|join(', ')}}</button>
+            <button onclick="let a = setRound(4,{{alliances[5]}},{{alliances[2]}},6,3,false); setWinner(false,4,a)" class="m4_blue matchButton">{% if worlds %}Johnson{% else %}Alliance 6{% endif %}: {{alliances[5]|join(', ')}}</button>
         </div>
     </div>
     <div id="second" class="round">
@@ -210,13 +211,22 @@
 {% endif %}
 {% if isAdmin %}
 <p>you are an admin.</p> <button onclick="payOut()" class="submit">pay out</button>
+<br>
 {% endif %}
 <br>
 {# if no alliances yet, or if data is old #}
 {% else %}
 <p>Alliances are not available for this event yet.</p>
 {% endif %}
+{% if not worlds %}
 <img id="bracketImage" src="{{ url_for('static', filename='images/brackets.png') }}">
+{% else %}
+<img id="bracketImage" src="{{ url_for('static', filename='images/einsteinBrackets.png') }}">
+{% endif %}
+{% if isAdmin and not worlds %}
+<br>
+<a href="{{ url_for ('getWorldsAlliancesPage')}}" onclick="return confirm(`Are you really sure?? Like Really? Like if it isn't time for einstein it will break stuff probably`)">its worldsing time!!!</a>
+{% endif %}
 <script>
     const matchesInRound = [
         [1,2,3,4],
@@ -225,6 +235,16 @@
         [11,12],
         [13],
         [14]
+    ]
+    const einsteinNames = [
+        "Archimedes",
+        "Curie",
+        "Daly",
+        "Galileo",
+        "Hopper",
+        "Johnson",
+        "Milstein",
+        "Newton"
     ]
     const roundElements = document.querySelectorAll('.round');
     var curRound = 0;
@@ -281,9 +301,17 @@
         winnerNumbers[match] = winnerNumber;
         losers[match] = loser;
         loserNumbers[match]=loserNumber;
+        {% if not worlds %}
         document.getElementById(`m${match}-winner`).innerText = `Alliance ${winnerNumber}: ${winner.join(", ")}`;
+        {% else %}
+        document.getElementById(`m${match}-winner`).innerText = `${einsteinNames[winnerNumber-1]}: ${winner.join(", ")}`;
+        {% endif %}
         let loserMatch = document.getElementById(`m${match}-loser`);
+        {% if not worlds %}
         if (loserMatch) loserMatch.innerText = `Alliance ${loserNumber}: ${loser.join(", ")}`;
+        {% else %}
+        if (loserMatch) loserMatch.innerText = `${einsteinNames[loserNumber-1]}: ${loser.join(", ")}`;
+        {% endif %}
         return true
     }
     function setWinner(didredwin, match, doit){

@@ -1431,8 +1431,11 @@ def determineAlliance(allianceDict:dict, teamNumbers: list) -> int:
 
 def payPickEms() -> bool:
     app.logger.info("Starting to pay out pickems")
-    qual1 = getMatch(CompLevel.QM, 1, 1)[0]
-    updateScheduleFromTBA(qual1["matchKey"].split("_")[0])
+    try:
+        qual1 = getMatch(CompLevel.QM, 1, 1)[0]
+        updateScheduleFromTBA(qual1["matchKey"].split("_")[0])
+    except:
+        app.logger.warning("Didn't update match schedule; couldn't find Q1")
     finals2 = getMatch(CompLevel.F, 2, 1)[0]
     if "scoreBreakdown" not in finals2["results"]:
         app.logger.warning("Failed to pay pickems: finals 2 not scored")
@@ -1529,7 +1532,7 @@ def payPickEms() -> bool:
     finalsBlueCaptain = [finals1["teams"]["blue1"],finals1["teams"]["blue2"],finals1["teams"]["blue3"]]
     finals1Winner = finals1["results"]["winningAlliance"]
     finals2Winner = finals2["results"]["winningAlliance"]
-    if "winningAlliance" in finals3:
+    if "winningAlliance" in finals3["results"]:
         finals3Winner = finals3["results"]["winningAlliance"]
     else:
         finals3Winner = None

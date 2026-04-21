@@ -767,22 +767,39 @@ def pointsPlayoffsPage():
             return "yay!! yippee!"
     try:
         allianceData = json.loads(loadFromCacheFile("alliances"))
-        if allianceData["eventKey"] != loadFromCacheFile("recentEventKey"):
+        if (allianceData["eventKey"] != loadFromCacheFile("recentEventKey")) and ("Archimedes" not in allianceData):
             allianceData = None
     except:
         allianceData = None
     alliances = []
+    einsteinNames = [
+        "Archimedes",
+        "Curie",
+        "Daly",
+        "Galileo",
+        "Hopper",
+        "Johnson",
+        "Milstein",
+        "Newton"
+    ]
+    worlds = False
     if (allianceData != None) and (allianceData["rawData"] != None):
         try:
-            # this assumes that the names are "Alliance x", where x is an int
-            # technically TBA could use any string as names
-            for i in range(1,9):
-                alliance = allianceData[f"Alliance {i}"]
-                # sometimes an alliance has four members
-                # this will be bad at worlds, where four members is standard
-                if len(alliance) > 3:
-                    alliance = alliance[:3]
-                alliances.append(alliance)
+            if "Archimedes" in allianceData:
+                for i in range(len(einsteinNames)):
+                    alliance = allianceData[einsteinNames[i]]
+                    if len(alliance) > 4:
+                        alliance = alliance[:4]
+                    alliances.append(alliance)
+                worlds = True
+            else:
+                for i in range(1,9):
+                    alliance = allianceData[f"Alliance {i}"]
+                    # sometimes an alliance has four members
+                    # this will be bad at worlds, where four members is standard
+                    if len(alliance) > 3:
+                        alliance = alliance[:3]
+                    alliances.append(alliance)
         except:
             alliances = []
     
@@ -795,7 +812,8 @@ def pointsPlayoffsPage():
         alliances=alliances,
         userPoints=userPoints,
         userData=userData,
-        playoff1=playoff1
+        playoff1=playoff1,
+        worlds=worlds
     )
 
 @app.route("/nerdpredict/playoffs/pay", methods=["POST"])
@@ -805,6 +823,12 @@ def finishPlayoffsPage():
         return "good"
     else:
         return "bad", 400
+    
+@app.route("/nerdpredict/playoffs/loadWorldsAlliances")
+def getWorldsAlliancesPage():
+    # TODO: Change for the current season's worlds.
+    saveAlliancesFromTBA("2026cmptx")
+    return "make sure to clear out the match database and pull the matches for einstein and also remove all the pickems"
 
 
 @app.route("/nerdpredict")
@@ -1187,6 +1211,7 @@ dbAdminEndpoints = frozenset(
         "updateMatchFromTBAPage",
         "finishPlayoffsPage",
         "clearPickemsPage",
+        "getWorldsAlliancesPage",
     ]
 )  # endpoints that require user be dbAdmin
 
