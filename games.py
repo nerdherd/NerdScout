@@ -2316,12 +2316,12 @@ class Rebuilt(Game):
             teamDataList = getAllTeams()
         teamNumberList = [i["number"] for i in teamDataList]
 
-        offenseMax = 0.0
-        defenseMax = 0.0
-        driverMax = 0.0
-        passingMax = 0.0
-        stealingMax = 0.0
-        autosMax = 0.0
+        offenseMax = 0.0000001
+        defenseMax = 0.0000001
+        driverMax = 0.0000001
+        passingMax = 0.0000001
+        stealingMax = 0.0000001
+        autosMax = 0.0000001
         for teamNumber in teamNumberList:
             tempMatchResultList = getTeamResults(teamNumber)
             offenseScore = getMeanOfScoringCategory(tempMatchResultList,"totalTeleopFuel")
