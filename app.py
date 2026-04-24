@@ -341,7 +341,7 @@ def teamPage():
 
     matches = getTeamMatches(team)
     stats = game.getAllStats(team)
-    statMatrix = game.calculateStatMatrix(team)
+    statMatrix = game.calculateStatMatrix(team,game.getMaximumsForStatMatrix())
     return render_template(
         "team/team.html",
         team=results,
