@@ -2346,7 +2346,7 @@ class Rebuilt(Game):
             "autos":autosMax,
         }
 
-    def calculateStatMatrix(self, team:int, maximums:dict|None = None) -> dict[str,float]:
+    def calculateStatMatrix(self, team:int, maximums:dict|None = None, teamMatchResultList:list[dict]|None = None) -> dict[str,float]:
         """
         Calculates a team's stat matrix, with each field from a range from 0 to 1.
         1 represents the highest value for that field.
@@ -2384,11 +2384,12 @@ class Rebuilt(Game):
     def calculateStatMatrices(self) -> dict[int,dict[str,float]]:
         allTeamData = getAllTeams()
         maximums = self.getMaximumsForStatMatrix(allTeamData)
+        allTeamResults = getAllTeamsResults(allTeamData)
 
         result = {}
         for team in allTeamData:
             teamNumber = team["number"]
-            matrix = self.calculateStatMatrix(teamNumber,maximums)
+            matrix = self.calculateStatMatrix(teamNumber,maximums,allTeamResults[teamNumber])
             result[teamNumber] = matrix
         
         return result

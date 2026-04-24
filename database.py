@@ -845,6 +845,40 @@ def getAllTeams():
         parsedResults = parseResults(results)
     return parsedResults
 
+def getAllTeamsResults(teamDict:list[dict]|None = None) -> dict[int,list[dict]]:
+    """
+    Gets all teams' results, in the same format as getTeamResults(),
+    with each team's result in a dict.
+
+    Inputs:
+    - teamDict (list[dict]|None): output of getAllTeams()
+
+    Returns:
+    - dict[int,list[dict]]: dictionary of list of match results
+    """
+    if teamDict == None:
+        teamDict = getAllTeams()
+    teamNums = []
+    for team in teamDict: #type: ignore
+        teamNums.append(team["number"])
+    resultsDict = {}
+    for num in teamNums:
+        resultsDict[num] = []
+    matchList = getAllMatches()
+    for individualMatch in matchList:
+        for station, num in individualMatch["teams"].items():
+            if station in individualMatch["results"]:
+                resultArray = individualMatch["results"][station]
+                result = {"results": resultArray}
+                result["matchNumber"] = individualMatch["matchNumber"]
+                result["compLevel"] = individualMatch["compLevel"]
+                result["setNumber"] = individualMatch["setNumber"]
+                result["matchKey"] = individualMatch["matchKey"]
+                result["displayName"] = individualMatch["displayName"]
+                resultsDict[num].append(result)
+    return resultsDict
+
+
 
 def getAllUsers():
     """
