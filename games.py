@@ -2311,7 +2311,7 @@ class Rebuilt(Game):
             "score": score,
         }
     
-    def getMaximumsForStatMatrix(self, teamDataList = None) -> dict[str,float]:
+    def getMaximumsForStatMatrix(self, teamDataList = None, teamResultsDict = None) -> dict[str,float]:
         if teamDataList == None:
             teamDataList = getAllTeams()
         teamNumberList = [i["number"] for i in teamDataList]
@@ -2323,7 +2323,10 @@ class Rebuilt(Game):
         stealingMax = 0.0000001
         autosMax = 0.0000001
         for teamNumber in teamNumberList:
-            tempMatchResultList = getTeamResults(teamNumber)
+            if teamResultsDict == None:
+                tempMatchResultList = getTeamResults(teamNumber)
+            else:
+                tempMatchResultList = teamResultsDict[teamNumber]
             offenseScore = getMeanOfScoringCategory(tempMatchResultList,"totalTeleopFuel")
             defenseScore = getMeanOfScoringCategory(tempMatchResultList,"defenseRank")
             driverScore = getMeanOfScoringCategory(tempMatchResultList,"driverRank")
@@ -2384,8 +2387,9 @@ class Rebuilt(Game):
     def calculateStatMatrices(self) -> dict[int,dict[str,float]]:
         app.logger.info(f"Initiating stat matrices: {time.time()}")
         allTeamData = getAllTeams()
-        maximums = self.getMaximumsForStatMatrix(allTeamData)
         allTeamResults = getAllTeamsResults(allTeamData)
+        maximums = self.getMaximumsForStatMatrix(allTeamData,allTeamResults)
+        
 
         result = {}
         app.logger.info(f"Starting to generate stat matrix calculations: {time.time()}")
