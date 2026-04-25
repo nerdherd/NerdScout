@@ -3,7 +3,7 @@ from constants import *
 from constants import Station, getMeanOfScoringCategory
 from database import *
 from pymongo.collection import Collection
-
+import time
 from database import Station, getMeanOfScoringCategory
 
 
@@ -2382,16 +2382,18 @@ class Rebuilt(Game):
         return data
     
     def calculateStatMatrices(self) -> dict[int,dict[str,float]]:
+        app.logger.info(f"Initiating stat matrices: {time.time()}")
         allTeamData = getAllTeams()
         maximums = self.getMaximumsForStatMatrix(allTeamData)
         allTeamResults = getAllTeamsResults(allTeamData)
 
         result = {}
+        app.logger.info(f"Starting to generate stat matrix calculations: {time.time()}")
         for team in allTeamData:
             teamNumber = team["number"]
             matrix = self.calculateStatMatrix(teamNumber,maximums,allTeamResults[teamNumber])
             result[teamNumber] = matrix
-        
+        app.logger.info(f"Finished calculating stat matrices: {time.time()}")
         return result
 
         

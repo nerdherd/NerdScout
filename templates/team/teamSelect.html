@@ -126,18 +126,7 @@
             <a href="?team={{ team['number'] }}"></a>
         </div>
         <canvas width="1000" height="1000" id="canvas-{{loop.index}}"></canvas>
-        <script defer>
-            drawStatMatrix([
-                {{ statMatrices[team['number']]["offense"] }},
-                {{ statMatrices[team['number']]["defense"] }},
-                {{ statMatrices[team['number']]["driver"] }},
-                {{ statMatrices[team['number']]["passing"] }},
-                {{ statMatrices[team['number']]["stealing"] }},
-                {{ statMatrices[team['number']]["autos"] }},
-            ], "canvas-{{loop.index}}"
-            );
-            // drawStatMatrix([Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random()],"canvas-{{loop.index}}")
-        </script>
+        <script defer>drawStatMatrix([{{ statMatrices[team['number']]["offense"] }},{{ statMatrices[team['number']]["defense"] }},{{ statMatrices[team['number']]["driver"] }},{{ statMatrices[team['number']]["passing"] }},{{ statMatrices[team['number']]["stealing"] }},{{ statMatrices[team['number']]["autos"] }},], "canvas-{{loop.index}}");</script>
     </div>
 {% endfor %}
 </div>

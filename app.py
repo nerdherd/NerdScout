@@ -13,6 +13,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash
 import random
+import time
 from constants import *
 from database import *
 from auth import *
@@ -324,6 +325,7 @@ def updateMatchFromTBAPage():
 
 @app.route("/team")
 def teamPage():
+    app.logger.info(f"Loading Team Page: {time.time()}")
     try:
         team = int(request.args.get("team"))  # type: ignore
         results = getTeam(team)
