@@ -332,15 +332,31 @@ def teamPage():
         results = getTeam(team)
     except TypeError as err:
         statMatrices = game.calculateStatMatrices()
-        return render_template(
-            "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1, statMatrices=statMatrices
-        )
+        try:
+            rendered = render_template(
+                "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1, statMatrices=statMatrices
+            )
+        except:
+            writeToCacheFile("","statMatrixCache")
+            statMatrices = game.calculateStatMatrices()
+            rendered = render_template(
+                "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1, statMatrices=statMatrices
+            )
+        return rendered
 
     if results is None:
         statMatrices = game.calculateStatMatrices()
-        return render_template(
-            "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=team, statMatrices=statMatrices
-        )
+        try:
+            rendered = render_template(
+                "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1, statMatrices=statMatrices
+            )
+        except:
+            writeToCacheFile("","statMatrixCache")
+            statMatrices = game.calculateStatMatrices()
+            rendered = render_template(
+                "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1, statMatrices=statMatrices
+            )
+        return rendered
 
     matches = getTeamMatches(team)
     stats = game.getAllStats(team)
@@ -494,6 +510,7 @@ def scheduleEventPage():
             abort(400)
         addScheduleFromTBA(event)
         addTeamsFromTBA(event)
+        writeToCacheFile("","statMatrixCache")
     eventKey = loadFromCacheFile("recentEventKey")
     return render_template("match/schedule/addSchedule.html", eventKey=eventKey)
 
@@ -507,6 +524,7 @@ def updateSchedulePage():
         except:
             abort(400)
         updateScheduleFromTBA(event)
+        writeToCacheFile("","statMatrixCache")
     eventKey = loadFromCacheFile("recentEventKey")
     return render_template("match/schedule/updateSchedule.html", eventKey=eventKey)
 
@@ -1142,7 +1160,7 @@ def userManagementPage():
 
 @app.route("/admin")
 def adminPage():
-    return render_template("auth/admin.html")
+    return render_template("auth/admin.html", dbAdmin = isDbAdmin(session["username"]))
 
 
 @app.route("/strategy/matchTable")
@@ -1178,6 +1196,10 @@ def clearPickemsPage():
     clearPickems()
     return "yeag"
 
+@app.route("/killteamcache")
+def killTeamCache():
+    writeToCacheFile("","statMatrixCache")
+    return "yeah ok"
 
 @app.route("/about")
 def aboutPage():
@@ -1205,7 +1227,8 @@ adminEndpoints = frozenset(
         "matchTable",
         "resetPasswordsPage",
         "adminPage",
-        "getPitScoutCSV"
+        "getPitScoutCSV",
+        "adminPage",
     ]
 )  # endpoints that require user be admin
 
@@ -1215,6 +1238,7 @@ dbAdminEndpoints = frozenset(
         "finishPlayoffsPage",
         "clearPickemsPage",
         "getWorldsAlliancesPage",
+        "killTeamCache",
     ]
 )  # endpoints that require user be dbAdmin
 

@@ -29,4 +29,11 @@
     <p>Approve or deny password reset requests</p>
     <a href="{{url_for('resetPasswordsPage')}}" target="_blank">Link</a>
 </div>
+{% if dbAdmin %}
+<div class="card">
+    <h2>Kill Team Cache</h2>
+    <p>Kill the cache of stat matrices</p>
+    <a href="{{url_for('killTeamCache')}}" target="_blank">Link</a>
+</div>
+{% endif %}
 {% endblock %}
