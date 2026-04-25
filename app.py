@@ -35,6 +35,7 @@ game = Rebuilt(matches, teams)
 squeeze.init_app(app)
 
 generatePoints()
+writeToCacheFile("","statMatrixCache")
 
 
 # Front-end Handlers

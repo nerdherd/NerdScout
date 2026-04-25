@@ -4,6 +4,7 @@ from constants import Station, getMeanOfScoringCategory
 from database import *
 from pymongo.collection import Collection
 import time
+import ast
 from database import Station, getMeanOfScoringCategory
 
 
@@ -497,6 +498,7 @@ class Reefscape(Game):
                 f"Failed to score robot {station.value} for match {matchNumber} by {scout}: Match does not exist."
             )
             return False
+        writeToCacheFile("","statMatrixCache")
         app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")  # type: ignore
         return True
 
@@ -1818,6 +1820,7 @@ class Rebuilt(Game):
                 f"Failed to score robot {station.value} for match {matchNumber} by {scout}: Match does not exist."
             )
             return False
+        writeToCacheFile("","statMatrixCache")
         app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")  # type: ignore
         return True
 
@@ -2386,18 +2389,24 @@ class Rebuilt(Game):
     
     def calculateStatMatrices(self) -> dict[int,dict[str,float]]:
         app.logger.info(f"Initiating stat matrices: {time.time()}")
-        allTeamData = getAllTeams()
-        allTeamResults = getAllTeamsResults(allTeamData)
-        maximums = self.getMaximumsForStatMatrix(allTeamData,allTeamResults)
-        
+        cacheData = loadFromCacheFile("statMatrixCache")
+        if cacheData:
+            result = ast.literal_eval(cacheData)
+            app.logger.info(f"Read from cache: {time.time()}")
+        else:
+            allTeamData = getAllTeams()
+            allTeamResults = getAllTeamsResults(allTeamData)
+            maximums = self.getMaximumsForStatMatrix(allTeamData,allTeamResults)
+            
 
-        result = {}
-        app.logger.info(f"Starting to generate stat matrix calculations: {time.time()}")
-        for team in allTeamData:
-            teamNumber = team["number"]
-            matrix = self.calculateStatMatrix(teamNumber,maximums,allTeamResults[teamNumber])
-            result[teamNumber] = matrix
-        app.logger.info(f"Finished calculating stat matrices: {time.time()}")
+            result = {}
+            app.logger.info(f"Starting to generate stat matrix calculations: {time.time()}")
+            for team in allTeamData:
+                teamNumber = team["number"]
+                matrix = self.calculateStatMatrix(teamNumber,maximums,allTeamResults[teamNumber])
+                result[teamNumber] = matrix
+            writeToCacheFile(str(result),"statMatrixCache")
+            app.logger.info(f"Finished calculating stat matrices: {time.time()}")
         return result
 
         
