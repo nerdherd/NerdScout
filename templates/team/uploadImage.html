@@ -30,9 +30,11 @@
         document.getElementById("team").value
     );
     });
-
+    const message = document.getElementById("message");
     function submitData(image, number){
         //window.location.href+"?team="+number
+        message.innerHTML = "Uploading image..."
+        message.style = "display:inline;"
         fetch("{{ url_for('addTeamImagePage') }}"+"?team="+number, {
         method: "POST",
         body: image,
@@ -40,7 +42,6 @@
             "Content-type": image.type
         }
         }).then(response =>{
-            message = document.getElementById("message");
             if (response.ok){
                 message.innerHTML = "Submitted image for <a href='{{ url_for('teamPage') }}?team=" + number +"'>Team " + number + "</a>!";
                 message.style = "display:inline;"
