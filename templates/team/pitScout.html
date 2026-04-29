@@ -128,7 +128,7 @@
             ranking.push(element.dataset.value);
         }
 
-        let rawData = { {% for card in pitScout %}{% for question in card %}{% if question["type"] == "text" %}"{{question['id']}}": getValue("{{question['id']}}",{% if "hidden" in question or "optional" in question %}false{% endif %}),{% elif question["type"] == "select" %}"{{question['id']}}": { {% for option in question["options"]%}"{{option[1]}}": getCheckbox("{{question['id']}}-{{option[1]}}"),{% endfor %}{% if "other" in question %}"other": getValue("{{question['id']}}-other-input"){% endif %} },{% endif %}{% endfor %}{% endfor %} };
+        let rawData = { {% for card in pitScout %}{% for question in card %}{% if question["type"] == "text" %}"{{question['id']}}": getValue("{{question['id']}}",{% if "hidden" in question or "optional" in question %}false{% endif %}),{% elif question["type"] == "select" %}"{{question['id']}}": { {% for option in question["options"]%}"{{option[1]}}": getCheckbox("{{question['id']}}-{{option[1]}}"),{% endfor %}{% if "other" in question %}"other": getValue("{{question['id']}}-other-input",false){% endif %} },{% endif %}{% endfor %}{% endfor %} };
 
         if (isEmpty) {
             alert("Please fill out every field. Missing: "+emptyList.join(", "));
