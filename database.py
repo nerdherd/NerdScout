@@ -1566,7 +1566,7 @@ def payPickEms() -> bool:
     finalsBlueCaptain = [finals1["teams"]["blue1"],finals1["teams"]["blue2"],finals1["teams"]["blue3"]]
     finals1Winner = finals1["results"]["winningAlliance"]
     finals2Winner = finals2["results"]["winningAlliance"]
-    if "winningAlliance" in finals3["results"]:
+    if ("results" in finals3) and ("winningAlliance" in finals3["results"]):
         finals3Winner = finals3["results"]["winningAlliance"]
     else:
         finals3Winner = None
