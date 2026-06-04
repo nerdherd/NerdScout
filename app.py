@@ -35,7 +35,7 @@ game = Rebuilt(matches, teams)
 squeeze.init_app(app)
 
 generatePoints()
-writeToCacheFile("","statMatrixCache")
+writeToCacheFile("", "statMatrixCache")
 
 
 # Front-end Handlers
@@ -51,7 +51,9 @@ def index():
 @app.route("/createTestMatches")
 def createTestMatches():
     if not app.debug:
-        app.logger.error("Request recieved to create test matches, but server not in debug mode.")
+        app.logger.error(
+            "Request recieved to create test matches, but server not in debug mode."
+        )
         abort(404)
     foundationNames = (
         "Abaca",
@@ -79,21 +81,21 @@ def createTestMatches():
                 9995,
                 9996,
             )
-            addTestTBAData(CompLevel.QM,i,1)
+            addTestTBAData(CompLevel.QM, i, 1)
             addTestPredictionToDatabase(f"2026test_qm{i}")
     coinflip = lambda: random.random() > 0.5
     for i in range(9991, 9996):
         for team in Station:
-            feeding = (coinflip())
-            defending = (coinflip())
+            feeding = coinflip()
+            defending = coinflip()
             game.scoreRobotInMatch(
                 matchNumber=i,
                 setNumber=1,
                 compLevel=CompLevel.QM,
                 station=team,
-                startPos=random.randint(0,2),
+                startPos=random.randint(0, 2),
                 preloadFuel=random.randint(0, 8),
-                autoFuelTotal=random.randint(0,100),
+                autoFuelTotal=random.randint(0, 100),
                 autoDepot=coinflip(),
                 autoBump=coinflip(),
                 autoTrench=coinflip(),
@@ -105,15 +107,15 @@ def createTestMatches():
                 autoOutpostFeed=coinflip(),
                 autoFedToOutpost=coinflip(),
                 firstShift=coinflip(),
-                transitionFuelTotal=random.randint(0,100),
+                transitionFuelTotal=random.randint(0, 100),
                 transitionFed=coinflip(),
                 transitionDefense=coinflip(),
                 transitionStole=coinflip(),
-                firstActiveShiftFuelTotal=random.randint(0,100),
+                firstActiveShiftFuelTotal=random.randint(0, 100),
                 firstActiveShiftFed=coinflip(),
                 firstActiveShiftDefense=coinflip(),
                 firstActiveShiftStole=coinflip(),
-                secondActiveShiftFuelTotal=random.randint(0,100),
+                secondActiveShiftFuelTotal=random.randint(0, 100),
                 secondActiveShiftFed=coinflip(),
                 secondActiveShiftDefense=coinflip(),
                 secondActiveShiftStole=coinflip(),
@@ -127,7 +129,7 @@ def createTestMatches():
                 secondInactiveShiftDefense=coinflip(),
                 secondInactiveShiftStole=coinflip(),
                 secondInactiveShiftIntaked=coinflip(),
-                endgameFuelTotal=random.randint(0,100),
+                endgameFuelTotal=random.randint(0, 100),
                 endgameFed=coinflip(),
                 endgameDefense=coinflip(),
                 endgameStole=coinflip(),
@@ -136,13 +138,13 @@ def createTestMatches():
                 outpostIntake=coinflip(),
                 groundIntake=coinflip(),
                 fedToOutpost=coinflip(),
-                feedingRank=random.randint(1,10) if feeding else None,
+                feedingRank=random.randint(1, 10) if feeding else None,
                 feedingComment="this robot was feeding :3" if feeding else None,
-                defenseRank=random.randint(1,10) if defending else None,
+                defenseRank=random.randint(1, 10) if defending else None,
                 defenseComment="this robot was defending >:(" if defending else None,
-                stealRank=random.randint(1,10) if coinflip() else None,
-                driverRank=random.randint(1,10),
-                vibeCheck=random.randint(1,10),
+                stealRank=random.randint(1, 10) if coinflip() else None,
+                driverRank=random.randint(1, 10),
+                vibeCheck=random.randint(1, 10),
                 minorFouls=random.randint(0, 10),
                 majorFouls=random.randint(0, 3),
                 comment="abaca",
@@ -225,11 +227,11 @@ def renderMatch():
 
     # under normal conditions, SF matches shouldn't exist unless qualification is done.
     if not nextMatch and compLevel == CompLevel.QM:
-        nextMatch = getMatch(CompLevel.SF,1,1)
+        nextMatch = getMatch(CompLevel.SF, 1, 1)
 
     # standard 8-alliance brackets have 13 playoffs before finals
     if compLevel == CompLevel.SF and setNumber == 13:
-        nextMatch = getMatch(CompLevel.F,1,1)
+        nextMatch = getMatch(CompLevel.F, 1, 1)
 
     if nextMatch:
         nextMatch = nextMatch[-1]
@@ -319,7 +321,11 @@ def updateMatchFromTBAPage():
             matchNum=matchNumber,
             compLevel=compLevel.value,
             setNum=setNumber,
-            alert="Successfully updated match!" if result[0] else f"Failed to update match. {result[1]}",
+            alert=(
+                "Successfully updated match!"
+                if result[0]
+                else f"Failed to update match. {result[1]}"
+            ),
         )
     )
 
@@ -334,13 +340,19 @@ def teamPage():
         statMatrices = game.calculateStatMatrices()
         try:
             rendered = render_template(
-                "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1, statMatrices=statMatrices
+                "team/teamSelect.html",
+                teams=sortTeams(getAllTeams()),
+                team=-1,
+                statMatrices=statMatrices,
             )
         except:
-            writeToCacheFile("","statMatrixCache")
+            writeToCacheFile("", "statMatrixCache")
             statMatrices = game.calculateStatMatrices()
             rendered = render_template(
-                "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1, statMatrices=statMatrices
+                "team/teamSelect.html",
+                teams=sortTeams(getAllTeams()),
+                team=-1,
+                statMatrices=statMatrices,
             )
         return rendered
 
@@ -348,19 +360,25 @@ def teamPage():
         statMatrices = game.calculateStatMatrices()
         try:
             rendered = render_template(
-                "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1, statMatrices=statMatrices
+                "team/teamSelect.html",
+                teams=sortTeams(getAllTeams()),
+                team=-1,
+                statMatrices=statMatrices,
             )
         except:
-            writeToCacheFile("","statMatrixCache")
+            writeToCacheFile("", "statMatrixCache")
             statMatrices = game.calculateStatMatrices()
             rendered = render_template(
-                "team/teamSelect.html", teams=sortTeams(getAllTeams()), team=-1, statMatrices=statMatrices
+                "team/teamSelect.html",
+                teams=sortTeams(getAllTeams()),
+                team=-1,
+                statMatrices=statMatrices,
             )
         return rendered
 
     matches = getTeamMatches(team)
     stats = game.getAllStats(team)
-    statMatrix = game.calculateStatMatrix(team,game.getMaximumsForStatMatrix())
+    statMatrix = game.calculateStatMatrix(team, game.getMaximumsForStatMatrix())
     return render_template(
         "team/team.html",
         team=results,
@@ -368,7 +386,7 @@ def teamPage():
         stats=stats,
         keyDisplayNames=game.keyDisplayNames,
         pitScoutQuestions=game.pitScout,
-        statMatrix=statMatrix
+        statMatrix=statMatrix,
     )
 
 
@@ -510,7 +528,7 @@ def scheduleEventPage():
             abort(400)
         addScheduleFromTBA(event)
         addTeamsFromTBA(event)
-        writeToCacheFile("","statMatrixCache")
+        writeToCacheFile("", "statMatrixCache")
     eventKey = loadFromCacheFile("recentEventKey")
     return render_template("match/schedule/addSchedule.html", eventKey=eventKey)
 
@@ -524,7 +542,7 @@ def updateSchedulePage():
         except:
             abort(400)
         updateScheduleFromTBA(event)
-        writeToCacheFile("","statMatrixCache")
+        writeToCacheFile("", "statMatrixCache")
     eventKey = loadFromCacheFile("recentEventKey")
     return render_template("match/schedule/updateSchedule.html", eventKey=eventKey)
 
@@ -588,13 +606,13 @@ def scoutTeam():
     return render_template(
         "team/pitScout.html",
         team=team,
-        pitScout = game.pitScout
+        pitScout=game.pitScout
     )
 
 @app.route("/team/csv")
 def getPitScoutCSV():
-    
-    csv = ["team","user"]
+
+    csv = ["team", "user"]
     for section in game.pitScout:
         for question in section:
             if question["type"] == "text":
@@ -602,14 +620,14 @@ def getPitScoutCSV():
             elif question["type"] == "select":
                 # csv.append(question["id"]+"select")
                 for option in question["options"]:
-                    csv.append(question["text"]+" - "+option[0])
+                    csv.append(question["text"] + " - " + option[0])
     csv = [csv]
 
     teams = getAllTeams()
     for team in teams:
         if "pitScout" in team:
             scouted = team["pitScout"][-1]
-            line = [team['number'],scouted['user']]
+            line = [team["number"], scouted["user"]]
             scouted = scouted["data"]
             for section in game.pitScout:
                 for question in section:
@@ -621,13 +639,13 @@ def getPitScoutCSV():
                         for option in question["options"]:
                             line.append(scouted[question["id"]][option[1]])
             csv.append(line)
-    
+
     csv = [[str(a) for a in row] for row in csv]
-    csv = [[a.replace("\"","\\\"\\\"") for a in row] for row in csv]
-    csv = [["\\\""+a+"\\\"" for a in row] for row in csv]
+    csv = [[a.replace('"', '\\"\\"') for a in row] for row in csv]
+    csv = [['\\"' + a + '\\"' for a in row] for row in csv]
     csv = "\\n".join(",".join(row) for row in csv)
 
-    return render_template("team/downloadCSV.html",csvdata=csv)
+    return render_template("team/downloadCSV.html", csvdata=csv)
 
 
 # dontSummarize = frozenset(
@@ -704,7 +722,7 @@ def teamDataSummary():
                 piece = method(results, key)
                 data[-1]["results"][key] = {}
                 if isAnObject:
-                    data[-1]["results"][key]["value"] = piece["value"] # type: ignore
+                    data[-1]["results"][key]["value"] = piece["value"]  # type: ignore
                     data[-1]["results"][key]["matchId"] = f"{matchViewer}?matchNum={piece['matchNumber']}&compLevel={piece['compLevel']}&setNum={piece['setNumber']}"  # type: ignore
                 else:
                     data[-1]["results"][key]["value"] = piece
@@ -788,7 +806,9 @@ def pointsPlayoffsPage():
             return "yay!! yippee!"
     try:
         allianceData = json.loads(loadFromCacheFile("alliances"))
-        if (allianceData["eventKey"] != loadFromCacheFile("recentEventKey")) and ("Archimedes" not in allianceData):
+        if (allianceData["eventKey"] != loadFromCacheFile("recentEventKey")) and (
+            "Archimedes" not in allianceData
+        ):
             allianceData = None
     except:
         allianceData = None
@@ -801,7 +821,7 @@ def pointsPlayoffsPage():
         "Hopper",
         "Johnson",
         "Milstein",
-        "Newton"
+        "Newton",
     ]
     worlds = False
     if (allianceData != None) and (allianceData["rawData"] != None):
@@ -814,7 +834,7 @@ def pointsPlayoffsPage():
                     alliances.append(alliance)
                 worlds = True
             else:
-                for i in range(1,9):
+                for i in range(1, 9):
                     alliance = allianceData[f"Alliance {i}"]
                     # sometimes an alliance has four members
                     # this will be bad at worlds, where four members is standard
@@ -823,19 +843,20 @@ def pointsPlayoffsPage():
                     alliances.append(alliance)
         except:
             alliances = []
-    
-    playoff1 = getMatch(CompLevel.SF,1,1)
+
+    playoff1 = getMatch(CompLevel.SF, 1, 1)
     if playoff1:
         playoff1 = playoff1[-1]
     return render_template(
         "predict/playoffs.html",
-        isAdmin=isDbAdmin(session['username']),
+        isAdmin=isDbAdmin(session["username"]),
         alliances=alliances,
         userPoints=userPoints,
         userData=userData,
         playoff1=playoff1,
-        worlds=worlds
+        worlds=worlds,
     )
+
 
 @app.route("/nerdpredict/playoffs/pay", methods=["POST"])
 def finishPlayoffsPage():
@@ -844,7 +865,8 @@ def finishPlayoffsPage():
         return "good"
     else:
         return "bad", 400
-    
+
+
 @app.route("/nerdpredict/playoffs/loadWorldsAlliances")
 def getWorldsAlliancesPage():
     # TODO: Change for the current season's worlds.
@@ -1160,7 +1182,7 @@ def userManagementPage():
 
 @app.route("/admin")
 def adminPage():
-    return render_template("auth/admin.html", dbAdmin = isDbAdmin(session["username"]))
+    return render_template("auth/admin.html", dbAdmin=isDbAdmin(session["username"]))
 
 
 @app.route("/strategy/matchTable")
@@ -1191,15 +1213,18 @@ def matchTable():
         teams=teams,
     )
 
+
 @app.route("/clearAllPickems")
 def clearPickemsPage():
     clearPickems()
     return "yeag"
 
+
 @app.route("/killteamcache")
 def killTeamCache():
-    writeToCacheFile("","statMatrixCache")
+    writeToCacheFile("", "statMatrixCache")
     return "yeah ok"
+
 
 @app.route("/about")
 def aboutPage():
@@ -1261,12 +1286,11 @@ def before_request():
         )
         abort(403)
 
+
 @app.after_request
 def after_request(response):
-    if response.content_type == u'text/html; charset=utf-8':
-        response.set_data(
-            minify(response.get_data(as_text=True))
-        )
+    if response.content_type == u"text/html; charset=utf-8":
+        response.set_data(minify(response.get_data(as_text=True)))
         return response
     return response
 
