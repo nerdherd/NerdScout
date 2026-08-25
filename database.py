@@ -9,7 +9,6 @@ import requests
 import json
 from bson import json_util
 from pymongo import MongoClient
-from app import PaymentRequired
 from constants import *
 
 # Initalize MongoDB Connection

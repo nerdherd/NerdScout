@@ -5,7 +5,6 @@ from database import *
 from pymongo.collection import Collection
 import time
 import ast
-from database import Station, getMeanOfScoringCategory
 
 
 class Game:
