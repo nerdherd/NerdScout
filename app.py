@@ -83,7 +83,7 @@ def createTestMatches():
             )
             addTestTBAData(CompLevel.QM, i, 1)
             addTestPredictionToDatabase(f"2026test_qm{i}")
-    coinflip = lambda: random.random() > 0.5
+    coinflip = lambda: random.random() > 0.7
     for i in range(9991, 9996):
         for team in Station:
             feeding = coinflip()
