@@ -9,6 +9,7 @@ import requests
 import json
 from bson import json_util
 from pymongo import MongoClient
+from cloudStorage import downloadFromCloudAsText, uploadToCloud
 from constants import *
 
 # Initalize MongoDB Connection
@@ -38,12 +39,7 @@ def loadFromCacheFile(file: str, path: str = "cache") -> str:
     Returns:
     - str: file contents
     """
-    try:
-        with open(os.path.join(root, path, file), "r") as f:
-            data = f.read()
-    except FileNotFoundError:
-        data = ""
-    return data
+    return downloadFromCloudAsText(f"{path}_._{file}")
 
 
 def writeToCacheFile(text: str, file: str, path: str = "cache") -> None:
@@ -55,9 +51,8 @@ def writeToCacheFile(text: str, file: str, path: str = "cache") -> None:
     - file (str): file name
     - path (str): path to file, defaults to cache
     """
-    with open(os.path.join(root, path, file), "w") as f:
-        f.write(text)
-        app.logger.info(f"wrote to {path}/{file}")
+    uploadToCloud(text,f"{path}_._{file}")
+    app.logger.info(f"wrote to {path}_._{file}")
 
 def getStatboticsPrediction(matchKey: str) -> dict:
     """
@@ -652,14 +647,14 @@ def addTeamImage(data, team: int, user: str):
     if not extension:
         abort(415)
     teamInfo = parseResults(teams.find_one({"number": team}))
-    fileLocation = f"teamImages/{team}_{len(teamInfo['images'])}.{extension}"
-    open(os.path.join(root, "static/" + fileLocation), "wb").write(data)
+    fileName = f"teamImages_{team}_{len(teamInfo['images'])}.{extension}"
+    url = uploadToCloud(data,fileName,f"image/{extension if extension == 'png' else 'jpeg'}")
     teams.update_one(
         {"number": team},
         {
             "$push": {
                 "images": {
-                    "location": fileLocation,
+                    "location": url,
                     "scout": user,
                 }
             }
