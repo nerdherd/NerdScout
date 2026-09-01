@@ -6,7 +6,6 @@ from pymongo.collection import Collection
 import time
 import ast
 
-
 class Game:
     """
     Game Superclass
@@ -497,7 +496,7 @@ class Reefscape(Game):
                 f"Failed to score robot {station.value} for match {matchNumber} by {scout}: Match does not exist."
             )
             return False
-        writeToCacheFile("","statMatrixCache")
+        WRITE_CACHE("","statMatrixCache")
         app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")  # type: ignore
         return True
 
@@ -1819,7 +1818,7 @@ class Rebuilt(Game):
                 f"Failed to score robot {station.value} for match {matchNumber} by {scout}: Match does not exist."
             )
             return False
-        writeToCacheFile("","statMatrixCache")
+        WRITE_CACHE("","statMatrixCache")
         app.logger.info(f"Robot {station.value} scored for match {matchNumber} by {scout}.")  # type: ignore
         return True
 
@@ -2388,7 +2387,7 @@ class Rebuilt(Game):
     
     def calculateStatMatrices(self) -> dict[int,dict[str,float]]:
         app.logger.info(f"Initiating stat matrices: {time.time()}")
-        cacheData = loadFromCacheFile("statMatrixCache")
+        cacheData = READ_CACHE("statMatrixCache")
         if cacheData:
             result = ast.literal_eval(cacheData)
             app.logger.info(f"Read from cache: {time.time()}")
@@ -2404,7 +2403,7 @@ class Rebuilt(Game):
                 teamNumber = team["number"]
                 matrix = self.calculateStatMatrix(teamNumber,maximums,allTeamResults[teamNumber])
                 result[teamNumber] = matrix
-            writeToCacheFile(str(result),"statMatrixCache")
+            WRITE_CACHE(str(result),"statMatrixCache")
             app.logger.info(f"Finished calculating stat matrices: {time.time()}")
         return result
 
