@@ -73,7 +73,7 @@
         <div id="rightArrow" class="imageNav" onclick="changeImage(true)">&#xe5c8</div>
     <div id="teamImages">
         {% for image in team["images"] %}
-        <div style="background-image:url({{ url_for('static', filename=image['location']) }})" class="teamImage" id="img{{ loop.index0 }}"></div>
+        <div style="background-image:url({{ image['location'] }})" class="teamImage" id="img{{ loop.index0 }}"></div>
         {% endfor %}
     </div>
 </div>

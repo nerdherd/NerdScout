@@ -35,7 +35,7 @@ game = Rebuilt(matches, teams)
 squeeze.init_app(app)
 
 generatePoints()
-writeToCacheFile("", "statMatrixCache")
+WRITE_CACHE("", "statMatrixCache")
 
 
 # Front-end Handlers
@@ -161,7 +161,7 @@ def createTestMatches():
                     ]
                 ),
             )
-    writeToCacheFile("2026test", "recentEventKey")
+    WRITE_CACHE("2026test", "recentEventKey")
     return "ok."
 
 
@@ -314,7 +314,7 @@ def updateMatchFromTBAPage():
         updateAllStatboticsPredictions()
         saveAlliancesFromTBA()
     if compLevel == CompLevel.SF or compLevel == CompLevel.F:
-        updateScheduleFromTBA(loadFromCacheFile("recentEventKey"))
+        updateScheduleFromTBA(READ_CACHE("recentEventKey"))
     return redirect(
         url_for(
             "renderMatch",
@@ -346,7 +346,7 @@ def teamPage():
                 statMatrices=statMatrices,
             )
         except:
-            writeToCacheFile("", "statMatrixCache")
+            WRITE_CACHE("", "statMatrixCache")
             statMatrices = game.calculateStatMatrices()
             rendered = render_template(
                 "team/teamSelect.html",
@@ -366,7 +366,7 @@ def teamPage():
                 statMatrices=statMatrices,
             )
         except:
-            writeToCacheFile("", "statMatrixCache")
+            WRITE_CACHE("", "statMatrixCache")
             statMatrices = game.calculateStatMatrices()
             rendered = render_template(
                 "team/teamSelect.html",
@@ -528,8 +528,8 @@ def scheduleEventPage():
             abort(400)
         addScheduleFromTBA(event)
         addTeamsFromTBA(event)
-        writeToCacheFile("", "statMatrixCache")
-    eventKey = loadFromCacheFile("recentEventKey")
+        WRITE_CACHE("", "statMatrixCache")
+    eventKey = READ_CACHE("recentEventKey")
     return render_template("match/schedule/addSchedule.html", eventKey=eventKey)
 
 
@@ -542,8 +542,8 @@ def updateSchedulePage():
         except:
             abort(400)
         updateScheduleFromTBA(event)
-        writeToCacheFile("", "statMatrixCache")
-    eventKey = loadFromCacheFile("recentEventKey")
+        WRITE_CACHE("", "statMatrixCache")
+    eventKey = READ_CACHE("recentEventKey")
     return render_template("match/schedule/updateSchedule.html", eventKey=eventKey)
 
 
@@ -552,7 +552,7 @@ def addTeamImagePage():
     if request.method == "POST":
         try:
             image = request.data
-            addTeamImage(image, int(request.args.get("team")), session["username"])  # type: ignore
+            UPLOAD_IMAGE(image, int(request.args.get("team")), session["username"])  # type: ignore
         except Exception as e:
             app.logger.warning(e)
             abort(400)
@@ -805,8 +805,8 @@ def pointsPlayoffsPage():
         else:
             return "yay!! yippee!"
     try:
-        allianceData = json.loads(loadFromCacheFile("alliances"))
-        if (allianceData["eventKey"] != loadFromCacheFile("recentEventKey")) and (
+        allianceData = json.loads(READ_CACHE("alliances"))
+        if (allianceData["eventKey"] != READ_CACHE("recentEventKey")) and (
             "Archimedes" not in allianceData
         ):
             allianceData = None
@@ -1222,7 +1222,7 @@ def clearPickemsPage():
 
 @app.route("/killteamcache")
 def killTeamCache():
-    writeToCacheFile("", "statMatrixCache")
+    WRITE_CACHE("", "statMatrixCache")
     return "yeah ok"
 
 

@@ -9,6 +9,7 @@ import requests
 import json
 from bson import json_util
 from pymongo import MongoClient
+from cloudStorage import downloadFromCloudAsText, uploadToCloud
 from constants import *
 
 # Initalize MongoDB Connection
@@ -29,7 +30,20 @@ requestsDB = database.requests
 
 def loadFromCacheFile(file: str, path: str = "cache") -> str:
     """
-    Loads text data from a cache file.
+    Loads text data from a cloud cache file.
+
+    Inputs:
+    - file (str): file name
+    - path (str): path to file, defaults to cache
+
+    Returns:
+    - str: file contents
+    """
+    return downloadFromCloudAsText(f"{path}_._{file}")
+
+def loadFromLocalCacheFile(file: str, path: str = "cache") -> str:
+    """
+    Loads text data from a local cache file.
 
     Inputs:
     - file (str): file name
@@ -48,7 +62,19 @@ def loadFromCacheFile(file: str, path: str = "cache") -> str:
 
 def writeToCacheFile(text: str, file: str, path: str = "cache") -> None:
     """
-    Writes text data to a cache file.
+    Writes text data to a cache file in Google Cloud Storage.
+
+    Inputs:
+    - text (str): text to save
+    - file (str): file name
+    - path (str): path to file, defaults to cache
+    """
+    uploadToCloud(text,f"{path}_._{file}")
+    app.logger.info(f"wrote to {path}_._{file}")
+
+def writeToLocalCacheFile(text: str, file: str, path: str = "cache") -> None:
+    """
+    Writes text data to a local cache file.
 
     Inputs:
     - text (str): text to save
@@ -58,6 +84,13 @@ def writeToCacheFile(text: str, file: str, path: str = "cache") -> None:
     with open(os.path.join(root, path, file), "w") as f:
         f.write(text)
         app.logger.info(f"wrote to {path}/{file}")
+
+if app.debug:
+    WRITE_CACHE = writeToLocalCacheFile
+    READ_CACHE = loadFromLocalCacheFile
+else:
+    WRITE_CACHE = writeToCacheFile
+    READ_CACHE = loadFromCacheFile
 
 def getStatboticsPrediction(matchKey: str) -> dict:
     """
@@ -157,8 +190,8 @@ def updateAllStatboticsPredictions(eventKey: str|None = None) -> None:
     - eventKey (str|None): event key from TBA, defaults to None which uses the cached key
     """
     app.logger.info("Now starting to load Statbotics data.")
-    if not eventKey:
-        eventKey = loadFromCacheFile("recentEventKey")
+    if not eventKey: 
+        eventKey = READ_CACHE("recentEventKey")
     if not eventKey:
         app.logger.error("Failed to update Statbotics predictions: no event key found")
         abort(500)
@@ -344,7 +377,7 @@ def loadScheduleFromTBA(event: str):
         app.logger.error(f"Failed to load match data for {event} from TBA.")  # type: ignore
         abort(500)
     # saves the event key to a file for future use
-    writeToCacheFile(event, "recentEventKey")
+    WRITE_CACHE(event, "recentEventKey")
     return data
 
 
@@ -482,7 +515,7 @@ def addTeamsFromTBA(event: str):
             abort(500)
 
 
-def saveAlliancesFromTBA(event: str = loadFromCacheFile("recentEventKey")):
+def saveAlliancesFromTBA(event: str = READ_CACHE("recentEventKey")):
     """
     GETs alliance selection data from TBA and stores it in cache/alliances
 
@@ -516,7 +549,7 @@ def saveAlliancesFromTBA(event: str = loadFromCacheFile("recentEventKey")):
                 app.logger.error(f"Failed to extract team number for {team}")
                 continue
             saveData[alliance["name"]].append(teamNumber)
-    writeToCacheFile(json.dumps(saveData), "alliances")
+    WRITE_CACHE(json.dumps(saveData), "alliances")
 
 
 # This always outputs an array, in case there are multiple matches with the same number
@@ -638,6 +671,36 @@ def getAllMatches():
 
 def addTeamImage(data, team: int, user: str):
     """
+    Adds an image a team and store said image in Google Cloud Storage
+
+    Aborts 415 if data is not a png or jpg.
+
+    Inputs:
+    - data (png or jpg): image to add
+    - team (int): the team's number
+    - user (str): the username of the uploader
+
+    """
+    extension = isImage(data)
+    if not extension:
+        abort(415)
+    teamInfo = parseResults(teams.find_one({"number": team}))
+    fileName = f"teamImages_{team}_{len(teamInfo['images'])}.{extension}"
+    url = uploadToCloud(data,fileName,f"image/{extension if extension == 'png' else 'jpeg'}")
+    teams.update_one(
+        {"number": team},
+        {
+            "$push": {
+                "images": {
+                    "location": url,
+                    "scout": user,
+                }
+            }
+        },
+    )
+
+def addLocalTeamImage(data, team: int, user: str):
+    """
     Adds an image a team and store said image in static/teamImages
 
     Aborts 415 if data is not a png or jpg.
@@ -659,13 +722,17 @@ def addTeamImage(data, team: int, user: str):
         {
             "$push": {
                 "images": {
-                    "location": fileLocation,
+                    "location": "/static/" + fileLocation,
                     "scout": user,
                 }
             }
         },
     )
 
+if app.debug:
+    UPLOAD_IMAGE = addLocalTeamImage
+else:
+    UPLOAD_IMAGE = addTeamImage
 
 def addComment(team: int, comment: str, user: str):
     """
