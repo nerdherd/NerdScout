@@ -106,7 +106,8 @@ def getStatboticsPredictions(eventKey: str) -> list:
         data = json.loads(data.text)
     except:
         app.logger.error(f"Failed to load event data for {eventKey} from Statbotics.")  # type: ignore
-        abort(500)
+        data = []
+        # abort(500)
     return data
 
 def addTestPredictionToDatabase(matchKey: str) -> bool:
