@@ -26,6 +26,9 @@ accounts = database.accounts
 teams = database.teams
 requestsDB = database.requests
 
+# do not include the slash at the end of the url
+STATBOTICS_API = "https://api-statbotics.iterativerefinement.com"
+
 
 def loadFromCacheFile(file: str, path: str = "cache") -> str:
     """
@@ -71,7 +74,7 @@ def getStatboticsPrediction(matchKey: str) -> dict:
     """
     try:
         data = requests.get(
-            f"https://api.statbotics.io/v3/match/{matchKey}",
+            f"{STATBOTICS_API}/v3/match/{matchKey}",
             headers={"User-Agent": "Nerd Scout"},
         )
         if data.status_code == 404:
@@ -96,7 +99,7 @@ def getStatboticsPredictions(eventKey: str) -> list:
     """
     try:
         data = requests.get(
-            f"https://api.statbotics.io/v3/matches?event={eventKey}",
+            f"{STATBOTICS_API}/v3/matches?event={eventKey}",
             headers={"User-Agent": "Nerd Scout"},
         )
         if data.status_code == 404:
