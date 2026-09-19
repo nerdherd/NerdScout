@@ -503,12 +503,14 @@ def saveAlliancesFromTBA(event: str = loadFromCacheFile("recentEventKey")):
             app.logger.error(  # type: ignore
                 f"Failed to load alliance data for {event} from The Blue Alliance. API error: {data['Error']}"
             )
-            abort(500)
+            # abort(500)
+            return
     except:
         app.logger.error(  # type: ignore
-            f"Failed to load alliance data for {event} from The Blue Alliance. Network error."
+            f"Failed to load alliance data for {event} from The Blue Alliance. Network error, or no data returned."
         )
-        abort(500)
+        # abort(500)
+        return
     saveData = {"rawData": data, "eventKey": event}
     for alliance in data:
         # alliance names are in format "Alliance #"
