@@ -1213,6 +1213,10 @@ def matchTable():
         teams=teams,
     )
 
+@app.route("updateAlliances")
+def updateAlliancePage():
+    saveAlliancesFromTBA()
+    return "yeah ok"
 
 @app.route("/clearAllPickems")
 def clearPickemsPage():
