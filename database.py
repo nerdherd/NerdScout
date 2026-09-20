@@ -513,16 +513,22 @@ def saveAlliancesFromTBA(event: str = loadFromCacheFile("recentEventKey")):
         # abort(500)
         return
     saveData = {"rawData": data, "eventKey": event}
+    i = 0
     for alliance in data:
+        i += 1
+        if "name" in alliance:
+            allianceName = alliance["name"]
+        else:
+            allianceName = f"Alliance {i}"
         # alliance names are in format "Alliance #"
-        saveData[alliance["name"]] = []
+        saveData[allianceName] = []
         for team in alliance["picks"]:
             try:
                 teamNumber = int(team[3:])
             except ValueError:
                 app.logger.error(f"Failed to extract team number for {team}")
                 continue
-            saveData[alliance["name"]].append(teamNumber)
+            saveData[allianceName].append(teamNumber)
     writeToCacheFile(json.dumps(saveData), "alliances")
 
 
