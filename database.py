@@ -272,6 +272,7 @@ def addMatchFromTBA(match: dict):
         app.logger.error(  # type: ignore
             f"Unable to load match from The Blue Alliance. Aborting. Error: {e}"
         )
+        app.logger.info(match)
         abort(500)
 
 
