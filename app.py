@@ -1213,7 +1213,7 @@ def matchTable():
         teams=teams,
     )
 
-@app.route("updateAlliances")
+@app.route("/updateAlliances")
 def updateAlliancePage():
     saveAlliancesFromTBA()
     return "yeah ok"
