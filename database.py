@@ -255,6 +255,10 @@ def addMatchFromTBA(match: dict):
             displayName = f"Final {matchNumber}"
         else:
             displayName = f"{compLevel.value} {matchNumber}"
+
+        if (not match["alliances"]["red"]["team_keys"]) or (not match["alliances"]["blue"]["team_keys"]):
+            app.logger.info(f"Skipping {displayName}; teams not defined.")
+            return
         addScheduledMatch(
             matchNumber,
             setNumber,
