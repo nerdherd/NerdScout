@@ -184,7 +184,7 @@ def getModeOfScoringCategory(data: list, key: str, index: int = 0):
     scores: list = getListOfScoringCategory(data, key, index)
     if not scores:
         return 0
-    return int(statistics.median(scores))
+    return int(statistics.mode(scores))
 
 
 def getMatchWithHighestValue(data: list, key: str, index: int = 0):

@@ -1058,11 +1058,11 @@ class Rebuilt(Game):
             # "Transition Shift Fuel Missed": "transitionFuelTotalMissed,0",
             "First Active Shift Fuel Total": "firstActiveShiftFuelTotal,0",
             "Fed Fuel Into Alliance Zone During the First Active Shift": "firstActiveShiftFed,0",
-            "Defending During the First Active Shift": "firstActiveShiftefense,0",
+            "Defending During the First Active Shift": "firstActiveShiftDefense,0",
             "Stole During the First Active Shift": "firstActiveShiftStole,0",
             "Second Active Shift Fuel Total": "secondActiveShiftFuelTotal,0",
             "Fed Fuel Into Alliance Zone During the Second Active Shift": "secondActiveShiftFed,0",
-            "Defending During the Second Active Shift": "secondActiveShiftefense,0",
+            "Defending During the Second Active Shift": "secondActiveShiftDefense,0",
             "Stole During the Second Active Shift": "secondActiveShiftStole,0",
             "Endgame Fuel Total": "endgameFuelTotal,0",
             # "First Active Shift Fuel Missed": "firstActiveShiftFuelMissed,0",
@@ -1073,17 +1073,14 @@ class Rebuilt(Game):
             "Intaked During First Inactive Shift": "firstInactiveShiftIntaked,0",
             "Intaked During Second Inactive Shift": "secondInactiveShiftIntaked,0",
             "Fed Fuel Into Alliance Zone During the First Inactive Shift": "firstInactiveShiftFed,0",
-            "Defending During the First Inactive Shift": "firstInactiveShiftefense,0",
+            "Defending During the First Inactive Shift": "firstInactiveShiftDefense,0",
             "Stole During the First Inactive Shift": "firstInactiveShiftStole,0",
             "Fed Fuel Into Alliance Zone During the Second Inactive Shift": "secondInactiveShiftFed,0",
-            "Defending During the Second Inactive Shift": "secondInactiveShiftefense,0",
+            "Defending During the Second Inactive Shift": "secondInactiveShiftDefense,0",
             "Stole During the Second Inactive Shift": "secondInactiveShiftStole,0",
             "Stole During Endgame": "endgameStole,0",
             "Endgame Climb": "endClimb,0",
             "Endgame Climb Attempted": "endClimbAttempted,0",
-            "Played Defense": "playedDefense,0",
-            "Fed to Alliance Zone during Active Shift": "fedToAllianceActive,0",
-            "Fed to Alliance Zone during Inactive Shift": "fedToAllianceInactive,0",
             "Intaked from the Outpost": "outpostIntake,0",
             "Intaked from the ground": "groundIntake,0",
             "Total Fuel Worth Points": "totalFuel,0",
@@ -1980,14 +1977,14 @@ class Rebuilt(Game):
         team2Data = getTeamResults(team2)
         team3Data = getTeamResults(team3)
 
-        team1AutoClimb = int(statistic(team1Data, "autoClimb")["value"] >= 0.5)
-        team2AutoClimb = int(statistic(team2Data, "autoClimb")["value"] >= 0.5)
-        team3AutoClimb = int(statistic(team3Data, "autoClimb")["value"] >= 0.5)
+        team1AutoClimb = int(statistic(team1Data, "autoClimbSuccess")["value"] >= 0.5)
+        team2AutoClimb = int(statistic(team2Data, "autoClimbSuccess")["value"] >= 0.5)
+        team3AutoClimb = int(statistic(team3Data, "autoClimbSuccess")["value"] >= 0.5)
         autoClimbTotal = team1AutoClimb + team2AutoClimb + team3AutoClimb
 
-        team1End = round(statistic(team1Data, "endPos")["value"])
-        team2End = round(statistic(team2Data, "endPos")["value"])
-        team3End = round(statistic(team3Data, "endPos")["value"])
+        team1End = round(statistic(team1Data, "endClimb")["value"])
+        team2End = round(statistic(team2Data, "endClimb")["value"])
+        team3End = round(statistic(team3Data, "endClimb")["value"])
 
         team1Minors = statistic(team1Data, "minorFouls")["value"]
         team2Minors = statistic(team2Data, "minorFouls")["value"]

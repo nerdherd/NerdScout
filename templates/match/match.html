@@ -161,7 +161,7 @@ function moveImage(imageId, sliderVal){
                     </div>
                     <div class="booleanItem">
                         <h2>Succeeded Second Score:</h2>
-                        {% if result["autoSuccededSecondScore"] %}
+                        {% if result["autoSucceededSecondScore"] %}
                         <img src="static\images\rebuiltMatchDisplay\True.svg">
                         {% else %}
                         <img src="static\images\rebuiltMatchDisplay\False.svg">
@@ -178,14 +178,6 @@ function moveImage(imageId, sliderVal){
                     <div class="booleanItem">
                         <h2>Into Outpost:</h2>
                         {% if result["autoFedToOutpost"] %}
-                        <img src="static\images\rebuiltMatchDisplay\True.svg">
-                        {% else %}
-                        <img src="static\images\rebuiltMatchDisplay\False.svg">
-                        {% endif %}
-                    </div>
-                    <div class="booleanItem">
-                        <h2>Stole:</h2>
-                        {% if result["autoStole"] %}
                         <img src="static\images\rebuiltMatchDisplay\True.svg">
                         {% else %}
                         <img src="static\images\rebuiltMatchDisplay\False.svg">
@@ -297,9 +289,6 @@ function moveImage(imageId, sliderVal){
                                 </div>
                             </div>
                         </div>
-                        {% if not result["firstActiveShiftFuel"] %}
-                            <p>No Data</p>
-                        {% endif %}
                         <div class="row">
                             
                             

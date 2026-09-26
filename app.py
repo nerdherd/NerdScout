@@ -243,6 +243,7 @@ def renderMatch():
         alert = request.args.get("alert")
 
     madePrediction = False
+    userPoints = 0
     if session["username"]:
         userData = getUser(session["username"])
         if userData:
