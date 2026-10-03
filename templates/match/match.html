@@ -828,7 +828,7 @@ function moveImage(imageId, sliderVal){
     {% set apiWinner = results["predictionData"]["winner"] %}
     <div>
         <!-- haven't made a prediction yet -->
-        <h3>Current Prediction <br><span id="poweredByStatbotics">powered by Statbotics</span></h3>
+        <h3>Current Prediction <br><span id="poweredByStatbotics">powered by {{ api }}</span></h3>
         <p id="statboticsPrediction"><span class="{{apiWinner}}Text">{{apiWinner | capitalize}}</span> wins by {{apiDifference | round(2)}} points</p>
         <div class="predictionCard">
             <div class="predictionSelection">
@@ -935,7 +935,7 @@ function moveImage(imageId, sliderVal){
         {% if ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
         {% set apiDifference = results["predictionData"]["points_difference"]%}
         {% set apiWinner = results["predictionData"]["winner"] %}
-        <h3>Current Prediction <br><span id="poweredByStatbotics">powered by Statbotics</span></h3>
+        <h3>Current Prediction <br><span id="poweredByStatbotics">powered by {{ api }}</span></h3>
         <p id="statboticsPrediction"><span class="{{apiWinner}}Text">{{apiWinner | capitalize}}</span> wins by {{apiDifference | round(2)}} points</p>
         {% endif %}
     <h3>Result</h3>
@@ -969,13 +969,13 @@ function moveImage(imageId, sliderVal){
     {% elif madePrediction  and ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
     {% set apiDifference = results["predictionData"]["points_difference"]%}
     {% set apiWinner = results["predictionData"]["winner"] %}
-    <h3>Current Prediction <br><span id="poweredByStatbotics">powered by Statbotics</span></h3>
+    <h3>Current Prediction <br><span id="poweredByStatbotics">powered by {{ api }}</span></h3>
     <p id="statboticsPrediction"><span class="{{apiWinner}}Text">{{apiWinner | capitalize}}</span> wins by {{apiDifference | round(2)}} points</p>
     <p class="predictionsNotOpenMessage">You have already predicted.</p>
     {% elif (not results["compLevel"] == "qm") and ("predictionData" in results) and ("points_difference" in results["predictionData"]) and ("winner" in results["predictionData"]) %}
     {% set apiDifference = results["predictionData"]["points_difference"]%}
     {% set apiWinner = results["predictionData"]["winner"] %}
-    <h3>Current Prediction <br><span id="poweredByStatbotics">powered by Statbotics</span></h3>
+    <h3>Current Prediction <br><span id="poweredByStatbotics">powered by {{ api }}</span></h3>
     <p id="statboticsPrediction"><span class="{{apiWinner}}Text">{{apiWinner | capitalize}}</span> wins by {{apiDifference | round(2)}} points</p>
     <p class="predictionsNotOpenMessage">Make your playoffs predictions at <a href="{{ url_for('pointsPlayoffsPage') }}">NerdPredict Pickems</a>.</p>
     {% else %}

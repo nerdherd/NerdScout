@@ -26,8 +26,20 @@ accounts = database.accounts
 teams = database.teams
 requestsDB = database.requests
 
+class PredictionAPI(Enum):
+    STATBOTICS = "Statbotics"
+    MATCH13 = "match13"
+
+PREDICTION_API: PredictionAPI = PredictionAPI.MATCH13
+
+try:
+    MATCH13_KEY = open(os.path.join(root, "secrets/match13"), "r").read()
+except FileNotFoundError:
+    MATCH13_KEY = ""
+
 # do not include the slash at the end of the url
 STATBOTICS_API = "https://api-statbotics.iterativerefinement.com"
+MATCH13_API = "https://actions.match13.com"
 
 
 def loadFromCacheFile(file: str, path: str = "cache") -> str:
@@ -75,7 +87,7 @@ def getStatboticsPrediction(matchKey: str) -> dict:
     try:
         data = requests.get(
             f"{STATBOTICS_API}/v3/match/{matchKey}",
-            headers={"User-Agent": "Nerd Scout"},
+            headers={"User-Agent": "NerdScout"},
         )
         if data.status_code == 404:
             abort(400)
@@ -100,7 +112,7 @@ def getStatboticsPredictions(eventKey: str) -> list:
     try:
         data = requests.get(
             f"{STATBOTICS_API}/v3/matches?event={eventKey}",
-            headers={"User-Agent": "Nerd Scout"},
+            headers={"User-Agent": "NerdScout"},
         )
         if data.status_code == 404:
             abort(400)
@@ -112,6 +124,59 @@ def getStatboticsPredictions(eventKey: str) -> list:
         data = []
         # abort(500)
     return data
+
+def getMatch13Prediction(matchKey: str) -> dict:
+    """
+    GETs the match13 prediction for a given match.
+
+    Inputs:
+    - matchKey (str): match key from TBA
+
+    Returns:
+    - dict: raw data from "pred" from match13
+    """
+    try:
+        data = requests.get(
+            f"{MATCH13_API}/v1/matches/{matchKey}",
+            headers={"Authorization": f"Bearer {MATCH13_KEY}",
+                     "User-Agent": "NerdScout"}
+        )
+        if data.status_code == 404:
+            abort(400)
+        elif not data.ok:
+            raise Exception
+        data = json.loads(data.text)
+    except:
+        app.logger.error(f"Failed to load match data for {matchKey} from match13.")  # type: ignore
+        abort(500)
+    return data["pred"]
+
+def getMatch13Predictions(eventKey: str) -> list:
+    """
+    GETs the match13 prediction for a given event.
+
+    Inputs:
+    - eventKey (str): event key from TBA
+
+    Returns:
+    - list: raw data from from match13
+    """
+    try:
+        data = requests.get(
+            f"{MATCH13_API}/v1/events/{eventKey}/matches",
+            headers={"Authorization": f"Bearer {MATCH13_KEY}",
+                    "User-Agent": "NerdScout"},
+        )
+        if data.status_code == 404:
+            abort(400)
+        elif not data.ok:
+            raise Exception
+        data = json.loads(data.text)
+    except:
+        app.logger.error(f"Failed to load event data for {eventKey} from Statbotics.")  # type: ignore
+        return []
+        # abort(500)
+    return data["matches"]
 
 def addTestPredictionToDatabase(matchKey: str) -> bool:
     """
@@ -152,6 +217,25 @@ def addStatboticsPredictionToDatabase(matchKey: str) -> bool:
     data["points_difference"] = pointsDifference
     return matches.update_one({"matchKey": matchKey}, {"$set": {"predictionData": data}}).acknowledged
 
+def addMatch13PredictionToDatabase(matchKey: str) -> bool:
+    """
+    GETs the match13 prediction for a given match and 
+    writes it to predictionData in the database.
+
+    Inputs:
+    - matchKey (str): match key from TBA
+
+    Returns:
+    - bool: success
+    """
+    data = getMatch13Prediction(matchKey)
+    data["red_score"] = data["redScore"]
+    data["blue_score"] = data["blueScore"]
+    data["winner"] = "" if data["red_score"] == data["blue_score"] else "red" if data["red_score"] > data["blue_score"] else "blue"
+    pointsDifference = abs(data["red_score"] - data["blue_score"])
+    data["points_difference"] = pointsDifference
+    return matches.update_one({"matchKey": matchKey}, {"$set": {"predictionData": data}}).acknowledged
+
 def updateAllStatboticsPredictions(eventKey: str|None = None) -> None:
     """
     GETs the Statbotics prediction for a given event and
@@ -180,6 +264,53 @@ def updateAllStatboticsPredictions(eventKey: str|None = None) -> None:
         else:
             app.logger.warning(f"Failed to update Statbotics prediction for {match['key']}: match not in database.")
 
+def updateAllMatch13Predictions(eventKey: str|None = None) -> None:
+    """
+    GETs the match13 prediction for a given event and
+    writes it to predictionData in the database.
+
+    Inputs:
+    - eventKey (str|None): event key from TBA, defaults to None which uses the cached key
+    """
+    app.logger.info("Now starting to load match13 data.")
+    if not eventKey:
+        eventKey = loadFromCacheFile("recentEventKey")
+    if not eventKey:
+        app.logger.error("Failed to update match13 predictions: no event key found")
+        abort(500)
+    data = getMatch13Predictions(eventKey)
+    databaseData = getAllMatches()
+    if not data:
+        app.logger.error(f"match13 returned no data for {eventKey}")
+    for match in data:
+        matchInDatabase = any(d["matchKey"] == match["key"] for d in databaseData)
+        if matchInDatabase:
+            match["pred"]["red_score"] = match["pred"]["redScore"]
+            match["pred"]["blue_score"] = match["pred"]["blueScore"]
+            match["pred"]["winner"] = "" if match["pred"]["red_score"] == match["pred"]["blue_score"] else "red" if match["pred"]["red_score"] > match["pred"]["blue_score"] else "blue"
+            pointsDifference = abs(match["pred"]["red_score"] - match["pred"]["blue_score"])
+            match["pred"]["points_difference"] = pointsDifference
+            matches.update_one({"matchKey": match["key"]}, {"$set": {"predictionData": match["pred"]}})
+            app.logger.info(f"Loaded prediction for {match['key']}")
+        else:
+            app.logger.warning(f"Failed to update match13 prediction for {match['key']}: match not in database.")
+
+match PREDICTION_API:
+    case PredictionAPI.MATCH13:
+        getAllMatchPredictions = getMatch13Predictions
+        getMatchPrediction = getMatch13Prediction
+        updatePrediction = addMatch13PredictionToDatabase
+        updateAllPredictions = updateAllMatch13Predictions
+    case PredictionAPI.STATBOTICS:
+        getAllMatchPredictions = getStatboticsPredictions
+        getMatchPrediction = getStatboticsPrediction
+        updatePrediction = addStatboticsPredictionToDatabase
+        updateAllPredictions = updateAllStatboticsPredictions
+    case _:
+        getAllMatchPredictions = getMatch13Predictions
+        getMatchPrediction = getMatch13Prediction
+        updatePrediction = addMatch13PredictionToDatabase
+        updateAllPredictions = updateAllMatch13Predictions
 
 def addScheduledMatch(
     matchNumber: int,
@@ -372,7 +503,7 @@ def addScheduleFromTBA(event: str):
     data = loadScheduleFromTBA(event)
     for match in data:
         addMatchFromTBA(match)
-    updateAllStatboticsPredictions(event)
+    updateAllPredictions(event)
     return "ok"
 
 
@@ -427,7 +558,7 @@ def updateScheduleFromTBA(event: str):
                         },
                     )
                     app.logger.info(f"Updated score breakdown for {match['key']}")
-    updateAllStatboticsPredictions(event)
+    updateAllPredictions(event)
     saveAlliancesFromTBA(event)
 
 

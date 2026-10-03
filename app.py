@@ -264,6 +264,7 @@ def renderMatch():
         setNum=setNumber,
         madePrediction=madePrediction,
         userPoints=userPoints,
+        api=PREDICTION_API.value,
         # this is game specific.
         FMSEndPositionRebuilt=FMSEndPositionRebuilt,
     )
@@ -312,7 +313,7 @@ def updateMatchFromTBAPage():
         compLevel=compLevel, matchNumber=matchNumber, setNumber=setNumber
     )
     if result[0]:
-        updateAllStatboticsPredictions()
+        updateAllPredictions()
         saveAlliancesFromTBA()
     if compLevel == CompLevel.SF or compLevel == CompLevel.F:
         updateScheduleFromTBA(loadFromCacheFile("recentEventKey"))
