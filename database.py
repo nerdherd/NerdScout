@@ -27,6 +27,9 @@ accounts = database.accounts
 teams = database.teams
 requestsDB = database.requests
 
+# do not include the slash at the end of the url
+STATBOTICS_API = "https://api-statbotics.iterativerefinement.com"
+
 
 def loadFromCacheFile(file: str, path: str = "cache") -> str:
     """
@@ -104,7 +107,7 @@ def getStatboticsPrediction(matchKey: str) -> dict:
     """
     try:
         data = requests.get(
-            f"https://api.statbotics.io/v3/match/{matchKey}",
+            f"{STATBOTICS_API}/v3/match/{matchKey}",
             headers={"User-Agent": "Nerd Scout"},
         )
         if data.status_code == 404:
@@ -129,7 +132,7 @@ def getStatboticsPredictions(eventKey: str) -> list:
     """
     try:
         data = requests.get(
-            f"https://api.statbotics.io/v3/matches?event={eventKey}",
+            f"{STATBOTICS_API}/v3/matches?event={eventKey}",
             headers={"User-Agent": "Nerd Scout"},
         )
         if data.status_code == 404:
@@ -139,7 +142,8 @@ def getStatboticsPredictions(eventKey: str) -> list:
         data = json.loads(data.text)
     except:
         app.logger.error(f"Failed to load event data for {eventKey} from Statbotics.")  # type: ignore
-        abort(500)
+        data = []
+        # abort(500)
     return data
 
 def addTestPredictionToDatabase(matchKey: str) -> bool:
@@ -284,6 +288,10 @@ def addMatchFromTBA(match: dict):
             displayName = f"Final {matchNumber}"
         else:
             displayName = f"{compLevel.value} {matchNumber}"
+
+        if (not match["alliances"]["red"]["team_keys"]) or (not match["alliances"]["blue"]["team_keys"]):
+            app.logger.info(f"Skipping {displayName}; teams not defined.")
+            return
         addScheduledMatch(
             matchNumber,
             setNumber,
@@ -301,6 +309,7 @@ def addMatchFromTBA(match: dict):
         app.logger.error(  # type: ignore
             f"Unable to load match from The Blue Alliance. Aborting. Error: {e}"
         )
+        app.logger.info(match)
         abort(500)
 
 
@@ -532,16 +541,24 @@ def saveAlliancesFromTBA(event: str = READ_CACHE("recentEventKey")):
             app.logger.error(  # type: ignore
                 f"Failed to load alliance data for {event} from The Blue Alliance. API error: {data['Error']}"
             )
-            abort(500)
+            # abort(500)
+            return
     except:
         app.logger.error(  # type: ignore
-            f"Failed to load alliance data for {event} from The Blue Alliance. Network error."
+            f"Failed to load alliance data for {event} from The Blue Alliance. Network error, or no data returned."
         )
-        abort(500)
+        # abort(500)
+        return
     saveData = {"rawData": data, "eventKey": event}
+    i = 0
     for alliance in data:
+        i += 1
+        if "name" in alliance:
+            allianceName = alliance["name"]
+        else:
+            allianceName = f"Alliance {i}"
         # alliance names are in format "Alliance #"
-        saveData[alliance["name"]] = []
+        saveData[allianceName] = []
         for team in alliance["picks"]:
             try:
                 teamNumber = int(team[3:])

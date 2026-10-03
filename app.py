@@ -243,6 +243,7 @@ def renderMatch():
         alert = request.args.get("alert")
 
     madePrediction = False
+    userPoints = 0
     if session["username"]:
         userData = getUser(session["username"])
         if userData:
@@ -1213,6 +1214,10 @@ def matchTable():
         teams=teams,
     )
 
+@app.route("/updateAlliances")
+def updateAlliancePage():
+    saveAlliancesFromTBA()
+    return "yeah ok"
 
 @app.route("/clearAllPickems")
 def clearPickemsPage():

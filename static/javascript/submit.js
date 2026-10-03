@@ -298,7 +298,7 @@ function submitData(matchNum, compLevel, setNum, robot){
         }
     }).then(response =>{
         if (response.ok){
-            alert("Succesfully submitted")
+            alert("Succesfully submitted");
             redirect_to_match()
         } else{
             alert("There was an error submitting.");
