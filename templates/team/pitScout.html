@@ -47,10 +47,13 @@
 <button onclick="submitData()" class="card">Submit</button>
 
 <script>
+    canLeaveSafely = false;
 
     window.addEventListener('beforeunload', function (e) {
-        e.preventDefault();
-        e.returnValue = '';
+        if (!canLeaveSafely){
+            e.preventDefault();
+            e.returnValue = '';
+        }
     });
 
 
@@ -155,7 +158,9 @@
             }
             }).then(response =>{
                 if (response.ok){
-                    if (confirm('Submitted! Redirect to image submision page?')){
+                    canLeaveSafely = true;
+                    alert("Successfully submitted pit scout!")
+                    if (confirm('Would you like to add an image? Feel free to come back and submit an image later.')){
                         window.location.href="{{url_for('addTeamImagePage')}}?team="+team;
                     } else if (confirm("Redirect to team page?")){
                         window.location.href="{{url_for('teamPage')}}?team="+team;
