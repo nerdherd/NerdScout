@@ -41,7 +41,8 @@
 </div>
 <div class="card">
     <h2>Pit Scout CSV</h2>
-    <p>Gives a CSV file of the pit scouting data for all teams</p>
-    <a href="{{url_for('getPitScoutCSV')}}" target="_blank">Link</a>
+    <p>Downloads a CSV file of the pit scouting data for all teams</p>
+    <a href="{{url_for('getPitScoutCSV')}}" download>Download data</a><br>
+    <a href="{{url_for('getPitScoutCSV', all='true')}}" download>Download every submission (including overwriten ones)</a>
 </div>
 {% endblock %}

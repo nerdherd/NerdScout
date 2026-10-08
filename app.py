@@ -1,5 +1,6 @@
 import os
 from flask import (
+    Response,
     abort,
     redirect,
     render_template,
@@ -13,6 +14,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash
 import csv
+from datetime import date
 import io
 import random
 import time
@@ -618,8 +620,11 @@ def scoutTeam():
 
 @app.route("/team/csv")
 def getPitScoutCSV():
+    allSubmissions = request.args.get("all") == "true"
 
-    header = ["team", "user"]
+    header = ["Team", "Team Name", "Scout"]
+    if allSubmissions:
+        header.append("Submission #")
     for section in game.pitScout:
         for question in section:
             if question["type"] == "text":
@@ -631,12 +636,15 @@ def getPitScoutCSV():
                     header.append(question["text"] + " - Other")
     rows = [header]
 
-    teams = getAllTeams()
-    for team in teams:
-        if team.get("pitScout"):
-            scouted = team["pitScout"][-1]
-            line = [team["number"], scouted["user"]]
-            scouted = scouted["data"]
+    for team in sortTeams(getAllTeams()):
+        submissions = team.get("pitScout", [])
+        if not allSubmissions:
+            submissions = submissions[-1:]
+        for submissionNumber, submission in enumerate(submissions, start=1):
+            line = [team["number"], team.get("shortName", ""), submission["user"]]
+            if allSubmissions:
+                line.append(submissionNumber)
+            scouted = submission["data"]
             for section in game.pitScout:
                 for question in section:
                     if question["type"] == "text":
@@ -650,9 +658,15 @@ def getPitScoutCSV():
             rows.append(line)
 
     output = io.StringIO()
+    output.write("﻿") # the byte order mark for Excel
     csv.writer(output).writerows(rows)
 
-    return render_template("team/downloadCSV.html", csvdata=output.getvalue())
+    filename = f"pitscout{'_all' if allSubmissions else ''}_{date.today().isoformat()}.csv"
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 # dontSummarize = frozenset(
