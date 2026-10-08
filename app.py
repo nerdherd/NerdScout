@@ -12,6 +12,8 @@ from minify_html import minify
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash
+import csv
+import io
 import random
 import time
 from constants import *
@@ -595,10 +597,13 @@ def scoutTeam():
         try:
             team = int(request.headers["Team"])  # type: ignore
             user = session["username"]  # type: ignore
-        except TypeError as e:
+        except (KeyError, ValueError, TypeError) as e:
             app.logger.warning(e)
             abort(400)
-        pitScoutTeam(team, user, submission)  # type: ignore
+        if not isinstance(submission, dict):
+            abort(400)
+        if not pitScoutTeam(team, user, submission):
+            abort(404)
         return "ok"
     team = None
     try:
@@ -614,40 +619,40 @@ def scoutTeam():
 @app.route("/team/csv")
 def getPitScoutCSV():
 
-    csv = ["team", "user"]
+    header = ["team", "user"]
     for section in game.pitScout:
         for question in section:
             if question["type"] == "text":
-                csv.append(question["text"])
+                header.append(question["text"])
             elif question["type"] == "select":
-                # csv.append(question["id"]+"select")
                 for option in question["options"]:
-                    csv.append(question["text"] + " - " + option[0])
-    csv = [csv]
+                    header.append(question["text"] + " - " + option[0])
+                if question.get("other"):
+                    header.append(question["text"] + " - Other")
+    rows = [header]
 
     teams = getAllTeams()
     for team in teams:
-        if "pitScout" in team:
+        if team.get("pitScout"):
             scouted = team["pitScout"][-1]
             line = [team["number"], scouted["user"]]
             scouted = scouted["data"]
             for section in game.pitScout:
                 for question in section:
                     if question["type"] == "text":
-                        # csv.append(question["id"])
-                        line.append(scouted[question["id"]])
+                        line.append(scouted.get(question["id"], ""))
                     elif question["type"] == "select":
-                        # csv.append(question["id"]+"select")
+                        answer = scouted.get(question["id"], {})
                         for option in question["options"]:
-                            line.append(scouted[question["id"]][option[1]])
-            csv.append(line)
+                            line.append(answer.get(option[1], ""))
+                        if question.get("other"):
+                            line.append(answer.get("other", ""))
+            rows.append(line)
 
-    csv = [[str(a) for a in row] for row in csv]
-    csv = [[a.replace('"', '\\"\\"') for a in row] for row in csv]
-    csv = [['\\"' + a + '\\"' for a in row] for row in csv]
-    csv = "\\n".join(",".join(row) for row in csv)
+    output = io.StringIO()
+    csv.writer(output).writerows(rows)
 
-    return render_template("team/downloadCSV.html", csvdata=csv)
+    return render_template("team/downloadCSV.html", csvdata=output.getvalue())
 
 
 # dontSummarize = frozenset(

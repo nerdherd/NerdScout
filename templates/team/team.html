@@ -41,23 +41,27 @@
         <div class="pit-scout pit-{{loop.index}} hidden">
             <!-- {{data}} -->
             {% for thing in pitScoutQuestions %}{% for question in thing %}
+            {# skip questions this scout didn't have (added after they submitted) #}
+            {% if question["id"] in data %}
+            {% set answer = data[question["id"]] %}
             {% if question["type"] == "text" %}
-            {% if data[question["id"]] != ""%}
+            {% if answer != ""%}
             <p>{{question["text"]}}</p>
             <ul>
-                <li>{{data[question["id"]]}}</li>
+                <li>{{answer}}</li>
             </ul>
             {% endif %}
             {% elif question["type"] == "select"%}
             <p>{{question["text"]}}</p>
             <ul>
             {% for option in question["options"] %}
-                <li class="{{"checked" if data[question["id"]][option[1]] else "unchecked"}}">{{data[question["id"]][option[1]]}}: {{option[0]}}</li>
+                <li class="{{"checked" if answer.get(option[1]) else "unchecked"}}">{{option[0]}}</li>
             {% endfor %}
-            {% if "other" in question and data[question["id"]]["other"] != "" %}
-                <li class="checked">Other: {{data[question["id"]]["other"]}}</li>
+            {% if answer.get("other") %}
+                <li class="checked">Other: {{answer["other"]}}</li>
             {% endif %}
             </ul>
+            {% endif %}
             {% endif %}
             {% endfor %}{% endfor %}
         </div>
@@ -149,7 +153,7 @@
             }
         }
     }
-    addEventListener("DOMContentLoaded",updatePitScout());
+    addEventListener("DOMContentLoaded",updatePitScout);
 </script>
 {% endif %}
 

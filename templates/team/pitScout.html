@@ -19,22 +19,24 @@
     {% for card in pitScout %}
     <div class="card">
         {% for question in card %}
-        <div id="{{question['id']}}-container" {% if "hidden" in question %}style="display:none"{% endif %}>
+        {% set qid = question['id'] %}
+        <div id="{{qid}}-container" {% if question.get("hidden") or question.get("showIf") %}style="display:none"{% endif %}>
         {% if not loop.first %}<br>{% endif %}
         {% if question["type"] == "text" %}
-        <label for="{{question['id']}}">{{question["text"]}}</label><br>
-        <input type="text" id="{{question['id']}}" name="{{question['id']}}"/>
+        <label for="{{qid}}">{{question["text"]}}</label><br>
+        <input type="text" id="{{qid}}" name="{{qid}}"/>
         {% elif question["type"] == "select" %}
+        {% set inputType = "radio" if question.get("single") else "checkbox" %}
         <p>{{question["text"]}}</p>
         <div>
             {% for option in question["options"] %}
-            <input type="checkbox" id="{{question['id']}}-{{option[1]}}" name="{{question['id']}}-{{option[1]}}" {% if "onclick" in question %}onclick="{{option[2]}}"{% endif %}/>
-            <label for="{{question['id']}}-{{option[1]}}">{{option[0]}}</label>
+            <input type="{{inputType}}" id="{{qid}}-{{option[1]}}" name="{{qid}}" {% if question.get("onclick") and option|length > 2 %}onclick="{{option[2]}}"{% endif %}/>
+            <label for="{{qid}}-{{option[1]}}">{{option[0]}}</label>
             <br>
             {% endfor %}
-            {% if "other" in question %}
-            <input type="checkbox" id="{{question['id']}}-other" name="{{question['id']}}-other" onclick="showOtherInput('{{question['id']}}-other')"> <label for="{{question['id']}}-other">Other</label><br>
-            <input type="text" id="{{question['id']}}-other-input" style="display:none;">
+            {% if question.get("other") %}
+            <input type="{{inputType}}" id="{{qid}}-other" name="{{qid}}"> <label for="{{qid}}-other">Other</label><br>
+            <input type="text" id="{{qid}}-other-input" style="display:none;">
             {% endif %}
         </div>
         {% endif %}
@@ -44,10 +46,12 @@
     {% endfor %}
 </div>
 
-<button onclick="submitData()" class="card">Submit</button>
+<button onclick="submitData()" class="card" id="submit">Submit</button>
 
 <script>
-    canLeaveSafely = false;
+    const questions = {{ pitScout|tojson }}.flat();
+
+    let canLeaveSafely = false;
 
     window.addEventListener('beforeunload', function (e) {
         if (!canLeaveSafely){
@@ -55,11 +59,6 @@
             e.returnValue = '';
         }
     });
-
-
-    function showOtherInput(check_id){
-        showIfChecked(check_id,check_id+"-input")
-    }
 
     function showIfChecked(check_id,el_id,display="inline"){
         const el = document.getElementById(el_id);
@@ -71,93 +70,126 @@
         }
     }
 
-    function moveup(id){
-        let element = document.getElementById(id);
-        if(element.previousElementSibling)
-            element.parentNode.insertBefore(element, element.previousElementSibling);
+    function isChecked(id){
+        const element = document.getElementById(id);
+        return element !== null && element.checked;
     }
 
-    function movedown(id){
-        let element = document.getElementById(id);
-        if(element.nextElementSibling)
-            element.parentNode.insertBefore(element.nextElementSibling, element);
+    function getContainer(question){
+        return document.getElementById(question.id+"-container");
     }
 
-
-    function getCheckbox(id){
-        return document.getElementById(id).checked;
-    }
-    function getValue(id,checkEmpty=true){
-        console.log(id);
-        let value = document.getElementById(id).value;
-        let valueEmpty = (checkEmpty&&(value===""));
-        isEmpty ||= valueEmpty;
-        if (valueEmpty){
-            emptyList.push(id);
-        }
-        return value;
+    function isShown(question){
+        return getContainer(question).style.display !== "none";
     }
 
-    const otherInput1Box = document.getElementById("drivetrain-other-input");
-    const otherCheck1 = document.getElementById("drivetrain-other");
-
-    const otherInput2Box = document.getElementById("language-other-input");
-    const otherCheck2 = document.getElementById("language-other");
-
-    function showOtherInput1(){
-        if (otherCheck1.checked){
-            otherInput1Box.style = "display:inline;";
-        } else{
-            otherInput1Box.style = "display:none";
-            otherInput1Box.value = "";
+    function clearQuestion(question){
+        if (question.type === "text"){
+            document.getElementById(question.id).value = "";
+        } else {
+            for (const input of document.getElementsByName(question.id)){
+                input.checked = false;
+            }
         }
     }
 
-    function showOtherInput2(){
-        if (otherCheck2.checked){
-            otherInput2Box.style = "display:inline;";
-        } else{
-            otherInput2Box.style = "display:none";
-            otherInput2Box.value = "";
+    function updateConditionals(){
+        let changed = true;
+        while (changed){
+            changed = false;
+            for (const question of questions){
+                if (question.showIf !== undefined){
+                    const shouldShow = [].concat(question.showIf).some(isChecked);
+                    if (shouldShow !== isShown(question)){
+                        getContainer(question).style.display = shouldShow ? "" : "none";
+                        if (!shouldShow){
+                            clearQuestion(question);
+                        }
+                        changed = true;
+                    }
+                }
+                if (question.other){
+                    const otherInput = document.getElementById(question.id+"-other-input");
+                    const otherChecked = isChecked(question.id+"-other");
+                    otherInput.style.display = otherChecked ? "inline" : "none";
+                    if (!otherChecked){
+                        otherInput.value = "";
+                    }
+                }
+            }
         }
     }
 
-    var isEmpty = false;
-    var emptyList = [];
+    document.addEventListener("change", updateConditionals);
+    updateConditionals();
+
+    function collectAnswers(){
+        const data = {};
+        const missing = [];
+        for (const question of questions){
+            const shown = isShown(question);
+            const required = shown && !question.optional;
+            if (question.type === "text"){
+                const value = document.getElementById(question.id).value.trim();
+                if (required && value === ""){
+                    missing.push(question.text);
+                }
+                data[question.id] = value;
+            } else if (question.type === "select"){
+                const answer = {};
+                let anyChecked = false;
+                for (const option of question.options){
+                    answer[option[1]] = isChecked(question.id+"-"+option[1]);
+                    anyChecked ||= answer[option[1]];
+                }
+                if (question.other){
+                    const otherChecked = isChecked(question.id+"-other");
+                    answer.other = otherChecked ? document.getElementById(question.id+"-other-input").value.trim() : "";
+                    if (shown && otherChecked && answer.other === ""){
+                        missing.push(question.text+" (Other)");
+                    }
+                    anyChecked ||= otherChecked;
+                }
+                if (required && !anyChecked){
+                    missing.push(question.text);
+                }
+                data[question.id] = answer;
+            }
+        }
+        return {data, missing};
+    }
+
+    const submitButton = document.getElementById("submit");
+
+    function submitFailed(message){
+        alert(message);
+        submitButton.disabled = false;
+    }
 
     function submitData(){
-        isEmpty=false;
-        emptyList = []
-
-        let team = getValue("team");
-        console.log(team);
-
-        let ranking = [];
-        for (const element of document.querySelectorAll(".rank-thing")){
-            ranking.push(element.dataset.value);
+        const team = document.getElementById("team").value;
+        const {data, missing} = collectAnswers();
+        if (team === ""){
+            missing.unshift("Team Number");
         }
 
-        let rawData = { {% for card in pitScout %}{% for question in card %}{% if question["type"] == "text" %}"{{question['id']}}": getValue("{{question['id']}}",{% if "hidden" in question or "optional" in question %}false{% endif %}),{% elif question["type"] == "select" %}"{{question['id']}}": { {% for option in question["options"]%}"{{option[1]}}": getCheckbox("{{question['id']}}-{{option[1]}}"),{% endfor %}{% if "other" in question %}"other": getValue("{{question['id']}}-other-input",false){% endif %} },{% endif %}{% endfor %}{% endfor %} };
-
-        if (isEmpty) {
-            alert("Please fill out every field. Missing: "+emptyList.join(", "));
+        if (missing.length > 0) {
+            alert("Please fill out:\n- "+missing.join("\n- "));
             return;
         }
 
-        console.log(rawData);
-
-        let data = JSON.stringify(rawData);
-        console.log(data);
-
+        submitButton.disabled = true;
         fetch(window.location.href, {
             method: "POST",
-            body: data,
+            body: JSON.stringify(data),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "team":team
             }
             }).then(response =>{
-                if (response.ok){
+                if (response.redirected){
+                    submitFailed("You've been logged out. Please log in again in another tab then submit again.");
+                } else if (response.ok){
                     canLeaveSafely = true;
                     alert("Successfully submitted pit scout!")
                     if (confirm('Would you like to add an image? Feel free to come back and submit an image later.')){
@@ -165,10 +197,14 @@
                     } else if (confirm("Redirect to team page?")){
                         window.location.href="{{url_for('teamPage')}}?team="+team;
                     };
+                } else if (response.status === 404){
+                    submitFailed("Team "+team+" isn't in the database.");
                 } else {
-                    alert("Error submitting!");
+                    submitFailed("Error submitting! ("+response.status+")");
                 }
-        });
+            }).catch(() => {
+                submitFailed("Couldn't reach the server. Check your connection and try again.");
+            });
     }
 </script>
 {% endblock %}

@@ -1278,7 +1278,24 @@ class Rebuilt(Game):
             "Died",
             "No Show",
             "Bad Descision Making",
-        ]        
+        ]
+
+        # Pit scout is a list (or tuple) of lists (or tuples) of dicts 
+        # Every list is a card, every dict is a question
+        # Ids:
+        # - "text": the question shown to the scout
+        # - "type": "text" (free response) or "select" (list of options)
+        # - "options" (select only): tuple of (label, value) or (label, value, onclick JS)
+        # - "single" (select only): only one option can be picked
+        # - "other" (select only): adds an "Other" option with a text box
+        # - "optional": scout can leave it blank
+        # - "showIf": only show (and require) this question when the given option is picked,
+        #   written as "<questionId>-<optionValue>"; can also be a list, shown if any are picked
+        # - "hidden": start hidden, can be shown with javascript
+        # - "onclick" (select only): run each option's onclick JS when it is clicked
+
+        # Submitted data is stored as {id: "answer"} for text and {id: {value: bool, ..., "other": "text"}} for select
+
         self.pitScout = (
             (
                 {
@@ -1295,6 +1312,7 @@ class Rebuilt(Game):
                         ("Closed","closed"),
                         ("Open","open")
                     ),
+                    "single":True,
                     "id":"bumpers"
                 },
             ),
@@ -1315,18 +1333,18 @@ class Rebuilt(Game):
                     "text":"What drivebase do they use?",
                     "type":"select",
                     "options":(
-                        ("Swerve","swerve","showIfChecked('drivebase-swerve','swervetype-container')"),
-                        ("Tank","tank","0"),
+                        ("Swerve","swerve"),
+                        ("Tank","tank"),
                     ),
                     "other":True,
+                    "single":True,
                     "id":"drivebase",
-                    "onclick":True
                 },
                 {
                     "text":"What swerve do they use?",
                     "type":"text",
                     "id":"swervetype",
-                    "hidden":True
+                    "showIf":"drivebase-swerve"
                 }
             ),
             (
@@ -1355,30 +1373,30 @@ class Rebuilt(Game):
                     "text":"What autos do they have?",
                     "type":"select",
                     "options":(
-                        ("Left","left","showIfChecked('has-auto-left','auto-describe-left-container','block')"),
-                        ("Right","right","showIfChecked('has-auto-right','auto-describe-right-container','block')"),
-                        ("Mid","mid","showIfChecked('has-auto-mid','auto-describe-mid-container','block')"),
+                        ("Left","left"),
+                        ("Right","right"),
+                        ("Mid","mid"),
                     ),
                     "id":"has-auto",
-                    "onclick":True
+                    "optional":True
                 },
                 {
                     "text":"What is their left auto?",
                     "type":"text",
                     "id":"auto-describe-left",
-                    "hidden":True
+                    "showIf":"has-auto-left"
                 },
                 {
                     "text":"What is their right auto?",
                     "type":"text",
                     "id":"auto-describe-right",
-                    "hidden":True
+                    "showIf":"has-auto-right"
                 },
                 {
                     "text":"What is their mid auto?",
                     "type":"text",
                     "id":"auto-describe-mid",
-                    "hidden":True
+                    "showIf":"has-auto-mid"
                 },
                 {
                     "text":"What can they realistically do during auto?",
@@ -1479,25 +1497,39 @@ class Rebuilt(Game):
                     "id":"weight",
                 },
             ),
+            # (
+            #     {
+            #         "text":"How many motors are on their intake?",
+            #         "type":"text",
+            #         "id":"motors",
+            #     },
+            # ),
+            # (
+            #     {
+            #         "text":"How wide is their intake?",
+            #         "type":"text",
+            #         "id":"width-intake",
+            #     },
+            # ),
+            # (
+            #     {
+            #         "text":"How wide is their shooter (for drum shooters, leave blank if N/A)?",
+            #         "type":"text",
+            #         "id":"width-shooter",
+            #     },
+            # ),
             (
                 {
-                    "text":"How many motors are on their intake?",
+                    "text":"How experienced are their drivers?",
                     "type":"text",
-                    "id":"motors",
+                    "id":"experience",
                 },
             ),
             (
                 {
-                    "text":"How wide is their intake?",
+                    "text":"Are they comfortable stealing from the opponents zone or playing defense?",
                     "type":"text",
-                    "id":"width-intake",
-                },
-            ),
-            (
-                {
-                    "text":"How wide is their shooter (for drum shooters, leave blank if N/A)?",
-                    "type":"text",
-                    "id":"width-shooter",
+                    "id":"stealdefense",
                 },
             ),
             (
@@ -1506,13 +1538,6 @@ class Rebuilt(Game):
                     "type":"text",
                     "id":"special",
                     "optional":True
-                },
-            ),
-            (
-                {
-                    "text":"How experienced are their drivers?",
-                    "type":"text",
-                    "id":"experience",
                 },
             ),
             (
@@ -1526,7 +1551,7 @@ class Rebuilt(Game):
                 {
                     "text":"Any other comments?",
                     "type":"text",
-                    "id":"special",
+                    "id":"comments",
                     "optional":True
                 },
             ),

@@ -837,10 +837,14 @@ def pitScoutTeam(team: int, user: str, data: dict):
     - team (int): the team's number
     - user (str): the uploader's username
     - data (dict): pit scout data
+
+    Outputs:
+    - bool: whether the team existed and was updated
     """
-    teams.update_one(
+    result = teams.update_one(
         {"number": team}, {"$push": {"pitScout": {"data": data, "user": user}}}
     )
+    return result.matched_count > 0
 
 
 def getTeam(team: int):

@@ -16,7 +16,7 @@
 <pre id="display"></pre>
 
 <script>
-    const data = "{{ csvdata|safe }}";
+    const data = {{ csvdata|tojson }};
     document.getElementById("display").innerText = data;
     function dowloadCSV(){
         var filename = 'pitscout_data_'+new Date().toLocaleDateString() + '.csv';
