@@ -22,51 +22,55 @@
 
 <div class="card">
     <h2>Stat matrix</h2>
-    <canvas width="1000" height="1000" id="stat-matrix-canvas"></canvas>
+    <canvas width="1000" height="800" id="stat-matrix-canvas"></canvas>
 </div>
 
 <div class="card">
-    <h1>Pit Scouting</h1>
-    {% if team["pitScout"] %}
-    <div>
-        <p>Scouted by: </p>
-        <select id="pitScoutSelect" onchange="updatePitScout()">
-            <!-- <option value="0" selected>None</option> -->
-            {% for pitScout in team["pitScout"]%}
-            <option value="{{loop.index}}" {% if loop.last %}selected{% endif %}>{{pitScout["user"]}}</option>
-            {% endfor %}
-        </select>
-        {% for pitScout in team["pitScout"]%}
-        {% set data = pitScout['data'] %}
-        <div class="pit-scout pit-{{loop.index}} hidden">
-            <!-- {{data}} -->
-            {% for thing in pitScoutQuestions %}{% for question in thing %}
-            {# skip questions this scout didn't have (added after they submitted) #}
-            {% if question["id"] in data %}
-            {% set answer = data[question["id"]] %}
-            {% if question["type"] == "text" %}
-            {% if answer != ""%}
-            <p>{{question["text"]}}</p>
-            <ul>
-                <li>{{answer}}</li>
-            </ul>
-            {% endif %}
-            {% elif question["type"] == "select"%}
-            <p>{{question["text"]}}</p>
-            <ul>
+    <h2>Pit Scouting</h2>
+    {% set submissions = team.get("pitScout", []) %}
+    {% if submissions %}
+    {% if submissions|length > 1 %}
+    <select id="pitScoutSelect" onchange="updatePitScout()">
+        {% for pitScout in submissions %}
+        <option value="{{loop.index}}" {% if loop.last %}selected{% endif %}>Revision {{loop.index}} ({{pitScout["user"]}})</option>
+        {% endfor %}
+    </select>
+    {% endif %}
+    {% for pitScout in submissions %}
+    {% set data = pitScout['data'] %}
+    <div class="pit-scout pit-{{loop.index}}{% if not loop.last %} hidden{% endif %}">
+        <p class="pit-scouted-by">Scouted by {{pitScout["user"]}}</p>
+        {% for thing in pitScoutQuestions %}{% for question in thing %}
+        {% if question["id"] in data %}
+        {% set answer = data[question["id"]] %}
+        {% if question["type"] == "text" %}
+        {% if answer != "" %}
+        <div class="pit-answer">
+            <b>{{question["text"]}}</b>
+            <p>{{answer}}</p>
+        </div>
+        {% endif %}
+        {% elif question["type"] == "select" %}
+        <div class="pit-answer">
+            <b>{{question["text"]}}</b>
             {% for option in question["options"] %}
-                <li class="{{"checked" if answer.get(option[1]) else "unchecked"}}">{{option[0]}}</li>
+            {% if answer.get(option[1]) %}
+            <div class="pit-option checked"><span class="icon">check_box</span>{{option[0]}}</div>
+            {% else %}
+            <div class="pit-option"><span class="icon">check_box_outline_blank</span>{{option[0]}}</div>
+            {% endif %}
             {% endfor %}
             {% if answer.get("other") %}
-                <li class="checked">Other: {{answer["other"]}}</li>
+            <div class="pit-option checked"><span class="icon">check_box</span>Other: {{answer["other"]}}</div>
             {% endif %}
-            </ul>
-            {% endif %}
-            {% endif %}
-            {% endfor %}{% endfor %}
         </div>
-        {% endfor %}
+        {% endif %}
+        {% endif %}
+        {% endfor %}{% endfor %}
     </div>
+    {% endfor %}
+    {% else %}
+    <p>Not pit scouted yet.</p>
     {% endif %}
     <a href="{{url_for('scoutTeam',team=team['number'])}}">Scout this team</a>
 </div>
@@ -83,7 +87,7 @@
 </div>
 {% endif %}
 
-<!-- <div class="card">
+{# <!-- <div class="card">
 <h2>Comments</h2>
 {% for comment in team["comments"] %}
 <p>{{ comment["user"] }}: {{ comment["comment"] }}</p>
@@ -91,11 +95,11 @@
 {% if not team["comments"] %}
 <p>No comments :(</p>
 {% endif %}
-</div> -->
+</div> --> #}
 
 <div class="card">
 <a href="{{ url_for('addTeamImagePage', team=team['number']) }}">Add an image</a>
-<!-- <a href="{{ url_for('setTeamComment', team=team['number']) }}">Add team comment</a> -->
+{# <!-- <a href="{{ url_for('setTeamComment', team=team['number']) }}">Add team comment</a> --> #}
 </div>
 
 <div class="card">
@@ -119,7 +123,7 @@
 {% endfor %}
 </div>
 
-<!--<p>{{ team }}</p>-->
+{# <!--<p>{{ team }}</p>--> #}
 
 <div class="card">
 <h2>Matches</h2>
@@ -141,7 +145,7 @@
 </ul>
 </div>
 
-{% if team["pitScout"] %}
+{% if team.get("pitScout", [])|length > 1 %}
 <script>
     function updatePitScout(){
         let visible = document.getElementById("pitScoutSelect").value;
@@ -180,8 +184,10 @@
 
     const callback = (entries, observer) => {
         entries.forEach((entry) =>{
-            currentImage = imageList.indexOf(entry.target);
-            //console.log("detected a change: "+currentImage);
+            // only track the image scrolling into view, not the one leaving
+            if (entry.isIntersecting){
+                currentImage = imageList.indexOf(entry.target);
+            }
         });
     }
 
@@ -197,13 +203,13 @@
             currentImage -= 1;
         }
 
-        //console.log("current image: "+currentImage);
-        document.getElementById("img"+currentImage).scrollIntoView({behavior:"smooth"});
+        // scroll the image strip only, without jumping the whole page
+        images.scrollTo({left: imageList[currentImage].offsetLeft, behavior:"smooth"});
     }
 
     const observer = new IntersectionObserver(callback, options);
-    for (i = imageList.length-1; i >= 0; i--){
-        observer.observe(imageList[i]);
+    for (const image of imageList){
+        observer.observe(image);
     }
 </script>
 {% endif %}
@@ -212,30 +218,23 @@
     const dropdown = document.getElementById("stats")
 
     function changeStat(){
-        var stat = dropdown.value;
-        var listItem = document.getElementById(stat);
-        listItem.classList.remove("hidden");
-        var activeItems = document.getElementsByClassName("active");
-        for (i=0; i < activeItems.length; i++){
-            var activeItem = activeItems[i]
-            activeItem.classList.remove("active");
-            activeItem.classList.add("hidden");
+        for (const statistic of document.querySelectorAll(".statistic")){
+            statistic.classList.toggle("hidden", statistic.id !== dropdown.value);
         }
-        listItem.classList.add("active");
     }
 
-    addEventListener("DOMContentLoaded", changeStat())
+    changeStat();
 </script>
 
 <script>
 
     const stat_width  = 1000;
-    const stat_height = 1000;
+    const stat_height = 800;
 
     const half_width = stat_width/2;
-    const half_height = stat_width/2;
+    const half_height = stat_height/2;
 
-    const matrix_size = Math.min(half_width*0.6,half_height*0.6);
+    const matrix_size = half_width*0.6;
 
     const stat_count = 6;
 
@@ -272,7 +271,6 @@
         const stat_matrix_canvas = document.getElementById(id);
         const stat_matrix_ctx = stat_matrix_canvas.getContext("2d");
 
-        stat_matrix_ctx.fillStyle = "white";
         stat_matrix_ctx.clearRect(0,0,stat_width,stat_height);
 
         let sins = [];
@@ -309,14 +307,17 @@
 
     }
 
-    drawStatMatrix([
-        {{ statMatrix["offense"] }},
-        {{ statMatrix["defense"] }},
-        {{ statMatrix["driver"] }},
-        {{ statMatrix["passing"] }},
-        {{ statMatrix["stealing"] }},
-        {{ statMatrix["autos"] }},
-    ]);
+    // wait for Poppins so the labels aren't drawn in the fallback font
+    document.fonts.load("30px Poppins").finally(() => {
+        drawStatMatrix([
+            {{ statMatrix["offense"] }},
+            {{ statMatrix["defense"] }},
+            {{ statMatrix["driver"] }},
+            {{ statMatrix["passing"] }},
+            {{ statMatrix["stealing"] }},
+            {{ statMatrix["autos"] }},
+        ]);
+    });
 </script>
 
 {% endblock %}

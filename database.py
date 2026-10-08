@@ -1026,7 +1026,8 @@ def getAllTeamsResults(teamDict:list[dict]|None = None) -> dict[int,list[dict]]:
                 result["setNumber"] = individualMatch["setNumber"]
                 result["matchKey"] = individualMatch["matchKey"]
                 result["displayName"] = individualMatch["displayName"]
-                resultsDict[num].append(result)
+                # setdefault in case a match has a team that isn't in the teams collection
+                resultsDict.setdefault(num, []).append(result)
     return resultsDict
 
 

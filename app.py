@@ -342,49 +342,36 @@ def teamPage():
     try:
         team = int(request.args.get("team"))  # type: ignore
         results = getTeam(team)
-    except TypeError as err:
-        statMatrices = game.calculateStatMatrices()
-        try:
-            rendered = render_template(
-                "team/teamSelect.html",
-                teams=sortTeams(getAllTeams()),
-                team=-1,
-                statMatrices=statMatrices,
-            )
-        except:
-            writeToCacheFile("", "statMatrixCache")
-            statMatrices = game.calculateStatMatrices()
-            rendered = render_template(
-                "team/teamSelect.html",
-                teams=sortTeams(getAllTeams()),
-                team=-1,
-                statMatrices=statMatrices,
-            )
-        return rendered
+    except (TypeError, ValueError):
+        results = None
 
     if results is None:
-        statMatrices = game.calculateStatMatrices()
         try:
             rendered = render_template(
                 "team/teamSelect.html",
                 teams=sortTeams(getAllTeams()),
                 team=-1,
-                statMatrices=statMatrices,
+                statMatrices=game.calculateStatMatrices(),
             )
         except:
             writeToCacheFile("", "statMatrixCache")
-            statMatrices = game.calculateStatMatrices()
             rendered = render_template(
                 "team/teamSelect.html",
                 teams=sortTeams(getAllTeams()),
                 team=-1,
-                statMatrices=statMatrices,
+                statMatrices=game.calculateStatMatrices(),
             )
         return rendered
 
     matches = getTeamMatches(team)
     stats = game.getAllStats(team)
-    statMatrix = game.calculateStatMatrix(team, game.getMaximumsForStatMatrix())
+    try:
+        statMatrix = game.calculateStatMatrices()[team]
+    except:
+        writeToCacheFile("", "statMatrixCache")
+        statMatrix = game.calculateStatMatrices().get(team)
+    if statMatrix is None:
+        statMatrix = game.calculateStatMatrix(team)
     return render_template(
         "team/team.html",
         team=results,

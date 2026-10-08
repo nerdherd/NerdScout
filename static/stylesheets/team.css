@@ -85,25 +85,46 @@ body{
     display:none;
 }
 
-#stats{
+#stats, #pitScoutSelect{
     background-color: var(--nerd-herd-navy);
     width:100%;
 }
 
-li.unchecked::marker {
-    /* color: hotpink; */
-    content: 'check_box_outline_blank';
-    font-family: 'Material Symbols Sharp';
+.pit-scouted-by{
+    color: var(--grey-text);
+    margin: 10px 0 16px;
 }
 
-li.checked::marker {
-    /* color: hotpink; */
-    content: 'check_box';
-    font-family: 'Material Symbols Sharp';
+.pit-answer{
+    margin-bottom: 18px;
+    overflow-wrap: anywhere;
 }
 
-.pit-scout{
-    border: 1px dotted white;
+.pit-answer p{
+    margin: 2px 0 0;
+}
+
+.pit-answer b{
+    display: block;
+    margin-bottom: 4px;
+}
+
+.pit-option, .pit-option *{
+    color: var(--grey-text);
+}
+
+.pit-option{
+    display: flex;
+    align-items: center;
+    column-gap: 6px;
+}
+
+.pit-option.checked, .pit-option.checked *{
+    color: var(--text-color);
+}
+
+.pit-option .icon{
+    font-size: 20px;
 }
 
 #backButtonLink{

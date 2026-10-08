@@ -2381,12 +2381,14 @@ class Rebuilt(Game):
         Inputs:
         - team (int): team number
         - maximums (dict): results of getMaximumsForStatMatrix()
+        - teamMatchResultList (list[dict]): the team's results, to avoid querying them again
 
         Returns:
         - dict: stat dict
         """
 
-        teamMatchResultList = getTeamResults(team)
+        if teamMatchResultList is None:
+            teamMatchResultList = getTeamResults(team)
 
         if maximums == None:
             maximums = self.getMaximumsForStatMatrix()
