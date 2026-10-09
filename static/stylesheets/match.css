@@ -588,6 +588,11 @@ body {
     width: 25%;
 }
 
+.shiftRow button.selectedShift{
+    outline: white solid 1px;
+    outline-offset: -1px;
+}
+
 .shiftParent > *{
     display: none;
 }

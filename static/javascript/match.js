@@ -120,4 +120,7 @@ function switchShift(shift){
         shiftParents[i].classList.remove
         shiftParents[i].classList.add(shifts[shift]);
     }
+    for (const row of document.querySelectorAll(".shiftRow")){
+        row.querySelectorAll("button").forEach((button, i) => button.classList.toggle("selectedShift", i === shift));
+    }
 }
