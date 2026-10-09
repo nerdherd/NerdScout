@@ -5,11 +5,7 @@ function updateSort(){
     let sortCategory = document.getElementById("sort-category").value;
     let descending = (document.getElementById("sort-input").value === "descending");
 
-    let rowNodes = document.querySelectorAll(".row");
-    let rows = Array.from(rowNodes);
-    for (const row of rowNodes){
-        row.remove();
-    }
+    let rows = Array.from(document.querySelectorAll(".row"));
 
     rows.sort((a,b) => {
         var aRaw = a.dataset[sortCategory];
@@ -44,7 +40,7 @@ function updateSort(){
             return 0;
         }
         if (isNaN(aVal) || isNaN(bVal)){
-            console.log(sortCategory,"null");
+            // console.log(sortCategory,"null");
             return aRaw.localeCompare(bRaw);
         }
         if (aVal > bVal) return 1;
@@ -56,9 +52,7 @@ function updateSort(){
         rows = rows.reverse();
     }
 
-    rows.forEach(element => {
-        table.appendChild(element);
-    });
+    table.append(...rows);
 }
 
 function download_table_as_csv(separator = ',') {
@@ -68,7 +62,7 @@ function download_table_as_csv(separator = ',') {
         var row = [], cols = rows[i].querySelectorAll('td, th');
         for (var j = 0; j < cols.length; j++) {
             let cell = cols[j];
-            let data = cell.innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+            let data = cell.textContent.trim().replace(/\s+/g, ' ');
             if (cell.dataset.type === "string"){
                 data = data.replace(/"/g, '""');
                 row.push('"' + data + '"');
@@ -83,12 +77,13 @@ function download_table_as_csv(separator = ',') {
     var filename = 'match_data_'+new Date().toLocaleDateString() + '.csv';
     var link = document.createElement('a');
     link.style.display = 'none';
-    link.setAttribute('target', '_blank');
-    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+    const url = URL.createObjectURL(new Blob([csv_string], {type: 'text/csv;charset=utf-8'}));
+    link.setAttribute('href', url);
     link.setAttribute('download', filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 }
 
 updateSort();

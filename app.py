@@ -753,8 +753,8 @@ def teamTable():
 
     displayNames = game.teamTableDisplayNames
     data = teamDataSummary()
-    print([a for a in data[-1]["results"].keys()])
-    print(data)
+    # print([a for a in data[-1]["results"].keys()])
+    # print(data)
     return render_template(
         "strategy/team/table.html",
         displayNames=displayNames,
@@ -1304,6 +1304,9 @@ def after_request(response):
     if response.content_type == u"text/html; charset=utf-8":
         response.set_data(minify(response.get_data(as_text=True)))
         return response
+    if request.path.startswith(("/static/fonts/", "/static/images/")):
+        response.cache_control.public = True
+        response.cache_control.max_age = 604800  # one week
     return response
 
 

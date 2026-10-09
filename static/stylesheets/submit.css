@@ -105,6 +105,11 @@ body {
     cursor: pointer;
 }
 
+.maxButton{
+    font-size: 16px;
+    padding: 0;
+}
+
 #startposimg, #startposinput{
     width: 318px;
 }

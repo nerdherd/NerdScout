@@ -240,7 +240,7 @@
                                 <button class="minus" onclick="incrementCounter('preloadFuel',false)">-</button>
                                 <input type="number" id="preloadFuel" min="0" max="8" value="0" onchange="setPreloadFuel(this.value)">
                                 <button class="plus" onclick="incrementCounter('preloadFuel',true); setPreloadFuel(getById('preloadFuel').value)">+</button>
-                                <button class="plus" onclick="setPreloadFuel(MAX_PRELOAD)">Max</button>
+                                <button class="plus maxButton" onclick="setPreloadFuel(MAX_PRELOAD)">Max</button>
                             </div>
                             <label for="preloadFuel">Preload fuel</label>
                         </div>
@@ -267,7 +267,7 @@
                 </div>
                 <div class="row">
                     <label class="toggle-btn-wrapper">
-                        <div class="toggle-btn toggleShift">
+                        <div class="toggle-btn toggleShift" {# id="blueWinner" #}>
                             <p>Did they fail climb?</p>
                             <input type="checkbox" id="climbFail" onclick="attemptEnd()">
                         </div>
