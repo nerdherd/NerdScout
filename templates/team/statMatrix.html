@@ -1,0 +1,24 @@
+{# m: dict of stat values in 0..1 #}
+{% macro statMatrix(m, labels=True) %}
+{% set m = m or {} %}
+{% set keys  = ["offense","defense","driver","passing","stealing","autos"] %}
+{% set names = ["Offense","Defense","Driving","Passing","Stealing","Autos"] %}
+{# unit vectors for 6 axes, starting at the top and going clockwise #}
+{% set ux = [0, 0.866, 0.866, 0, -0.866, -0.866] %}
+{% set uy = [-1, -0.5, 0.5, 1, 0.5, -0.5] %}
+{% set R = 100 %}
+<svg class="stat-matrix" viewBox="-165 -125 330 250" role="img" aria-label="Stat matrix">
+    {% for f in [0.25, 0.5, 0.75, 1] %}
+    <polygon class="sm-grid" points="{% for i in range(6) %}{{ '%.1f,%.1f'|format(ux[i]*R*f, uy[i]*R*f) }} {% endfor %}"/>
+    {% endfor %}
+    {% for i in range(6) %}
+    <line class="sm-grid" x1="0" y1="0" x2="{{ '%.1f'|format(ux[i]*R) }}" y2="{{ '%.1f'|format(uy[i]*R) }}"/>
+    {% endfor %}
+    <polygon class="sm-fill" points="{% for i in range(6) %}{% set v = [[m.get(keys[i], 0) or 0, 0]|max, 1]|min %}{{ '%.1f,%.1f'|format(ux[i]*R*v, uy[i]*R*v) }} {% endfor %}"/>
+    {% if labels %}
+    {% for i in range(6) %}
+    <text class="sm-label" x="{{ '%.1f'|format(ux[i]*(R+10)) }}" y="{{ '%.1f'|format(uy[i]*(R+12)) }}" text-anchor="{{ 'middle' if ux[i] == 0 else ('start' if ux[i] > 0 else 'end') }}" dominant-baseline="middle">{{ names[i] }}</text>
+    {% endfor %}
+    {% endif %}
+</svg>
+{% endmacro %}

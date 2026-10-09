@@ -146,6 +146,29 @@ body{
     top:1.75rem;
 }
 
-canvas {
+/* canvas {
     width: 100%;
+} */
+
+.stat-matrix {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+.stat-matrix .sm-grid {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.35);
+    stroke-width: 1;
+}
+.stat-matrix .sm-fill {
+    fill: #5386E4;
+    fill-opacity: 0.85;
+    stroke: #5386E4;
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
+.stat-matrix .sm-label {
+    fill: white;
+    font: 500 12px Poppins, sans-serif;
 }

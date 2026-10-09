@@ -9,6 +9,8 @@
 {% block title %}Team Select{% endblock %}
 
 {% block content %}
+{% from 'team/statMatrix.html' import statMatrix %}
+{#
 <script defer>
 
     const stat_width  = 1000;
@@ -91,6 +93,7 @@
 
     }
 </script>
+#}
 
 {# {% set previousPage = url_for("index") %} #}
 {% include 'backButton.html' %}
@@ -125,8 +128,9 @@
             {% endautoescape %}
             <a href="?team={{ team['number'] }}"></a>
         </div>
-        <canvas width="1000" height="1000" id="canvas-{{loop.index}}"></canvas>
-        <script defer>drawStatMatrix([{{ statMatrices[team['number']]["offense"] }},{{ statMatrices[team['number']]["defense"] }},{{ statMatrices[team['number']]["driver"] }},{{ statMatrices[team['number']]["passing"] }},{{ statMatrices[team['number']]["stealing"] }},{{ statMatrices[team['number']]["autos"] }},], "canvas-{{loop.index}}");</script>
+        {# <canvas width="1000" height="1000" id="canvas-{{loop.index}}"></canvas>
+        <script defer>drawStatMatrix([{{ statMatrices[team['number']]["offense"] }},{{ statMatrices[team['number']]["defense"] }},{{ statMatrices[team['number']]["driver"] }},{{ statMatrices[team['number']]["passing"] }},{{ statMatrices[team['number']]["stealing"] }},{{ statMatrices[team['number']]["autos"] }},], "canvas-{{loop.index}}");</script> #}
+        {{ statMatrix(statMatrices[team['number']]) }}
     </div>
 {% endfor %}
 </div>
