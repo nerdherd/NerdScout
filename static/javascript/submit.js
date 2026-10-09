@@ -21,8 +21,21 @@ function updateShift(){
 function getById(id){return document.getElementById(id);}
 function getId(id,isInt=true){
     let val = getById(id).value;
-    return isInt?parseInt(val):val;
+    return isInt?(parseInt(val) || 0):val;
 }
+
+const MAX_PRELOAD = 8;
+function setPreloadFuel(n){
+    getById("preloadFuel").value = Math.min(Math.max(parseInt(n) || 0, 0), MAX_PRELOAD);
+}
+
+let canLeaveSafely = false;
+window.addEventListener('beforeunload', function (e) {
+    if (!canLeaveSafely){
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
 
 var curScoringPeriod = 0;
 
@@ -60,7 +73,7 @@ const mainInputDiv = getById("main-input");
 let scores = [0,0,0,0,0,0,0,0];
 function setScoringPeriod(newPeriod){
     const scoreElem = document.getElementById("scored");
-    scoreElem.value = scores[curSelected];
+    scoreElem.value = scores[curSelected] ?? 0;
     if(newPeriod >= 1 && !wonTouched){
         alert("PLEASE PICK A SHIFT WINNER");
         return;
@@ -89,7 +102,7 @@ function setScoringPeriod(newPeriod){
         } 
     }
     curScoringPeriod=newPeriod;
-    document.getElementById("scored").value = scores[curScoringPeriod];
+    document.getElementById("scored").value = scores[curScoringPeriod] ?? 0;
 
     if (newPeriod==-1){
         mainInputDiv.classList.add(`shift-pregame`);
@@ -209,7 +222,8 @@ function blueTeamWon(color){
 // get checked
 function gc(id){ return getById(id).checked; }
 
-function submitData(matchNum, compLevel, setNum, robot){
+function submitData(matchNum, compLevel, setNum, robot, button){
+    setPreloadFuel(getId("preloadFuel"));
 
     // matchNum = tMatchNum
     // compLevel = tCompLevel
@@ -290,19 +304,31 @@ function submitData(matchNum, compLevel, setNum, robot){
     data = JSON.stringify(rawData);
     console.log(rawData);
     console.log(data);
+    const buttonText = button.textContent;
+    button.disabled = true;
+    button.textContent = "Submitting...";
+    function resetButton(){
+        button.disabled = false;
+        button.textContent = buttonText;
+    }
     fetch(window.location.href, {
         method: "POST",
-        body: data, 
+        body: data,
         headers: {
             "Content-type": "application/json; charset=UTF-8"
         }
     }).then(response =>{
         if (response.ok){
             alert("Succesfully submitted");
+            canLeaveSafely = true;
             redirect_to_match()
         } else{
             alert("There was an error submitting.");
+            resetButton();
         }
+    }).catch(() => {
+        alert("There was a network error submitting.");
+        resetButton();
     });
 }
 
