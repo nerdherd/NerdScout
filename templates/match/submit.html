@@ -223,11 +223,9 @@
                     <div class="row">
                         <div class="column">
                             <label for="startposinput">Starting position</label>
-                            <div class="field">
+                            <div class="field" onclick="setStartPosFromClick(event)">
                                 <div id="fieldHighlight"></div>
-                                {% for n in range(10)%}
-                                <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/Field/False/'+ ('Red' if 'red' in rbtStat else 'Blue') +'/(' + (n+1)|string + ').png')}}">
-                                {% endfor %}
+                                <img class="fieldImg" src="{{ url_for('static', filename='images/rebuiltMatchDisplay/'+ ('Red' if 'red' in rbtStat else 'Blue') +'Field.png')}}">
                             </div>
                         <input type="range" min="0" max="2" step="1" val="1" id="startposinput" oninput="moveImage()">
                         </div>
@@ -391,6 +389,11 @@
     function moveImage(){
         var sliderVal = slider.value;
         fieldHighlight.style.left = (sliderVal*33.333)+"%";
+    }
+    function setStartPosFromClick(event){
+        const rect = event.currentTarget.getBoundingClientRect();
+        slider.value = Math.min(2, Math.floor((event.clientX - rect.left) / rect.width * 3));
+        moveImage();
     }
     moveImage();
 </script>

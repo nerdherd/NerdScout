@@ -261,6 +261,7 @@ body {
     display: flex;
     justify-content: left;
     position: relative;
+    cursor: pointer;
 }
 
 #fieldHighlight {
@@ -272,7 +273,7 @@ body {
 }
 
 .field img{
-    width:31.8px;
+    width:318px;
     padding: 0px;
     margin: 0px;
 }
