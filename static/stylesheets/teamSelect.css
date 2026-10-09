@@ -109,3 +109,8 @@
     fill: white;
     font: 600 14px Poppins, sans-serif;
 }
+
+.team-div > div{
+    width:73%;
+    padding-right:2%;
+}
