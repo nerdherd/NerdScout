@@ -22,8 +22,22 @@ class Game:
         self.teamTableDisplayNames = {}
         self.matchTableDisplayNames = {}
         self.cannedComments = []
-        self.pitScoutAutoCapabilities = tuple()
-        self.pitScoutTeleCapabilities = tuple()
+        # Pit scout is a list (or tuple) of lists (or tuples) of dicts
+        # Every list is a card, every dict is a question
+        # Ids:
+        # - "text": the question shown to the scout
+        # - "type": "text" (free response) or "select" (list of options)
+        # - "options" (select only): tuple of (label, value) or (label, value, onclick JS)
+        # - "single" (select only): only one option can be picked
+        # - "other" (select only): adds an "Other" option with a text box
+        # - "optional": scout can leave it blank
+        # - "showIf": only show (and require) this question when the given option is picked,
+        #   written as "<questionId>-<optionValue>"; can also be a list, shown if any are picked
+        # - "hidden": start hidden, can be shown with javascript
+        # - "onclick" (select only): run each option's onclick JS when it is clicked
+        #
+        # Submitted data is stored as {id: "answer"} for text and {id: {value: bool, ..., "other": "text"}} for select
+        self.pitScout = tuple()
         raise NotImplementedError("Game Superclass __init__ used")
 
     def calculateScore(self) -> int:
@@ -139,6 +153,7 @@ class Game:
         match2: list,
         team3: int,
         match3: list,
+        jsonSerializable: bool = False,
     ) -> dict:
         """
         Adds together results for three teams from given match data to predict their performance as an alliance.
@@ -152,6 +167,7 @@ class Game:
         - match2 (list): match data for team 2
         - team3 (int): team 3 number
         - match3 (list): match data for team 3
+        - jsonSerializable (bool): make the result safe to JSON-encode, defaults to False
 
         Returns:
         - dict: predicted results dict
@@ -159,20 +175,57 @@ class Game:
         raise NotImplementedError("Game Superclass calculateAllianceFromMatches used")
         # return {}
 
-    def calculateStatMatrix(self,team:int) -> dict:
+    def calculateStatMatrix(
+        self,
+        team: int,
+        maximums: dict | None = None,
+        teamMatchResultList: list[dict] | None = None,
+    ) -> dict:
         """
         Calculates a team's stat matrix, with each field from a range from 0 to 1.
         1 represents the highest value for that field.
-        
+        The keys are game specific (Rebuilt: offense, defense, driver, passing, stealing, autos).
+
         This shouldn't be used; replace this with a game specific function.
 
         Inputs:
         - team (int): team number
+        - maximums (dict or None): per-category maximums across all teams, computed if None
+        - teamMatchResultList (list[dict] or None): the team's match results, fetched if None
 
         Returns:
         - dict: stat dict
         """
         raise NotImplementedError("Game Superclass calculateStatMatrix used")
+
+    def getMaximumsForStatMatrix(
+        self, teamDataList=None, teamResultsDict=None
+    ) -> dict[str, float]:
+        """
+        Finds the maximum value of each stat matrix category across all teams.
+
+        This shouldn't be used; replace this with a game specific function.
+
+        Inputs:
+        - teamDataList: all teams' data, fetched if None
+        - teamResultsDict: all teams' match results, fetched if None
+
+        Returns:
+        - dict: maximum for each stat matrix key
+        """
+        raise NotImplementedError("Game Superclass getMaximumsForStatMatrix used")
+
+    def calculateStatMatrices(self) -> dict[int, dict[str, float]]:
+        """
+        Calculates the stat matrix for every team, using the statMatrixCache file when populated.
+        scoreRobotInMatch should clear that cache when new data is scored.
+
+        This shouldn't be used; replace this with a game specific function.
+
+        Returns:
+        - dict: team number -> stat matrix
+        """
+        raise NotImplementedError("Game Superclass calculateStatMatrices used")
 
 
 
@@ -1280,21 +1333,7 @@ class Rebuilt(Game):
             "Bad Descision Making",
         ]
 
-        # Pit scout is a list (or tuple) of lists (or tuples) of dicts 
-        # Every list is a card, every dict is a question
-        # Ids:
-        # - "text": the question shown to the scout
-        # - "type": "text" (free response) or "select" (list of options)
-        # - "options" (select only): tuple of (label, value) or (label, value, onclick JS)
-        # - "single" (select only): only one option can be picked
-        # - "other" (select only): adds an "Other" option with a text box
-        # - "optional": scout can leave it blank
-        # - "showIf": only show (and require) this question when the given option is picked,
-        #   written as "<questionId>-<optionValue>"; can also be a list, shown if any are picked
-        # - "hidden": start hidden, can be shown with javascript
-        # - "onclick" (select only): run each option's onclick JS when it is clicked
-
-        # Submitted data is stored as {id: "answer"} for text and {id: {value: bool, ..., "other": "text"}} for select
+        # Pit scout question format is documented in Game.__init__
 
         self.pitScout = (
             (
